@@ -1,0 +1,565 @@
+/* ==========================================================================
+   Portfolio Website - Main Stylesheet
+   ========================================================================== */
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================================
+   Reset & Base Styles
+   ========================================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    color: #e0e0e0;
+    background: #1a1a1a;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ==========================================================================
+   Header Styles
+   ========================================================================== */
+
+header {
+    text-align: center;
+    padding: 60px 0;
+    color: #ffffff;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    font-weight: 300;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    color: #ff6b35;
+}
+
+/* ==========================================================================
+   Navigation Styles
+   ========================================================================== */
+
+nav {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+nav ul {
+    list-style: none;
+    display: inline-flex;
+    background: rgba(45, 45, 45, 0.8);
+    border-radius: 50px;
+    padding: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 107, 53, 0.2);
+}
+
+nav li {
+    margin: 0 10px;
+}
+
+nav a {
+    color: #e0e0e0;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+nav a:hover, nav a.active {
+    background: #ff6b35;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Content Section Styles
+   ========================================================================== */
+
+.content-section {
+    background: #2d2d2d;
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    border: 1px solid #404040;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+h2 {
+    color: #ff6b35;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(to right, #ff6b35, #ffa726);
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   Grid Layouts
+   ========================================================================== */
+
+.projects-grid, .games-grid, .blog-grid {
+    display: grid;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.games-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.blog-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* ==========================================================================
+   Project Card Styles
+   ========================================================================== */
+
+.project-card {
+    background: linear-gradient(135deg, #404040 0%, #333333 100%);
+    border: 1px solid #555555;
+    border-radius: 15px;
+    padding: 25px;
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+    border-color: #ff6b35;
+}
+
+.project-card h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.project-card p {
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.project-card .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.tech-tag {
+    background: rgba(255, 107, 53, 0.2);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    color: #ffa726;
+}
+
+.project-link {
+    display: inline-block;
+    background: #ff6b35;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.project-link:hover {
+    background: #ffa726;
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Game Card Styles
+   ========================================================================== */
+
+.game-card {
+    background: linear-gradient(135deg, #333333 0%, #404040 100%);
+    border: 1px solid #555555;
+    border-radius: 15px;
+    padding: 20px;
+    color: #e0e0e0;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(255, 107, 53, 0.3);
+    border-color: #ff6b35;
+}
+
+.game-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+.game-card h3 {
+    margin-bottom: 10px;
+}
+
+/* ==========================================================================
+   Blog Card Styles
+   ========================================================================== */
+
+.blog-card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 200px;
+}
+
+.blog-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
+}
+
+.blog-thumbnail {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    background-size: cover;
+    background-position: center;
+}
+
+.blog-overlay {
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: all 0.3s ease;
+}
+
+.blog-card:hover .blog-overlay {
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+}
+
+.blog-overlay h3 {
+    color: white;
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.blog-date {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.9rem;
+    margin: 0 0 8px 0;
+}
+
+.blog-category {
+    background: rgba(255, 107, 53, 0.8);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    align-self: flex-start;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Skills Grid (Legacy - kept for compatibility)
+   ========================================================================== */
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.skill-item {
+    background: linear-gradient(135deg, #404040 0%, #333333 100%);
+    border: 1px solid #ff6b35;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    color: #e0e0e0;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.skill-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+    background: linear-gradient(135deg, #ff6b35 0%, #ffa726 100%);
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   About Section Styles
+   ========================================================================== */
+
+.about-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #b0b0b0;
+}
+
+/* ==========================================================================
+   Contact Section Styles
+   ========================================================================== */
+
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.contact-item {
+    background: linear-gradient(135deg, #404040 0%, #333333 100%);
+    border: 1px solid #555555;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    color: #e0e0e0;
+}
+
+.contact-item:hover {
+    transform: translateY(-5px);
+    border-color: #ff6b35;
+    box-shadow: 0 10px 20px rgba(255, 107, 53, 0.2);
+}
+
+.contact-item i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #ff6b35;
+}
+
+/* ==========================================================================
+   Footer Styles
+   ========================================================================== */
+
+footer {
+    text-align: center;
+    padding: 40px 0;
+    color: rgba(255,255,255,0.8);
+}
+
+/* ==========================================================================
+   Floating Button Styles
+   ========================================================================== */
+
+.add-project-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, #ff6b35 0%, #ffa726 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+    transition: all 0.3s ease;
+}
+
+.add-project-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 30px rgba(255, 107, 53, 0.4);
+}
+
+/* ==========================================================================
+   Modal Styles
+   ========================================================================== */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2d2d2d;
+    border: 1px solid #404040;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+}
+
+/* ==========================================================================
+   Form Styles
+   ========================================================================== */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #555555;
+    background: #404040;
+    color: #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    outline: none;
+    border-color: #ff6b35;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #ff6b35 0%, #ffa726 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .content-section {
+        padding: 20px;
+    }
+    
+    .projects-grid, .games-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .contact-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .content-section {
+        padding: 15px;
+    }
+}

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Developer Portfolio</h1>
+            <p>웹 개발자 & 게임 크리에이터</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#about" class="nav-link active">소개</a></li>
+                <li><a href="#projects" class="nav-link">프로젝트</a></li>
+                <li><a href="#games" class="nav-link">미니게임</a></li>
+                <li><a href="#blog" class="nav-link">블로그</a></li>
+                <li><a href="#contact" class="nav-link">연락처</a></li>
+            </ul>
+        </nav>
+
+        <div class="content-section">
+            <div id="about" class="section active">
+                <h2>About Me</h2>
+                <div class="about-content">
+                    <p>안녕하세요! 웹 개발과 게임 개발에 열정을 가진 개발자입니다.</p>
+                    <p>사용자에게 즐거운 경험을 제공하는 인터랙티브한 웹 애플리케이션과 재미있는 미니게임을 만드는 것을 좋아합니다.</p>
+                    <p>항상 새로운 기술을 배우고 창의적인 프로젝트에 도전하며 성장하고 있습니다.</p>
+                </div>
+            </div>
+
+            <div id="projects" class="section">
+                <h2>Projects</h2>
+                <div class="projects-grid" id="projectsGrid">
+                    <div class="project-card">
+                        <h3>반응형 포트폴리오 웹사이트</h3>
+                        <p>모던한 디자인의 개인 포트폴리오 사이트</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                        </div>
+                        <a href="#" class="project-link">자세히 보기</a>
+                    </div>
+                    
+                    <div class="project-card">
+                        <h3>할일 관리 앱</h3>
+                        <p>로컬 스토리지를 활용한 할일 관리 애플리케이션</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Local Storage</span>
+                            <span class="tech-tag">CSS</span>
+                        </div>
+                        <a href="#" class="project-link">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="games" class="section">
+                <h2>Mini Games</h2>
+                <div class="games-grid" id="gamesGrid">
+                    <div class="game-card" onclick="openGame('snake')">
+                        <div class="game-icon">🐍</div>
+                        <h3>스네이크 게임</h3>
+                        <p>클래식한 뱀 게임</p>
+                    </div>
+                    
+                    <div class="game-card" onclick="openGame('tetris')">
+                        <div class="game-icon">🧩</div>
+                        <h3>테트리스</h3>
+                        <p>블록 퍼즐 게임</p>
+                    </div>
+                    
+                    <div class="game-card" onclick="openGame('memory')">
+                        <div class="game-icon">🧠</div>
+                        <h3>기억력 게임</h3>
+                        <p>카드 매칭 게임</p>
+                    </div>
+                    
+                    <div class="game-card" onclick="openGame('pong')">
+                        <div class="game-icon">🏓</div>
+                        <h3>퐁 게임</h3>
+                        <p>클래식 핑퐁 게임</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="blog" class="section">
+                <h2>Blog</h2>
+                <div class="blog-grid" id="blogGrid">
+                    <div class="blog-card" onclick="openBlog('https://example.com/blog/1')">
+                        <div class="blog-thumbnail" style="background: linear-gradient(135deg, #ff6b35 0%, #ffa726 100%);">
+                            <div class="blog-overlay">
+                                <h3>웹 개발 시작하기</h3>
+                                <p class="blog-date">2024.10.15</p>
+                                <span class="blog-category">튜토리얼</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="blog-card" onclick="openBlog('https://example.com/blog/2')">
+                        <div class="blog-thumbnail" style="background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);">
+                            <div class="blog-overlay">
+                                <h3>JavaScript 최신 기능들</h3>
+                                <p class="blog-date">2024.10.10</p>
+                                <span class="blog-category">개발</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="blog-card" onclick="openBlog('https://example.com/blog/3')">
+                        <div class="blog-thumbnail" style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);">
+                            <div class="blog-overlay">
+                                <h3>게임 개발 도전기</h3>
+                                <p class="blog-date">2024.10.05</p>
+                                <span class="blog-category">게임</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="blog-card" onclick="openBlog('https://example.com/blog/4')">
+                        <div class="blog-thumbnail" style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);">
+                            <div class="blog-overlay">
+                                <h3>프로젝트 회고록</h3>
+                                <p class="blog-date">2024.09.28</p>
+                                <span class="blog-category">회고</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contact" class="section">
+                <h2>Contact</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📧</div>
+                        <h3>이메일</h3>
+                        <p>your.email@example.com</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🐙</div>
+                        <h3>GitHub</h3>
+                        <p>github.com/yourusername</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">💼</div>
+                        <h3>LinkedIn</h3>
+                        <p>linkedin.com/in/yourprofile</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="add-project-btn" onclick="openModal()" title="새 프로젝트 추가">+</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Developer Portfolio. All rights reserved.</p>
+    </footer>
+
+    <!-- 프로젝트 추가 모달 -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>새 프로젝트 추가</h2>
+            <form id="projectForm">
+                <div class="form-group">
+                    <label for="projectType">타입:</label>
+                    <select id="projectType" required>
+                        <option value="">선택하세요</option>
+                        <option value="project">일반 프로젝트</option>
+                        <option value="game">미니게임</option>
+                        <option value="blog">블로그 포스트</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectTitle">제목:</label>
+                    <input type="text" id="projectTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectDescription">설명:</label>
+                    <textarea id="projectDescription" rows="3" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectTech">기술스택 (쉼표로 구분):</label>
+                    <input type="text" id="projectTech" placeholder="HTML, CSS, JavaScript">
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectLink">링크 (선택사항):</label>
+                    <input type="url" id="projectLink">
+                </div>
+                
+                <div class="form-group" id="gameIconGroup" style="display: none;">
+                    <label for="gameIcon">게임 아이콘:</label>
+                    <input type="text" id="gameIcon" placeholder="🎮">
+                </div>
+                
+                <div class="form-group" id="blogCategoryGroup" style="display: none;">
+                    <label for="blogCategory">카테고리:</label>
+                    <input type="text" id="blogCategory" placeholder="개발, 튜토리얼, 회고 등">
+                </div>
+                
+                <button type="submit" class="submit-btn">추가하기</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
