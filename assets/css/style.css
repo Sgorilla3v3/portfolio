@@ -41,14 +41,13 @@ header {
 
 header h1 {
     font-size: 3rem;
-    margin-bottom: 10px;
-    font-weight: 300;
+    margin-bottom: 5px;
+    font-weight: 700;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 header p {
     font-size: 1.2rem;
-    opacity: 0.8;
     color: #ff6b35;
 }
 
