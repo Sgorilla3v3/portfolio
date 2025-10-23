@@ -471,7 +471,35 @@ footer {
     cursor: pointer;
     color: #999;
 }
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.project-card:hover .delete-btn,
+.game-card:hover .delete-btn,
+.blog-card:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn:hover {
+    background: rgba(255, 0, 0, 1);
+    transform: scale(1.1);
+}
 /* ==========================================================================
    Form Styles
    ========================================================================== */
@@ -529,7 +557,7 @@ footer {
     }
     
     nav ul {
-        flex-direction: column;
+        flex-direction: row;
         gap: 10px;
     }
     

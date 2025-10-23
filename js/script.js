@@ -31,7 +31,12 @@ document.querySelectorAll('.nav-link').forEach(link => {
 
 // 모달 열기
 function openModal() {
-    document.getElementById('projectModal').style.display = 'block';
+    const password = prompt('관리자 비밀번호를 입력하세요:');
+    if (password === 'supersecret') {
+        document.getElementById('projectModal').style.display = 'block';
+    } else {
+        alert('권한이 없습니다.');
+    }
 }
 
 // 모달 닫기
@@ -107,6 +112,7 @@ function addProject(title, description, tech, link) {
     const linkHtml = link ? `<a href="${link}" class="project-link" target="_blank">자세히 보기</a>` : '';
     
     projectCard.innerHTML = `
+        <button class="delete-btn" onclick="deleteProject(this)" title="삭제">×</button>
         <h3>${title}</h3>
         <p>${description}</p>
         <div class="tech-tags">${techTags}</div>
@@ -124,6 +130,7 @@ function addGame(title, description, icon) {
     gameCard.onclick = () => openGame(title.toLowerCase().replace(/\s+/g, ''));
     
     gameCard.innerHTML = `
+        <button class="delete-btn" onclick="deleteGame(this)" title="삭제">×</button>
         <div class="game-icon">${icon}</div>
         <h3>${title}</h3>
         <p>${description}</p>
@@ -155,6 +162,7 @@ function addBlog(title, description, category, link) {
     blogCard.onclick = () => openBlog(blogUrl);
     
     blogCard.innerHTML = `
+        <button class="delete-btn" onclick="deleteBlog(this)" title="삭제">×</button>
         <div class="blog-thumbnail" style="background: ${randomGradient};">
             <div class="blog-overlay">
                 <h3>${title}</h3>
@@ -170,7 +178,26 @@ function addBlog(title, description, category, link) {
 // ==========================================================================
 // External Link Functions
 // ==========================================================================
+// 프로젝트 삭제
+function deleteProject(button) {
+    if (confirm('이 프로젝트를 삭제하시겠습니까?')) {
+        button.closest('.project-card').remove();
+    }
+}
 
+// 게임 삭제  
+function deleteGame(button) {
+    if (confirm('이 게임을 삭제하시겠습니까?')) {
+        button.closest('.game-card').remove();
+    }
+}
+
+// 블로그 삭제
+function deleteBlog(button) {
+    if (confirm('이 블로그를 삭제하시겠습니까?')) {
+        button.closest('.blog-card').remove();
+    }
+}
 // 블로그 열기 함수
 function openBlog(url) {
     if (url && url !== '#') {
