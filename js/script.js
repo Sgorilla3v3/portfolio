@@ -208,10 +208,31 @@ function openBlog(url) {
 }
 
 // 게임 실행 함수 (실제 게임 파일이 있어야 동작)
-function openGame(gameId) {
-    alert(`${gameId} 게임을 실행합니다!\n\n실제 구현에서는 게임 파일을 로드하거나\n새 창에서 게임을 실행할 수 있습니다.`);
-    // 실제로는 게임 파일을 로드하거나 새 창을 열어야 합니다
-    // window.open(`games/${gameId}.html`, '_blank');
+function openGame(gameType) {
+    switch(gameType) {
+        case 'snake':
+            // 청도 팀 결정 게임 열기
+            window.open('/games/teamG.html', '_blank');
+            break;
+        case 'tetris':
+            // 테트리스 게임 열기
+            window.open('/games/tetris.html', '_blank');
+            break;
+        case 'memory':
+            // 기억력 게임 열기
+            window.open('/games/memory.html', '_blank');
+            break;
+        case 'pong':
+            // 퐁 게임 열기
+            window.open('/games/pong.html', '_blank');
+            break;
+        case 'cheongdo':
+            // 청도 팀 결정 게임 열기
+            window.open('/games/teamG.html', '_blank');
+            break;
+        default:
+            alert('게임을 준비 중입니다!');
+    }
 }
 
 // ==========================================================================

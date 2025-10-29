@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍊반시 vs 🌿미나리 - 청도 팀 결정 게임</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #333333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header {
+            background: #ff9a56;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .start-screen h2 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .start-screen p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .question-screen {
+            display: none;
+        }
+        
+        .question-counter {
+            background: #f5f5f5;
+            color: #666;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-size: 0.85rem;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+        
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .choice-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .choice-btn:hover {
+            border-color: #ff9a56;
+            background: #fff5f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 154, 86, 0.2);
+        }
+        
+        .choice-btn.persimmon:hover {
+            border-color: #ff9a56;
+            background: #fff5f0;
+        }
+        
+        .choice-btn.minari:hover {
+            border-color: #81c784;
+            background: #f1f8e9;
+        }
+        
+        .result-screen {
+            display: none;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .result-team {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .result-score {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .result-description {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        .team-persimmon .result-card {
+            background: linear-gradient(135deg, #fff5f0 0%, #ffe0cc 100%);
+        }
+        
+        .team-persimmon .result-team {
+            color: #e65100;
+        }
+        
+        .team-cheongdo .result-card {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+        }
+        
+        .team-cheongdo .result-team {
+            color: #424242;
+        }
+        
+        .team-minari .result-card {
+            background: linear-gradient(135deg, #f1f8e9 0%, #c8e6c9 100%);
+        }
+        
+        .team-minari .result-team {
+            color: #2e7d32;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #ff9a56, #81c784);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #ff9a56;
+            color: #ff9a56;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff9a56, #81c784);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+            
+            .choice-btn {
+                padding: 18px 15px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍊반시 vs 🌿미나리</h1>
+            <p>청도 팀 결정 게임</p>
+        </div>
+        
+        <div class="content">
+            <!-- 시작 화면 -->
+            <div class="start-screen" id="startScreen">
+                <h2>당신은 어느 팀인가요?</h2>
+                <p>5개의 질문에 답하여<br>오늘의 팀을 찾아보세요!</p>
+                <button class="btn" onclick="startGame()">🎮 게임 시작</button>
+            </div>
+            
+            <!-- 질문 화면 -->
+            <div class="question-screen" id="questionScreen">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="question-counter" id="questionCounter">질문 1/5</div>
+                <div class="question" id="questionText"></div>
+                <div class="choices" id="choices"></div>
+            </div>
+            
+            <!-- 결과 화면 -->
+            <div class="result-screen" id="resultScreen">
+                <div class="result-card" id="resultCard">
+                    <div class="result-team" id="resultTeam"></div>
+                    <div class="result-score" id="resultScore"></div>
+                    <div class="result-description" id="resultDescription"></div>
+                </div>
+                <button class="btn" onclick="restartGame()">🔄 다시 하기</button>
+                <button class="btn btn-secondary" onclick="shareResult()" style="margin-left: 10px;">📤 공유하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 게임 데이터
+        const questions = [
+            {
+                question: "선호하는 음식은?",
+                choices: [
+                    { text: "🍜 짜장면", score: -1 },
+                    { text: "🍝 짬뽕", score: 1 }
+                ]
+            },
+            {
+                question: "탕수육 먹는 방법은?",
+                choices: [
+                    { text: "🥄 부먹 (부어서 먹기)", score: -1 },
+                    { text: "🥢 찍먹 (찍어서 먹기)", score: 1 }
+                ]
+            },
+            {
+                question: "선호하는 반려동물은?",
+                choices: [
+                    { text: "🐱 고양이", score: -1 },
+                    { text: "🐶 강아지", score: 1 }
+                ]
+            },
+            {
+                question: "청도의 특산물 중 선호하는 것은?",
+                choices: [
+                    { text: "🍊 반시 (청도 감)", score: -1 },
+                    { text: "🌿 미나리", score: 1 }
+                ]
+            },
+            {
+                question: "선호하는 음료는?",
+                choices: [
+                    { text: "☕ 커피", score: -1 },
+                    { text: "🍵 차 (녹차, 허브차 등)", score: 1 }
+                ]
+            }
+        ];
+        
+        const teams = {
+            persimmon: {
+                name: "🍊 반시팀",
+                description: "신중하고 섬세한 타입입니다. 자연과 조화로운 삶을 선호하며, 깊이 있는 사고를 즐깁니다. 청도의 달콤한 반시처럼 여유롭고 은은한 매력을 가지고 있어요.",
+                class: "team-persimmon"
+            },
+            cheongdo: {
+                name: "🏞️ 청도팀",
+                description: "상황에 따라 균형 잡힌 판단을 하는 중립형입니다. 조화와 소통을 중시하며, 다양한 관점을 수용할 줄 아는 포용력 있는 성격이에요. 청도의 아름다운 자연처럼 안정감을 줍니다.",
+                class: "team-cheongdo"
+            },
+            minari: {
+                name: "🌿 미나리팀",
+                description: "열정적이고 주도적인 타입입니다. 새로운 도전을 즐기는 에너지형으로, 청도 미나리처럼 생명력 넘치고 활기찬 성격을 가지고 있어요. 모험을 두려워하지 않습니다.",
+                class: "team-minari"
+            }
+        };
+        
+        let currentQuestion = 0;
+        let totalScore = 0;
+        
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('questionScreen').style.display = 'block';
+            currentQuestion = 0;
+            totalScore = 0;
+            showQuestion();
+        }
+        
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('questionCounter').textContent = `질문 ${currentQuestion + 1}/5`;
+            document.getElementById('questionText').textContent = question.question;
+            
+            // 진행률 바 업데이트
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            // 선택지 생성
+            const choicesContainer = document.getElementById('choices');
+            choicesContainer.innerHTML = '';
+            
+            question.choices.forEach((choice, index) => {
+                const button = document.createElement('button');
+                button.className = 'choice-btn';
+                if (choice.score < 0) {
+                    button.classList.add('persimmon');
+                } else {
+                    button.classList.add('minari');
+                }
+                button.textContent = choice.text;
+                button.onclick = () => selectChoice(choice.score);
+                choicesContainer.appendChild(button);
+            });
+        }
+        
+        function selectChoice(score) {
+            totalScore += score;
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                setTimeout(showQuestion, 300);
+            } else {
+                setTimeout(showResult, 300);
+            }
+        }
+        
+        function showResult() {
+            document.getElementById('questionScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+            
+            let team;
+            if (totalScore <= -2) {
+                team = teams.persimmon;
+            } else if (totalScore >= 2) {
+                team = teams.minari;
+            } else {
+                team = teams.cheongdo;
+            }
+            
+            // 결과 화면 클래스 적용
+            const resultScreen = document.getElementById('resultScreen');
+            resultScreen.className = 'result-screen ' + team.class;
+            
+            document.getElementById('resultTeam').textContent = team.name;
+            document.getElementById('resultDescription').textContent = team.description;
+        }
+        
+        function restartGame() {
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+            currentQuestion = 0;
+            totalScore = 0;
+            document.getElementById('progressFill').style.width = '0%';
+        }
+        
+        function shareResult() {
+            let team;
+            if (totalScore <= -2) {
+                team = teams.persimmon;
+            } else if (totalScore >= 2) {
+                team = teams.minari;
+            } else {
+                team = teams.cheongdo;
+            }
+            
+            const shareText = `🎮 청도 팀 결정 게임 결과\n\n${team.name}\n${team.description}\n\n당신도 해보세요! 👉 ${window.location.href}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '청도 팀 결정 게임',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                // 클립보드에 복사
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('결과가 클립보드에 복사되었습니다!');
+                }).catch(() => {
+                    // 폴백: 텍스트 선택
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shareText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('결과가 클립보드에 복사되었습니다!');
+                });
+            }
+        }
+        
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 시작 화면 표시
+            document.getElementById('startScreen').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
