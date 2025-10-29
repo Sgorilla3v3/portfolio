@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강화도 이야기 - 역사와 전통이 살아있는 섬</title>
+    <meta name="description" content="강화도의 깊은 역사와 문화를 담은 모바일 가이드">
+    
+    <!-- 웹폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS 변수 - Forest Canopy 테마 */
+        :root {
+            --forest-green: #2d4a2b;
+            --sage: #7d8471;
+            --olive: #a4ac86;
+            --ivory: #faf9f6;
+            --text-dark: #1a1a1a;
+            --text-light: #5a5a5a;
+            
+            /* 추가 색상 */
+            --accent-warm: #d4a574;
+            --accent-cool: #6b8e6b;
+            --shadow: rgba(45, 74, 43, 0.1);
+            --border: rgba(125, 132, 113, 0.3);
+        }
+
+        /* 기본 리셋 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--ivory);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 헤더 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(250, 249, 246, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .header.hidden {
+            transform: translateY(-100%);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            max-width: 768px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--forest-green);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--forest-green);
+        }
+
+        /* 메인 콘텐츠 */
+        .main {
+            margin-top: 60px;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 768px;
+            margin: 0 auto;
+        }
+
+        /* 히어로 섹션 */
+        .hero {
+            background: linear-gradient(135deg, var(--forest-green) 0%, var(--sage) 100%);
+            color: var(--ivory);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="white" opacity="0.1"/><circle cx="80" cy="80" r="1" fill="white" opacity="0.1"/><circle cx="40" cy="60" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: clamp(32px, 8vw, 48px);
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero .subtitle {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--ivory);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* 섹션 타이틀 */
+        .section-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: clamp(28px, 6vw, 36px);
+            font-weight: 700;
+            color: var(--forest-green);
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--olive);
+            border-radius: 2px;
+        }
+
+        /* 카드 스타일 */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px var(--shadow);
+        }
+
+        .card-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--forest-green);
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+
+        .card-content p {
+            margin-bottom: 16px;
+        }
+
+        .card-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 이미지 플레이스홀더 */
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--olive) 0%, var(--sage) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ivory);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="white" stroke-width="2" opacity="0.3"/><circle cx="50" cy="50" r="20" fill="none" stroke="white" stroke-width="1" opacity="0.2"/></svg>');
+            opacity: 0.5;
+        }
+
+        /* 타임라인 스타일 */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--olive);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--forest-green);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -42px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            background: var(--forest-green);
+            border-radius: 50%;
+            border: 3px solid var(--ivory);
+        }
+
+        .timeline-date {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--forest-green);
+            margin-bottom: 10px;
+        }
+
+        .timeline-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
+
+        /* 인용문 스타일 */
+        .quote {
+            background: var(--olive);
+            color: var(--ivory);
+            padding: 25px;
+            border-radius: 12px;
+            font-style: italic;
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .quote::before {
+            content: '"';
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 60px;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            opacity: 0.5;
+        }
+
+        .quote-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            padding-left: 30px;
+        }
+
+        .quote-author {
+            font-size: 14px;
+            text-align: right;
+            opacity: 0.8;
+        }
+
+        /* 갤러리 스타일 */
+        .gallery {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        @media (min-width: 600px) {
+            .gallery {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(45deg, var(--sage) 0%, var(--olive) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ivory);
+            font-weight: 600;
+        }
+
+        .gallery-caption {
+            padding: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-dark);
+        }
+
+        /* 푸터 */
+        .footer {
+            background: var(--forest-green);
+            color: var(--ivory);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 768px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        /* 반응형 */
+        @media (max-width: 480px) {
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .nav-links a {
+                font-size: 12px;
+            }
+            
+            .section {
+                padding: 30px 15px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .timeline {
+                padding-left: 30px;
+            }
+            
+            .timeline::before {
+                left: 15px;
+            }
+            
+            .timeline-item::before {
+                left: -32px;
+            }
+        }
+
+        /* 스크롤 애니메이션 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 읽기 진행바 */
+        .reading-progress {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--forest-green);
+            z-index: 999;
+            transition: width 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- 읽기 진행바 -->
+    <div class="reading-progress"></div>
+
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#hero" class="logo">강화도 이야기</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#overview" data-section="overview">개요</a></li>
+                    <li><a href="#ginseng" data-section="ginseng">인삼</a></li>
+                    <li><a href="#jeondeungsa" data-section="jeondeungsa">전등사</a></li>
+                    <li><a href="#brewery" data-section="brewery">양조장</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main">
+        <!-- 히어로 섹션 -->
+        <section id="hero" class="hero">
+            <div class="hero-content">
+                <h1>강화도 이야기</h1>
+                <p class="subtitle">역사와 전통이 살아 숨쉬는 섬</p>
+            </div>
+            <div class="scroll-hint">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L12 18M18 12L12 18L6 12"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- 강화도 개요 -->
+        <section id="overview" class="section">
+            <div class="container">
+                <h2 class="section-title fade-in">역사의 섬, 강화도</h2>
+                
+                <div class="card fade-in">
+                    <div class="image-placeholder">강화도 전경</div>
+                    <h3 class="card-title">🌊 서해바다가 품은 보석</h3>
+                    <div class="card-content">
+                        <p>서해바다에 떠 있는 강화도는 섬이지만 섬이 아닌 독특한 매력을 지닌 곳입니다. 인천대교가 놓이기 전까지는 배를 타고 들어가야 했던 이 섬은, 이제 차로 20분이면 닿을 수 있는 가까운 여행지가 되었습니다.</p>
+                        <p>하지만 강화도의 진짜 매력은 그 접근성이 아니라, 1300년이 넘는 세월 동안 켜켜이 쌓인 역사의 깊이에 있습니다. 갯벌과 염전, 그리고 해풍이 만들어낸 독특한 자연환경은 이곳만의 특별한 문화를 키워냈습니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">🏰 13번의 침입과 방어의 역사</h3>
+                    <div class="card-content">
+                        <p>강화도는 우리나라에서 가장 많은 외침을 받은 땅입니다. 몽골 침입부터 정유재란, 정묘호란, 정미의병, 병인양요, 신미양요까지... 총 13번에 걸친 외침을 모두 막아낸 천연의 요새였습니다.</p>
+                        <p>특히 1866년 병인양요 때는 프랑스 함대 7척이 침입했지만, 양헌수 장군이 이끄는 조선군이 정족산성에서 끝까지 버텨내며 프랑스군을 물리쳤습니다. 이때 전등사 대웅전 기둥에는 전쟁에 나간 병사들이 새긴 간절한 글귀들이 아직도 남아있어, 그날의 절박함을 고스란히 전해줍니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">👑 조선왕실의 마지막 피난처</h3>
+                    <div class="card-content">
+                        <p>정유재란과 정묘호란 때 인조는 강화도로 피난해 왕실을 지켰습니다. 강화도는 단순한 피난처가 아니라, 조선왕조가 마지막까지 지켜야 할 핵심 거점이었던 것입니다.</p>
+                        <p>지금도 강화도 곳곳에는 왕실의 흔적이 남아있습니다. 강화산성, 갑곶돈대, 그리고 수많은 보루와 돈대들이 바다를 향해 서 있어, 강화도가 얼마나 중요한 방어 요충지였는지 보여줍니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 강화 인삼 -->
+        <section id="ginseng" class="section">
+            <div class="container">
+                <h2 class="section-title fade-in">천년의 약초 이야기</h2>
+
+                <div class="card fade-in">
+                    <div class="image-placeholder">강화 인삼밭 사계절</div>
+                    <h3 class="card-title">🌿 갯벌이 키운 특별한 인삼</h3>
+                    <div class="card-content">
+                        <p>강화도 인삼은 다릅니다. 서해 갯벌에서 불어오는 해풍과 미네랄이 풍부한 토양이 만나 키워낸 인삼은, 다른 지역에서는 맛볼 수 없는 독특한 향과 맛을 자랑합니다.</p>
+                        <p>고려시대부터 시작된 강화 인삼 재배의 역사는 천년을 넘어섭니다. 조선시대에는 궁중에 진상되는 최고급 인삼으로 인정받았고, 지금도 그 명성이 이어지고 있습니다. 강화도의 해양성 기후는 인삼이 천천히 자라게 해서, 사포닌 함량이 높고 향이 진한 최상품 인삼을 만들어냅니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">👨‍🌾 3대째 이어온 농가 이야기</h3>
+                    <div class="card-content">
+                        <p>강화읍 관청리에서 인삼농사를 짓는 김씨 할아버지는 올해로 70세입니다. 할아버지의 할아버지 때부터 시작해 3대째 이어온 인삼밭에서는 지금도 전통 방식 그대로 인삼을 기르고 있습니다.</p>
+                        <p>"인삼은 급하게 키우면 안 되는 작물이야. 6년을 기다려야 제대로 된 인삼이 나오거든." 할아버지는 새벽 5시부터 인삼밭을 돌보며 하루를 시작합니다. 봄에는 싹을 틔우고, 여름에는 차광막을 치고, 가을에는 수확하고, 겨울에는 내년을 준비하는 1년 365일이 모두 인삼과 함께입니다.</p>
+                    </div>
+                </div>
+
+                <div class="quote fade-in">
+                    <div class="quote-text">할머니가 전해준 인삼의 효능은 단순히 몸에 좋다는 것을 넘어선다. 마음을 편안하게 하고, 기운을 북돋아 주며, 무엇보다 가족의 건강을 지켜주는 든든한 버팀목 같은 존재다.</div>
+                    <div class="quote-author">- 강화 인삼 농가 3대 며느리</div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">🛒 농가에서 직접 만나는 인삼</h3>
+                    <div class="card-content">
+                        <p>강화도에서는 인삼을 기른 농가에서 직접 구입할 수 있습니다. 대형마트에서 파는 포장된 인삼과는 차원이 다른, 흙냄새 가득한 갓 캔 인삼의 향기는 강화도에서만 경험할 수 있는 특별함입니다.</p>
+                        <p>농가 직판장에서는 인삼뿐만 아니라 인삼으로 만든 다양한 가공품들도 맛볼 수 있습니다. 인삼차, 인삼주, 인삼엿, 심지어 인삼 아이스크림까지. 전통과 현대가 만나 만들어낸 새로운 맛의 세계가 펼쳐집니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 전등사 -->
+        <section id="jeondeungsa" class="section">
+            <div class="container">
+                <h2 class="section-title fade-in">1300년 역사의 증언자, 전등사</h2>
+
+                <div class="card fade-in">
+                    <div class="image-placeholder">전등사 대웅전</div>
+                    <h3 class="card-title">🏛️ 고구려 아도화상이 밝힌 등불</h3>
+                    <div class="card-content">
+                        <p>서기 381년, 고구려 소수림왕 때 아도화상이 창건한 전등사는 1300년이 넘는 세월을 견뎌온 우리나라에서 가장 오래된 사찰 중 하나입니다. '전등사'라는 이름은 정족산 정상에서 바다를 오가는 배들을 위해 등불을 밝혀주었다는 데서 유래했습니다.</p>
+                        <p>한국전쟁과 일제강점기를 거치면서도 전등사는 꿋꿋이 자리를 지켰습니다. 수많은 전란 속에서도 불교 문화의 맥을 이어온 이곳은, 이제 강화도를 찾는 모든 이들에게 마음의 평안을 전해주는 안식처가 되었습니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">⚔️ 1866년, 그 치열했던 40일</h3>
+                    <div class="card-content">
+                        <p><strong>병인양요 전쟁사</strong></p>
+                        <p>1866년 10월 11일, 프랑스 극동함대 7척이 강화해협에 나타났습니다. 조선의 천주교 탄압에 대한 보복이라는 명목으로 시작된 이 침입은, 강화도를 40일간 전쟁터로 만들었습니다.</p>
+                    </div>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-date">1866년 10월 11일</div>
+                            <div class="timeline-content">
+                                프랑스 극동함대 사령관 로즈 제독이 이끄는 7척의 군함이 강화해협에 침입. 조선 정부에 통상 요구와 천주교 자유 전도를 요구하며 최후통첩을 보냄.
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-date">10월 13일</div>
+                            <div class="timeline-content">
+                                조선 정부의 거부 답변 후, 프랑스군 160명이 갑곶진에 상륙. 강화성을 점령하고 관아와 민가를 불태우기 시작함. 이때 전등사도 위험에 처했으나 정족산성의 천연 요새 덕분에 무사함.
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-date">10월 26일</div>
+                            <div class="timeline-content">
+                                양헌수 장군이 이끄는 조선군이 정족산성에서 반격 개시. 한성근, 이용희 등의 장수들이 합세하여 프랑스군과 정면 대결을 벌임.
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-date">11월 9일</div>
+                            <div class="timeline-content">
+                                정족산성 전투에서 조선군 승리. 프랑스군 3명 전사, 35명 부상. 조선군의 끈질긴 저항에 프랑스군이 철수를 결정함.
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-date">11월 20일</div>
+                            <div class="timeline-content">
+                                프랑스군 완전 철수. 40일간의 치열한 전투 끝에 조선의 승리로 마무리. 이후 양헌수 장군의 공로를 기리는 승전비가 건립됨.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">✍️ "살아서 돌아가기를..." - 병사들의 간절한 글귀</h3>
+                    <div class="card-content">
+                        <p>전등사 대웅전 기둥에는 지금도 병인양요 때 전쟁에 나간 병사들이 새긴 글귀들이 남아있습니다. 이 글귀들은 전쟁의 참혹함과 고향에 대한 그리움, 그리고 살아서 돌아가고 싶은 간절한 마음을 고스란히 담고 있습니다.</p>
+                        
+                        <div class="quote">
+                            <div class="quote-text">부모님 건강하소서<br>정월 보름 무사히 돌아가리</div>
+                            <div class="quote-author">- 전등사 대웅전 기둥에 새겨진 글</div>
+                        </div>
+                        
+                        <div class="quote">
+                            <div class="quote-text">아내야 기다려다오<br>이 전쟁이 끝나면 반드시 돌아가겠노라</div>
+                            <div class="quote-author">- 한 병사의 서약</div>
+                        </div>
+                        
+                        <div class="quote">
+                            <div class="quote-text">아들아 아비를 잊지 마라<br>나라를 위해 목숨 바치는 것이 무엇인지 알거라</div>
+                            <div class="quote-author">- 아버지 병사의 유언</div>
+                        </div>
+                        
+                        <p>이런 글귀들은 전쟁이 단순히 국가 간의 대결이 아니라, 수많은 개인의 삶과 가족의 운명이 걸린 절박한 순간이었음을 보여줍니다. 160년이 지난 지금, 이 글귀들은 여전히 우리에게 평화의 소중함과 가족의 사랑을 일깨워줍니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">👨‍✈️ 양헌수 장군의 마지막 승부수</h3>
+                    <div class="card-content">
+                        <p>양헌수 장군은 병인양요의 진짜 영웅입니다. 프랑스군의 우세한 화력 앞에서도 굴복하지 않고, 정족산성의 지형을 활용한 게릴라 전술로 40일간 버텨냈습니다.</p>
+                        <p>장군의 전략은 단순했지만 효과적이었습니다. 정면 충돌을 피하고, 산성의 험한 지형을 이용해 프랑스군을 지치게 만든 것입니다. 프랑스군이 전등사까지 올라와 약탈을 시도했을 때도, 조선군은 끝까지 저항했습니다.</p>
+                        <p>"적이 강하면 피하고, 적이 지치면 공격한다"는 양헌수 장군의 전술은 결국 성공했습니다. 프랑스군은 예상보다 훨씬 강한 조선군의 저항에 부딪혀 철수할 수밖에 없었습니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">🏆 승리 후 세운 작은 비석 이야기</h3>
+                    <div class="card-content">
+                        <p>병인양요에서 승리한 후, 조선 정부는 양헌수 장군의 공로를 기리기 위해 승전비를 세웠습니다. 하지만 이 비석은 화려하거나 크지 않습니다. 오히려 소박하고 담담한 모습으로 서 있어, 조선의 겸손한 승리를 상징합니다.</p>
+                        <p>승전비에는 "서양 오랑캐가 침입했으나, 우리 군사들이 용맹하게 싸워 물리쳤다"는 내용이 한문으로 새겨져 있습니다. 거창한 미사여구보다는 사실 그대로를 담담하게 기록한 이 비석은, 조선 선비들의 정신을 보여주는 귀중한 유물입니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">🎨 천년을 그려온 불화들</h3>
+                    <div class="card-content">
+                        <p><strong>시대를 관통하는 화풍의 변천사</strong></p>
+                        
+                        <div class="gallery">
+                            <div class="gallery-item fade-in">
+                                <div class="gallery-image">조선 전기 불화</div>
+                                <div class="gallery-caption">
+                                    <strong>고려 전통의 계승 (15-16세기)</strong><br>
+                                    화려한 색채와 세밀한 필치로 그려진 이 시대 불화들은 고려 불화의 전통을 이어받았습니다. 금박과 진한 청색, 적색이 조화를 이루며 위엄 있는 부처의 모습을 표현했습니다.
+                                </div>
+                            </div>
+                            
+                            <div class="gallery-item fade-in">
+                                <div class="gallery-image">조선 후기 불화</div>
+                                <div class="gallery-caption">
+                                    <strong>소박한 정신성 (17-18세기)</strong><br>
+                                    임진왜란과 정유재란을 겪으며 화풍이 변화했습니다. 화려함보다는 소박함을, 기교보다는 진정성을 추구하는 불화들이 그려졌습니다. 서민들의 신앙이 반영된 따뜻한 느낌이 특징입니다.
+                                </div>
+                            </div>
+                            
+                            <div class="gallery-item fade-in">
+                                <div class="gallery-image">일제강점기 불화</div>
+                                <div class="gallery-caption">
+                                    <strong>수난과 복원 (1910-1945)</strong><br>
+                                    일제강점기에는 많은 불화들이 훼손되거나 약탈당했습니다. 전등사의 불화들도 예외는 아니었지만, 승려들과 신도들의 노력으로 상당수가 보존될 수 있었습니다.
+                                </div>
+                            </div>
+                            
+                            <div class="gallery-item fade-in">
+                                <div class="gallery-image">현대 복원 불화</div>
+                                <div class="gallery-caption">
+                                    <strong>전통 기법의 부활 (1945-현재)</strong><br>
+                                    해방 후 전통 불화 기법을 복원하려는 노력이 계속되고 있습니다. 현대의 불화 작가들은 고전 기법을 연구하며 옛 모습을 되살리고 있습니다.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p>전등사의 불화들은 단순한 종교 예술을 넘어 한국 문화사의 살아있는 증언자입니다. 시대의 변화와 함께 변해온 화풍을 통해 우리는 조선시대부터 현재까지의 정신사를 읽을 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 금풍양조장 -->
+        <section id="brewery" class="section">
+            <div class="container">
+                <h2 class="section-title fade-in">100년 술독의 향기</h2>
+
+                <div class="card fade-in">
+                    <div class="image-placeholder">금풍양조장 전경</div>
+                    <h3 class="card-title">🍶 3대째 이어온 양조 가문의 아침</h3>
+                    <div class="card-content">
+                        <p>새벽 5시, 금풍양조장에는 이미 불이 켜져 있습니다. 100년 된 술독에서 피어오르는 은은한 향기와 함께 하루가 시작됩니다. 할아버지 대부터 시작해 3대째 이어온 이 양조장에서는 지금도 전통 방식 그대로 술을 빚고 있습니다.</p>
+                        <p>"좋은 술은 조급하게 만들 수 없어요. 시간이 익혀주는 맛이 있거든요." 현재 양조장을 이끌고 있는 김 사장의 말입니다. 할아버지로부터 배운 비법을 아들에게 전해주고, 아들은 또 그 아들에게... 이렇게 100년 동안 이어져 온 전통이 금풍양조장의 진짜 자산입니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">🌾 강화도 쌀과 맑은 지하수가 만나다</h3>
+                    <div class="card-content">
+                        <p>금풍양조장이 특별한 이유는 강화도라는 지역적 특성을 최대한 활용하기 때문입니다. 갯벌 지역에서 자란 강화도 쌀은 일반 쌀보다 전분 함량이 높아 술맛이 깔끔하고 단맛이 돕니다.</p>
+                        <p>또한 강화도 지하 200미터에서 끌어올린 맑은 지하수는 미네랄이 풍부하면서도 불순물이 없어 술 빚기에 최적입니다. "물이 좋아야 술이 좋다"는 양조의 기본 원칙을 충실히 지키고 있는 것입니다.</p>
+                        <p>여기에 서해 바다에서 불어오는 해풍까지 더해져, 다른 지역에서는 만들 수 없는 독특한 맛의 전통주가 탄생합니다. 짭조름한 바다 내음이 은은하게 배어든 강화도만의 술맛입니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">🍂 계절마다 달라지는 술 빚는 이야기</h3>
+                    <div class="card-content">
+                        <p><strong>봄 (3-5월)</strong><br>
+                        새싹이 돋는 봄에는 가장 부드러운 술을 빚습니다. 봄기운을 받은 쌀로 만든 술은 목넘김이 부드럽고 향이 은은합니다. 벚꽃이 필 무렵에 담근 술은 1년 후 벚꽃주가 되어 봄의 추억을 선사합니다.</p>
+                        
+                        <p><strong>여름 (6-8월)</strong><br>
+                        무더운 여름에는 술 빚기가 가장 어렵습니다. 온도와 습도를 세심하게 조절해야 하기 때문입니다. 하지만 이때 만든 술은 발효가 활발해져 알코올 도수가 높고 깊은 맛이 납니다.</p>
+                        
+                        <p><strong>가을 (9-11월)</strong><br>
+                        햅쌀로 빚는 가을 술은 1년 중 가장 맛있다고 평가받습니다. 갓 수확한 쌀의 신선함과 선선한 날씨가 만나 최상의 조건을 만들어냅니다. 이때 빚은 술은 다음 해 가을까지 숙성시켜 진짜 명품이 됩니다.</p>
+                        
+                        <p><strong>겨울 (12-2월)</strong><br>
+                        추운 겨울에는 발효 속도가 느려져 술맛이 더욱 깊어집니다. 설날에 마시는 세주(歲酒)는 이때 빚은 술로, 1년의 복을 기원하는 의미가 담겨 있습니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">🎪 직접 빚어보는 체험, 가족의 추억 만들기</h3>
+                    <div class="card-content">
+                        <p>"처음에는 그냥 재미로 왔다가, 이제는 매년 오는 단골이 됐어요." 서울에서 온 박씨 가족의 이야기입니다. 5년 전 아이들과 함께 처음 체험을 했는데, 이제는 매년 가을마다 찾아와 가족만의 술을 빚고 있습니다.</p>
+                        <p>양조 체험은 단순히 술을 만드는 것 이상의 의미가 있습니다. 아이들은 우리 전통 문화를 자연스럽게 배우고, 어른들은 어릴 적 추억을 떠올리며 힐링의 시간을 갖습니다. 가족이 함께 빚은 술은 6개월 후 집으로 배송되어, 오랫동안 특별한 추억이 됩니다.</p>
+                        <p>"할아버지가 마시던 술맛이 이런 거구나" 하며 감탄하는 아버지의 모습을 보며, 아이들도 우리 문화의 소중함을 깨닫게 됩니다. 금풍양조장의 체험 프로그램은 단순한 관광을 넘어 세대를 잇는 문화 전승의 장이 되고 있습니다.</p>
+                    </div>
+                </div>
+
+                <div class="card fade-in">
+                    <h3 class="card-title">📞 양조장을 찾는 길과 여행 팁</h3>
+                    <div class="card-content">
+                        <p><strong>찾아가는 재미</strong><br>
+                        금풍양조장은 강화도 중심가에서 조금 떨어진 조용한 마을에 있습니다. 굽이굽이 시골길을 따라가다 보면 갑자기 나타나는 전통 양조장의 모습이 여행의 묘미를 더해줍니다. GPS보다는 마을 사람들에게 길을 물어보며 찾아가는 것도 여행의 재미 중 하나입니다.</p>
+                        
+                        <p><strong>방문 전 예약 필수</strong><br>
+                        양조 체험은 사전 예약이 필수입니다. 특히 가을철(9-11월)에는 예약이 빨리 마감되니 미리 계획을 세우는 것이 좋습니다. 전화나 인터넷으로 예약 가능하며, 단체(10명 이상)는 별도 프로그램도 운영합니다.</p>
+                        
+                        <p><strong>주변 볼거리</strong><br>
+                        양조장 근처에는 강화 갯벌센터와 동막해수욕장이 있어 함께 둘러보기 좋습니다. 특히 썰물 때 갯벌 체험을 한 후 양조장에서 전통주를 맛보는 코스는 강화도 여행의 하이라이트가 될 것입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>강화도의 깊은 이야기가 여러분의 마음에 작은 등불이 되기를 바랍니다.</p>
+            <p style="margin-top: 10px; font-size: 12px;">© 2025 강화도 이야기. 모든 내용은 교육 목적으로 제작되었습니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 스크롤 스파이 및 네비게이션
+        const sections = document.querySelectorAll('.section, .hero');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const header = document.querySelector('.header');
+        const readingProgress = document.querySelector('.reading-progress');
+        
+        let lastScrollY = window.scrollY;
+
+        // 페이지 로드 시 애니메이션
+        window.addEventListener('load', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            fadeElements.forEach(el => observer.observe(el));
+        });
+
+        // 스크롤 이벤트
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            
+            // 헤더 숨김/표시
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+            lastScrollY = currentScrollY;
+            
+            // 읽기 진행바
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollProgress = (currentScrollY / scrollHeight) * 100;
+            readingProgress.style.width = scrollProgress + '%';
+            
+            // 네비게이션 활성화
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                
+                if (currentScrollY >= sectionTop && currentScrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 부드러운 스크롤
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - 60;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 이미지 레이지 로딩 (실제 이미지가 있을 때 사용)
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                            imageObserver.unobserve(img);
+                        }
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+    </script>
+</body>
+</html>
