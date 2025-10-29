@@ -227,8 +227,8 @@ function openGame(gameType) {
             window.open('/games/pong.html', '_blank');
             break;
         case 'cheongdo':
-            // 청도 팀 결정 게임 열기
-            window.open('/games/teamG.html', '_blank');
+            // 스네이크 게임
+            window.open('/games/snake.html', '_blank');
             break;
         default:
             alert('게임을 준비 중입니다!');
