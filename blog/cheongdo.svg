@@ -1,0 +1,541 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <defs>
+    <!-- 그라데이션 정의 -->
+
+    
+
+    
+
+    
+
+    
+
+    
+    <!-- 구름 필터 -->
+    <filter id="cloudShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.2"/>
+    </filter>
+    
+    <!-- 빛나는 효과 -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- 배경 -->
+  <rect width="400" height="500" fill="#87CEEB"/>
+  
+  <!-- 태양 -->
+  <circle cx="320" cy="110" r="35" fill="#FFD700" filter="url(#glow)">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 태양 후광 -->
+  <circle cx="320" cy="110" r="50" fill="none" stroke="#FFD700" stroke-width="0.5" opacity="0.3">
+    <animate attributeName="r" values="50;60;50" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.1;0.3" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 구름들 -->
+  <g filter="url(#cloudShadow)">
+    <!-- 구름 1 -->
+    <g opacity="0.9">
+      <circle cx="80" cy="120" r="20" fill="white"/>
+      <circle cx="100" cy="120" r="25" fill="white"/>
+      <circle cx="120" cy="120" r="20" fill="white"/>
+      <circle cx="95" cy="105" r="18" fill="white"/>
+      <animateTransform attributeName="transform" type="translate" values="0,0;30,0;0,0" dur="20s" repeatCount="indefinite"/>
+    </g>
+    
+    <!-- 구름 2 -->
+    <g opacity="0.7">
+      <circle cx="250" cy="150" r="15" fill="white"/>
+      <circle cx="265" cy="150" r="20" fill="white"/>
+      <circle cx="280" cy="150" r="15" fill="white"/>
+      <circle cx="265" cy="138" r="12" fill="white"/>
+      <animateTransform attributeName="transform" type="translate" values="0,0;40,-10;80,-20;40,-10;0,0" dur="30s" repeatCount="indefinite"/>
+    </g>
+  </g>
+  
+  <!-- 산맥 (각진 형태) -->
+  <!-- 원경 산 -->
+  <polygon points="0,250 80,190 150,210 220,170 280,200 350,180 400,220 400,500 0,500" fill="#2F4F4F" opacity="0.6"/>
+  
+  <!-- 중경 산 -->
+  <polygon points="0,310 60,230 120,250 180,210 240,240 300,220 360,260 400,280 400,500 0,500" fill="#006400" opacity="0.7"/>
+  
+  <!-- 근경 산 -->
+  <polygon points="0,360 100,290 180,320 260,280 320,310 400,330 400,500 0,500" fill="#004225" opacity="0.9"/>
+  
+  <!-- 새떼 (V자 편대) -->
+  <g stroke="#2F4F4F" stroke-width="2" fill="none" opacity="0.7">
+    <!-- 리더 새 -->
+    <path d="M 150 150 L 145 145 M 150 150 L 155 145">
+      <animateTransform attributeName="transform" type="translate" values="0,0;200,-30;400,-60" dur="25s" repeatCount="indefinite"/>
+    </path>
+    
+    <!-- 왼쪽 편대 -->
+    <path d="M 140 155 L 135 150 M 140 155 L 145 150">
+      <animateTransform attributeName="transform" type="translate" values="0,0;200,-30;400,-60" dur="25s" begin="0.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 125 165 L 120 160 M 125 165 L 130 160">
+      <animateTransform attributeName="transform" type="translate" values="0,0;200,-30;400,-60" dur="25s" begin="1s" repeatCount="indefinite"/>
+    </path>
+    
+    <!-- 오른쪽 편대 -->
+    <path d="M 160 155 L 155 150 M 160 155 L 165 150">
+      <animateTransform attributeName="transform" type="translate" values="0,0;200,-30;400,-60" dur="25s" begin="0.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 175 165 L 170 160 M 175 165 L 180 160">
+      <animateTransform attributeName="transform" type="translate" values="0,0;200,-30;400,-60" dur="25s" begin="1s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- 감 과수원 (스타일라이즈드) -->
+  <!-- 큰 감나무 1 -->
+  <g>
+    <!-- 줄기 -->
+    <path d="M 85 370 Q 87 360 88 350 Q 89 340 90 330" stroke="#8B4513" stroke-width="4" fill="none"/>
+    <path d="M 88 355 Q 78 350 72 345" stroke="#8B4513" stroke-width="2.5" fill="none"/>
+    <path d="M 88 355 Q 98 350 104 345" stroke="#8B4513" stroke-width="2.5" fill="none"/>
+    
+    <!-- 나뭇잎 클러스터 (그림자 포함) -->
+    <!-- 그림자 -->
+    <circle cx="87" cy="332" r="17.5" fill="#1F4F1F" opacity="0.3"/>
+    <circle cx="74" cy="342" r="12.5" fill="#1F4F1F" opacity="0.3"/>
+    <circle cx="102" cy="342" r="12.5" fill="#1F4F1F" opacity="0.3"/>
+    <!-- 실제 나뭇잎 -->
+    <circle cx="85" cy="330" r="17.5" fill="#228B22"/>
+    <circle cx="72" cy="340" r="12.5" fill="#228B22"/>
+    <circle cx="102" cy="340" r="12.5" fill="#228B22"/>
+    
+    <!-- 감 열매들 -->
+    <circle cx="78" cy="340" r="3" fill="#FF4500">
+      <animate attributeName="cy" values="340;342;340" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="92" cy="335" r="3" fill="#FF4500">
+      <animate attributeName="cy" values="335;337;335" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="70" cy="345" r="2.5" fill="#FF4500">
+      <animate attributeName="cy" values="345;347;345" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="105" cy="345" r="2.5" fill="#FF4500">
+      <animate attributeName="cy" values="345;347;345" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="85" cy="315" r="2.5" fill="#FF4500">
+      <animate attributeName="cy" values="315;317;315" dur="2.9s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- 감나무 2 -->
+  <g>
+    <path d="M 215 370 Q 217 360 218 350 Q 219 340 220 330" stroke="#8B4513" stroke-width="3.5" fill="none"/>
+    <path d="M 218 352 Q 208 347 202 342" stroke="#8B4513" stroke-width="2" fill="none"/>
+    <path d="M 218 352 Q 228 347 234 342" stroke="#8B4513" stroke-width="2" fill="none"/>
+    
+    <!-- 그림자 -->
+    <circle cx="217" cy="332" r="15" fill="#1F4F1F" opacity="0.3"/>
+    <circle cx="204" cy="342" r="10" fill="#1F4F1F" opacity="0.3"/>
+    <circle cx="232" cy="342" r="10" fill="#1F4F1F" opacity="0.3"/>
+    <!-- 실제 나뭇잎 -->
+    <circle cx="215" cy="330" r="15" fill="#228B22"/>
+    <circle cx="202" cy="340" r="10" fill="#228B22"/>
+    <circle cx="232" cy="340" r="10" fill="#228B22"/>
+    
+    <circle cx="208" cy="340" r="2.5" fill="#FF4500">
+      <animate attributeName="cy" values="340;342;340" dur="3.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="222" cy="335" r="2.5" fill="#FF4500">
+      <animate attributeName="cy" values="335;337;335" dur="2.7s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="200" cy="345" r="2" fill="#FF4500">
+      <animate attributeName="cy" values="345;347;345" dur="3.3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="235" cy="345" r="2" fill="#FF4500">
+      <animate attributeName="cy" values="345;347;345" dur="2.6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- 감나무 3 -->
+  <g>
+    <path d="M 335 370 Q 337 360 338 350 Q 339 340 340 325" stroke="#8B4513" stroke-width="4.5" fill="none"/>
+    <path d="M 338 355 Q 328 350 322 345" stroke="#8B4513" stroke-width="2.5" fill="none"/>
+    <path d="M 338 355 Q 348 350 354 345" stroke="#8B4513" stroke-width="2.5" fill="none"/>
+    
+    <!-- 그림자 -->
+    <circle cx="337" cy="327" r="20" fill="#1F4F1F" opacity="0.3"/>
+    <circle cx="324" cy="342" r="14" fill="#1F4F1F" opacity="0.3"/>
+    <circle cx="352" cy="342" r="14" fill="#1F4F1F" opacity="0.3"/>
+    <!-- 실제 나뭇잎 -->
+    <circle cx="335" cy="325" r="20" fill="#228B22"/>
+    <circle cx="322" cy="340" r="14" fill="#228B22"/>
+    <circle cx="352" cy="340" r="14" fill="#228B22"/>
+    
+    <circle cx="328" cy="335" r="3" fill="#FF4500">
+      <animate attributeName="cy" values="335;337;335" dur="3.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="342" cy="330" r="3" fill="#FF4500">
+      <animate attributeName="cy" values="330;332;330" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="320" cy="345" r="2.5" fill="#FF4500">
+      <animate attributeName="cy" values="345;347;345" dur="3.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="355" cy="345" r="2.5" fill="#FF4500">
+      <animate attributeName="cy" values="345;347;345" dur="2.9s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="335" cy="310" r="2.5" fill="#FF4500">
+      <animate attributeName="cy" values="310;312;310" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="358" cy="340" r="2" fill="#FF4500">
+      <animate attributeName="cy" values="340;342;340" dur="2.7s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- 한옥들 -->
+  <!-- 한옥 1 -->
+  <g>
+    <!-- 지붕 -->
+    <path d="M 110 355 Q 145 335 180 355" fill="#8B4513"/>
+    
+    <!-- 본체 -->
+    <rect x="125" y="355" width="40" height="25" fill="#F5DEB3" rx="2"/>
+    
+    <!-- 문 -->
+    <rect x="132" y="365" width="8" height="15" fill="#8B4513" rx="1"/>
+    <rect x="150" y="365" width="8" height="15" fill="#8B4513" rx="1"/>
+    
+    <!-- 창문 (격자) -->
+    <rect x="141" y="358" width="10" height="8" fill="#FFE4B5" stroke="#8B4513" stroke-width="0.3" rx="1"/>
+    <line x1="143" y1="358" x2="143" y2="366" stroke="#8B4513" stroke-width="0.2"/>
+    <line x1="149" y1="358" x2="149" y2="366" stroke="#8B4513" stroke-width="0.2"/>
+    <line x1="141" y1="362" x2="151" y2="362" stroke="#8B4513" stroke-width="0.2"/>
+  </g>
+  
+  <!-- 한옥 2 -->
+  <g>
+    <!-- 지붕 -->
+    <path d="M 240 350 Q 275 330 310 350" fill="#8B4513"/>
+    
+    <!-- 본체 -->
+    <rect x="255" y="350" width="40" height="25" fill="#F5DEB3" rx="2"/>
+    
+    <!-- 문 -->
+    <rect x="262" y="360" width="8" height="15" fill="#8B4513" rx="1"/>
+    <rect x="280" y="360" width="8" height="15" fill="#8B4513" rx="1"/>
+    
+    <!-- 창문 (격자) -->
+    <rect x="271" y="353" width="10" height="8" fill="#FFE4B5" stroke="#8B4513" stroke-width="0.3" rx="1"/>
+    <line x1="273" y1="353" x2="273" y2="361" stroke="#8B4513" stroke-width="0.2"/>
+    <line x1="279" y1="353" x2="279" y2="361" stroke="#8B4513" stroke-width="0.2"/>
+    <line x1="271" y1="357" x2="281" y2="357" stroke="#8B4513" stroke-width="0.2"/>
+  </g>
+  
+  <!-- 평지 -->
+  <rect x="0" y="370" width="400" height="30" fill="#8FBC8F"/>
+  
+  <!-- 평지의 까치 (논밭에서 평지로 이동) -->
+  <g>
+    <g transform="translate(50,385)">
+      <!-- 까치 몸통 -->
+      <ellipse cx="0" cy="0" rx="8" ry="5" fill="#2F2F2F"/>
+      
+      <!-- 까치 머리 -->
+      <circle cx="-6" cy="-3" r="4" fill="#2F2F2F"/>
+      
+      <!-- 까치 부리 -->
+      <polygon points="-10,-3 -12,-2 -10,-1" fill="#FFA500"/>
+      
+      <!-- 까치 꼬리 -->
+      <ellipse cx="8" cy="1" rx="6" ry="2" fill="#2F2F2F"/>
+      
+      <!-- 까치 날개 (흰색 무늬) -->
+      <ellipse cx="2" cy="-1" rx="3" ry="2" fill="white" opacity="0.8"/>
+      
+      <!-- 까치 다리 (애니메이션) -->
+      <g>
+        <line x1="-2" y1="5" x2="-2" y2="8" stroke="#FFA500" stroke-width="1">
+          <animate attributeName="y2" values="8;6;8" dur="0.6s" repeatCount="indefinite"/>
+        </line>
+        <line x1="2" y1="5" x2="2" y2="8" stroke="#FFA500" stroke-width="1">
+          <animate attributeName="y2" values="8;6;8" dur="0.6s" begin="0.3s" repeatCount="indefinite"/>
+        </line>
+      </g>
+      
+      <!-- 까치 발 -->
+      <circle cx="-2" cy="8" r="1" fill="#FFA500">
+        <animate attributeName="cy" values="8;6;8" dur="0.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="2" cy="8" r="1" fill="#FFA500">
+        <animate attributeName="cy" values="8;6;8" dur="0.6s" begin="0.3s" repeatCount="indefinite"/>
+      </circle>
+      
+      <!-- 까치 눈 -->
+      <circle cx="-7" cy="-4" r="1" fill="white"/>
+      <circle cx="-7.5" cy="-4" r="0.5" fill="black"/>
+      
+      <!-- 까치 걷기 애니메이션 (평지 위에서) -->
+      <animateTransform attributeName="transform" type="translate" 
+        values="50,385;100,385;150,385;200,385;250,385;300,385;350,385;300,385;250,385;200,385;150,385;100,385;50,385" 
+        dur="30s" repeatCount="indefinite"/>
+      
+      <!-- 몸통 흔들림 -->
+      <animateTransform attributeName="transform" type="rotate" 
+        values="0;2;0;-2;0" dur="1.2s" repeatCount="indefinite" 
+        additive="sum"/>
+    </g>
+  </g>
+  
+  <!-- 트랙터 탄 아저씨 -->
+  <g>
+    <g transform="translate(330,385)">
+      <!-- 트랙터 본체 -->
+      <rect x="-8" y="0" width="16" height="8" fill="#228B22" rx="2"/>
+      
+      <!-- 트랙터 뒷바퀴 (큰 바퀴) -->
+      <circle cx="-5" cy="8" r="5" fill="#2F2F2F"/>
+      <circle cx="-5" cy="8" r="3" fill="#696969"/>
+      
+      <!-- 트랙터 앞바퀴 (작은 바퀴) -->
+      <circle cx="5" cy="6" r="3" fill="#2F2F2F"/>
+      <circle cx="5" cy="6" r="2" fill="#696969"/>
+      
+      <!-- 트랙터 엔진 부분 -->
+      <rect x="2" y="-2" width="8" height="4" fill="#4682B4" rx="1"/>
+      
+      <!-- 아저씨 몸통 -->
+      <ellipse cx="0" cy="-8" rx="6" ry="4" fill="#8B4513"/>
+      
+      <!-- 아저씨 머리 -->
+      <circle cx="0" cy="-12" r="3" fill="#DDBEA9"/>
+      
+      <!-- 아저씨 모자 -->
+      <ellipse cx="0" cy="-14" rx="4" ry="2" fill="#4169E1"/>
+      
+      <!-- 아저씨 팔 -->
+      <ellipse cx="-4" cy="-6" rx="2" ry="3" fill="#DDBEA9" transform="rotate(-20)"/>
+      <ellipse cx="4" cy="-6" rx="2" ry="3" fill="#DDBEA9" transform="rotate(20)"/>
+      
+      <!-- 아저씨 눈 -->
+      <circle cx="-1" cy="-13" r="0.5" fill="black"/>
+      <circle cx="1" cy="-13" r="0.5" fill="black"/>
+      
+      <!-- 트랙터 이동 애니메이션 -->
+      <animateTransform attributeName="transform" type="translate" 
+        values="330,385;350,385;370,385;350,385;330,385" 
+        dur="20s" repeatCount="indefinite"/>
+      
+      <!-- 바퀴 회전 -->
+      <animateTransform attributeName="transform" type="rotate" 
+        values="0;5;0;-5;0" dur="1s" repeatCount="indefinite" 
+        additive="sum"/>
+    </g>
+  </g>
+  
+  <!-- 물(강) - 더 넓게 -->
+  <rect x="0" y="400" width="400" height="35" fill="#4169E1"/>
+  
+  <!-- 물결 효과 -->
+  <g stroke="white" stroke-width="1" fill="none" opacity="0.4">
+    <path d="M 50 410 Q 70 405 90 410 Q 110 415 130 410">
+      <animate attributeName="d" values="M 50 410 Q 70 405 90 410 Q 110 415 130 410;M 50 413 Q 70 408 90 413 Q 110 418 130 413;M 50 410 Q 70 405 90 410 Q 110 415 130 410" dur="3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 200 420 Q 220 415 240 420 Q 260 425 280 420">
+      <animate attributeName="d" values="M 200 420 Q 220 415 240 420 Q 260 425 280 420;M 200 423 Q 220 418 240 423 Q 260 428 280 423;M 200 420 Q 220 415 240 420 Q 260 425 280 420" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 320 413 Q 340 408 360 413 Q 380 418 400 413">
+      <animate attributeName="d" values="M 320 413 Q 340 408 360 413 Q 380 418 400 413;M 320 416 Q 340 411 360 416 Q 380 421 400 416;M 320 413 Q 340 408 360 413 Q 380 418 400 413" dur="3.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- 논밭 (황금색 수확기) -->
+  <g opacity="0.9">
+    <rect x="0" y="435" width="400" height="65" fill="#FFD700"/>
+    
+    <!-- 주황색 벼 수확용 트랙터 -->
+    <g>
+      <g transform="translate(50,440)">
+        <!-- 트랙터 본체 (더 큰 수확용) -->
+        <rect x="-18" y="-7.5" width="36" height="18" fill="#FF8C00" rx="4.5"/>
+        
+        <!-- 트랙터 뒷바퀴 (큰 바퀴) -->
+        <circle cx="-12" cy="5.5" r="9" fill="#2F2F2F"/>
+        <circle cx="-12" cy="5.5" r="6" fill="#696969"/>
+        <circle cx="-12" cy="5.5" r="3" fill="#FF8C00"/>
+        
+        <!-- 트랙터 앞바퀴 (작은 바퀴) -->
+        <circle cx="12" cy="7.5" r="6" fill="#2F2F2F"/>
+        <circle cx="12" cy="7.5" r="3.75" fill="#696969"/>
+        <circle cx="12" cy="7.5" r="1.5" fill="#FF8C00"/>
+        
+        <!-- 수확 장치 (앞쪽 회전 블레이드) -->
+        <rect x="18" y="-4.5" width="12" height="9" fill="#B8860B" rx="1.5"/>
+        <rect x="21" y="-1.5" width="9" height="3" fill="#FFD700" rx="0.75"/>
+        
+        <!-- 트랙터 엔진 부분 -->
+        <rect x="-3" y="-12" width="18" height="9" fill="#FF6347" rx="1.5"/>
+        
+        <!-- 트랙터 배기관 -->
+        <rect x="7.5" y="-18" width="3" height="6" fill="#2F2F2F" rx="1.5"/>
+        
+        <!-- 운전석 -->
+        <rect x="-9" y="-15" width="12" height="9" fill="#87CEEB" rx="1.5" opacity="0.7"/>
+        
+        <!-- 바퀴 회전 애니메이션 -->
+        <animateTransform attributeName="transform" type="rotate" 
+          values="0;360;0" dur="2s" repeatCount="indefinite" 
+          additive="sum"/>
+        
+        <!-- 트랙터 이동 애니메이션 (오른쪽 끝까지 나가서 사라지고 왼쪽에서 다시 나타남) -->
+        <animateTransform attributeName="transform" type="translate" 
+          values="50,440;120,440;200,440;280,440;350,440;420,440;50,440;50,440" 
+          dur="20s" repeatCount="indefinite"/>
+        
+        <!-- 방향은 항상 오른쪽을 향하도록 고정 -->
+        <!--<animateTransform attributeName="transform" type="scaleX" 
+          values="1;1;-1;-1" 
+          dur="20s" repeatCount="indefinite" 
+          additive="sum"/>-->
+      </g>
+    </g>
+    
+    <!-- 논밭 구획선 -->
+    <g stroke="#DAA520" stroke-width="0.5" opacity="0.6">
+      <line x1="0" y1="450" x2="400" y2="450"/>
+      <line x1="0" y1="465" x2="400" y2="465"/>
+      <line x1="0" y1="480" x2="400" y2="480"/>
+      <line x1="80" y1="435" x2="80" y2="500"/>
+      <line x1="160" y1="435" x2="160" y2="500"/>
+      <line x1="240" y1="435" x2="240" y2="500"/>
+      <line x1="320" y1="435" x2="320" y2="500"/>
+    </g>
+    
+    <!-- 황금 벼이삭들 -->
+    <g fill="#FFD700" opacity="0.8">
+      <!-- 첫 번째 구역 -->
+      <ellipse cx="25" cy="445" rx="2" ry="6" transform="rotate(10 25 445)">
+        <animate attributeName="transform" values="rotate(10 25 445);rotate(15 25 445);rotate(10 25 445)" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="35" cy="448" rx="2" ry="6" transform="rotate(-5 35 448)">
+        <animate attributeName="transform" values="rotate(-5 35 448);rotate(0 35 448);rotate(-5 35 448)" dur="2.5s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="45" cy="442" rx="2" ry="6" transform="rotate(8 45 442)">
+        <animate attributeName="transform" values="rotate(8 45 442);rotate(12 45 442);rotate(8 45 442)" dur="3.2s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="55" cy="447" rx="2" ry="6" transform="rotate(-3 55 447)">
+        <animate attributeName="transform" values="rotate(-3 55 447);rotate(2 55 447);rotate(-3 55 447)" dur="2.8s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="65" cy="444" rx="2" ry="6" transform="rotate(12 65 444)">
+        <animate attributeName="transform" values="rotate(12 65 444);rotate(17 65 444);rotate(12 65 444)" dur="3.5s" repeatCount="indefinite"/>
+      </ellipse>
+      
+      <!-- 두 번째 구역 -->
+      <ellipse cx="105" cy="460" rx="2" ry="6" transform="rotate(-8 105 460)">
+        <animate attributeName="transform" values="rotate(-8 105 460);rotate(-3 105 460);rotate(-8 105 460)" dur="2.7s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="115" cy="463" rx="2" ry="6" transform="rotate(5 115 463)">
+        <animate attributeName="transform" values="rotate(5 115 463);rotate(10 115 463);rotate(5 115 463)" dur="3.1s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="125" cy="458" rx="2" ry="6" transform="rotate(-10 125 458)">
+        <animate attributeName="transform" values="rotate(-10 125 458);rotate(-5 125 458);rotate(-10 125 458)" dur="2.9s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="135" cy="462" rx="2" ry="6" transform="rotate(7 135 462)">
+        <animate attributeName="transform" values="rotate(7 135 462);rotate(12 135 462);rotate(7 135 462)" dur="3.3s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="145" cy="459" rx="2" ry="6" transform="rotate(-6 145 459)">
+        <animate attributeName="transform" values="rotate(-6 145 459);rotate(-1 145 459);rotate(-6 145 459)" dur="2.6s" repeatCount="indefinite"/>
+      </ellipse>
+      
+      <!-- 세 번째 구역 -->
+      <ellipse cx="185" cy="475" rx="2" ry="6" transform="rotate(9 185 475)">
+        <animate attributeName="transform" values="rotate(9 185 475);rotate(14 185 475);rotate(9 185 475)" dur="3.4s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="195" cy="478" rx="2" ry="6" transform="rotate(-4 195 478)">
+        <animate attributeName="transform" values="rotate(-4 195 478);rotate(1 195 478);rotate(-4 195 478)" dur="2.8s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="205" cy="472" rx="2" ry="6" transform="rotate(11 205 472)">
+        <animate attributeName="transform" values="rotate(11 205 472);rotate(16 205 472);rotate(11 205 472)" dur="3.0s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="215" cy="477" rx="2" ry="6" transform="rotate(-7 215 477)">
+        <animate attributeName="transform" values="rotate(-7 215 477);rotate(-2 215 477);rotate(-7 215 477)" dur="2.7s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="225" cy="474" rx="2" ry="6" transform="rotate(6 225 474)">
+        <animate attributeName="transform" values="rotate(6 225 474);rotate(11 225 474);rotate(6 225 474)" dur="3.6s" repeatCount="indefinite"/>
+      </ellipse>
+      
+      <!-- 네 번째 구역 -->
+      <ellipse cx="265" cy="445" rx="2" ry="6" transform="rotate(-9 265 445)">
+        <animate attributeName="transform" values="rotate(-9 265 445);rotate(-4 265 445);rotate(-9 265 445)" dur="2.9s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="275" cy="448" rx="2" ry="6" transform="rotate(8 275 448)">
+        <animate attributeName="transform" values="rotate(8 275 448);rotate(13 275 448);rotate(8 275 448)" dur="3.2s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="285" cy="442" rx="2" ry="6" transform="rotate(-5 285 442)">
+        <animate attributeName="transform" values="rotate(-5 285 442);rotate(0 285 442);rotate(-5 285 442)" dur="2.5s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="295" cy="447" rx="2" ry="6" transform="rotate(10 295 447)">
+        <animate attributeName="transform" values="rotate(10 295 447);rotate(15 295 447);rotate(10 295 447)" dur="3.1s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="305" cy="444" rx="2" ry="6" transform="rotate(-8 305 444)">
+        <animate attributeName="transform" values="rotate(-8 305 444);rotate(-3 305 444);rotate(-8 305 444)" dur="2.8s" repeatCount="indefinite"/>
+      </ellipse>
+      
+      <!-- 다섯 번째 구역 -->
+      <ellipse cx="345" cy="465" rx="2" ry="6" transform="rotate(7 345 465)">
+        <animate attributeName="transform" values="rotate(7 345 465);rotate(12 345 465);rotate(7 345 465)" dur="3.3s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="355" cy="468" rx="2" ry="6" transform="rotate(-6 355 468)">
+        <animate attributeName="transform" values="rotate(-6 355 468);rotate(-1 355 468);rotate(-6 355 468)" dur="2.6s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="365" cy="462" rx="2" ry="6" transform="rotate(9 365 462)">
+        <animate attributeName="transform" values="rotate(9 365 462);rotate(14 365 462);rotate(9 365 462)" dur="3.4s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="375" cy="467" rx="2" ry="6" transform="rotate(-4 375 467)">
+        <animate attributeName="transform" values="rotate(-4 375 467);rotate(1 375 467);rotate(-4 375 467)" dur="2.7s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="385" cy="464" rx="2" ry="6" transform="rotate(11 385 464)">
+        <animate attributeName="transform" values="rotate(11 385 464);rotate(16 385 464);rotate(11 385 464)" dur="3.0s" repeatCount="indefinite"/>
+      </ellipse>
+    </g>
+  </g>
+  
+  <!-- 나비 (우아한 스타일) -->
+  <g>
+    <g transform="translate(180,220)">
+      <!-- 왼쪽 날개 -->
+      <ellipse cx="-1.5" cy="-1" rx="3" ry="5" fill="#FF69B4" opacity="0.8" transform="rotate(-20)">
+        <animateTransform attributeName="transform" type="rotate" values="-20;-10;-20" dur="0.6s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="-1.5" cy="1" rx="2" ry="3" fill="#FFB6C1" opacity="0.7" transform="rotate(-20)">
+        <animateTransform attributeName="transform" type="rotate" values="-20;-10;-20" dur="0.6s" repeatCount="indefinite"/>
+      </ellipse>
+      
+      <!-- 오른쪽 날개 -->
+      <ellipse cx="1.5" cy="-1" rx="3" ry="5" fill="#FF69B4" opacity="0.8" transform="rotate(20)">
+        <animateTransform attributeName="transform" type="rotate" values="20;10;20" dur="0.6s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="1.5" cy="1" rx="2" ry="3" fill="#FFB6C1" opacity="0.7" transform="rotate(20)">
+        <animateTransform attributeName="transform" type="rotate" values="20;10;20" dur="0.6s" repeatCount="indefinite"/>
+      </ellipse>
+      
+      <!-- 몸통과 더듬이 -->
+      <line x1="0" y1="-4" x2="0" y2="4" stroke="#4B0082" stroke-width="0.75"/>
+      <path d="M 0 -4 Q -0.5 -6 -1 -5" stroke="#4B0082" stroke-width="0.25" fill="none"/>
+      <path d="M 0 -4 Q 0.5 -6 1 -5" stroke="#4B0082" stroke-width="0.25" fill="none"/>
+      
+      <animateTransform attributeName="transform" type="translate" values="85,340;120,335;200,345;160,355;215,350;180,360;85,340" dur="15s" repeatCount="indefinite"/>
+    </g>
+  </g>
+  
+  <!-- 제목 (세련된 타이포그래피) -->
+  <text x="200" y="40" font-family="sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#4169E1" opacity="0.9">청도군</text>
+  <text x="200" y="60" font-family="sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#4682B4" opacity="0.8">CHEONGDO-GUN</text>
+  <text x="200" y="75" font-family="sans-serif" font-size="10" font-weight="300" text-anchor="middle" fill="#708090" opacity="0.7">경상북도 아름다운 농촌마을</text>
+  
+  <!-- 먼스테이 - 어쩌다사장 텍스트 (오른쪽 아래) -->
+  <text x="395" y="490" font-family="Gothic, sans-serif" font-size="18" font-weight="bold" text-anchor="end" fill="#FF6600">먼스테이 - 어쩌다사장</text>
+  
+</svg>
