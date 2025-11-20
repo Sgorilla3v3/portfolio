@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경상북도 청도군</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f8ff;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .canvas {
+            width: 400px;
+            height: 500px;
+            position: relative;
+            background: linear-gradient(180deg, #87CEEB 0%, #E6F3FF 30%, #F0F8FF 70%, #90EE90 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* 산맥 */
+        .mountain1 {
+            position: absolute;
+            bottom: 200px;
+            left: -50px;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 120px solid #4682B4;
+            opacity: 0.8;
+        }
+        
+        .mountain2 {
+            position: absolute;
+            bottom: 200px;
+            right: -50px;
+            width: 0;
+            height: 0;
+            border-left: 120px solid transparent;
+            border-right: 120px solid transparent;
+            border-bottom: 100px solid #5F9EA0;
+            opacity: 0.7;
+        }
+        
+        .mountain3 {
+            position: absolute;
+            bottom: 180px;
+            left: 100px;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 140px solid #6B8E23;
+        }
+        
+        /* 구름 */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+        }
+        
+        .cloud1 {
+            width: 80px;
+            height: 30px;
+            top: 50px;
+            left: 50px;
+            animation: drift 15s infinite linear;
+        }
+        
+        .cloud2 {
+            width: 60px;
+            height: 25px;
+            top: 80px;
+            right: 40px;
+            animation: drift 20s infinite linear reverse;
+        }
+        
+        /* 해 */
+        .sun {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #FFD700 0%, #FFA500 70%);
+            border-radius: 50%;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        /* 감 과수원 */
+        .persimmon-tree {
+            position: absolute;
+            bottom: 120px;
+        }
+        
+        .tree1 {
+            left: 50px;
+        }
+        
+        .tree2 {
+            left: 150px;
+        }
+        
+        .tree3 {
+            right: 50px;
+        }
+        
+        .tree-trunk {
+            width: 15px;
+            height: 40px;
+            background: #8B4513;
+            margin: 0 auto;
+            border-radius: 3px;
+        }
+        
+        .tree-crown {
+            width: 60px;
+            height: 50px;
+            background: #228B22;
+            border-radius: 50%;
+            margin-bottom: -10px;
+            position: relative;
+        }
+        
+        .persimmon {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #FF4500;
+            border-radius: 50%;
+            animation: sway 2s infinite ease-in-out;
+        }
+        
+        .p1 { top: 15px; left: 10px; }
+        .p2 { top: 25px; right: 15px; }
+        .p3 { top: 30px; left: 25px; }
+        
+        /* 한옥 지붕 */
+        .hanok {
+            position: absolute;
+            bottom: 80px;
+            left: 120px;
+        }
+        
+        .roof {
+            width: 100px;
+            height: 20px;
+            background: #8B4513;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+        }
+        
+        .roof::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -10px;
+            right: -10px;
+            height: 8px;
+            background: #654321;
+            border-radius: 15px;
+        }
+        
+        .house-body {
+            width: 80px;
+            height: 40px;
+            background: #F5DEB3;
+            margin: 0 auto;
+            border-radius: 5px;
+        }
+        
+        /* 논밭 */
+        .field {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: repeating-linear-gradient(
+                90deg,
+                #90EE90 0px,
+                #90EE90 20px,
+                #98FB98 20px,
+                #98FB98 40px
+            );
+        }
+        
+        /* 강 */
+        .river {
+            position: absolute;
+            bottom: 100px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(90deg, #4169E1, #1E90FF, #00BFFF);
+            border-radius: 10px;
+            opacity: 0.7;
+            animation: flow 5s infinite ease-in-out;
+        }
+        
+        /* 제목 */
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #2F4F4F;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+        }
+        
+        .subtitle {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #4682B4;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* 애니메이션 */
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(30px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        @keyframes sway {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(2px); }
+        }
+        
+        @keyframes flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* 새 */
+        .bird {
+            position: absolute;
+            top: 120px;
+            left: 200px;
+            font-size: 12px;
+            animation: fly 8s infinite linear;
+        }
+        
+        @keyframes fly {
+            0% { transform: translateX(-50px) translateY(0); }
+            25% { transform: translateX(0) translateY(-10px); }
+            50% { transform: translateX(50px) translateY(0); }
+            75% { transform: translateX(100px) translateY(-5px); }
+            100% { transform: translateX(150px) translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas">
+        <div class="title">청도군</div>
+        <div class="subtitle">경상북도의 아름다운 농촌</div>
+        
+        <div class="sun"></div>
+        
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        
+        <div class="bird">🕊️</div>
+        
+        <div class="mountain1"></div>
+        <div class="mountain2"></div>
+        <div class="mountain3"></div>
+        
+        <div class="persimmon-tree tree1">
+            <div class="tree-crown">
+                <div class="persimmon p1"></div>
+                <div class="persimmon p2"></div>
+                <div class="persimmon p3"></div>
+            </div>
+            <div class="tree-trunk"></div>
+        </div>
+        
+        <div class="persimmon-tree tree2">
+            <div class="tree-crown">
+                <div class="persimmon p1"></div>
+                <div class="persimmon p2"></div>
+                <div class="persimmon p3"></div>
+            </div>
+            <div class="tree-trunk"></div>
+        </div>
+        
+        <div class="persimmon-tree tree3">
+            <div class="tree-crown">
+                <div class="persimmon p1"></div>
+                <div class="persimmon p2"></div>
+                <div class="persimmon p3"></div>
+            </div>
+            <div class="tree-trunk"></div>
+        </div>
+        
+        <div class="hanok">
+            <div class="roof"></div>
+            <div class="house-body"></div>
+        </div>
+        
+        <div class="river"></div>
+        <div class="field"></div>
+    </div>
+</body>
+</html>
