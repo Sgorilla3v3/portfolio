@@ -47,6 +47,8 @@
         .toggle-sidebar-btn {
             background: #97A97C !important;
             margin-right: 15px;
+            min-width: 90px;
+            justify-content: center;
         }
 
         .toggle-sidebar-btn.active {
@@ -664,8 +666,8 @@
             <div class="nav-header">
                 <div class="page-info">
                     <button class="nav-btn toggle-sidebar-btn" id="toggle-sidebar-btn">
-                        <i class="fas fa-bars"></i>
-                        <span>목차</span>
+                        <i class="fas fa-eye-slash"></i>
+                        <span>숨기기</span>
                     </button>
                     <div class="page-counter">
                         <span id="current-page">1</span> / <span id="total-pages">10</span>
@@ -876,11 +878,11 @@
                 if (this.sidebarVisible) {
                     this.sidebar.classList.remove('hidden');
                     this.toggleSidebarBtn.classList.remove('active');
-                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-bars"></i><span>목차</span>';
+                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-eye-slash"></i><span>숨기기</span>';
                 } else {
                     this.sidebar.classList.add('hidden');
                     this.toggleSidebarBtn.classList.add('active');
-                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-times"></i><span>숨김</span>';
+                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-eye"></i><span>보이기</span>';
                 }
             }
 
