@@ -34,11 +34,14 @@
             flex-direction: column;
             box-shadow: 4px 0 20px rgba(0,0,0,0.15);
             z-index: 100;
-            transition: margin-left 0.3s ease;
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
 
         .sidebar.hidden {
-            margin-left: -320px;
+            width: 0;
+            min-width: 0;
+            box-shadow: none;
         }
 
         .toggle-sidebar-btn {
@@ -50,9 +53,7 @@
             background: #2F5233 !important;
         }
 
-        .main-content.expanded {
-            margin-left: -320px;
-        }
+
 
         .sidebar-header {
             padding: 25px 20px;
@@ -874,12 +875,10 @@
                 
                 if (this.sidebarVisible) {
                     this.sidebar.classList.remove('hidden');
-                    this.mainContent.classList.remove('expanded');
                     this.toggleSidebarBtn.classList.remove('active');
                     this.toggleSidebarBtn.innerHTML = '<i class="fas fa-bars"></i><span>목차</span>';
                 } else {
                     this.sidebar.classList.add('hidden');
-                    this.mainContent.classList.add('expanded');
                     this.toggleSidebarBtn.classList.add('active');
                     this.toggleSidebarBtn.innerHTML = '<i class="fas fa-times"></i><span>숨김</span>';
                 }
