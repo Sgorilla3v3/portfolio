@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>먼스테이 어쩌다 사장 × 청도 프리뷰 창업교육 연계사업 기획서</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 왼쪽 목차 패널 */
+        .sidebar {
+            width: 320px;
+            background: linear-gradient(180deg, #2F5233 0%, #1e3a21 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #97A97C;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .toc-list {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .toc-item {
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toc-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-left-color: #97A97C;
+        }
+
+        .toc-item.active {
+            background: rgba(151,169,124,0.3);
+            border-left-color: #97A97C;
+            color: #97A97C;
+            font-weight: 600;
+        }
+
+        .toc-number {
+            min-width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .toc-item.active .toc-number {
+            background: #97A97C;
+            color: #2F5233;
+        }
+
+        .toc-text {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* 메인 콘텐츠 영역 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8fafc;
+        }
+
+        /* 상단 네비게이션 */
+        .nav-header {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .page-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .page-counter {
+            background: linear-gradient(135deg, #2F5233, #97A97C);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .page-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #2F5233;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background: #97A97C;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(47, 82, 51, 0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-btn i {
+            font-size: 12px;
+        }
+
+        /* iframe 컨테이너 */
+        .iframe-container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide-frame {
+            width: 1280px;
+            height: 720px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .slide-frame:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        /* 키보드 단축키 안내 */
+        .keyboard-hints {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .keyboard-hints:hover {
+            opacity: 1;
+        }
+
+        .keyboard-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .keyboard-hint:last-child {
+            margin-bottom: 0;
+        }
+
+        .key {
+            background: #374151;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            border: 1px solid #6b7280;
+        }
+
+        /* 로딩 애니메이션 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 18px;
+            color: #6b7280;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #2F5233;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 1600px) {
+            .slide-frame {
+                width: 960px;
+                height: 540px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .slide-frame {
+                width: 800px;
+                height: 450px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .sidebar {
+                width: 280px;
+            }
+            .slide-frame {
+                width: 640px;
+                height: 360px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 왼쪽 목차 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">기획서 목차</div>
+                <div class="sidebar-subtitle">먼스테이 × 청도 프리뷰 창업교육</div>
+            </div>
+            <div class="toc-list">
+                <div class="toc-item active" data-page="0">
+                    <div class="toc-number">1</div>
+                    <div class="toc-text">표지</div>
+                </div>
+                <div class="toc-item" data-page="1">
+                    <div class="toc-number">2</div>
+                    <div class="toc-text">목차</div>
+                </div>
+                <div class="toc-item" data-page="2">
+                    <div class="toc-number">3</div>
+                    <div class="toc-text">사업 개요 및 연계성</div>
+                </div>
+                <div class="toc-item" data-page="3">
+                    <div class="toc-number">4</div>
+                    <div class="toc-text">먼스테이 프로그램 상세</div>
+                </div>
+                <div class="toc-item" data-page="4">
+                    <div class="toc-number">5</div>
+                    <div class="toc-text">청도 프리뷰 창업교육 상세</div>
+                </div>
+                <div class="toc-item" data-page="5">
+                    <div class="toc-number">6</div>
+                    <div class="toc-text">연계 시너지 및 혜택</div>
+                </div>
+                <div class="toc-item" data-page="6">
+                    <div class="toc-number">7</div>
+                    <div class="toc-text">통합 운영 일정표</div>
+                </div>
+                <div class="toc-item" data-page="7">
+                    <div class="toc-number">8</div>
+                    <div class="toc-text">예산 계획</div>
+                </div>
+                <div class="toc-item" data-page="8">
+                    <div class="toc-number">9</div>
+                    <div class="toc-text">기대효과 및 결론</div>
+                </div>
+                <div class="toc-item" data-page="9">
+                    <div class="toc-number">10</div>
+                    <div class="toc-text">부록·문의처</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="main-content">
+            <!-- 상단 네비게이션 -->
+            <div class="nav-header">
+                <div class="page-info">
+                    <div class="page-counter">
+                        <span id="current-page">1</span> / <span id="total-pages">10</span>
+                    </div>
+                    <div class="page-title" id="page-title">표지</div>
+                </div>
+                <div class="nav-controls">
+                    <button class="nav-btn" id="prev-btn" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                        이전
+                    </button>
+                    <button class="nav-btn" id="next-btn">
+                        다음
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 슬라이드 표시 영역 -->
+            <div class="iframe-container">
+                <iframe 
+                    class="slide-frame" 
+                    id="slide-frame" 
+                    src="p0.html"
+                    title="프레젠테이션 슬라이드">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        슬라이드를 불러오는 중...
+                    </div>
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 키보드 단축키 안내 -->
+    <div class="keyboard-hints">
+        <div class="keyboard-hint">
+            <span class="key">←</span>
+            <span class="key">→</span>
+            <span>페이지 이동</span>
+        </div>
+        <div class="keyboard-hint">
+            <span class="key">Home</span>
+            <span>첫 페이지</span>
+        </div>
+        <div class="keyboard-hint">
+            <span class="key">End</span>
+            <span>마지막 페이지</span>
+        </div>
+    </div>
+
+    <script>
+        class PresentationViewer {
+            constructor() {
+                this.currentPage = 0;
+                this.totalPages = 10;
+                this.pageFiles = [
+                    'p0.html', 'p1.html', 'p2.html', 'p3.html', 'p4.html',
+                    'p5.html', 'p6.html', 'p7.html', 'p8.html', 'p9.html'
+                ];
+                this.pageTitles = [
+                    '표지',
+                    '목차', 
+                    '사업 개요 및 연계성',
+                    '먼스테이 프로그램 상세',
+                    '청도 프리뷰 창업교육 상세',
+                    '연계 시너지 및 혜택',
+                    '통합 운영 일정표',
+                    '예산 계획',
+                    '기대효과 및 결론',
+                    '부록·문의처'
+                ];
+                
+                this.initializeElements();
+                this.setupEventListeners();
+                this.updateUI();
+            }
+
+            initializeElements() {
+                this.slideFrame = document.getElementById('slide-frame');
+                this.prevBtn = document.getElementById('prev-btn');
+                this.nextBtn = document.getElementById('next-btn');
+                this.currentPageSpan = document.getElementById('current-page');
+                this.totalPagesSpan = document.getElementById('total-pages');
+                this.pageTitleSpan = document.getElementById('page-title');
+                this.tocItems = document.querySelectorAll('.toc-item');
+            }
+
+            setupEventListeners() {
+                // 네비게이션 버튼
+                this.prevBtn.addEventListener('click', () => this.goToPreviousPage());
+                this.nextBtn.addEventListener('click', () => this.goToNextPage());
+
+                // 목차 클릭
+                this.tocItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const pageIndex = parseInt(item.dataset.page);
+                        this.goToPage(pageIndex);
+                    });
+                });
+
+                // 키보드 단축키
+                document.addEventListener('keydown', (e) => {
+                    switch(e.key) {
+                        case 'ArrowLeft':
+                            e.preventDefault();
+                            this.goToPreviousPage();
+                            break;
+                        case 'ArrowRight':
+                            e.preventDefault();
+                            this.goToNextPage();
+                            break;
+                        case 'Home':
+                            e.preventDefault();
+                            this.goToPage(0);
+                            break;
+                        case 'End':
+                            e.preventDefault();
+                            this.goToPage(this.totalPages - 1);
+                            break;
+                    }
+                });
+
+                // iframe 로딩 완료 처리
+                this.slideFrame.addEventListener('load', () => {
+                    console.log(`페이지 ${this.currentPage + 1} 로딩 완료`);
+                });
+            }
+
+            goToPage(pageIndex) {
+                if (pageIndex < 0 || pageIndex >= this.totalPages) return;
+                
+                this.currentPage = pageIndex;
+                this.slideFrame.src = this.pageFiles[pageIndex];
+                this.updateUI();
+                
+                // 부드러운 전환 효과
+                this.slideFrame.style.opacity = '0.7';
+                setTimeout(() => {
+                    this.slideFrame.style.opacity = '1';
+                }, 100);
+            }
+
+            goToPreviousPage() {
+                if (this.currentPage > 0) {
+                    this.goToPage(this.currentPage - 1);
+                }
+            }
+
+            goToNextPage() {
+                if (this.currentPage < this.totalPages - 1) {
+                    this.goToPage(this.currentPage + 1);
+                }
+            }
+
+            updateUI() {
+                // 페이지 카운터 업데이트
+                this.currentPageSpan.textContent = this.currentPage + 1;
+                this.totalPagesSpan.textContent = this.totalPages;
+                
+                // 페이지 제목 업데이트
+                this.pageTitleSpan.textContent = this.pageTitles[this.currentPage];
+                
+                // 네비게이션 버튼 상태 업데이트
+                this.prevBtn.disabled = this.currentPage === 0;
+                this.nextBtn.disabled = this.currentPage === this.totalPages - 1;
+                
+                // 목차 활성 상태 업데이트
+                this.tocItems.forEach((item, index) => {
+                    item.classList.toggle('active', index === this.currentPage);
+                });
+            }
+
+            // 페이지 존재 여부 확인 (선택사항)
+            async checkPageExists(pageFile) {
+                try {
+                    const response = await fetch(pageFile, { method: 'HEAD' });
+                    return response.ok;
+                } catch {
+                    return false;
+                }
+            }
+        }
+
+        // 페이지 로드 완료 후 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            window.presentationViewer = new PresentationViewer();
+        });
+
+        // 전역 함수로 외부에서 페이지 제어 가능
+        function goToSlide(pageIndex) {
+            if (window.presentationViewer) {
+                window.presentationViewer.goToPage(pageIndex);
+            }
+        }
+    </script>
+</body>
+</html>

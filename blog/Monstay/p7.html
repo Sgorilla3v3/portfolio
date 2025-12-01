@@ -1,0 +1,413 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>예산 계획 (통합/분리)</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Myeongjo:wght@700;800&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF7;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-color: #FDFBF7;
+            overflow: hidden;
+        }
+        .header {
+            padding: 40px 60px 20px 60px;
+            border-bottom: 2px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .section-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 2.2rem;
+            color: #1F2937;
+            font-weight: 800;
+        }
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            gap: 40px;
+        }
+        
+        /* Card Styles */
+        .budget-card {
+            flex: 1;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+        }
+        .card-header {
+            padding: 20px 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-body {
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Green Theme (Monstay) */
+        .theme-green .card-header { background-color: #2F5233; }
+        .theme-green .total-section { background-color: #E8F5E9; color: #1B5E20; }
+        .theme-green .item-row { border-bottom: 1px solid #E8F5E9; }
+        
+        /* Blue Theme (Preview) */
+        .theme-blue .card-header { background-color: #3B82F6; }
+        .theme-blue .total-section { background-color: #EFF6FF; color: #1E40AF; }
+        .theme-blue .item-row { border-bottom: 1px solid #EFF6FF; }
+
+        /* Table Styles */
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .budget-table th {
+            text-align: left;
+            font-size: 0.85rem;
+            color: #6B7280;
+            font-weight: 600;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #F3F4F6;
+        }
+        .budget-table td {
+            padding: 15px 0;
+            font-size: 0.95rem;
+            color: #374151;
+        }
+        .amount-col {
+            text-align: right;
+            font-family: 'Roboto', sans-serif; /* 숫자 가독성 */
+            font-weight: 600;
+        }
+        
+        /* Total Section */
+        .total-section {
+            margin-top: auto;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .total-label {
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        /* Badges */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+        }
+
+        .note-text {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #9CA3AF;
+            text-align: right;
+        }
+        
+        .highlight-box {
+            background-color: #FFF8E1;
+            border: 1px dashed #F59E0B;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style><style id="genspark-badge">
+    .genspark-badge-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .genspark-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 10000;
+      justify-content: end;
+    }
+    
+    .genspark-modal-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 450px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .genspark-modal-content {
+        max-width: 90%;
+      }
+    }
+    
+    .genspark-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    
+    .genspark-title {
+      margin-bottom: 8px;
+      font-weight: normal;
+      display: inline;
+      font-size: 14px;
+    }
+    
+    .genspark-report {
+      color: #909499;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-bottom: 14px;
+      display: inline;
+    }
+    
+    .genspark-info {
+      margin: 25px 0;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .genspark-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .genspark-remove-btn {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .genspark-go-btn {
+      background-color: #222;
+      border: none;
+      color: white;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+  </style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<h1 class="section-title">예산 계획 (통합/분리)</h1>
+<p class="text-gray-500 mt-2 font-medium">프로그램 성격에 따른 예산 구조 이원화 전략</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-green-800"></div>
+<span class="text-sm font-bold text-gray-600">직접 운영비</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-blue-500"></div>
+<span class="text-sm font-bold text-gray-600">연계 사업비</span>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Left: Monstay Budget -->
+<div class="budget-card theme-green">
+<div class="card-header">
+<div>
+<h3 class="text-xl font-bold">먼스테이 어쩌다 사장</h3>
+<p class="text-sm opacity-90">Program A | 실습 운영비</p>
+</div>
+<span class="status-badge">프로그램 예산</span>
+</div>
+<div class="card-body">
+<table class="budget-table">
+<thead>
+<tr>
+<th width="40%">항목</th>
+<th width="30%">산출내역</th>
+<th class="amount-col">금액 (예상)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="item-row">
+<td>
+<p class="font-bold text-gray-800">카페 창업 클래스</p>
+<p class="text-xs text-gray-500">강사비, 재료비, 대관</p>
+</td>
+<td class="text-sm text-gray-500">300,000원</td>
+<td class="amount-col">300,000</td>
+</tr>
+<tr class="item-row">
+<td>
+<p class="font-bold text-gray-800">청도 카페 투어</p>
+<p class="text-xs text-gray-500">참가비, 식대</p>
+</td>
+<td class="text-sm text-gray-500">100,000원</td>
+<td class="amount-col">100,000</td>
+</tr>
+<tr class="item-row">
+<td>
+<p class="font-bold text-gray-800">카페 대관료 및 멘토링</p>
+<p class="text-xs text-gray-500">다로리카페 대관 5일 및 멘토링 비용</p>
+</td>
+<td class="text-sm text-gray-500">800,000원</td>
+<td class="amount-col">800,000</td>
+</tr>
+<tr class="item-row">
+<td>
+<p class="font-bold text-gray-800">홍보 및 네트워킹</p>
+<p class="text-xs text-gray-500">SNS 광고, 간담회</p>
+</td>
+<td class="text-sm text-gray-500">300,000원</td>
+<td class="amount-col">300,000</td>
+</tr>
+</tbody>
+</table>
+<div class="total-section">
+<span class="total-label">총 소요 예산</span>
+<span class="total-amount">1,500,000 <span class="text-sm font-normal">원</span></span>
+</div>
+<p class="note-text">* 부스 운영 재료비 등 실비 주간행사 지원금 활용</p>
+</div>
+</div>
+<!-- Right: Preview Budget -->
+<div class="budget-card theme-blue">
+<div class="card-header">
+<div>
+<h3 class="text-xl font-bold">청도 프리뷰 창업교육</h3>
+<p class="text-sm opacity-90">Program B | 연계 사업비</p>
+</div>
+<span class="status-badge">별도 집행</span>
+</div>
+<div class="card-body">
+<div class="flex-1 flex flex-col justify-center">
+<div class="bg-blue-50 rounded-xl p-6 mb-6 text-center border border-blue-100">
+<div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-2xl">
+<i class="fas fa-file-invoice-dollar"></i>
+</div>
+<h4 class="font-bold text-gray-800 text-lg mb-2">소상공인 맞춤형 창업교육 용역</h4>
+<p class="text-gray-600 text-sm mb-4">교육 운영, 강사비, 교재 제작, 멘토링 등<br>교육 과정 전반 위탁 운영</p>
+<span class="inline-block bg-white px-4 py-1 rounded-full text-xs font-bold text-blue-600 border border-blue-200">비커넥트랩 주관</span>
+</div>
+<div class="highlight-box">
+<i class="fas fa-info-circle text-yellow-600 mt-1"></i>
+<div>
+<p class="text-sm font-bold text-gray-800 mb-1">예산 집행 구조</p>
+<p class="text-xs text-gray-600 leading-relaxed">본 예산은 '청도 프리뷰' 사업비 항목으로 별도 편성되어 있으며, 먼스테이 운영 예산과는 분리되어 집행됩니다.</p>
+</div>
+</div>
+</div>
+<div class="total-section">
+<span class="total-label">배정 예산 (예상)</span>
+<span class="total-amount">15,000,000 <span class="text-sm font-normal">원</span></span>
+</div>
+<p class="note-text">* 상세 내역은 교육 위탁 계약에 따름</p>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9a70f45febe35871&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDuX6odqFibt64w3UsZDDJTGcq0JKfumz1NCsKDwmQ%2BRsu%2B3Qwig27IwpJI%2FNNcnPmeom3UdLHjXP48C%2FaELDTkiuJ6fpSkvxFse2siSCbglJs2Dw8BYj%2F8F7IrZacgBABo2S%2BSSateWTUY1x%2Fuyr1StApmcOWEMmFiT8QbtXC9pBX6voiwD5Jxl%2FGSnh4DbqqmfoyXIqwKfihJ%2BhkLmqlflijStVwUaeFsogxlcsjHHcEP89%2Bvnv3zTl9sd8G8C9Yidqobu5%2FrL6fjiJO6364aVzEP%2BRy0O2zMhjNEkBLcO%2BwdNr8%2FknB78l27kAWx7BbJmCajwRo%2BeA6x3jLmClRjgivkvEtt5x4Z571csB0jP0y13jV%2FZrUt5DdXsr5A8d7Z7p9c5VsX%2BNlGoEg4lUhyvmhjg4WEg0tJJP9WoFs%2FiWzAEcLnw%2FcNVqlqHTdX1W8eCdRm2VtIuNCmYCk7AzWOOoWjDI2Z0cyRKRIOvCXk5cDQG6YMRdhLQEuieFW3gFUoW4GRqDIVCn%2FVBSlKBRwqsKQFP6TOSQ9GU%2BwHHNaQz3jCGE9VySu6uH8Fv7Hi%2FKN%2B1gUzBsq0uv%2B3EgSbFUP4h%2FkMIB1YPwOW7f8jSLT2fDRN%2FE7bUpwm%2F%2BnK4DDIKkjvwZPFIeMl%2F%2BNg34FQi4Fh2vCEarh8DRzYPE9OxpOZzCme6YNWLm2UVFlnYL23StDOfuWv4KqC5toNZ4lYe2hUTax65XM5FWr25ugyE25jvj8wE9Mz6uK9%2BfYUdROQ8HCA%3D%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDuX6odqFibt64w3UsZDDJTGcq0JKfumz1NCsKDwmQ+Rsu+3Qwig27IwpJI/NNcnPmeom3UdLHjXP48C/aELDTkiuJ6fpSkvxFse2siSCbglJs2Dw8BYj/8F7IrZacgBABo2S+SSateWTUY1x/uyr1StApmcOWEMmFiT8QbtXC9pBX6voiwD5Jxl/GSnh4DbqqmfoyXIqwKfihJ+hkLmqlflijStVwUaeFsogxlcsjHHcEP89+vnv3zTl9sd8G8C9Yidqobu5/rL6fjiJO6364aVzEP+Ry0O2zMhjNEkBLcO+wdNr8/knB78l27kAWx7BbJmCajwRo+eA6x3jLmClRjgivkvEtt5x4Z571csB0jP0y13jV/ZrUt5DdXsr5A8d7Z7p9c5VsX+NlGoEg4lUhyvmhjg4WEg0tJJP9WoFs/iWzAEcLnw/cNVqlqHTdX1W8eCdRm2VtIuNCmYCk7AzWOOoWjDI2Z0cyRKRIOvCXk5cDQG6YMRdhLQEuieFW3gFUoW4GRqDIVCn/VBSlKBRwqsKQFP6TOSQ9GU+wHHNaQz3jCGE9VySu6uH8Fv7Hi/KN+1gUzBsq0uv+3EgSbFUP4h/kMIB1YPwOW7f8jSLT2fDRN/E7bUpwm/+nK4DDIKkjvwZPFIeMl/+Ng34FQi4Fh2vCEarh8DRzYPE9OxpOZzCme6YNWLm2UVFlnYL23StDOfuWv4KqC5toNZ4lYe2hUTax65XM5FWr25ugyE25jvj8wE9Mz6uK9+fYUdROQ8HCA==";
+    </script>
+    
+        <script id="html_badge_script2" src="https://www.genspark.ai/html_badge.js"></script>
+        </body></html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>통합 운영 일정표</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Myeongjo:wght@700;800&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF7;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-color: #FDFBF7;
+        }
+        .header {
+            padding: 30px 50px 10px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid #E5E7EB;
+            z-index: 20;
+        }
+        .section-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 2.2rem;
+            color: #1F2937;
+            font-weight: 800;
+        }
+        .content-area {
+            flex: 1;
+            padding: 20px 50px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* Timeline Components */
+        .timeline-track {
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            right: 50px;
+            height: 4px;
+            background: #E5E7EB;
+            transform: translateY(-50%);
+            z-index: 0;
+            border-radius: 2px;
+        }
+        
+        .phase-label {
+            position: absolute;
+            top: -40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #9CA3AF;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .event-node {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid #9CA3AF;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .event-card {
+            position: absolute;
+            width: 200px;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            border-left-width: 4px;
+        }
+        
+        .card-top {
+            bottom: calc(50% + 25px);
+            transform: translateX(-50%);
+        }
+        
+        .card-bottom {
+            top: calc(50% + 25px);
+            transform: translateX(-50%);
+        }
+
+        .connector {
+            position: absolute;
+            left: 50%;
+            width: 2px;
+            background-color: #E5E7EB;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+        .card-top .connector {
+            bottom: -25px;
+            height: 25px;
+        }
+        .card-bottom .connector {
+            top: -25px;
+            height: 25px;
+        }
+
+        /* Type Specific Styles */
+        .type-common { border-color: #8D6E63; }
+        .type-common .event-date { color: #8D6E63; }
+        .node-common { border-color: #8D6E63; }
+        
+        .type-a { border-color: #2F5233; } /* 먼스테이 Green */
+        .type-a .event-date { color: #2F5233; }
+        .node-a { border-color: #2F5233; }
+        
+        .type-b { border-color: #3B82F6; } /* 프리뷰 Blue */
+        .type-b .event-date { color: #3B82F6; }
+        .node-b { border-color: #3B82F6; }
+
+        .event-date {
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .event-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1F2937;
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+        .event-desc {
+            font-size: 0.75rem;
+            color: #6B7280;
+            line-height: 1.4;
+        }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .badge-a { background-color: #E8F5E9; color: #2F5233; }
+        .badge-b { background-color: #EFF6FF; color: #3B82F6; }
+
+        /* Legend */
+        .legend-box {
+            position: absolute;
+            bottom: 30px;
+            right: 50px;
+            display: flex;
+            gap: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .legend-item { display: flex; align-items: center; font-size: 0.8rem; font-weight: 600; color: #4B5563; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style><style id="genspark-badge">
+    .genspark-badge-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .genspark-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 10000;
+      justify-content: end;
+    }
+    
+    .genspark-modal-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 450px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .genspark-modal-content {
+        max-width: 90%;
+      }
+    }
+    
+    .genspark-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    
+    .genspark-title {
+      margin-bottom: 8px;
+      font-weight: normal;
+      display: inline;
+      font-size: 14px;
+    }
+    
+    .genspark-report {
+      color: #909499;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-bottom: 14px;
+      display: inline;
+    }
+    
+    .genspark-info {
+      margin: 25px 0;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .genspark-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .genspark-remove-btn {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .genspark-go-btn {
+      background-color: #222;
+      border: none;
+      color: white;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+  </style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<h1 class="section-title">통합 운영 일정표</h1>
+<p class="text-gray-500 mt-1 font-medium">2025.11.26 ~ 12.14 (3주간의 여정)</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-gray-600 bg-gray-100 px-4 py-2 rounded-lg">
+<i class="far fa-calendar-alt mr-2"></i>총 19일간의 프로세스
+            </p>
+</div>
+</div>
+<!-- Timeline Content -->
+<div class="content-area">
+<div class="timeline-track">
+<!-- Phase Labels placed relative to track -->
+<div class="phase-label" style="left: 5%">Phase 1. 준비</div>
+<div class="phase-label" style="left: 38%">Phase 2. 교육 &amp; 실습</div>
+<div class="phase-label" style="left: 75%">Phase 3. 실전 &amp; 성과</div>
+</div>
+<!-- Event 1: 면접 -->
+<div class="event-node node-common" style="left: 8%"></div>
+<div class="event-card card-top type-common" style="left: 8%">
+<div class="connector"></div>
+<span class="event-date">11.26 (수)</span>
+<h3 class="event-title">참여자 선발</h3>
+<p class="event-desc">온라인 면접 진행 및 최종 합격자 발표</p>
+<span class="badge bg-gray-100 text-gray-600">Pre-Season</span>
+</div>
+<!-- Event 2: 입소 -->
+<div class="event-node node-common" style="left: 20%"></div>
+<div class="event-card card-bottom type-common" style="left: 20%">
+<div class="connector"></div>
+<span class="event-date">11.30 (일)</span>
+<h3 class="event-title">청도 입소</h3>
+<p class="event-desc">셀프 체크인 및 숙소 배정<br>오픈채팅방 안내</p>
+</div>
+<!-- Event 3: 카페 교육 (A) -->
+<div class="event-node node-a" style="left: 32%"></div>
+<div class="event-card card-top type-a" style="left: 32%">
+<div class="connector"></div>
+<span class="event-date">12.01 (월)</span>
+<h3 class="event-title">카페 창업 실습</h3>
+<p class="event-desc">@카페 다로리<br>식사 및 제조 교육 (14:00~)</p>
+<span class="badge badge-a">먼스테이</span>
+</div>
+<!-- Event 4: 창업 교육 (B) -->
+<div class="event-node node-b" style="left: 45%"></div>
+<div class="event-card card-bottom type-b" style="left: 45%; width: 220px; z-index: 20; transform: translateX(-50%) scale(1.05);">
+<div class="connector"></div>
+<span class="event-date">12.02 ~ 12.04 (화~목)</span>
+<h3 class="event-title">소상공인 창업교육</h3>
+<p class="event-desc">@로컬임팩트랩<br>정부지원사업 &amp; AI 활용 (오전/오후)</p>
+<span class="badge badge-b">청도 프리뷰</span>
+</div>
+<!-- Event 5: 카페 투어 (A) -->
+<div class="event-node node-a" style="left: 58%"></div>
+<div class="event-card card-top type-a" style="left: 58%">
+<div class="connector"></div>
+<span class="event-date">12.05 (금)</span>
+<h3 class="event-title">청도 카페 투어</h3>
+<p class="event-desc">주요 카페 탐방 및 상권 분석<br>상인회 교류</p>
+<span class="badge badge-a">먼스테이</span>
+</div>
+<!-- Event 6: 운영 실습 (A) -->
+<div class="event-node node-a" style="left: 70%"></div>
+<div class="event-card card-bottom type-a" style="left: 70%">
+<div class="connector"></div>
+<span class="event-date">12.07 ~ 12.11</span>
+<h3 class="event-title">카페 운영 Day</h3>
+<p class="event-desc">실제 매장 운영 체험<br>(운영 가능 여부 협의)</p>
+<span class="badge badge-a">먼스테이</span>
+</div>
+<!-- Event 7: 부스 운영 (A) -->
+<div class="event-node node-a" style="left: 82%"></div>
+<div class="event-card card-top type-a" style="left: 82%">
+<div class="connector"></div>
+<span class="event-date">12.12 ~ 12.13</span>
+<h3 class="event-title">소통협력주간</h3>
+<p class="event-desc">지역 축제 부스 운영<br>팝업 스토어</p>
+<span class="badge badge-a">먼스테이</span>
+</div>
+<!-- Event 8: 퇴소 -->
+<div class="event-node node-common" style="left: 94%"></div>
+<div class="event-card card-bottom type-common" style="left: 94%; width: 160px;">
+<div class="connector"></div>
+<span class="event-date">12.14 (일)</span>
+<h3 class="event-title">성과공유/퇴소</h3>
+<p class="event-desc">최종 회고 및 퇴소<br>(10:00~)</p>
+</div>
+</div>
+<!-- Legend -->
+<div class="legend-box">
+<div class="legend-item">
+<div class="legend-dot" style="background-color: #2F5233;"></div>
+            먼스테이 (Program A)
+        </div>
+<div class="legend-item">
+<div class="legend-dot" style="background-color: #3B82F6;"></div>
+            청도 프리뷰 (Program B)
+        </div>
+<div class="legend-item">
+<div class="legend-dot" style="background-color: #8D6E63;"></div>
+            공통 일정
+        </div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9a70f45fdbdb5871&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDtZMCA50Hg0sBASMjT4GmxsN694oMZESYx4fzzvx%2FYScIwn6%2F58CdPik%2FMSLEduK2zhokjyM3KgdidauaJAUicABxg61jjcn0D3YKIL1xPOgO%2BEYBKtUI9Zb%2BjjKvh9rlm7WaHgEn40yuiMyJc8bUfpRCQTQaKqcY2hjcy5bYStOpf5s39KLL8uVaOZXYbEMsQbynJ0eqEOHycTkkqRLuyg%2BLnxdkLR9oxWE1wTKurSD1yVf1g%2Fdjm2NojEXlwyewKD7gozBaBVNIYuMNvE%2F0jWo6XyV33XDGLUH3od%2BGtpobO%2FnFpGuKAsPutezbYesftYKZEOEXrPZNzfrhZMQadiDrxTotfCUvSIIxrighzGFtzD4eKeSwRljtIrs3EV%2F%2FpWG355sfeGCcOKoqOswM4M8wjaw9Yh%2BTtrl7lwAFq4xO0jxw09VW64Dzot0VcusqnojxSl5YjvddCU98ByeJvbKvYQy8bVdqL3AHosbUTl%2F4oYIn2sTXNqjSYlQgeio8GWJi46Rbrz752OYbUO5eFTl9FRaxzHO9IRR%2Fjhjmlh2s6vdu8PooSH88jtp2Y2sVHG6M%2F6WoXAA1CwTKYE9jkGHvGrqJvnfaV9x1ag3wZGyDSnkM3LOmyYlXC17J3g7kOUaXcn%2BDs%2FjBDDoDpAN7VAmwmKPWo%2FW%2BXa4mzyIK0oQqhBlmdf0in8dpWYMzhMWURCVF8V2UchEHepCH0KoAdDr4Y%2FoD%2B%2FTfRsC43XwziuVlIcertupRkycyW4tUSkv6Q%3D%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDtZMCA50Hg0sBASMjT4GmxsN694oMZESYx4fzzvx/YScIwn6/58CdPik/MSLEduK2zhokjyM3KgdidauaJAUicABxg61jjcn0D3YKIL1xPOgO+EYBKtUI9Zb+jjKvh9rlm7WaHgEn40yuiMyJc8bUfpRCQTQaKqcY2hjcy5bYStOpf5s39KLL8uVaOZXYbEMsQbynJ0eqEOHycTkkqRLuyg+LnxdkLR9oxWE1wTKurSD1yVf1g/djm2NojEXlwyewKD7gozBaBVNIYuMNvE/0jWo6XyV33XDGLUH3od+GtpobO/nFpGuKAsPutezbYesftYKZEOEXrPZNzfrhZMQadiDrxTotfCUvSIIxrighzGFtzD4eKeSwRljtIrs3EV//pWG355sfeGCcOKoqOswM4M8wjaw9Yh+Ttrl7lwAFq4xO0jxw09VW64Dzot0VcusqnojxSl5YjvddCU98ByeJvbKvYQy8bVdqL3AHosbUTl/4oYIn2sTXNqjSYlQgeio8GWJi46Rbrz752OYbUO5eFTl9FRaxzHO9IRR/jhjmlh2s6vdu8PooSH88jtp2Y2sVHG6M/6WoXAA1CwTKYE9jkGHvGrqJvnfaV9x1ag3wZGyDSnkM3LOmyYlXC17J3g7kOUaXcn+Ds/jBDDoDpAN7VAmwmKPWo/W+Xa4mzyIK0oQqhBlmdf0in8dpWYMzhMWURCVF8V2UchEHepCH0KoAdDr4Y/oD+/TfRsC43XwziuVlIcertupRkycyW4tUSkv6Q==";
+    </script>
+    
+        <script id="html_badge_script2" src="https://www.genspark.ai/html_badge.js"></script>
+        </body></html>

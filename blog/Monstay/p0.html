@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>먼스테이 어쩌다 사장 × 청도 프리뷰 창업교육 연계 사업 기획서</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Myeongjo:wght@400;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #FDFBF7; /* 따뜻한 미색 배경 */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .decorative-shape {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 45%;
+            height: 100%;
+            background-color: #2F5233; /* 딥 그린 */
+            clip-path: polygon(20% 0%, 100% 0, 100% 100%, 0% 100%);
+            z-index: 0;
+        }
+        .decorative-line {
+            position: absolute;
+            top: 0;
+            right: 45%;
+            width: 10px;
+            height: 100%;
+            background-color: #97A97C; /* 연한 그린 */
+            transform: skewX(-11deg); /* clip-path 각도와 맞춤 */
+            transform-origin: top right;
+            z-index: 1;
+            margin-right: -5px; /* 보정 */
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 80px;
+        }
+        .main-title {
+            font-family: 'Nanum Myeongjo', serif;
+            line-height: 1.2;
+            color: #1F2937;
+        }
+        .sub-title {
+            color: #5d4037; /* 브라운 톤 */
+        }
+        .highlight-text {
+            color: #2F5233;
+        }
+        .info-card {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.9);
+            border-left: 6px solid #2F5233;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .right-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px;
+            z-index: 20;
+            color: white;
+        }
+        .tag-badge {
+            background-color: #8D6E63;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style><style id="genspark-badge">
+    .genspark-badge-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .genspark-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 10000;
+      justify-content: end;
+    }
+    
+    .genspark-modal-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 450px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .genspark-modal-content {
+        max-width: 90%;
+      }
+    }
+    
+    .genspark-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    
+    .genspark-title {
+      margin-bottom: 8px;
+      font-weight: normal;
+      display: inline;
+      font-size: 14px;
+    }
+    
+    .genspark-report {
+      color: #909499;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-bottom: 14px;
+      display: inline;
+    }
+    
+    .genspark-info {
+      margin: 25px 0;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .genspark-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .genspark-remove-btn {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .genspark-go-btn {
+      background-color: #222;
+      border: none;
+      color: white;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+  </style></head>
+<body>
+<div class="slide-container">
+<!-- 배경 장식 요소 -->
+<div class="decorative-shape"></div>
+<!-- <div class="decorative-line"></div> -->
+<!-- 왼쪽 메인 콘텐츠 -->
+<div class="content-wrapper" style="width: 60%;">
+<div class="mb-6">
+<span class="tag-badge">2025 로컬 창업 특화 프로젝트</span>
+<p class="text-gray-500 font-medium mt-2 tracking-widest">PROJECT PLAN REPORT</p>
+</div>
+<h1 class="main-title text-6xl font-extrabold mb-6">
+<span class="block mb-2">먼스테이 어쩌다 사장</span>
+<span class="text-4xl font-bold text-gray-400 mb-2 block">×</span>
+<span class="block highlight-text">청도 프리뷰 창업교육</span>
+<span class="block text-4xl font-bold text-gray-600 mt-4">연계 사업 기획서</span>
+</h1>
+<div class="w-24 h-2 bg-yellow-600 mb-8"></div>
+<p class="sub-title text-xl font-medium mb-12 leading-relaxed max-w-2xl">
+                체류·실습과 맞춤형 창업교육의 결합으로 완성하는<br>
+                실전형 로컬 비즈니스 창업 여정
+            </p>
+<div class="flex gap-8 text-sm text-gray-600 font-medium">
+<div class="flex items-center gap-2">
+<i class="fas fa-calendar-alt text-yellow-700 text-lg"></i>
+<span>2025.11.30 ~ 12.14 (통합 운영)</span>
+</div>
+<div class="flex items-center gap-2">
+<i class="fas fa-map-marker-alt text-yellow-700 text-lg"></i>
+<span>경북 청도군 일대</span>
+</div>
+</div>
+</div>
+<!-- 오른쪽 사이드 콘텐츠 (운영기관 및 대상 정보) -->
+<div class="right-content">
+<div class="space-y-10 w-full max-w-md">
+<!-- 운영/협력 기관 -->
+<div>
+<h3 class="text-green-100 text-sm font-bold uppercase tracking-wider mb-4 border-b border-green-400 pb-2 inline-block">운영 및 협력기관</h3>
+<ul class="space-y-3 text-white">
+<li class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center text-white">
+<i class="fas fa-coffee text-sm"></i>
+</div>
+<span class="text-lg font-medium">카페 다로리</span>
+</li>
+<li class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center text-white">
+<i class="fas fa-building text-sm"></i>
+</div>
+<span class="text-lg font-medium">로컬임팩트랩</span>
+</li>
+<li class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center text-white">
+<i class="fas fa-chalkboard-teacher text-sm"></i>
+</div>
+<span class="text-lg font-medium">비커넥트랩 (창업교육)</span>
+</li>
+<li class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center text-white">
+<i class="fas fa-star text-sm"></i>
+</div>
+<span class="text-lg font-medium">청도혁신센터</span>
+</li>
+</ul>
+</div>
+<!-- 모집 대상 -->
+<div>
+<h3 class="text-green-100 text-sm font-bold uppercase tracking-wider mb-4 border-b border-green-400 pb-2 inline-block">참여 대상</h3>
+<p class="text-white text-opacity-90 leading-relaxed text-lg">
+                        카페 운영 체험,<br>
+                        로컬 비즈니스 및 콘텐츠 제작에<br>
+                        관심 있는 예비 창업자 및 청년
+                    </p>
+</div>
+<!-- 하단 장식 (심볼 등) -->
+<div class="mt-auto pt-10 opacity-50">
+<i class="fas fa-leaf text-6xl text-green-200"></i>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9a70f45fcb915871&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDstDNBdc87Kr7MZyEQVF8X1CS6VVxYd1Cc699t1z4novwoS5Jx0L1T7fcvdZPFsS7ncdi%2Bi1jVVtb0BnGFad2yUbAQ4hNlvy4nFPGfUZE8TeH6rt1plnhAJILXqZPEkUC9Xhec3RzcOV7UeEDT%2FFqP55KApnmYhd7p%2BP99tOfaomxzgXbBPiwZphVgm5vjr39GNGeBBTpTtx0RGqjPNpgGZLFPzjbKgshVFCIEvgr%2By%2FDIENXvRUEG0a%2B1%2FMHdQ%2B0gL15JrdIGgw2cm4VxbmJPYQ6MFQbQys07DE44PE5FZRhYo2PYBFE79tAomXqc51jYGvw7q1qNdKxNCQvgLgrjJ69Ay3MQqOTLyk8PWKFfSn9Ux94wsfMl%2BKoGKVAVmR0nekHX3aLDN8jj3%2FZhpMyiEK%2BNTBt764rS33PssdehM1d17QxOxeYFW8a5eVF6pSfSriyEuYtttSjqImsS81jW6W3zH%2FyOZN%2BYUU8UKteJS%2F%2FKR0h%2Bv6iRPcv%2FC6wkN1dHQ3GlCChCZHVUEW8FnQD%2BO3qD5%2BpX8bhnAN4nepFlOWCcl3dc3C%2Btf4PqjhAUl7aTjpKIUYblCYd1q%2F%2FlImdtP7b3FTn%2FrivWmIl8fR0LmtiDYrzy%2FQ43K0lmr%2F6opfwXNs5SasjiinXjYzlm%2FiBHk5%2Fq8sQHiYKMM7CJhKjZexYuqkCfwX%2Bq0b1b9dOsrXG4QxjzZzNbAQg7SAmPysrYHH1YITZxs6UfQtY5OMeagyfyShqI8k6x43zb0VMLlCaQ%3D%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDstDNBdc87Kr7MZyEQVF8X1CS6VVxYd1Cc699t1z4novwoS5Jx0L1T7fcvdZPFsS7ncdi+i1jVVtb0BnGFad2yUbAQ4hNlvy4nFPGfUZE8TeH6rt1plnhAJILXqZPEkUC9Xhec3RzcOV7UeEDT/FqP55KApnmYhd7p+P99tOfaomxzgXbBPiwZphVgm5vjr39GNGeBBTpTtx0RGqjPNpgGZLFPzjbKgshVFCIEvgr+y/DIENXvRUEG0a+1/MHdQ+0gL15JrdIGgw2cm4VxbmJPYQ6MFQbQys07DE44PE5FZRhYo2PYBFE79tAomXqc51jYGvw7q1qNdKxNCQvgLgrjJ69Ay3MQqOTLyk8PWKFfSn9Ux94wsfMl+KoGKVAVmR0nekHX3aLDN8jj3/ZhpMyiEK+NTBt764rS33PssdehM1d17QxOxeYFW8a5eVF6pSfSriyEuYtttSjqImsS81jW6W3zH/yOZN+YUU8UKteJS//KR0h+v6iRPcv/C6wkN1dHQ3GlCChCZHVUEW8FnQD+O3qD5+pX8bhnAN4nepFlOWCcl3dc3C+tf4PqjhAUl7aTjpKIUYblCYd1q//lImdtP7b3FTn/rivWmIl8fR0LmtiDYrzy/Q43K0lmr/6opfwXNs5SasjiinXjYzlm/iBHk5/q8sQHiYKMM7CJhKjZexYuqkCfwX+q0b1b9dOsrXG4QxjzZzNbAQg7SAmPysrYHH1YITZxs6UfQtY5OMeagyfyShqI8k6x43zb0VMLlCaQ==";
+    </script>
+    
+        <script id="html_badge_script2" src="https://www.genspark.ai/html_badge.js"></script>
+        </body></html>

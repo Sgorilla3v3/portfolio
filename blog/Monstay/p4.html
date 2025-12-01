@@ -1,0 +1,419 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>청도 프리뷰 창업교육 상세</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Myeongjo:wght@700;800&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF7;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #FDFBF7;
+        }
+        .main-content {
+            display: flex;
+            flex: 1;
+            padding: 40px 60px;
+            gap: 40px;
+        }
+        .left-panel {
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+        }
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .image-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .info-box {
+            background-color: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #3B82F6; /* Blue for Education/Business focus */
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.8rem;
+            color: #2F5233;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+        .sub-header {
+            font-size: 0.9rem;
+            color: #6B7280;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .activity-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: transform 0.2s;
+        }
+        .activity-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+        }
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background-color: #EFF6FF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3B82F6;
+            flex-shrink: 0;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background-color: #F3F4F6;
+            color: #4B5563;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+            color: #4B5563;
+            font-size: 0.95rem;
+        }
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #3B82F6;
+            font-weight: bold;
+        }
+        .overlay-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background-color: rgba(59, 130, 246, 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style><style id="genspark-badge">
+    .genspark-badge-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .genspark-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 10000;
+      justify-content: end;
+    }
+    
+    .genspark-modal-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 450px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .genspark-modal-content {
+        max-width: 90%;
+      }
+    }
+    
+    .genspark-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    
+    .genspark-title {
+      margin-bottom: 8px;
+      font-weight: normal;
+      display: inline;
+      font-size: 14px;
+    }
+    
+    .genspark-report {
+      color: #909499;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-bottom: 14px;
+      display: inline;
+    }
+    
+    .genspark-info {
+      margin: 25px 0;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .genspark-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .genspark-remove-btn {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .genspark-go-btn {
+      background-color: #222;
+      border: none;
+      color: white;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+  </style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="px-16 pt-10 pb-2 border-b border-gray-200">
+<div class="flex items-center gap-3 mb-2">
+<span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold tracking-wider">PROGRAM B</span>
+<p class="text-gray-500 text-sm font-medium">소상공인 맞춤형 창업교육</p>
+</div>
+<h1 class="section-title text-4xl">청도 프리뷰 창업교육 상세</h1>
+</div>
+<div class="main-content">
+<!-- Left Panel: Overview -->
+<div class="left-panel">
+<div class="image-container">
+<img alt="창업 교육 및 워크숍 이미지" src="https://page.gensparksite.com/slides_images/4535f5e4adf1f3b9f48e81d72cbb5917.webp">
+<div class="overlay-badge">맞춤형 창업 컨설팅</div>
+</div>
+<div class="info-box">
+<h3 class="text-lg font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">프로그램 개요</h3>
+<div class="space-y-3">
+<div>
+<p class="text-xs text-gray-500 font-bold uppercase">주관 기관</p>
+<p class="text-gray-800 font-medium">비커넥트랩</p>
+</div>
+<div>
+<p class="text-xs text-gray-500 font-bold uppercase">운영 일정</p>
+<p class="text-gray-800 font-medium">2025.12.02 ~ 12.04 (3일간)</p>
+<p class="text-gray-600 text-sm">오전/오후 2회차 운영 (먼스테이와 병행)</p>
+</div>
+<div>
+<p class="text-xs text-gray-500 font-bold uppercase">예산 규모</p>
+<p class="text-gray-800 font-medium">약 1,500만원</p>
+<p class="text-gray-600 text-sm">청도 프리뷰 사업비 별도 연계 집행</p>
+</div>
+</div>
+</div>
+<div class="info-box" style="border-left-color: #607D8B;">
+<h3 class="text-lg font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">교육 목표</h3>
+<ul class="feature-list">
+<li><p>초기 자금 확보를 위한 지원사업 이해</p></li>
+<li><p>AI 툴 활용 업무 효율화 및 자동화</p></li>
+<li><p>체계적인 사업계획서 작성법 습득</p></li>
+<li><p>지속가능한 로컬 비즈니스 모델 수립</p></li>
+</ul>
+</div>
+</div>
+<!-- Right Panel: Key Activities -->
+<div class="right-panel">
+<div>
+<h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+<i class="fas fa-chalkboard-teacher text-blue-600 mr-2"></i>주요 커리큘럼
+                    </h3>
+<div class="grid grid-cols-2 gap-4">
+<!-- Card 1 -->
+<div class="activity-card">
+<div class="icon-box">
+<i class="fas fa-landmark text-xl"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-800 text-sm mb-1">지원사업 마스터링</h4>
+<p class="text-xs text-gray-500 mb-2">초기 자금 확보 전략</p>
+<p class="text-gray-600 text-xs leading-snug">소규모 창업 정부 지원 사업 정리 및 로컬 비즈니스 지원책 매칭</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="activity-card">
+<div class="icon-box">
+<i class="fas fa-robot text-xl"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-800 text-sm mb-1">AI 활용 창업 비서</h4>
+<p class="text-xs text-gray-500 mb-2">스마트한 업무 처리</p>
+<p class="text-gray-600 text-xs leading-snug">나만의 AI 비서 만들기, 업무 자동화 및 운영 효율화 팁 전수</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="activity-card">
+<div class="icon-box">
+<i class="fas fa-file-signature text-xl"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-800 text-sm mb-1">사업계획서 작성</h4>
+<p class="text-xs text-gray-500 mb-2">실전 문서 작성 실습</p>
+<p class="text-gray-600 text-xs leading-snug">국가 지원사업 신청용 표준 사업계획서 작성 및 멘토링</p>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="activity-card">
+<div class="icon-box">
+<i class="fas fa-project-diagram text-xl"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-800 text-sm mb-1">로컬 비즈니스 이해</h4>
+<p class="text-xs text-gray-500 mb-2">지역 특화 전략</p>
+<p class="text-gray-600 text-xs leading-snug">청도 지역 자원 분석 및 지속가능한 로컬 BM 설계</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-2">
+<h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+<i class="fas fa-clipboard-check text-blue-600 mr-2"></i>핵심 산출물 &amp; 기대성과
+                    </h3>
+<div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+<div class="flex gap-4 mb-3">
+<div class="flex-1 bg-blue-50 p-3 rounded-lg text-center">
+<p class="text-blue-700 font-bold text-sm mb-1">사업계획서</p>
+<p class="text-xs text-gray-500">실제 제출 가능한 수준의<br>창업 계획서 초안 완성</p>
+</div>
+<div class="flex-1 bg-blue-50 p-3 rounded-lg text-center">
+<p class="text-blue-700 font-bold text-sm mb-1">지원사업 Map</p>
+<p class="text-xs text-gray-500">나에게 맞는 지원사업<br>리스트업 및 로드맵</p>
+</div>
+<div class="flex-1 bg-blue-50 p-3 rounded-lg text-center">
+<p class="text-blue-700 font-bold text-sm mb-1">AI 도구 세팅</p>
+<p class="text-xs text-gray-500">업무 효율화를 위한<br>AI 툴 실습 및 적용</p>
+</div>
+</div>
+<div class="flex flex-wrap">
+<span class="tag">#정부지원사업</span>
+<span class="tag">#사업계획서</span>
+<span class="tag">#AI활용</span>
+<span class="tag">#자금확보</span>
+<span class="tag">#로컬창업</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9a70f45fdbc15871&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDldTzaYJFuqmzkq%2BexIIWlNqMyIazFnmjxBi9dn1uTxHR%2FBE3ZYG9ON8VTonb%2FHdQ3rFWrOgVnPLxaZ%2FaaT3QAFMYewBEfHW%2BYusnTQgd3s7xwN6zfhFb33pCQ6zz2jKGkBuEaRODKZKgyw7sx408bOcsxmSV2xoyiEP9DIo8a8eGHA2wAiQBdqDMdO2QJmuoE64g34UAfbhevO7KHcuygX%2BusKm4S5AYNin97owyNJiN9WAh8RoTNmI7NKwfOz%2FMw2ed%2BtnrS8TPZPSTez656Tk8qafKYkWaXhb%2Bn2c%2BvEvSGAkHoSmyKfs2g6Z0RQls1%2FlD8Y24nxYnbCWflmSTseyYZJYv8Y8neOpuD%2BcDLPsC8Vpq47E3XgvfJSj%2FYQQFNsXa7eOZlqU7v%2BhS4rEf2TUqva7oZsASTISj7fLBhn7D9%2FscVxlreQtYhjDNKx2e216e880eZfCLFuBYu8gABMgTtdybK7snDU%2FT306AC68XB0iQ%2BCvh6KMNVMWX9DCcgclkot2rnvALLmpI7DgBrJiOGkkaBtE8Mq%2FweXmCg6UEUUHtA%2FR%2B6Li4urWdn3bFitbkVGZnfj0DP9vE%2F0221II%2Br6Ogz77ATWwAeyy9hx7y5Qrg1dgbH80OnQQgawGksU2OzOKLfKLkji4n5zfc93hUiMtalPxfXeRnMO%2BiSXLFgZJqpcbRdvpODrvWoTt7U72E04O5vq5JEKlWkrZgd5k6DY5bZhqzyDg6MSePjEzBYAB60yyvDpU4%2FK%2Fhv1I5Q%3D%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDldTzaYJFuqmzkq+exIIWlNqMyIazFnmjxBi9dn1uTxHR/BE3ZYG9ON8VTonb/HdQ3rFWrOgVnPLxaZ/aaT3QAFMYewBEfHW+YusnTQgd3s7xwN6zfhFb33pCQ6zz2jKGkBuEaRODKZKgyw7sx408bOcsxmSV2xoyiEP9DIo8a8eGHA2wAiQBdqDMdO2QJmuoE64g34UAfbhevO7KHcuygX+usKm4S5AYNin97owyNJiN9WAh8RoTNmI7NKwfOz/Mw2ed+tnrS8TPZPSTez656Tk8qafKYkWaXhb+n2c+vEvSGAkHoSmyKfs2g6Z0RQls1/lD8Y24nxYnbCWflmSTseyYZJYv8Y8neOpuD+cDLPsC8Vpq47E3XgvfJSj/YQQFNsXa7eOZlqU7v+hS4rEf2TUqva7oZsASTISj7fLBhn7D9/scVxlreQtYhjDNKx2e216e880eZfCLFuBYu8gABMgTtdybK7snDU/T306AC68XB0iQ+Cvh6KMNVMWX9DCcgclkot2rnvALLmpI7DgBrJiOGkkaBtE8Mq/weXmCg6UEUUHtA/R+6Li4urWdn3bFitbkVGZnfj0DP9vE/0221II+r6Ogz77ATWwAeyy9hx7y5Qrg1dgbH80OnQQgawGksU2OzOKLfKLkji4n5zfc93hUiMtalPxfXeRnMO+iSXLFgZJqpcbRdvpODrvWoTt7U72E04O5vq5JEKlWkrZgd5k6DY5bZhqzyDg6MSePjEzBYAB60yyvDpU4/K/hv1I5Q==";
+    </script>
+    
+        <script id="html_badge_script2" src="https://www.genspark.ai/html_badge.js"></script>
+        </body></html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>기대효과 및 결론</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Myeongjo:wght@700;800&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF7;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px; /* 고정 높이 유지 */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-color: #FDFBF7;
+            overflow: hidden;
+        }
+        .header {
+            padding: 30px 60px 10px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid #E5E7EB;
+            flex-shrink: 0;
+        }
+        .section-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 2.2rem;
+            color: #1F2937;
+            font-weight: 800;
+        }
+        .main-content {
+            flex: 1;
+            padding: 30px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        /* Effect Cards */
+        .effect-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .effect-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .effect-card.participant { border-color: #2F5233; }
+        .effect-card.region { border-color: #8D6E63; }
+        .effect-card.organizer { border-color: #3B82F6; }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+        .participant .card-icon { background-color: #E8F5E9; color: #2F5233; }
+        .region .card-icon { background-color: #EFEBE9; color: #8D6E63; }
+        .organizer .card-icon { background-color: #EFF6FF; color: #3B82F6; }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+        .check-list p {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: #6B7280;
+            line-height: 1.4;
+        }
+        .check-list p::before {
+            content: '•';
+            position: absolute;
+            left: 5px;
+            font-weight: bold;
+        }
+        .participant .check-list p::before { color: #2F5233; }
+        .region .check-list p::before { color: #8D6E63; }
+        .organizer .check-list p::before { color: #3B82F6; }
+
+        /* KPI Section */
+        .kpi-section {
+            background-color: #FFF;
+            border-radius: 16px;
+            padding: 20px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+        .kpi-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .kpi-item {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+        .kpi-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background-color: #E5E7EB;
+        }
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #1F2937;
+            line-height: 1;
+            margin-bottom: 5px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .kpi-label {
+            font-size: 0.85rem;
+            color: #6B7280;
+            font-weight: 600;
+        }
+        .kpi-sub {
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            margin-top: 2px;
+        }
+
+        /* Conclusion Box */
+        .conclusion-box {
+            background: linear-gradient(135deg, #2F5233 0%, #1B3322 100%);
+            border-radius: 16px;
+            padding: 25px 40px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            box-shadow: 0 10px 20px rgba(47, 82, 51, 0.2);
+        }
+        .quote-icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+        }
+        .conclusion-text {
+            flex: 1;
+        }
+        .conclusion-main {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        .conclusion-sub {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style><style id="genspark-badge">
+    .genspark-badge-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .genspark-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 10000;
+      justify-content: end;
+    }
+    
+    .genspark-modal-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 450px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .genspark-modal-content {
+        max-width: 90%;
+      }
+    }
+    
+    .genspark-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    
+    .genspark-title {
+      margin-bottom: 8px;
+      font-weight: normal;
+      display: inline;
+      font-size: 14px;
+    }
+    
+    .genspark-report {
+      color: #909499;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-bottom: 14px;
+      display: inline;
+    }
+    
+    .genspark-info {
+      margin: 25px 0;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .genspark-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .genspark-remove-btn {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .genspark-go-btn {
+      background-color: #222;
+      border: none;
+      color: white;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+  </style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<h1 class="section-title">기대효과 및 결론</h1>
+<p class="text-gray-500 mt-2 font-medium">입체적인 성과 창출과 지속가능한 로컬 창업 모델 제시</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full">Expected Impact</span>
+</div>
+</div>
+<div class="main-content">
+<!-- 1. Key Effects -->
+<div>
+<h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+<i class="fas fa-bullseye text-green-700 mr-2"></i>대상별 기대효과
+                </h3>
+<div class="effect-grid">
+<!-- Participant -->
+<div class="effect-card participant">
+<div class="card-icon">
+<i class="fas fa-user-check"></i>
+</div>
+<h4 class="card-title">참여자 (예비창업가)</h4>
+<div class="check-list">
+<p>실전 운영 역량과 초기 자금 확보 전략 동시 습득</p>
+<p>디지털 브랜딩 포트폴리오(SNS, 영상) 구축</p>
+<p>로컬 네트워크 및 멘토링 기반 확보</p>
+</div>
+</div>
+<!-- Region -->
+<div class="effect-card region">
+<div class="card-icon">
+<i class="fas fa-map-marked-alt"></i>
+</div>
+<h4 class="card-title">청도 지역사회</h4>
+<div class="check-list">
+<p>카페 생태계 이해도 확산 및 관계인구 유입</p>
+<p>지역 행사(소통협력주간) 콘텐츠 풍성/다양화</p>
+<p>청년 창업가 유입 가능성 및 정착 기반 마련</p>
+</div>
+</div>
+<!-- Organizer -->
+<div class="effect-card organizer">
+<div class="card-icon">
+<i class="fas fa-network-wired"></i>
+</div>
+<h4 class="card-title">운영기관 &amp; 생태계</h4>
+<div class="check-list">
+<p>교육-실습-행사 연계 통합 창업 모델 고도화</p>
+<p>기관 간(혁신센터, 비커넥트랩 등) 협력 강화</p>
+<p>향후 정규 프로그램 확장을 위한 데이터 확보</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. KPI -->
+<div class="kpi-section">
+<div class="flex justify-between items-center mb-4 border-bottom border-gray-100 pb-2">
+<h3 class="text-lg font-bold text-gray-800"><i class="fas fa-chart-line text-blue-600 mr-2"></i>핵심 성과 지표 (KPI) 제안</h3>
+<span class="text-xs text-gray-400">* 프로그램 종료 시점 기준</span>
+</div>
+<div class="kpi-grid">
+<div class="kpi-item">
+<p class="kpi-value text-green-700">100<span class="text-lg">%</span></p>
+<p class="kpi-label">선발 및 완주율</p>
+<p class="kpi-sub">3명 선발 / 전원 수료 목표</p>
+</div>
+<div class="kpi-item">
+<p class="kpi-value text-blue-600">3<span class="text-lg">건</span></p>
+<p class="kpi-label">창업계획서 초안</p>
+<p class="kpi-sub">인당 1건 완성 (지원사업용)</p>
+</div>
+<div class="kpi-item">
+<p class="kpi-value text-yellow-600">1<span class="text-lg">회</span></p>
+<p class="kpi-label">팝업 부스 운영</p>
+<p class="kpi-sub">지역 축제 연계 실전 판매</p>
+</div>
+<div class="kpi-item">
+<p class="kpi-value text-purple-600">10<span class="text-lg">+</span></p>
+<p class="kpi-label">콘텐츠 발행</p>
+<p class="kpi-sub">카드뉴스, 릴스 등 SNS 포스팅</p>
+</div>
+</div>
+</div>
+<!-- 3. Conclusion -->
+<div class="conclusion-box">
+<i class="fas fa-quote-left quote-icon"></i>
+<div class="conclusion-text">
+<p class="conclusion-main">"별개의 예산과 운영체계이나, <br>동일한 시간과 공간 위에서 ‘체험→설계→실행’의 여정을 완성합니다."</p>
+<p class="conclusion-sub">먼스테이의 <span class="font-bold text-yellow-300">현장성</span>과 청도 프리뷰의 <span class="font-bold text-blue-300">전문성</span>을 결합하여, 실패 확률을 낮추고 지속 가능성을 높이는 실전형 로컬 창업가를 양성하겠습니다.</p>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9a70f45febeb5871&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDoGh1rmOM0nBIhFf%2Fh5CfNnwTFTKv54%2BJIngzweURqE1%2FW6Tho8x413WbLjIwNPbERuVnVh2Qh5x52qALIcyq4bB7pDqcEgB1FmLGJctgCq51QncHkk6cbD29QLAAiVZIfjFeEx1sVQcNgDkahzwNpiI8lEbY2hrqY16KY7yzblcHa9MBYIzaOv7XYn97SZDolze4l9%2BOPBGgwhM2fyZ53FlIaIFqGgYvpp%2B%2FrHYT3fr8leq7vsTAvNrKpc2dHpqUSZ6kxBsiH9UWmihJj9cNs5xu8Bo%2FwxMdxz58lNPaU6xrQgDpXHQUt4teqY%2FWpVJfn0B2CYPKxuZ8zd7roiQlzsaMbXW8h6TMTHA%2BfJrzYaUY%2BQBB23B247VDVjTBQEesFI4x%2FdXbduWjoZbIrlQq1mVQ1Vmz9OXyIMeLsAcL1sw1hg84nzEjy97sAUFTqStMCL0use%2BBYDmTxmY%2B5e7rxdQyYjPii%2FGHyw7bnhSb7HFqHakQaaRvSMoRl%2BwipvJ180feMGMmu6IfRjCiYiGEPjHG%2BirWp1N%2BJF3Nkp4N3BX9%2BGT05Sxt6N7ffHpzld%2BPsCia%2BHxmOumJlPpFRA07JpmXY8M7n0IaYuHvCwVsZFQd1DoRKdsMQ06lXJ50wtvUuA5l2jEcoWGuQnnqyJebBG3lznTuc7ZMjDqh%2Fb6Xv5bvHyKw33uzgFIJpj09Ay8LJIkOLJ7jDw5HN8TkJfUobcXpDTOnpzbP%2B%2F3xhsq3mARI9cNFhLfZ4fWDrCxrs9Feg%3D%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDoGh1rmOM0nBIhFf/h5CfNnwTFTKv54+JIngzweURqE1/W6Tho8x413WbLjIwNPbERuVnVh2Qh5x52qALIcyq4bB7pDqcEgB1FmLGJctgCq51QncHkk6cbD29QLAAiVZIfjFeEx1sVQcNgDkahzwNpiI8lEbY2hrqY16KY7yzblcHa9MBYIzaOv7XYn97SZDolze4l9+OPBGgwhM2fyZ53FlIaIFqGgYvpp+/rHYT3fr8leq7vsTAvNrKpc2dHpqUSZ6kxBsiH9UWmihJj9cNs5xu8Bo/wxMdxz58lNPaU6xrQgDpXHQUt4teqY/WpVJfn0B2CYPKxuZ8zd7roiQlzsaMbXW8h6TMTHA+fJrzYaUY+QBB23B247VDVjTBQEesFI4x/dXbduWjoZbIrlQq1mVQ1Vmz9OXyIMeLsAcL1sw1hg84nzEjy97sAUFTqStMCL0use+BYDmTxmY+5e7rxdQyYjPii/GHyw7bnhSb7HFqHakQaaRvSMoRl+wipvJ180feMGMmu6IfRjCiYiGEPjHG+irWp1N+JF3Nkp4N3BX9+GT05Sxt6N7ffHpzld+PsCia+HxmOumJlPpFRA07JpmXY8M7n0IaYuHvCwVsZFQd1DoRKdsMQ06lXJ50wtvUuA5l2jEcoWGuQnnqyJebBG3lznTuc7ZMjDqh/b6Xv5bvHyKw33uzgFIJpj09Ay8LJIkOLJ7jDw5HN8TkJfUobcXpDTOnpzbP+/3xhsq3mARI9cNFhLfZ4fWDrCxrs9Feg==";
+    </script>
+    
+        <script id="html_badge_script2" src="https://www.genspark.ai/html_badge.js"></script>
+        </body></html>

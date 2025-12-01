@@ -1,0 +1,439 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>부록 및 문의처</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Myeongjo:wght@700;800&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF7;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-color: #FDFBF7;
+            overflow: hidden;
+        }
+        .header {
+            padding: 40px 60px 20px 60px;
+            border-bottom: 2px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .section-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 2.2rem;
+            color: #1F2937;
+            font-weight: 800;
+        }
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            gap: 40px;
+        }
+        
+        /* Section Headers */
+        .sub-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #4B5563;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sub-title::before {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 18px;
+            background-color: #2F5233;
+            border-radius: 2px;
+        }
+
+        /* Organization Cards */
+        .org-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .org-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border: 1px solid #F3F4F6;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: transform 0.2s ease;
+        }
+        .org-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.06);
+            border-color: #E5E7EB;
+        }
+        .org-icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .icon-green { background-color: #E8F5E9; color: #2F5233; }
+        .icon-blue { background-color: #EFF6FF; color: #3B82F6; }
+        .icon-brown { background-color: #EFEBE9; color: #8D6E63; }
+        
+        .org-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 4px;
+        }
+        .org-role {
+            font-size: 0.85rem;
+            color: #6B7280;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .org-desc {
+            font-size: 0.8rem;
+            color: #9CA3AF;
+            line-height: 1.4;
+        }
+
+        /* Contact & Reference Column */
+        .right-col {
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* SNS Cards */
+        .sns-box {
+            background: linear-gradient(135deg, #fff 0%, #f9fafb 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #E5E7EB;
+        }
+        .sns-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid #F3F4F6;
+        }
+        .sns-item:last-child { margin-bottom: 0; }
+        .sns-icon {
+            font-size: 1.5rem;
+            color: #E1306C; /* Instagram Brand Color */
+        }
+
+        /* Document Cards */
+        .doc-box {
+            background-color: #FFF;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #E5E7EB;
+        }
+        .doc-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .doc-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .doc-item:first-child { padding-top: 0; }
+        .file-icon {
+            font-size: 1.8rem;
+            color: #6B7280;
+        }
+        
+        .footer-message {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #E5E7EB;
+            font-size: 0.85rem;
+            color: #9CA3AF;
+            text-align: center;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style><style id="genspark-badge">
+    .genspark-badge-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .genspark-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 10000;
+      justify-content: end;
+    }
+    
+    .genspark-modal-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 450px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .genspark-modal-content {
+        max-width: 90%;
+      }
+    }
+    
+    .genspark-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    
+    .genspark-title {
+      margin-bottom: 8px;
+      font-weight: normal;
+      display: inline;
+      font-size: 14px;
+    }
+    
+    .genspark-report {
+      color: #909499;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-bottom: 14px;
+      display: inline;
+    }
+    
+    .genspark-info {
+      margin: 25px 0;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .genspark-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .genspark-remove-btn {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .genspark-go-btn {
+      background-color: #222;
+      border: none;
+      color: white;
+      padding: 4px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+  </style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<h1 class="section-title">부록 · 문의처</h1>
+<p class="text-gray-500 mt-2 font-medium">함께 만드는 사람들 &amp; 참고 자료</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full">Contacts &amp; Appendix</span>
+</div>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Left Column: Organizations -->
+<div class="flex-1">
+<h3 class="sub-title">운영 및 협력 기관</h3>
+<div class="org-grid">
+<!-- Org 1: Cafe Darori -->
+<div class="org-card">
+<div class="org-icon-box icon-green">
+<i class="fas fa-mug-hot"></i>
+</div>
+<div>
+<h4 class="org-name">카페 다로리</h4>
+<p class="org-role">공간 제공 및 현장 운영</p>
+<p class="org-desc">먼스테이 거점 공간<br>카페 실습 및 숙소 운영</p>
+</div>
+</div>
+<!-- Org 2: Local Impact Lab -->
+<div class="org-card">
+<div class="org-icon-box icon-brown">
+<i class="fas fa-laptop-house"></i>
+</div>
+<div>
+<h4 class="org-name">로컬임팩트랩</h4>
+<p class="org-role">창업 교육 장소 대관</p>
+<p class="org-desc">소통협력공간<br>교육 장소 제공</p>
+</div>
+</div>
+<!-- Org 3: B-Connect Lab -->
+<div class="org-card">
+<div class="org-icon-box icon-blue">
+<i class="fas fa-chalkboard-teacher"></i>
+</div>
+<div>
+<h4 class="org-name">비커넥트랩</h4>
+<p class="org-role">창업 교육 운영</p>
+<p class="org-desc">청도 프리뷰 창업교육 주관<br>사업계획서 및 지원사업 멘토링</p>
+</div>
+</div>
+<!-- Org 4: Cheongdo Innovation Center -->
+<div class="org-card">
+<div class="org-icon-box" style="background-color: #FFF3E0; color: #E65100;">
+<i class="fas fa-hands-helping"></i>
+</div>
+<div>
+<h4 class="org-name">청도혁신센터</h4>
+<p class="org-role">지역 협력 및 지원</p>
+<p class="org-desc">로컬 네트워크 연결 지원<br>소통협력주간 연계</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: SNS & References -->
+<div class="right-col">
+<!-- SNS Section -->
+<div>
+<h3 class="sub-title" style="margin-bottom: 15px;">공식 소통 채널 (SNS)</h3>
+<div class="sns-box">
+<div class="sns-item">
+<i class="fab fa-instagram sns-icon"></i>
+<div>
+<p class="text-xs text-gray-500 font-bold">DMO x 1시군 콘츄리 스토어</p>
+<p class="text-sm font-bold text-gray-800">@countrystore054</p>
+</div>
+</div>
+<div class="sns-item">
+<i class="fab fa-instagram sns-icon"></i>
+<div>
+<p class="text-xs text-gray-500 font-bold">청도혁신센터</p>
+<p class="text-sm font-bold text-gray-800">@cheogdo_cmz</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Reference Section -->
+<div>
+<h3 class="sub-title" style="margin-bottom: 15px;">참고 자료 (원본)</h3>
+<div class="doc-box">
+<div class="doc-item">
+<i class="fas fa-file-alt file-icon text-gray-400"></i>
+<div>
+<p class="text-sm font-bold text-gray-800">먼스테이 어쩌다 사장 계획서</p>
+<p class="text-xs text-gray-500">File Type: Markdown (.md)</p>
+</div>
+</div>
+<div class="doc-item">
+<i class="fas fa-file-pdf file-icon text-red-400"></i>
+<div>
+<p class="text-sm font-bold text-gray-800">소상공인 맞춤형 창업교육 제안서</p>
+<p class="text-xs text-gray-500">File Type: PDF Document (.pdf)</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer-message">
+<p>본 기획서는 2025년 12월 기준으로 작성되었습니다.</p>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9a70f45febf25871&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDmrcSDVpMLT%2B1lPEL8HEMSXSYoFZkeMz0QL1tHH5g9HoywhdcxvuR6yN4etInlubwCugpkAWCIy0SWfntBxHIv2r9odIaMS4Lmjb8UMqDxm7ayad009K8v%2F%2BPpBsT85luz%2F65mYBx5l8fxCYSSZh3BwXyDEhLYA9yv8cd%2FQEFFlXXKkIpFrIe%2F4R3d%2BiYTtcIOvjUGDrQviushP7oomn8Snph2FZsauF1%2BoFpP%2FjyvvVAQpWvFz9RJI6GDlvYAKWcyTFQ0K3VW%2Fj%2FhZPJgqZbMvcJlvHopU2QC9zMT0GYSkLyyDcpTK1EZ%2Bt19uReCrexEBPOPOqZeTxDbWVpkX2F%2FL%2BAt55WaGKS%2BjmyB0OI5JR8VGiSzUhIn3DP%2FrgwGoH0zMF4jZbUtErDse3rJAamNzxhaMHJI%2BwuEDX0g8X6EbJxh%2F7GYPvssPt0ysdUphYDxrg2ksH9Mx3nmFObjhJJaCYSilTvVL5cVF6DFP%2Bedo5xRIAaGrv%2BNH74L4J8a0Cpc24DjozyenGP3B%2Bo6Thqc5RGYlG5m8XM70aV%2Bjc%2BuhXEaODBEtCZ5aKPCXo1NBZOV7A3LBFSC2J4wbz6s6fsLedWN9Y83ICOWRBe%2FVTFUGQwaJKFFypzjUbEeRTG%2Fol3Oy2CCC%2BfQHnwTg0RQVRn4qhQfcOLDOZ6knMScu%2BCruFSQQxza4UP0PdAtD9eX6Ouw%2F1wYZMqwYeEf2HJDpn0h8tumW0rLyVRGwkIB71g0PKAv0nDR%2FVt8fweVi4gmumxg%3D%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDmrcSDVpMLT+1lPEL8HEMSXSYoFZkeMz0QL1tHH5g9HoywhdcxvuR6yN4etInlubwCugpkAWCIy0SWfntBxHIv2r9odIaMS4Lmjb8UMqDxm7ayad009K8v/+PpBsT85luz/65mYBx5l8fxCYSSZh3BwXyDEhLYA9yv8cd/QEFFlXXKkIpFrIe/4R3d+iYTtcIOvjUGDrQviushP7oomn8Snph2FZsauF1+oFpP/jyvvVAQpWvFz9RJI6GDlvYAKWcyTFQ0K3VW/j/hZPJgqZbMvcJlvHopU2QC9zMT0GYSkLyyDcpTK1EZ+t19uReCrexEBPOPOqZeTxDbWVpkX2F/L+At55WaGKS+jmyB0OI5JR8VGiSzUhIn3DP/rgwGoH0zMF4jZbUtErDse3rJAamNzxhaMHJI+wuEDX0g8X6EbJxh/7GYPvssPt0ysdUphYDxrg2ksH9Mx3nmFObjhJJaCYSilTvVL5cVF6DFP+edo5xRIAaGrv+NH74L4J8a0Cpc24DjozyenGP3B+o6Thqc5RGYlG5m8XM70aV+jc+uhXEaODBEtCZ5aKPCXo1NBZOV7A3LBFSC2J4wbz6s6fsLedWN9Y83ICOWRBe/VTFUGQwaJKFFypzjUbEeRTG/ol3Oy2CCC+fQHnwTg0RQVRn4qhQfcOLDOZ6knMScu+CruFSQQxza4UP0PdAtD9eX6Ouw/1wYZMqwYeEf2HJDpn0h8tumW0rLyVRGwkIB71g0PKAv0nDR/Vt8fweVi4gmumxg==";
+    </script>
+    
+        <script id="html_badge_script2" src="https://www.genspark.ai/html_badge.js"></script>
+        </body></html>
