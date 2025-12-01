@@ -11,15 +11,17 @@
             padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #FDFBF7;
+            overflow-y: auto;
         }
         .slide-container {
             width: 1280px;
-            height: 720px; /* 고정 높이 유지 */
+            height: auto; /* 자동 높이로 변경 */
+            min-height: 720px; /* 최소 높이 유지 */
             position: relative;
             display: flex;
             flex-direction: column;
             background-color: #FDFBF7;
-            overflow: hidden;
+            overflow: visible; /* 스크롤 가능하도록 변경 */
         }
         .header {
             padding: 30px 60px 10px 60px;
@@ -37,11 +39,11 @@
         }
         .main-content {
             flex: 1;
-            padding: 30px 60px;
+            padding: 30px 60px 40px 60px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            gap: 20px;
+            justify-content: flex-start;
+            gap: 30px;
         }
 
         /* Effect Cards */
