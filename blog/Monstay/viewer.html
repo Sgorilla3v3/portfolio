@@ -105,6 +105,49 @@
             line-height: 1.4;
         }
 
+        /* 사이드바 단축키 스타일 */
+        .sidebar-shortcuts {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.1);
+        }
+
+        .shortcuts-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #97A97C;
+            margin-bottom: 15px;
+        }
+
+        .shortcut-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .shortcut-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .shortcut-item .key {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .shortcut-text {
+            color: rgba(255,255,255,0.8);
+            font-weight: 400;
+        }
+
         /* 메인 콘텐츠 영역 */
         .main-content {
             flex: 1;
@@ -197,20 +240,21 @@
         /* iframe 컨테이너 */
         .iframe-container {
             flex: 1;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: auto;
+            height: calc(100vh - 80px); /* 네비게이션 헤더 높이 제외 */
         }
 
         .slide-frame {
             width: 100%;
-            max-width: 1280px;
-            height: auto;
-            aspect-ratio: 16/9;
+            height: 100%;
+            max-width: none;
+            max-height: none;
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             background: white;
             transition: all 0.3s ease;
@@ -257,43 +301,8 @@
             background: #4B5563;
         }
 
-        /* 키보드 단축키 안내 */
-        .keyboard-hints {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 12px;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .keyboard-hints:hover {
-            opacity: 1;
-        }
-
-        .keyboard-hint {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 5px;
-        }
-
-        .keyboard-hint:last-child {
-            margin-bottom: 0;
-        }
-
-        .key {
-            background: #374151;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            border: 1px solid #6b7280;
-        }
-
+        /* 키보드 단축키 안내 - 사이드바로 이동됨 */
+        
         /* 로딩 애니메이션 */
         .loading {
             display: flex;
@@ -573,6 +582,34 @@
                 <div class="toc-item" data-page="9">
                     <div class="toc-number">10</div>
                     <div class="toc-text">부록·문의처</div>
+                </div>
+            </div>
+            
+            <!-- 키보드 단축키 안내 -->
+            <div class="sidebar-shortcuts">
+                <div class="shortcuts-title">단축키</div>
+                <div class="shortcut-item">
+                    <span class="key">←</span>
+                    <span class="key">→</span>
+                    <span class="shortcut-text">페이지 이동</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="key">Home</span>
+                    <span class="shortcut-text">첫 페이지</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="key">End</span>
+                    <span class="shortcut-text">마지막 페이지</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="key">Ctrl</span>
+                    <span class="key">E</span>
+                    <span class="shortcut-text">편집 모드</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="key">Ctrl</span>
+                    <span class="key">S</span>
+                    <span class="shortcut-text">저장</span>
                 </div>
             </div>
         </div>
