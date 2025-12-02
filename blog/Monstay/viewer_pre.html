@@ -34,7 +34,28 @@
             flex-direction: column;
             box-shadow: 4px 0 20px rgba(0,0,0,0.15);
             z-index: 100;
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
+
+        .sidebar.hidden {
+            width: 0;
+            min-width: 0;
+            box-shadow: none;
+        }
+
+        .toggle-sidebar-btn {
+            background: #97A97C !important;
+            margin-right: 15px;
+            min-width: 90px;
+            justify-content: center;
+        }
+
+        .toggle-sidebar-btn.active {
+            background: #2F5233 !important;
+        }
+
+
 
         .sidebar-header {
             padding: 25px 20px;
@@ -154,6 +175,7 @@
             display: flex;
             flex-direction: column;
             background: #f8fafc;
+            transition: margin-left 0.3s ease;
         }
 
         /* 상단 네비게이션 */
@@ -387,6 +409,10 @@
                 max-width: 95vw;
             }
             
+            .sidebar-shortcuts {
+                display: none; /* 태블릿에서는 단축키 숨김 */
+            }
+            
             .nav-header {
                 padding: 10px 20px;
                 flex-wrap: wrap;
@@ -471,10 +497,6 @@
                 padding: 10px;
             }
             
-            .keyboard-hints {
-                display: none;
-            }
-            
             .edit-toolbar {
                 top: 5px;
                 right: 5px;
@@ -485,6 +507,25 @@
                 padding: 4px 8px;
                 font-size: 11px;
                 margin: 0 1px;
+            }
+            
+            .sidebar-shortcuts {
+                padding: 15px 20px;
+            }
+            
+            .shortcuts-title {
+                font-size: 12px;
+            }
+            
+            .shortcut-item {
+                font-size: 10px;
+                gap: 6px;
+            }
+            
+            .shortcut-item .key {
+                font-size: 9px;
+                padding: 1px 4px;
+                min-width: 16px;
             }
         }
 
@@ -611,6 +652,11 @@
                     <span class="key">S</span>
                     <span class="shortcut-text">저장</span>
                 </div>
+                <div class="shortcut-item">
+                    <span class="key">Ctrl</span>
+                    <span class="key">B</span>
+                    <span class="shortcut-text">목차 토글</span>
+                </div>
             </div>
         </div>
 
@@ -619,6 +665,10 @@
             <!-- 상단 네비게이션 -->
             <div class="nav-header">
                 <div class="page-info">
+                    <button class="nav-btn toggle-sidebar-btn" id="toggle-sidebar-btn">
+                        <i class="fas fa-eye-slash"></i>
+                        <span>숨기기</span>
+                    </button>
                     <div class="page-counter">
                         <span id="current-page">1</span> / <span id="total-pages">10</span>
                     </div>
@@ -743,11 +793,15 @@
                 this.nextBtn = document.getElementById('next-btn');
                 this.editBtn = document.getElementById('edit-btn');
                 this.saveBtn = document.getElementById('save-btn');
+                this.toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
                 this.currentPageSpan = document.getElementById('current-page');
                 this.totalPagesSpan = document.getElementById('total-pages');
                 this.pageTitleSpan = document.getElementById('page-title');
                 this.tocItems = document.querySelectorAll('.toc-item');
                 this.iframeContainer = document.querySelector('.iframe-container');
+                this.sidebar = document.querySelector('.sidebar');
+                this.mainContent = document.querySelector('.main-content');
+                this.sidebarVisible = true;
             }
 
             setupEventListeners() {
@@ -756,6 +810,7 @@
                 this.nextBtn.addEventListener('click', () => this.goToNextPage());
                 this.editBtn.addEventListener('click', () => this.toggleEditMode());
                 this.saveBtn.addEventListener('click', () => this.saveCurrentPage());
+                this.toggleSidebarBtn.addEventListener('click', () => this.toggleSidebar());
 
                 // 목차 클릭
                 this.tocItems.forEach(item => {
@@ -800,6 +855,12 @@
                         e.preventDefault();
                         this.saveCurrentPage();
                     }
+                    
+                    // 목차 토글 (Ctrl+B)
+                    if (e.ctrlKey && e.key === 'b') {
+                        e.preventDefault();
+                        this.toggleSidebar();
+                    }
                 });
 
                 // iframe 로딩 완료 처리
@@ -809,6 +870,20 @@
                         this.enableEditing();
                     }
                 });
+            }
+
+            toggleSidebar() {
+                this.sidebarVisible = !this.sidebarVisible;
+                
+                if (this.sidebarVisible) {
+                    this.sidebar.classList.remove('hidden');
+                    this.toggleSidebarBtn.classList.remove('active');
+                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-eye-slash"></i><span>숨기기</span>';
+                } else {
+                    this.sidebar.classList.add('hidden');
+                    this.toggleSidebarBtn.classList.add('active');
+                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-eye"></i><span>보이기</span>';
+                }
             }
 
             toggleEditMode() {
