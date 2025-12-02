@@ -4,6 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>먼스테이 어쩌다 사장 × 청도 프리뷰 창업교육 연계사업 기획서</title>
+    
+    <!-- 파비콘 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%232F5233'/%3E%3Cpath d='M20 35h60v8H20z' fill='%23FDFBF7'/%3E%3Cpath d='M25 45h50v15H25z' fill='%23FDFBF7'/%3E%3Ccircle cx='35' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='50' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='65' cy='50' r='2' fill='%232F5233'/%3E%3Cpath d='M30 65h40v3H30z' fill='%2397A97C'/%3E%3C/svg%3E">
+    
+    <!-- 메타 정보 -->
+    <meta name="description" content="청도혁신센터 먼스테이 어쩌다 사장과 청도 프리뷰 창업교육 연계사업 기획서 - 실전형 로컬 창업가 양성 프로그램">
+    <meta name="author" content="청도혁신센터">
+    <meta name="keywords" content="청도, 창업교육, 먼스테이, 프리뷰, 로컬창업, 카페창업, 청도혁신센터">
+    
+    <!-- Open Graph 메타 태그 -->
+    <meta property="og:title" content="먼스테이 × 청도 프리뷰 창업교육 연계사업">
+    <meta property="og:description" content="체험→설계→실행의 여정을 완성하는 실전형 로컬 창업가 양성 프로그램">
+    <meta property="og:type" content="website">
+    
+    <!-- 브라우저 테마 색상 -->
+    <meta name="theme-color" content="#2F5233">
+    <meta name="msapplication-navbutton-color" content="#2F5233">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- PWA 지원 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="청도 창업교육">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%232F5233'/%3E%3Cpath d='M20 35h60v8H20z' fill='%23FDFBF7'/%3E%3Cpath d='M25 45h50v15H25z' fill='%23FDFBF7'/%3E%3Ccircle cx='35' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='50' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='65' cy='50' r='2' fill='%232F5233'/%3E%3Cpath d='M30 65h40v3H30z' fill='%2397A97C'/%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -1039,6 +1062,10 @@
                 
                 // 페이지 제목 업데이트
                 this.pageTitleSpan.textContent = this.pageTitles[this.currentPage];
+                
+                // 브라우저 탭 제목 업데이트
+                const currentTitle = this.pageTitles[this.currentPage];
+                document.title = `${currentTitle} - 청도 창업교육 연계사업 (${this.currentPage + 1}/${this.totalPages})`;
                 
                 // 네비게이션 버튼 상태 업데이트
                 this.prevBtn.disabled = this.currentPage === 0;
