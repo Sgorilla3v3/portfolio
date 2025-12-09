@@ -7,7 +7,6 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * {
             margin: 0;
@@ -49,6 +48,7 @@
             width: 24px;
             height: 24px;
             animation: spin 1s linear infinite;
+            display: inline-block;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -61,30 +61,73 @@
 
     <script type="text/babel">
         const { useState, useEffect } = React;
-        const lucide = window.lucide;
 
         // ============ 여기에 구글 Apps Script 웹앱 URL을 입력하세요 ============
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqpIJKxCXeVwc6cmT-nKZbug9Pq-8haydzE6AU5wwdPPkdN7E7rI2a54qkeVZrqBPILw/exec';
         // ====================================================================
 
-        // 메뉴 데이터 (고정)
+        // 메뉴 데이터
         const MENU_ITEMS = [
-            { id: 1, name: '떡볶이', price: 5000 },
-            { id: 2, name: '순대', price: 4000 },
-            { id: 3, name: '튀김', price: 3000 },
-            { id: 4, name: '김밥', price: 3500 },
-            { id: 5, name: '라면', price: 4000 },
-            { id: 6, name: '콜라', price: 2000 },
-            { id: 7, name: '사이다', price: 2000 },
-            { id: 8, name: '물', price: 1000 },
+            { id: 1, name: '쿠키슈', price: 12000 },
+            { id: 2, name: '유자차', price: 5000 },
+            { id: 3, name: '레몬차', price: 5000 },
+            { id: 4, name: '생강차', price: 5000 },
+            { id: 5, name: '핫초코', price: 5000 },
+            { id: 6, name: '홍시라떼', price: 5000 },
         ];
 
-        // 아이콘 컴포넌트
-        const Icon = ({ name, size = 24, className = "", ...props }) => {
-            const IconComponent = lucide[name];
-            if (!IconComponent) return null;
-            return <IconComponent size={size} className={className} {...props} />;
-        };
+        // SVG 아이콘 컴포넌트들
+        const ShoppingCartIcon = ({ size = 24, color = "currentColor" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+        );
+
+        const BarChartIcon = ({ size = 24, color = "currentColor" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+            </svg>
+        );
+
+        const PlusIcon = ({ size = 16, color = "currentColor" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        );
+
+        const MinusIcon = ({ size = 16, color = "currentColor" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        );
+
+        const SaveIcon = ({ size = 24, color = "currentColor" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+        );
+
+        const RefreshIcon = ({ size = 20, color = "currentColor" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+        );
+
+        const SettingsIcon = ({ size = 64, color = "currentColor" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6m-9-9h6m6 0h6"></path>
+            </svg>
+        );
 
         // Toast 알림 컴포넌트
         const Toast = ({ message, type = 'success', onClose }) => {
@@ -161,7 +204,6 @@
                         })
                     });
                     
-                    // no-cors 모드에서는 응답을 읽을 수 없으므로 성공으로 간주
                     showToast('판매가 저장되었습니다!');
                     await loadSalesHistory();
                     return true;
@@ -259,7 +301,9 @@
                     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <div style={{ maxWidth: '600px', background: 'white', borderRadius: '24px', padding: '40px', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
                             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                                <Icon name="Settings" size={64} style={{ color: '#667eea', margin: '0 auto 20px' }} />
+                                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                                    <SettingsIcon size={64} color="#667eea" />
+                                </div>
                                 <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1f2937', marginBottom: '10px' }}>구글 시트 설정 필요</h1>
                                 <p style={{ color: '#6b7280' }}>아래 단계를 따라 구글 시트를 연동해주세요</p>
                             </div>
@@ -298,11 +342,8 @@
                             </div>
 
                             <div style={{ background: '#fef3c7', border: '2px solid #fbbf24', borderRadius: '12px', padding: '15px' }}>
-                                <div style={{ display: 'flex', gap: '10px', alignItems: 'start' }}>
-                                    <Icon name="AlertCircle" size={20} style={{ color: '#f59e0b', flexShrink: 0 }} />
-                                    <div style={{ fontSize: '14px', color: '#92400e' }}>
-                                        <strong>중요:</strong> HTML 파일에서 <code style={{ background: '#fde68a', padding: '2px 6px', borderRadius: '4px' }}>GOOGLE_SCRIPT_URL</code> 변수에 웹앱 URL을 입력하고 저장한 후 새로고침하세요.
-                                    </div>
+                                <div style={{ fontSize: '14px', color: '#92400e' }}>
+                                    <strong>중요:</strong> HTML 파일에서 <code style={{ background: '#fde68a', padding: '2px 6px', borderRadius: '4px' }}>GOOGLE_SCRIPT_URL</code> 변수에 웹앱 URL을 입력하고 저장한 후 새로고침하세요.
                                 </div>
                             </div>
                         </div>
@@ -322,16 +363,16 @@
                             <div style={{ background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '16px' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                                     <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <Icon name="ShoppingCart" style={{ color: '#8b5cf6' }} />
+                                        <ShoppingCartIcon size={24} color="#8b5cf6" />
                                         축제 POS
                                     </h1>
                                     <button
                                         onClick={() => setCurrentView('dashboard')}
                                         style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#3b82f6', color: 'white', padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer', transition: 'all 0.2s' }}
-                                        onMouseOver={(e) => e.target.style.background = '#2563eb'}
-                                        onMouseOut={(e) => e.target.style.background = '#3b82f6'}
+                                        onMouseOver={(e) => e.currentTarget.style.background = '#2563eb'}
+                                        onMouseOut={(e) => e.currentTarget.style.background = '#3b82f6'}
                                     >
-                                        <Icon name="BarChart3" size={20} />
+                                        <BarChartIcon size={20} color="white" />
                                         대시보드
                                     </button>
                                 </div>
@@ -352,8 +393,8 @@
                                             key={menu.id}
                                             onClick={() => addToCart(menu.id)}
                                             style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)', color: 'white', padding: '16px', borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(139,92,246,0.3)', cursor: 'pointer', transition: 'all 0.2s' }}
-                                            onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
-                                            onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+                                            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                                            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                                         >
                                             <div style={{ fontWeight: 'bold', fontSize: '18px' }}>{menu.name}</div>
                                             <div style={{ fontSize: '14px', opacity: 0.9 }}>{menu.price.toLocaleString()}원</div>
@@ -385,14 +426,14 @@
                                                                 onClick={() => removeFromCart(menu.id)}
                                                                 style={{ background: '#fee2e2', color: '#dc2626', padding: '8px', borderRadius: '8px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                                             >
-                                                                <Icon name="Minus" size={16} />
+                                                                <MinusIcon size={16} color="#dc2626" />
                                                             </button>
                                                             <span style={{ fontWeight: 'bold', fontSize: '18px', width: '32px', textAlign: 'center' }}>{quantity}</span>
                                                             <button
                                                                 onClick={() => addToCart(menu.id)}
                                                                 style={{ background: '#d1fae5', color: '#059669', padding: '8px', borderRadius: '8px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                                             >
-                                                                <Icon name="Plus" size={16} />
+                                                                <PlusIcon size={16} color="#059669" />
                                                             </button>
                                                         </div>
                                                     </div>
@@ -420,7 +461,7 @@
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <Icon name="Save" size={24} />
+                                                        <SaveIcon size={24} color="white" />
                                                         판매 저장
                                                     </>
                                                 )}
@@ -445,7 +486,7 @@
                             <div style={{ background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '16px' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                                     <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <Icon name="BarChart3" style={{ color: '#3b82f6' }} />
+                                        <BarChartIcon size={24} color="#3b82f6" />
                                         판매 대시보드
                                     </h1>
                                     <div style={{ display: 'flex', gap: '8px' }}>
@@ -454,14 +495,14 @@
                                             disabled={loading}
                                             style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#10b981', color: 'white', padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer' }}
                                         >
-                                            <Icon name="RefreshCw" size={20} />
+                                            <RefreshIcon size={20} color="white" />
                                             새로고침
                                         </button>
                                         <button
                                             onClick={() => setCurrentView('pos')}
                                             style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#8b5cf6', color: 'white', padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
                                         >
-                                            <Icon name="ShoppingCart" size={20} />
+                                            <ShoppingCartIcon size={20} color="white" />
                                             POS
                                         </button>
                                     </div>
