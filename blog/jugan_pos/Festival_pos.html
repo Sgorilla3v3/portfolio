@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>축제 POS 시스템</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+        .toast.error {
+            background: #ef4444;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #8b5cf6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const lucide = window.lucide;
+
+        // ============ 여기에 구글 Apps Script 웹앱 URL을 입력하세요 ============
+        const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
+        // ====================================================================
+
+        // 메뉴 데이터 (고정)
+        const MENU_ITEMS = [
+            { id: 1, name: '떡볶이', price: 5000 },
+            { id: 2, name: '순대', price: 4000 },
+            { id: 3, name: '튀김', price: 3000 },
+            { id: 4, name: '김밥', price: 3500 },
+            { id: 5, name: '라면', price: 4000 },
+            { id: 6, name: '콜라', price: 2000 },
+            { id: 7, name: '사이다', price: 2000 },
+            { id: 8, name: '물', price: 1000 },
+        ];
+
+        // 아이콘 컴포넌트
+        const Icon = ({ name, size = 24, className = "", ...props }) => {
+            const IconComponent = lucide[name];
+            if (!IconComponent) return null;
+            return <IconComponent size={size} className={className} {...props} />;
+        };
+
+        // Toast 알림 컴포넌트
+        const Toast = ({ message, type = 'success', onClose }) => {
+            useEffect(() => {
+                const timer = setTimeout(onClose, 3000);
+                return () => clearTimeout(timer);
+            }, [onClose]);
+
+            return (
+                <div className={`toast ${type}`}>
+                    {message}
+                </div>
+            );
+        };
+
+        function FestivalPOS() {
+            const [currentView, setCurrentView] = useState('pos');
+            const [cart, setCart] = useState({});
+            const [salesHistory, setSalesHistory] = useState([]);
+            const [loading, setLoading] = useState(false);
+            const [toast, setToast] = useState(null);
+            const [isConfigured, setIsConfigured] = useState(false);
+
+            // 초기화: 구글 스크립트 URL 확인 및 데이터 로드
+            useEffect(() => {
+                if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+                    setIsConfigured(true);
+                    loadSalesHistory();
+                }
+            }, []);
+
+            // 토스트 표시
+            const showToast = (message, type = 'success') => {
+                setToast({ message, type });
+            };
+
+            // 구글 시트에서 판매 내역 불러오기
+            const loadSalesHistory = async () => {
+                if (!isConfigured) return;
+                
+                setLoading(true);
+                try {
+                    const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getSales`);
+                    const data = await response.json();
+                    if (data.success) {
+                        setSalesHistory(data.sales || []);
+                    }
+                } catch (error) {
+                    console.error('데이터 로드 실패:', error);
+                    showToast('데이터 로드 실패', 'error');
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            // 구글 시트에 판매 저장
+            const saveSaleToSheet = async (sale) => {
+                if (!isConfigured) {
+                    showToast('구글 시트가 설정되지 않았습니다', 'error');
+                    return false;
+                }
+
+                setLoading(true);
+                try {
+                    const response = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            action: 'addSale',
+                            sale: sale
+                        })
+                    });
+                    
+                    // no-cors 모드에서는 응답을 읽을 수 없으므로 성공으로 간주
+                    showToast('판매가 저장되었습니다!');
+                    await loadSalesHistory();
+                    return true;
+                } catch (error) {
+                    console.error('저장 실패:', error);
+                    showToast('저장 실패', 'error');
+                    return false;
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            // 장바구니에 메뉴 추가
+            const addToCart = (menuId) => {
+                setCart(prev => ({
+                    ...prev,
+                    [menuId]: (prev[menuId] || 0) + 1
+                }));
+            };
+
+            // 장바구니에서 메뉴 감소
+            const removeFromCart = (menuId) => {
+                setCart(prev => {
+                    const newCart = { ...prev };
+                    if (newCart[menuId] > 1) {
+                        newCart[menuId]--;
+                    } else {
+                        delete newCart[menuId];
+                    }
+                    return newCart;
+                });
+            };
+
+            // 판매 저장
+            const saveSale = async () => {
+                if (Object.keys(cart).length === 0) {
+                    showToast('상품을 선택해주세요!', 'error');
+                    return;
+                }
+
+                const sale = {
+                    id: Date.now(),
+                    timestamp: new Date().toISOString(),
+                    items: Object.entries(cart).map(([menuId, quantity]) => {
+                        const menu = MENU_ITEMS.find(m => m.id === parseInt(menuId));
+                        return {
+                            menuId: parseInt(menuId),
+                            name: menu.name,
+                            price: menu.price,
+                            quantity
+                        };
+                    }),
+                    total: Object.entries(cart).reduce((sum, [menuId, quantity]) => {
+                        const menu = MENU_ITEMS.find(m => m.id === parseInt(menuId));
+                        return sum + (menu.price * quantity);
+                    }, 0)
+                };
+
+                const success = await saveSaleToSheet(sale);
+                if (success) {
+                    setCart({});
+                }
+            };
+
+            // 장바구니 총액 계산
+            const getCartTotal = () => {
+                return Object.entries(cart).reduce((sum, [menuId, quantity]) => {
+                    const menu = MENU_ITEMS.find(m => m.id === parseInt(menuId));
+                    return sum + (menu.price * quantity);
+                }, 0);
+            };
+
+            // 대시보드 통계 계산
+            const getDashboardStats = () => {
+                const totalSales = salesHistory.reduce((sum, sale) => sum + sale.total, 0);
+                const totalTransactions = salesHistory.length;
+                
+                const menuStats = {};
+                salesHistory.forEach(sale => {
+                    sale.items.forEach(item => {
+                        if (!menuStats[item.name]) {
+                            menuStats[item.name] = { quantity: 0, revenue: 0 };
+                        }
+                        menuStats[item.name].quantity += item.quantity;
+                        menuStats[item.name].revenue += item.price * item.quantity;
+                    });
+                });
+
+                return { totalSales, totalTransactions, menuStats };
+            };
+
+            // 설정 안내 화면
+            if (!isConfigured) {
+                return (
+                    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ maxWidth: '600px', background: 'white', borderRadius: '24px', padding: '40px', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
+                            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                                <Icon name="Settings" size={64} style={{ color: '#667eea', margin: '0 auto 20px' }} />
+                                <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1f2937', marginBottom: '10px' }}>구글 시트 설정 필요</h1>
+                                <p style={{ color: '#6b7280' }}>아래 단계를 따라 구글 시트를 연동해주세요</p>
+                            </div>
+
+                            <div style={{ background: '#f9fafb', borderRadius: '12px', padding: '20px', marginBottom: '20px' }}>
+                                <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1f2937', marginBottom: '15px' }}>설정 방법</h2>
+                                
+                                <div style={{ marginBottom: '20px' }}>
+                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>1. 구글 시트 생성</div>
+                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>새 구글 시트를 만들고 다음 열 이름을 첫 행에 입력하세요:</div>
+                                    <div style={{ background: '#e5e7eb', padding: '10px', borderRadius: '8px', marginTop: '8px', fontSize: '13px', fontFamily: 'monospace' }}>
+                                        타임스탬프 | 메뉴명 | 수량 | 단가 | 금액 | 총액
+                                    </div>
+                                </div>
+
+                                <div style={{ marginBottom: '20px' }}>
+                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>2. Apps Script 설정</div>
+                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>상단 메뉴에서 [확장 프로그램] → [Apps Script] 클릭</div>
+                                </div>
+
+                                <div style={{ marginBottom: '20px' }}>
+                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>3. 스크립트 코드 붙여넣기</div>
+                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>제공된 스크립트 코드를 붙여넣고 저장</div>
+                                </div>
+
+                                <div style={{ marginBottom: '20px' }}>
+                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>4. 웹앱 배포</div>
+                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>[배포] → [새 배포] → 유형: 웹앱 선택</div>
+                                    <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '5px' }}>액세스 권한: "모든 사용자"로 설정</div>
+                                </div>
+
+                                <div>
+                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>5. URL 복사</div>
+                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>배포 후 받은 웹앱 URL을 HTML 파일의 GOOGLE_SCRIPT_URL에 입력</div>
+                                </div>
+                            </div>
+
+                            <div style={{ background: '#fef3c7', border: '2px solid #fbbf24', borderRadius: '12px', padding: '15px' }}>
+                                <div style={{ display: 'flex', gap: '10px', alignItems: 'start' }}>
+                                    <Icon name="AlertCircle" size={20} style={{ color: '#f59e0b', flexShrink: 0 }} />
+                                    <div style={{ fontSize: '14px', color: '#92400e' }}>
+                                        <strong>중요:</strong> HTML 파일에서 <code style={{ background: '#fde68a', padding: '2px 6px', borderRadius: '4px' }}>GOOGLE_SCRIPT_URL</code> 변수에 웹앱 URL을 입력하고 저장한 후 새로고침하세요.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // POS 화면
+            const renderPOS = () => {
+                const cartItems = Object.entries(cart);
+                const cartTotal = getCartTotal();
+
+                return (
+                    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f3e7ff 0%, #dbeafe 100%)', padding: '16px' }}>
+                        <div style={{ maxWidth: '448px', margin: '0 auto' }}>
+                            {/* 헤더 */}
+                            <div style={{ background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '16px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                                    <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <Icon name="ShoppingCart" style={{ color: '#8b5cf6' }} />
+                                        축제 POS
+                                    </h1>
+                                    <button
+                                        onClick={() => setCurrentView('dashboard')}
+                                        style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#3b82f6', color: 'white', padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer', transition: 'all 0.2s' }}
+                                        onMouseOver={(e) => e.target.style.background = '#2563eb'}
+                                        onMouseOut={(e) => e.target.style.background = '#3b82f6'}
+                                    >
+                                        <Icon name="BarChart3" size={20} />
+                                        대시보드
+                                    </button>
+                                </div>
+                                {loading && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6b7280', fontSize: '14px' }}>
+                                        <div className="spinner"></div>
+                                        처리중...
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* 메뉴 그리드 */}
+                            <div style={{ background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '16px' }}>
+                                <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1f2937', marginBottom: '16px' }}>메뉴</h2>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                                    {MENU_ITEMS.map(menu => (
+                                        <button
+                                            key={menu.id}
+                                            onClick={() => addToCart(menu.id)}
+                                            style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)', color: 'white', padding: '16px', borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(139,92,246,0.3)', cursor: 'pointer', transition: 'all 0.2s' }}
+                                            onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
+                                            onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+                                        >
+                                            <div style={{ fontWeight: 'bold', fontSize: '18px' }}>{menu.name}</div>
+                                            <div style={{ fontSize: '14px', opacity: 0.9 }}>{menu.price.toLocaleString()}원</div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* 장바구니 */}
+                            <div style={{ background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '24px' }}>
+                                <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1f2937', marginBottom: '16px' }}>주문 내역</h2>
+                                {cartItems.length === 0 ? (
+                                    <div style={{ textAlign: 'center', color: '#9ca3af', padding: '32px 0' }}>
+                                        메뉴를 선택해주세요
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div style={{ marginBottom: '16px' }}>
+                                            {cartItems.map(([menuId, quantity]) => {
+                                                const menu = MENU_ITEMS.find(m => m.id === parseInt(menuId));
+                                                return (
+                                                    <div key={menuId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9fafb', padding: '12px', borderRadius: '8px', marginBottom: '12px' }}>
+                                                        <div style={{ flex: 1 }}>
+                                                            <div style={{ fontWeight: '600', color: '#1f2937' }}>{menu.name}</div>
+                                                            <div style={{ fontSize: '14px', color: '#6b7280' }}>{menu.price.toLocaleString()}원</div>
+                                                        </div>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                            <button
+                                                                onClick={() => removeFromCart(menu.id)}
+                                                                style={{ background: '#fee2e2', color: '#dc2626', padding: '8px', borderRadius: '8px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                            >
+                                                                <Icon name="Minus" size={16} />
+                                                            </button>
+                                                            <span style={{ fontWeight: 'bold', fontSize: '18px', width: '32px', textAlign: 'center' }}>{quantity}</span>
+                                                            <button
+                                                                onClick={() => addToCart(menu.id)}
+                                                                style={{ background: '#d1fae5', color: '#059669', padding: '8px', borderRadius: '8px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                            >
+                                                                <Icon name="Plus" size={16} />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+
+                                        {/* 합계 및 저장 버튼 */}
+                                        <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '16px' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                                                <span style={{ fontSize: '20px', fontWeight: 'bold', color: '#1f2937' }}>합계</span>
+                                                <span style={{ fontSize: '24px', fontWeight: 'bold', color: '#8b5cf6' }}>
+                                                    {cartTotal.toLocaleString()}원
+                                                </span>
+                                            </div>
+                                            <button
+                                                onClick={saveSale}
+                                                disabled={loading}
+                                                style={{ width: '100%', background: loading ? '#9ca3af' : 'linear-gradient(135deg, #10b981 0%, #059669 100%)', color: 'white', padding: '16px', borderRadius: '12px', border: 'none', fontWeight: 'bold', fontSize: '18px', boxShadow: '0 10px 25px rgba(16,185,129,0.3)', cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                                            >
+                                                {loading ? (
+                                                    <>
+                                                        <div className="spinner"></div>
+                                                        저장중...
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Icon name="Save" size={24} />
+                                                        판매 저장
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            // 대시보드 화면
+            const renderDashboard = () => {
+                const { totalSales, totalTransactions, menuStats } = getDashboardStats();
+
+                return (
+                    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #dbeafe 0%, #f3e7ff 100%)', padding: '16px' }}>
+                        <div style={{ maxWidth: '896px', margin: '0 auto' }}>
+                            {/* 헤더 */}
+                            <div style={{ background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '16px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                                    <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <Icon name="BarChart3" style={{ color: '#3b82f6' }} />
+                                        판매 대시보드
+                                    </h1>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <button
+                                            onClick={loadSalesHistory}
+                                            disabled={loading}
+                                            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#10b981', color: 'white', padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer' }}
+                                        >
+                                            <Icon name="RefreshCw" size={20} />
+                                            새로고침
+                                        </button>
+                                        <button
+                                            onClick={() => setCurrentView('pos')}
+                                            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#8b5cf6', color: 'white', padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
+                                        >
+                                            <Icon name="ShoppingCart" size={20} />
+                                            POS
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 통계 카드 */}
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+                                <div style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', color: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(59,130,246,0.3)', padding: '24px' }}>
+                                    <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>총 매출</div>
+                                    <div style={{ fontSize: '30px', fontWeight: 'bold' }}>{totalSales.toLocaleString()}원</div>
+                                </div>
+                                <div style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)', color: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(139,92,246,0.3)', padding: '24px' }}>
+                                    <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>총 거래 건수</div>
+                                    <div style={{ fontSize: '30px', fontWeight: 'bold' }}>{totalTransactions}건</div>
+                                </div>
+                            </div>
+
+                            {/* 메뉴별 통계 */}
+                            <div style={{ background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '16px' }}>
+                                <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1f2937', marginBottom: '16px' }}>메뉴별 판매 현황</h2>
+                                {Object.keys(menuStats).length === 0 ? (
+                                    <div style={{ textAlign: 'center', color: '#9ca3af', padding: '32px 0' }}>
+                                        판매 내역이 없습니다
+                                    </div>
+                                ) : (
+                                    <div>
+                                        {Object.entries(menuStats)
+                                            .sort((a, b) => b[1].revenue - a[1].revenue)
+                                            .map(([name, stats]) => (
+                                                <div key={name} style={{ background: '#f9fafb', padding: '16px', borderRadius: '8px', marginBottom: '12px' }}>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                                        <span style={{ fontWeight: 'bold', color: '#1f2937' }}>{name}</span>
+                                                        <span style={{ color: '#8b5cf6', fontWeight: 'bold' }}>{stats.revenue.toLocaleString()}원</span>
+                                                    </div>
+                                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>판매 수량: {stats.quantity}개</div>
+                                                </div>
+                                            ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* 최근 판매 내역 */}
+                            <div style={{ background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '24px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                                    <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1f2937' }}>최근 판매 내역</h2>
+                                </div>
+                                {salesHistory.length === 0 ? (
+                                    <div style={{ textAlign: 'center', color: '#9ca3af', padding: '32px 0' }}>
+                                        판매 내역이 없습니다
+                                    </div>
+                                ) : (
+                                    <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                                        {[...salesHistory].reverse().map(sale => (
+                                            <div key={sale.id} style={{ background: '#f9fafb', padding: '16px', borderRadius: '8px', marginBottom: '12px' }}>
+                                                <div style={{ fontSize: '14px', color: '#6b7280', marginBottom: '12px' }}>
+                                                    {new Date(sale.timestamp).toLocaleString('ko-KR')}
+                                                </div>
+                                                <div style={{ marginBottom: '8px' }}>
+                                                    {sale.items.map((item, idx) => (
+                                                        <div key={idx} style={{ fontSize: '14px', color: '#4b5563' }}>
+                                                            {item.name} × {item.quantity} = {(item.price * item.quantity).toLocaleString()}원
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                    <span style={{ fontWeight: '600', color: '#4b5563' }}>합계</span>
+                                                    <span style={{ fontWeight: 'bold', fontSize: '18px', color: '#8b5cf6' }}>{sale.total.toLocaleString()}원</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <>
+                    {currentView === 'pos' ? renderPOS() : renderDashboard()}
+                    {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+                </>
+            );
+        }
+
+        ReactDOM.render(<FestivalPOS />, document.getElementById('root'));
+    </script>
+</body>
+</html>
