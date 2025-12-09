@@ -295,61 +295,6 @@
                 return { totalSales, totalTransactions, menuStats };
             };
 
-            // 설정 안내 화면
-            if (!isConfigured) {
-                return (
-                    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div style={{ maxWidth: '600px', background: 'white', borderRadius: '24px', padding: '40px', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
-                            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-                                    <SettingsIcon size={64} color="#667eea" />
-                                </div>
-                                <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1f2937', marginBottom: '10px' }}>구글 시트 설정 필요</h1>
-                                <p style={{ color: '#6b7280' }}>아래 단계를 따라 구글 시트를 연동해주세요</p>
-                            </div>
-
-                            <div style={{ background: '#f9fafb', borderRadius: '12px', padding: '20px', marginBottom: '20px' }}>
-                                <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1f2937', marginBottom: '15px' }}>설정 방법</h2>
-                                
-                                <div style={{ marginBottom: '20px' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>1. 구글 시트 생성</div>
-                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>새 구글 시트를 만들고 다음 열 이름을 첫 행에 입력하세요:</div>
-                                    <div style={{ background: '#e5e7eb', padding: '10px', borderRadius: '8px', marginTop: '8px', fontSize: '13px', fontFamily: 'monospace' }}>
-                                        타임스탬프 | 메뉴명 | 수량 | 단가 | 금액 | 총액
-                                    </div>
-                                </div>
-
-                                <div style={{ marginBottom: '20px' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>2. Apps Script 설정</div>
-                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>상단 메뉴에서 [확장 프로그램] → [Apps Script] 클릭</div>
-                                </div>
-
-                                <div style={{ marginBottom: '20px' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>3. 스크립트 코드 붙여넣기</div>
-                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>제공된 스크립트 코드를 붙여넣고 저장</div>
-                                </div>
-
-                                <div style={{ marginBottom: '20px' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>4. 웹앱 배포</div>
-                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>[배포] → [새 배포] → 유형: 웹앱 선택</div>
-                                    <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '5px' }}>액세스 권한: "모든 사용자"로 설정</div>
-                                </div>
-
-                                <div>
-                                    <div style={{ fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>5. URL 복사</div>
-                                    <div style={{ fontSize: '14px', color: '#6b7280' }}>배포 후 받은 웹앱 URL을 HTML 파일의 GOOGLE_SCRIPT_URL에 입력</div>
-                                </div>
-                            </div>
-
-                            <div style={{ background: '#fef3c7', border: '2px solid #fbbf24', borderRadius: '12px', padding: '15px' }}>
-                                <div style={{ fontSize: '14px', color: '#92400e' }}>
-                                    <strong>중요:</strong> HTML 파일에서 <code style={{ background: '#fde68a', padding: '2px 6px', borderRadius: '4px' }}>GOOGLE_SCRIPT_URL</code> 변수에 웹앱 URL을 입력하고 저장한 후 새로고침하세요.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
 
             // POS 화면
             const renderPOS = () => {
