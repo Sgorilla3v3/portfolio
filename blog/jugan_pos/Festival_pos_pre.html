@@ -125,15 +125,6 @@
             </svg>
         );
 
-        const TrashIcon = ({ size = 16, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                <line x1="10" y1="11" x2="10" y2="17"></line>
-                <line x1="14" y1="11" x2="14" y2="17"></line>
-            </svg>
-        );
-
         const SettingsIcon = ({ size = 64, color = "currentColor" }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
@@ -313,77 +304,6 @@
                 });
 
                 return { totalSales, totalTransactions, menuStats };
-            };
-
-            // 개별 판매 삭제
-            const deleteSale = async (saleId) => {
-                if (!confirm('이 판매 내역을 삭제하시겠습니까?')) {
-                    return;
-                }
-
-                setLoading(true);
-                try {
-                    const response = await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'text/plain',
-                        },
-                        body: JSON.stringify({
-                            action: 'deleteSale',
-                            saleId: saleId
-                        }),
-                        redirect: 'follow'
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        showToast('판매 내역이 삭제되었습니다');
-                        await loadSalesHistory();
-                    } else {
-                        showToast('삭제 실패: ' + result.message, 'error');
-                    }
-                } catch (error) {
-                    console.error('삭제 실패:', error);
-                    showToast('삭제 실패: ' + error.message, 'error');
-                } finally {
-                    setLoading(false);
-                }
-            };
-
-            // 전체 판매 삭제
-            const clearAllSales = async () => {
-                if (!confirm('정말로 모든 판매 내역을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
-                    return;
-                }
-
-                setLoading(true);
-                try {
-                    const response = await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'text/plain',
-                        },
-                        body: JSON.stringify({
-                            action: 'clearAllSales'
-                        }),
-                        redirect: 'follow'
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        showToast('모든 판매 내역이 삭제되었습니다');
-                        await loadSalesHistory();
-                    } else {
-                        showToast('삭제 실패: ' + result.message, 'error');
-                    }
-                } catch (error) {
-                    console.error('삭제 실패:', error);
-                    showToast('삭제 실패: ' + error.message, 'error');
-                } finally {
-                    setLoading(false);
-                }
             };
 
             // 설정 안내 화면
@@ -581,15 +501,6 @@
                                         판매 대시보드
                                     </h1>
                                     <div style={{ display: 'flex', gap: '8px' }}>
-                                        {salesHistory.length > 0 && (
-                                            <button
-                                                onClick={clearAllSales}
-                                                disabled={loading}
-                                                style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#ef4444', color: 'white', padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', fontSize: '14px' }}
-                                            >
-                                                전체 삭제
-                                            </button>
-                                        )}
                                         <button
                                             onClick={loadSalesHistory}
                                             disabled={loading}
@@ -657,15 +568,8 @@
                                 ) : (
                                     <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
                                         {[...salesHistory].reverse().map(sale => (
-                                            <div key={sale.id} style={{ background: '#f9fafb', padding: '16px', borderRadius: '8px', marginBottom: '12px', position: 'relative' }}>
-                                                <button
-                                                    onClick={() => deleteSale(sale.id)}
-                                                    style={{ position: 'absolute', top: '12px', right: '12px', background: '#fee2e2', color: '#dc2626', padding: '6px', borderRadius: '6px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                                                    title="삭제"
-                                                >
-                                                    <TrashIcon size={16} color="#dc2626" />
-                                                </button>
-                                                <div style={{ fontSize: '14px', color: '#6b7280', marginBottom: '12px', paddingRight: '32px' }}>
+                                            <div key={sale.id} style={{ background: '#f9fafb', padding: '16px', borderRadius: '8px', marginBottom: '12px' }}>
+                                                <div style={{ fontSize: '14px', color: '#6b7280', marginBottom: '12px' }}>
                                                     {new Date(sale.timestamp).toLocaleString('ko-KR')}
                                                 </div>
                                                 <div style={{ marginBottom: '8px' }}>
