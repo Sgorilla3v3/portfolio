@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
+<title>창발적 능력과 PR 업무 시사점</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+        .serif-font {
+            font-family: 'Noto Serif KR', serif;
+        }
+        .hbr-red {
+            color: #B21F24;
+        }
+        .bg-hbr-red {
+            background-color: #B21F24;
+        }
+        .border-hbr-red {
+            border-color: #B21F24;
+        }
+        /* Table Styles */
+        .comparison-row {
+            transition: background-color 0.2s ease;
+        }
+        .comparison-row:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] min-h-[720px] flex flex-col relative overflow-hidden bg-white">
+<!-- Top Accent Bar -->
+<div class="absolute top-0 left-0 w-full h-2 bg-gray-900">
+<div class="w-1/3 h-full bg-hbr-red"></div>
+</div>
+<!-- Header Section -->
+<div class="pt-10 px-16 pb-6 flex justify-between items-end border-b border-gray-200">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="text-hbr-red font-bold tracking-widest text-xs uppercase">Section 02</span>
+<span class="text-gray-300">|</span>
+<span class="text-gray-500 font-medium text-xs uppercase tracking-wider">Impact Analysis</span>
+</div>
+<h1 class="serif-font text-4xl font-bold text-gray-900 leading-tight">
+                창발적 능력과 <span class="text-hbr-red">PR 업무의 진화</span>
+</h1>
+</div>
+<div class="text-right">
+<p class="text-sm text-gray-500 font-light">
+                Emergent Ability: 데이터 임계점을 넘어선 AI의 도약
+            </p>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 px-16 py-8 flex gap-12">
+<!-- Left Column: Concept Definition (30%) -->
+<div class="w-[30%] flex flex-col pt-2">
+<div class="mb-8">
+<h3 class="serif-font text-xl font-bold text-gray-900 mb-3 border-l-4 border-hbr-red pl-3">
+                    창발적 능력 (Emergent Ability)
+                </h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light text-justify">
+                    데이터, 파라미터, 연산량이 특정 임계점을 넘어서는 순간, AI가 학습하지 않은 새로운 능력을 갑자기 발현하는 현상입니다.
+                </p>
+<div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+<div class="flex items-center gap-3 mb-2">
+<i class="fa-solid fa-arrow-trend-up text-hbr-red text-xl"></i>
+<span class="font-bold text-gray-800 text-sm">AlphaGo Zero 사례</span>
+</div>
+<p class="text-xs text-gray-500 leading-snug">
+                        인간의 기보 없이 3일간의 셀프 대국만으로 기존 알파고를 압도. 단순 학습을 넘어선 '전략적 창조'의 단계.
+                    </p>
+</div>
+</div>
+<div class="mt-auto mb-4">
+<div class="text-5xl text-gray-200 mb-2">
+<i class="fa-solid fa-people-arrows"></i>
+</div>
+<h4 class="font-bold text-gray-900 mb-1">패러다임의 전환</h4>
+<p class="text-xs text-gray-500 font-light">
+                    "단순 업무 자동화를 넘어, 인사이트 도출의 주체가 변화합니다."
+                </p>
+</div>
+</div>
+<!-- Right Column: Comparison Table (70%) -->
+<div class="w-[70%] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
+<!-- Table Header -->
+<div class="grid grid-cols-10 bg-gray-900 text-white h-14 items-center px-6">
+<div class="col-span-2 text-xs font-bold uppercase tracking-wider text-gray-400">구분</div>
+<div class="col-span-4 text-sm font-bold border-r border-gray-700 pr-4">
+<i class="fa-solid fa-building-user mr-2 text-gray-400"></i>전통적 업무 방식
+                </div>
+<div class="col-span-4 text-sm font-bold pl-4 text-hbr-red">
+<i class="fa-solid fa-robot mr-2"></i>AI 활용 업무 방식
+                </div>
+</div>
+<!-- Row 1: Work Subject -->
+<div class="grid grid-cols-10 border-b border-gray-100 items-center comparison-row py-5 px-6">
+<div class="col-span-2 flex flex-col justify-center">
+<span class="font-bold text-gray-800 text-sm">수행 주체</span>
+<span class="text-xs text-gray-400 mt-1">Resource</span>
+</div>
+<div class="col-span-4 pr-4 border-r border-gray-100">
+<p class="text-sm text-gray-600 font-medium">팀 단위 분업</p>
+<p class="text-xs text-gray-400 mt-1">팀장 지시 → 팀원 A, B, C 분담</p>
+</div>
+<div class="col-span-4 pl-4">
+<p class="text-sm text-gray-900 font-bold">1인 전문가 + AI</p>
+<p class="text-xs text-hbr-red mt-1">PA x AI 듀얼 브레인</p>
+</div>
+</div>
+<!-- Row 2: Process -->
+<div class="grid grid-cols-10 border-b border-gray-100 items-center comparison-row py-5 px-6">
+<div class="col-span-2 flex flex-col justify-center">
+<span class="font-bold text-gray-800 text-sm">프로세스</span>
+<span class="text-xs text-gray-400 mt-1">Workflow</span>
+</div>
+<div class="col-span-4 pr-4 border-r border-gray-100">
+<p class="text-sm text-gray-600 font-medium">직렬적 / 분절적</p>
+<p class="text-xs text-gray-400 mt-1">조사 따로, 분석 따로, 보고서 따로</p>
+</div>
+<div class="col-span-4 pl-4">
+<p class="text-sm text-gray-900 font-bold">통합적 / 반복적 (Iterative)</p>
+<p class="text-xs text-gray-500 mt-1">탐색과 생성이 실시간으로 연결</p>
+</div>
+</div>
+<!-- Row 3: Output Quality -->
+<div class="grid grid-cols-10 border-b border-gray-100 items-center comparison-row py-5 px-6">
+<div class="col-span-2 flex flex-col justify-center">
+<span class="font-bold text-gray-800 text-sm">산출물</span>
+<span class="text-xs text-gray-400 mt-1">Quality</span>
+</div>
+<div class="col-span-4 pr-4 border-r border-gray-100">
+<p class="text-sm text-gray-600 font-medium">단순 취합형 보고서</p>
+<p class="text-xs text-gray-400 mt-1">정보 나열 위주, 깊이의 한계</p>
+</div>
+<div class="col-span-4 pl-4">
+<p class="text-sm text-gray-900 font-bold">인사이트형 제안서</p>
+<p class="text-xs text-gray-500 mt-1">데이터 패턴 기반의 전략적 시사점</p>
+</div>
+</div>
+<!-- Row 4: Productivity -->
+<div class="grid grid-cols-10 items-center comparison-row py-5 px-6 bg-gray-50">
+<div class="col-span-2 flex flex-col justify-center">
+<span class="font-bold text-gray-800 text-sm">생산성</span>
+<span class="text-xs text-gray-400 mt-1">Efficiency</span>
+</div>
+<div class="col-span-4 pr-4 border-r border-gray-200">
+<p class="text-sm text-gray-600 font-medium">1x (기준)</p>
+<p class="text-xs text-gray-400 mt-1">수 일 소요</p>
+</div>
+<div class="col-span-4 pl-4 flex items-center gap-2">
+<span class="text-xl font-black text-hbr-red">10x ~ 50x</span>
+<span class="text-xs text-gray-500">압도적 속도 향상</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="px-16 pb-8 pt-2 flex justify-between items-center text-xs text-gray-400 border-t border-gray-100 mt-auto">
+<span>"내 자리가 AI에 의해 사라지는 것이 아니라, AI를 사용하는 내 동료에 의해서 사라진다."</span>
+<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69e999eaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

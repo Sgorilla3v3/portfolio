@@ -1,36 +1,236 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
-<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
-<title>데이터 해체와 조합</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>PA x AI 듀얼 브레인 종합 전략</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #ffffff;
-            color: #1a1a1a;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: hidden;
         }
-        .serif-font {
-            font-family: 'Noto Serif KR', serif;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0f172a;
+            overflow: hidden;
+            padding: 40px 60px;
         }
-        .hbr-red {
-            color: #B21F24;
+        .accent-text {
+            color: #2dd4bf; /* Teal 400 */
         }
-        .bg-hbr-red {
-            background-color: #B21F24;
+        
+        /* Hub & Spoke Layout */
+        .diagram-area {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
-        .border-hbr-red {
-            border-color: #B21F24;
+
+        /* SVG Lines */
+        .connector-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
-        .section-card {
-            transition: all 0.3s ease;
+        .line-path {
+            stroke: rgba(45, 212, 191, 0.3);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 5, 5;
         }
-        /* HBR Style List Numbering */
-        .list-number {
-            font-family: 'Noto Serif KR', serif;
+
+        /* Central Hub */
+        .hub-circle {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background-color: rgba(15, 23, 42, 0.9);
+            border: 4px solid #2dd4bf;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            box-shadow: 0 0 30px rgba(45, 212, 191, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .hub-divider {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: rotate(0deg);
+        }
+        .hub-content {
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+        }
+        .brain-half {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.05;
+            z-index: 1;
+        }
+        
+        /* Spoke Items */
+        .spoke-card {
+            position: absolute;
+            width: 280px;
+            background-color: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            z-index: 5;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .spoke-card:hover {
+            transform: scale(1.05);
+            background-color: rgba(30, 41, 59, 0.95);
+            border-color: #2dd4bf;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            z-index: 20;
+        }
+        
+        /* Positioning */
+        .pos-left-top { top: 10%; left: 5%; }
+        .pos-left-mid { top: 42%; left: 0%; }
+        .pos-left-bot { bottom: 10%; left: 5%; }
+        
+        .pos-right-top { top: 10%; right: 5%; }
+        .pos-right-mid { top: 42%; right: 0%; }
+        .pos-right-bot { bottom: 10%; right: 5%; }
+
+        /* Card Content */
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+        .card-desc {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        /* Colors */
+        .c-teal { background-color: rgba(45, 212, 191, 0.15); color: #2dd4bf; }
+        .c-blue { background-color: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .c-purple { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .c-orange { background-color: rgba(249, 115, 22, 0.15); color: #fb923c; }
+        .c-pink { background-color: rgba(236, 72, 153, 0.15); color: #f472b6; }
+        .c-green { background-color: rgba(34, 197, 94, 0.15); color: #4ade80; }
+
+        /* Bottom Banner */
+        .bottom-banner {
+            background-color: rgba(15, 23, 42, 0.6);
+            border-top: 2px solid #334155;
+            padding: 12px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            border-radius: 12px;
+            margin-top: auto;
+        }
+        .metric-item {
+            display: flex;
+            align-items: center;
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+        .metric-icon {
+            margin-right: 8px;
+            color: #2dd4bf;
+        }
+        .metric-value {
+            font-weight: 800;
+            color: white;
+            margin-left: 4px;
+            font-size: 1.1rem;
+        }
+
+        /* Hub Internal Layout */
+        .hub-split {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .hub-left, .hub-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .hub-left { background: linear-gradient(90deg, rgba(249, 115, 22, 0.05) 0%, rgba(249, 115, 22, 0) 100%); }
+        .hub-right { background: linear-gradient(-90deg, rgba(45, 212, 191, 0.05) 0%, rgba(45, 212, 191, 0) 100%); }
+        
+        .hub-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .hub-main-text {
+            font-size: 1.4rem;
             font-weight: 900;
-            line-height: 1;
+            text-align: center;
+            line-height: 1.1;
+            margin: 10px 0;
+            z-index: 5;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .hub-sub-list {
+            font-size: 0.65rem;
+            color: #cbd5e1;
+            text-align: center;
+            line-height: 1.4;
         }
     </style>
 <style id="slide-selected-style">
@@ -67,111 +267,163 @@
 
 
 </style></head>
-<body class="w-[1280px] min-h-[720px] flex flex-col p-16 relative overflow-hidden">
-<!-- Background Watermark -->
-<div class="absolute top-0 right-0 w-1/3 h-full bg-gray-50 opacity-50 z-0 skew-x-12 transform origin-top-right translate-x-20"></div>
-<!-- Header Section -->
-<div class="relative z-10 w-full mb-10 border-b border-gray-300 pb-6 flex justify-between items-end">
-<div>
-<div class="flex items-center gap-3 mb-2">
-<span class="h-1 w-10 bg-hbr-red inline-block"></span>
-<span class="text-hbr-red font-bold tracking-[0.2em] text-xs uppercase">Methodology</span>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="mb-2 z-20">
+<div class="flex items-center mb-2">
+<span class="px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase mr-3">
+                    Strategy Framework
+                </span>
+<span class="text-gray-400 text-sm">PA x AI 듀얼 브레인 종합 전략</span>
 </div>
-<h1 class="serif-font text-5xl font-bold text-gray-900 tracking-tight">Data Parsing &amp; Synthesis</h1>
+<h1 class="text-3xl font-black leading-tight">
+                PA x AI <span class="accent-text">Dual Brain Strategy</span>
+</h1>
 </div>
-<div class="text-right">
-<p class="text-gray-500 font-light text-sm mb-1">Process Steps</p>
-<p class="serif-font text-3xl font-bold text-gray-800">05 <span class="text-base font-normal text-gray-400">Stages + Tools</span></p>
+<!-- Diagram Area -->
+<div class="diagram-area">
+<!-- Connecting Lines (SVG) -->
+<svg class="connector-lines">
+<!-- Center to Left Top -->
+<path class="line-path" d="M580,300 L260,140"></path>
+<!-- Center to Left Mid -->
+<path class="line-path" d="M520,360 L320,360"></path>
+<!-- Center to Left Bot -->
+<path class="line-path" d="M580,420 L260,580"></path>
+<!-- Center to Right Top -->
+<path class="line-path" d="M700,300 L1020,140"></path>
+<!-- Center to Right Mid -->
+<path class="line-path" d="M760,360 L960,360"></path>
+<!-- Center to Right Bot -->
+<path class="line-path" d="M700,420 L1020,580"></path>
+</svg>
+<!-- Central Hub -->
+<div class="hub-circle">
+<div class="hub-split">
+<div class="hub-left">
+<span class="hub-label text-orange-400">HUMAN</span>
+<div class="mb-6"></div> <!-- Spacer -->
+<div class="hub-sub-list">
+<p>문제정의</p>
+<p>윤리/판단</p>
+<p>Context</p>
 </div>
 </div>
-<!-- Main Content Grid -->
-<div class="relative z-10 grid grid-cols-3 gap-x-12 gap-y-8 flex-1 content-start">
-<!-- Section 1: Concept -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">01</span>
-<i class="fa-solid fa-layer-group text-gray-400 group-hover:text-gray-800 text-lg"></i>
+<div class="hub-divider"></div>
+<div class="hub-right">
+<span class="hub-label text-teal-400">AI AGENT</span>
+<div class="mb-6"></div> <!-- Spacer -->
+<div class="hub-sub-list">
+<p>패턴탐지</p>
+<p>초안생성</p>
+<p>자동화</p>
 </div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">핵심 철학 (Parsing)</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                    거대한 데이터 덩어리(Chunk)를 의미 단위로 잘게 쪼개어 구조화하고, 이를 새로운 관점으로 재조합하여 숨겨진 맥락을 발견함.
+</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="hub-main-text">
+<span class="block text-white">DUAL</span>
+<span class="block text-teal-400">BRAIN</span>
+</div>
+</div>
+</div>
+<!-- Left Spokes -->
+<!-- Spoke 1 -->
+<div class="spoke-card pos-left-top">
+<div class="card-header">
+<div class="card-icon c-orange">
+<i class="fas fa-terminal"></i>
+</div>
+<h3 class="card-title">프롬프트 시스템<br><span class="text-xs font-normal text-gray-400">Prompt System</span></h3>
+</div>
+<p class="card-desc">
+                    업무별 최적화된 프롬프트 템플릿 라이브러리 구축 및 CoT 설계 표준화
+                </p>
+</div>
+<!-- Spoke 2 -->
+<div class="spoke-card pos-left-mid">
+<div class="card-header">
+<div class="card-icon c-purple">
+<i class="fas fa-puzzle-piece"></i>
+</div>
+<h3 class="card-title">데이터 파싱 프레임<br><span class="text-xs font-normal text-gray-400">Data Parsing</span></h3>
+</div>
+<p class="card-desc">
+                    비정형 데이터(뉴스, 계약서)를 구조화된 데이터로 해체 및 재조합하는 분석 체계
+                </p>
+</div>
+<!-- Spoke 3 -->
+<div class="spoke-card pos-left-bot">
+<div class="card-header">
+<div class="card-icon c-blue">
+<i class="fas fa-network-wired"></i>
+</div>
+<h3 class="card-title">MCP 통합<br><span class="text-xs font-normal text-gray-400">MCP Integration</span></h3>
+</div>
+<p class="card-desc">
+                    사내 데이터베이스, 슬랙, 노션 등 외부 도구와 AI 모델을 안전하게 연결하는 프로토콜
+                </p>
+</div>
+<!-- Right Spokes -->
+<!-- Spoke 4 -->
+<div class="spoke-card pos-right-top">
+<div class="card-header">
+<div class="card-icon c-teal">
+<i class="fas fa-code"></i>
+</div>
+<h3 class="card-title">바이브 코딩 툴킷<br><span class="text-xs font-normal text-gray-400">Vibe Coding</span></h3>
+</div>
+<p class="card-desc">
+                    Cursor AI 등을 활용하여 실무자가 직접 필요한 스크래퍼 및 자동화 도구 즉시 제작
+                </p>
+</div>
+<!-- Spoke 5 -->
+<div class="spoke-card pos-right-mid">
+<div class="card-header">
+<div class="card-icon c-pink">
+<i class="fas fa-chart-line"></i>
+</div>
+<h3 class="card-title">품질 KPI<br><span class="text-xs font-normal text-gray-400">Quality Metrics</span></h3>
+</div>
+<p class="card-desc">
+                    리드타임 단축, 정확도, 커버리지 등 AI 협업 성과를 측정하는 정량적 지표 관리
+                </p>
+</div>
+<!-- Spoke 6 -->
+<div class="spoke-card pos-right-bot">
+<div class="card-header">
+<div class="card-icon c-green">
+<i class="fas fa-shield-alt"></i>
+</div>
+<h3 class="card-title">거버넌스<br><span class="text-xs font-normal text-gray-400">Governance</span></h3>
+</div>
+<p class="card-desc">
+                    환각(Hallucination) 방지, 보안 가이드라인, 프롬프트 버전 관리 및 윤리 규정
                 </p>
 </div>
 </div>
-<!-- Section 2: Step 1 Collection -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">02</span>
-<i class="fa-solid fa-file-import text-gray-400 group-hover:text-gray-800 text-lg"></i>
+<!-- Bottom Banner -->
+<div class="bottom-banner">
+<div class="metric-item">
+<i class="fas fa-bolt metric-icon"></i>
+<span>생산성 향상</span>
+<span class="metric-value">10~50x</span>
 </div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">Step 1: 데이터 수집</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                    계약서, 이슈 기사, 판결문, 커뮤니티 여론 등 분석이 필요한 원본 데이터(Raw Data)를 확보하여 디지털 텍스트로 변환.
-                </p>
+<div class="h-4 w-px bg-gray-600 mx-4"></div>
+<div class="metric-item">
+<i class="fas fa-check-circle metric-icon"></i>
+<span>일관된 품질</span>
+<span class="metric-value">Standardized</span>
 </div>
-</div>
-<!-- Section 3: Step 2 Deconstruction -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">03</span>
-<i class="fa-solid fa-scissors text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">Step 2: 구조적 해체</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                    AI를 활용해 데이터를 조항별, 인물별, 사건별, 쟁점별로 미세하게 분해(Break Down). 텍스트의 구조적 패턴을 식별.
-                </p>
-</div>
-</div>
-<!-- Section 4: Step 3 Synthesis -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">04</span>
-<i class="fa-solid fa-dna text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">Step 3: 재조합 및 분석</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                    특정 페르소나('을'의 입장, 30년차 기자 등)를 부여하여 해체된 데이터를 새로운 프레임워크로 재배열하고 인사이트 도출.
-                </p>
-</div>
-</div>
-<!-- Section 5: Step 4 Verification -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">05</span>
-<i class="fa-solid fa-magnifying-glass-chart text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">Step 4: 검증 (Fact Check)</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                    재조합된 결과물의 출처를 확인하고 환각(Hallucination) 여부를 검증. 원본 데이터와의 정합성을 최종 확인.
-                </p>
-</div>
-</div>
-<!-- Section 6: Tools -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">06</span>
-<i class="fa-solid fa-toolbox text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">핵심 도구 (Toolkit)</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-<strong>NotebookLM:</strong> 문서 기반 연구 및 소스 연결.<br>
-<strong>Obsidian:</strong> 나만의 데이터 센터(Second Brain).<br>
-<strong>AI Studio:</strong> 대용량 토큰 처리에 최적화.
-                </p>
+<div class="h-4 w-px bg-gray-600 mx-4"></div>
+<div class="metric-item">
+<i class="fas fa-expand-arrows-alt metric-icon"></i>
+<span>무한한 확장성</span>
+<span class="metric-value">Scalability</span>
 </div>
 </div>
 </div>
-<!-- Footer Info -->
-<div class="absolute bottom-8 left-16 right-16 border-t border-gray-200 pt-4 flex justify-between items-center text-xs text-gray-400">
-<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
-<span>© 2025 All Rights Reserved</span>
-</div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69f9c5eaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840fd92ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

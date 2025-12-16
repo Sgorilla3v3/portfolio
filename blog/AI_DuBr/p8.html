@@ -1,34 +1,188 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
-<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
-<title>AI 도구 선택 가이드</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Self-Prompt 전략 매트릭스</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #ffffff;
-            color: #1a1a1a;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: hidden;
         }
-        .serif-font {
-            font-family: 'Noto Serif KR', serif;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0f172a;
+            overflow: hidden;
+            padding: 40px 60px;
         }
-        .hbr-red {
-            color: #B21F24;
+        .accent-text {
+            color: #2dd4bf; /* Teal 400 */
         }
-        .bg-hbr-red {
-            background-color: #B21F24;
+        
+        /* Matrix Grid Layout */
+        .matrix-container {
+            display: grid;
+            grid-template-columns: 40px 1fr 1fr;
+            grid-template-rows: 1fr 1fr 40px;
+            gap: 12px;
+            flex: 1;
+            margin-bottom: 20px;
+            position: relative;
         }
-        .border-hbr-red {
-            border-color: #B21F24;
+        
+        /* Axis Labels */
+        .y-axis-label {
+            grid-row: 1 / 3;
+            grid-column: 1;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-align: center;
+            font-weight: 700;
+            color: #94a3b8;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 2px solid #334155;
+            padding-left: 10px;
         }
-        /* Table Styles */
-        .comparison-row {
-            transition: background-color 0.2s ease;
+        .x-axis-label {
+            grid-row: 3;
+            grid-column: 2 / 4;
+            text-align: center;
+            font-weight: 700;
+            color: #94a3b8;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 2px solid #334155;
+            padding-top: 10px;
         }
-        .comparison-row:hover {
-            background-color: #f9fafb;
+
+        /* Quadrant Cards */
+        .quadrant {
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .quadrant:hover {
+            transform: scale(1.02);
+            z-index: 10;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Quadrant Specific Styles */
+        /* Q1: Knowledge High, Complexity Low (Top-Left) */
+        .q-tl {
+            border-top: 4px solid #60a5fa; /* Blue */
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(37, 99, 235, 0.1) 100%);
+        }
+        /* Q2: Knowledge High, Complexity High (Top-Right) */
+        .q-tr {
+            border-top: 4px solid #2dd4bf; /* Teal */
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(20, 184, 166, 0.1) 100%);
+        }
+        /* Q3: Knowledge Low, Complexity Low (Bottom-Left) */
+        .q-bl {
+            border-top: 4px solid #facc15; /* Yellow */
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(234, 179, 8, 0.1) 100%);
+        }
+        /* Q4: Knowledge Low, Complexity High (Bottom-Right) - HERO */
+        .q-br {
+            border-top: 4px solid #f472b6; /* Pink */
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(219, 39, 119, 0.15) 100%);
+            border-color: rgba(244, 114, 182, 0.3);
+        }
+
+        .q-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .q-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: white;
+        }
+        .q-desc {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        .strategy-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            align-self: flex-start;
+        }
+
+        /* Example Box */
+        .example-box {
+            background-color: rgba(15, 23, 42, 0.8);
+            border: 1px solid #f472b6;
+            border-radius: 12px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(244, 114, 182, 0.1);
+        }
+        .example-badge {
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background-color: #0f172a;
+            border: 1px solid #f472b6;
+            color: #f472b6;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Arrows for Axis */
+        .axis-arrow-x {
+            position: absolute;
+            bottom: 20px;
+            right: -10px;
+            width: 0; 
+            height: 0; 
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 10px solid #334155;
+        }
+        .axis-arrow-y {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 0; 
+            height: 0; 
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 10px solid #334155;
         }
     </style>
 <style id="slide-selected-style">
@@ -65,157 +219,117 @@
 
 
 </style></head>
-<body class="w-[1280px] min-h-[720px] flex flex-col relative overflow-hidden bg-white">
-<!-- Top Accent Bar -->
-<div class="absolute top-0 left-0 w-full h-2 bg-gray-900">
-<div class="w-1/3 h-full bg-hbr-red"></div>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="mb-4">
+<div class="flex items-center mb-2">
+<span class="px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase mr-3">
+                Strategic Approach
+            </span>
+<span class="text-gray-400 text-sm">상황별 최적 프롬프트 매트릭스</span>
 </div>
-<!-- Header Section -->
-<div class="pt-10 px-16 pb-6 flex justify-between items-end border-b border-gray-200">
-<div>
-<div class="flex items-center gap-2 mb-2">
-<span class="text-hbr-red font-bold tracking-widest text-xs uppercase">Section 03</span>
-<span class="text-gray-300">|</span>
-<span class="text-gray-500 font-medium text-xs uppercase tracking-wider">Tool Selection Guide</span>
+<h1 class="text-4xl font-black leading-tight">
+            Self-Prompt <span class="accent-text">전략 매트릭스</span>
+</h1>
+<p class="text-gray-400 mt-1 font-light text-sm">
+            나의 지식 수준(Domain Knowledge)과 과업의 복잡도(Complexity)에 따라 AI와의 소통 방식을 달리해야 합니다.
+        </p>
 </div>
-<h1 class="serif-font text-4xl font-bold text-gray-900 leading-tight">
-                목적별 최적의 <span class="text-hbr-red">AI 도구 선택</span> 가이드
-            </h1>
+<!-- Matrix Area -->
+<div class="matrix-container">
+<!-- Y-Axis Label -->
+<div class="y-axis-label">
+<span>DOMAIN KNOWLEDGE (내 지식 수준)</span>
+<div class="flex justify-between h-full w-full absolute top-0 left-0 pointer-events-none opacity-50">
+<span class="absolute top-4 left-2 text-xs text-gray-500 font-normal rotate-90">High</span>
+<span class="absolute bottom-4 left-2 text-xs text-gray-500 font-normal rotate-90">Low</span>
 </div>
-<div class="text-right">
-<p class="text-sm text-gray-500 font-light">
-                Strategic Selection: 업무 목적에 맞는 도구 매칭이 생산성의 핵심
+</div>
+<!-- Quadrant 1: High Knowledge, Low Complexity -->
+<div class="quadrant q-tl">
+<div class="flex justify-between items-start">
+<i class="fas fa-clipboard-check q-icon text-blue-400"></i>
+<span class="text-xs text-gray-400 font-mono">ROUTINE</span>
+</div>
+<h3 class="q-title">User Prompt + Checklist</h3>
+<p class="q-desc">
+                내가 잘 알고 단순한 업무입니다.<br>
+                명확한 지시와 함께 필수 포함 사항(체크리스트)을 제공하여 빠르게 결과물을 얻습니다.
             </p>
+<span class="strategy-tag bg-blue-900 text-blue-300">
+<i class="fas fa-bolt mr-1"></i>Direct Command
+            </span>
+</div>
+<!-- Quadrant 2: High Knowledge, High Complexity -->
+<div class="quadrant q-tr">
+<div class="flex justify-between items-start">
+<i class="fas fa-layer-group q-icon text-teal-400"></i>
+<span class="text-xs text-gray-400 font-mono">MASTERY</span>
+</div>
+<h3 class="q-title">CoT (Chain of Thought)</h3>
+<p class="q-desc">
+                내가 잘 알지만 복잡한 업무입니다.<br>
+                과업을 단계별로 쪼개어 지시하고, 각 단계의 결과물을 내가 직접 검증하며 완성도를 높입니다.
+            </p>
+<span class="strategy-tag bg-teal-900 text-teal-300">
+<i class="fas fa-link mr-1"></i>Step-by-Step
+            </span>
+</div>
+<!-- Quadrant 3: Low Knowledge, Low Complexity -->
+<div class="quadrant q-bl">
+<div class="flex justify-between items-start">
+<i class="fas fa-clone q-icon text-yellow-400"></i>
+<span class="text-xs text-gray-400 font-mono">LEARNING</span>
+</div>
+<h3 class="q-title">Few-shot (Sample)</h3>
+<p class="q-desc">
+                잘 모르지만 단순한 업무입니다.<br>
+                "이것과 똑같이 만들어줘"라고 양질의 샘플(예시)을 제공하여 AI가 패턴을 모방하게 합니다.
+            </p>
+<span class="strategy-tag bg-yellow-900 text-yellow-300">
+<i class="fas fa-copy mr-1"></i>Imitation
+            </span>
+</div>
+<!-- Quadrant 4: Low Knowledge, High Complexity (HERO) -->
+<div class="quadrant q-br">
+<div class="flex justify-between items-start">
+<i class="fas fa-robot q-icon text-pink-400"></i>
+<span class="text-xs text-gray-400 font-mono">EXPLORATION</span>
+</div>
+<h3 class="q-title text-pink-300">Self-Prompt + 반성형</h3>
+<p class="q-desc">
+                잘 모르고 복잡한, 가장 어려운 영역입니다.<br>
+                AI에게 "네가 전문가가 되어 기획해줘"라고 위임하고, "비판적으로 검토해줘"라며 스스로 개선하게 합니다.
+            </p>
+<span class="strategy-tag bg-pink-900 text-pink-300">
+<i class="fas fa-brain mr-1"></i>Meta-Prompting
+            </span>
+</div>
+<!-- X-Axis Label -->
+<div class="x-axis-label">
+<div class="flex justify-between w-full px-12 absolute">
+<span class="text-xs text-gray-500 font-normal">Low</span>
+<span class="text-xs text-gray-500 font-normal">High</span>
+</div>
+<span>TASK COMPLEXITY (과업 복잡도)</span>
 </div>
 </div>
-<!-- Main Content Area -->
-<div class="flex-1 px-16 py-6 flex gap-10">
-<!-- Left Column: Concept Definition (30%) -->
-<div class="w-[30%] flex flex-col pt-2">
-<div class="mb-6">
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-3 border-l-4 border-hbr-red pl-3">
-                    도구의 적재적소
-                </h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light text-justify mb-4">
-                    모든 AI 모델이 만능은 아닙니다. 각 모델은 학습 데이터와 설계 목적에 따라 특화된 강점(글쓰기, 코딩, 검색, 시각화)을 가집니다. 이를 이해하고 조합하는 '멀티 모델 전략'이 필요합니다.
-                </p>
-<div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
-<div class="flex items-center gap-3 mb-2">
-<i class="fa-solid fa-layer-group text-hbr-red text-xl"></i>
-<span class="font-bold text-gray-800 text-sm">Best Practice</span>
+<!-- Example Footer -->
+<div class="example-box">
+<span class="example-badge"><i class="fas fa-star mr-1"></i>Self-Prompt &amp; 반성형 대화 예시 (Q4 전략)</span>
+<div class="flex flex-col w-full">
+<div class="flex items-start mb-2">
+<span class="bg-gray-700 text-xs text-gray-300 px-2 py-1 rounded mr-3 mt-1 flex-shrink-0">User</span>
+<p class="text-sm text-gray-300">"기업 위기 대응 매뉴얼을 만들고 싶은데, <strong class="text-pink-400">네가 전문가로서 필요한 목차와 질문을 먼저 설계해 줘.</strong>"</p>
 </div>
-<p class="text-xs text-gray-500 leading-snug">
-                        기획안 초안은 <strong>Claude</strong>로 구조를 잡고, 팩트 체크는 <strong>Perplexity</strong>로 검색하며, 최종 자료는 <strong>Genspark</strong>로 시각화하는 워크플로우를 권장합니다.
-                    </p>
-</div>
-</div>
-<div class="mt-auto mb-2">
-<div class="text-4xl text-gray-200 mb-2">
-<i class="fa-solid fa-cubes-stacked"></i>
-</div>
-<h4 class="font-bold text-gray-900 mb-1">Tool Mix Strategy</h4>
-<p class="text-xs text-gray-500 font-light">
-                    "하나의 도구에 의존하지 말고, 도구 간의 시너지를 설계하십시오."
-                </p>
-</div>
-</div>
-<!-- Right Column: Comparison Table (70%) -->
-<div class="w-[70%] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-full">
-<!-- Table Header -->
-<div class="grid grid-cols-12 bg-gray-900 text-white h-12 items-center px-6">
-<div class="col-span-3 text-xs font-bold uppercase tracking-wider text-gray-400">활용 목적 (Category)</div>
-<div class="col-span-3 text-sm font-bold border-r border-gray-700 pr-4">
-                    추천 도구 (Best Tool)
-                </div>
-<div class="col-span-6 text-sm font-bold pl-4 text-hbr-red">
-                    핵심 활용 포인트 (Key Usage)
-                </div>
-</div>
-<!-- Row 1: Strategy & Writing -->
-<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6">
-<div class="col-span-3 flex items-center gap-2">
-<i class="fa-solid fa-pen-nib text-gray-400 text-sm"></i>
-<span class="font-bold text-gray-800 text-sm">전략기획 · 글쓰기</span>
-</div>
-<div class="col-span-3 pr-4 border-r border-gray-100">
-<p class="text-sm text-hbr-red font-bold">Claude 3.5 Sonnet</p>
-</div>
-<div class="col-span-6 pl-4">
-<p class="text-sm text-gray-600">긴 맥락 이해, 논리적 구조화, 자연스러운 한국어 문체</p>
-</div>
-</div>
-<!-- Row 2: Coding & Automation -->
-<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6 bg-gray-50">
-<div class="col-span-3 flex items-center gap-2">
-<i class="fa-solid fa-code text-gray-400 text-sm"></i>
-<span class="font-bold text-gray-800 text-sm">코딩 · 자동화</span>
-</div>
-<div class="col-span-3 pr-4 border-r border-gray-200">
-<p class="text-sm text-gray-900 font-bold">Cursor AI</p>
-</div>
-<div class="col-span-6 pl-4">
-<p class="text-sm text-gray-600">자연어로 앱/웹 개발, 데이터 스크래핑 툴 제작</p>
-</div>
-</div>
-<!-- Row 3: Research -->
-<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6">
-<div class="col-span-3 flex items-center gap-2">
-<i class="fa-solid fa-magnifying-glass text-gray-400 text-sm"></i>
-<span class="font-bold text-gray-800 text-sm">검색 · 리서치</span>
-</div>
-<div class="col-span-3 pr-4 border-r border-gray-100">
-<p class="text-sm text-gray-900 font-bold">Gemini / Perplexity</p>
-</div>
-<div class="col-span-6 pl-4">
-<p class="text-sm text-gray-600">실시간 최신 정보 검색, 출처(Source) 기반 팩트 체크</p>
-</div>
-</div>
-<!-- Row 4: Design & Visualization -->
-<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6 bg-gray-50">
-<div class="col-span-3 flex items-center gap-2">
-<i class="fa-solid fa-chart-pie text-gray-400 text-sm"></i>
-<span class="font-bold text-gray-800 text-sm">시각화 · PPT</span>
-</div>
-<div class="col-span-3 pr-4 border-r border-gray-200">
-<p class="text-sm text-hbr-red font-bold">Genspark</p>
-</div>
-<div class="col-span-6 pl-4">
-<p class="text-sm text-gray-600">복잡한 데이터의 시각적 구조화, 보고서 디자인 자동화</p>
-</div>
-</div>
-<!-- Row 5: Document Analysis -->
-<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6">
-<div class="col-span-3 flex items-center gap-2">
-<i class="fa-solid fa-book-open text-gray-400 text-sm"></i>
-<span class="font-bold text-gray-800 text-sm">문서 연구 · 노트</span>
-</div>
-<div class="col-span-3 pr-4 border-r border-gray-100">
-<p class="text-sm text-gray-900 font-bold">NotebookLM</p>
-</div>
-<div class="col-span-6 pl-4">
-<p class="text-sm text-gray-600">PDF/논문 기반 질의응답, 나만의 지식 데이터베이스 구축</p>
-</div>
-</div>
-<!-- Row 6: Standard & General -->
-<div class="grid grid-cols-12 items-center comparison-row py-3 px-6 bg-gray-50">
-<div class="col-span-3 flex items-center gap-2">
-<i class="fa-solid fa-robot text-gray-400 text-sm"></i>
-<span class="font-bold text-gray-800 text-sm">표준 · 범용</span>
-</div>
-<div class="col-span-3 pr-4 border-r border-gray-200">
-<p class="text-sm text-gray-900 font-bold">ChatGPT (GPT-4)</p>
-</div>
-<div class="col-span-6 pl-4">
-<p class="text-sm text-gray-600">가장 대중적인 인터페이스, 다양한 플러그인 생태계</p>
+<div class="flex items-start">
+<span class="bg-pink-900 text-xs text-pink-200 px-2 py-1 rounded mr-3 mt-1 flex-shrink-0">Reflexion</span>
+<p class="text-sm text-gray-300">"작성된 초안에 대해 <strong class="text-pink-400">가장 취약한 점 3가지를 찾아 비판하고, 이를 보완한 버전을 다시 제시해 줘.</strong>"</p>
 </div>
 </div>
 </div>
 </div>
-<!-- Footer Info -->
-<div class="px-16 pb-6 pt-2 flex justify-between items-center text-xs text-gray-400 border-t border-gray-100 mt-auto">
-<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
-<span>*도구별 성능은 업데이트에 따라 변동될 수 있습니다. (2025.12 기준)</span>
-</div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69e9aaeaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840fd75ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

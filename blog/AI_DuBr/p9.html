@@ -1,36 +1,80 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
-<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
-<title>프롬프트 설계 6대 요소</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>데이터 파싱: 해체와 조합</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #ffffff;
-            color: #1a1a1a;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: hidden;
         }
-        .serif-font {
-            font-family: 'Noto Serif KR', serif;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0f172a;
+            overflow: hidden;
+            padding: 30px 50px; /* 패딩 약간 축소하여 공간 확보 */
         }
-        .hbr-red {
-            color: #B21F24;
-        }
-        .bg-hbr-red {
-            background-color: #B21F24;
-        }
-        .border-hbr-red {
-            border-color: #B21F24;
+        .accent-text {
+            color: #2dd4bf; /* Teal 400 */
         }
         .step-card {
-            transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+            background-color: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
         .step-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-5px);
+            background-color: rgba(45, 212, 191, 0.1);
+            border-color: rgba(45, 212, 191, 0.3);
         }
         .step-number {
-            font-family: 'Noto Serif KR', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.05);
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            line-height: 1;
+        }
+        .concept-image-container {
+            width: 100%;
+            height: 240px; /* 높이 약간 축소 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+        .concept-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .example-box {
+            background-color: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(45, 212, 191, 0.2);
+            border-radius: 8px;
+            padding: 12px;
         }
     </style>
 <style id="slide-selected-style">
@@ -67,140 +111,141 @@
 
 
 </style></head>
-<body class="w-[1280px] min-h-[720px] flex flex-col relative overflow-hidden bg-gray-50">
-<!-- Top Accent Bar -->
-<div class="absolute top-0 left-0 w-full h-2 bg-gray-900">
-<div class="w-1/4 h-full bg-hbr-red"></div>
-</div>
+<body>
+<div class="slide-container">
 <!-- Header Section -->
-<div class="pt-10 px-16 pb-4 flex justify-between items-end bg-white border-b border-gray-200">
+<div class="mb-4 flex justify-between items-end">
 <div>
-<div class="flex items-center gap-2 mb-2">
-<span class="text-hbr-red font-bold tracking-widest text-xs uppercase">Section 04</span>
-<span class="text-gray-300">|</span>
-<span class="text-gray-500 font-medium text-xs uppercase tracking-wider">Prompt Engineering</span>
-</div>
-<h1 class="serif-font text-4xl font-bold text-gray-900 leading-tight">
-                프롬프트 설계: <span class="font-normal text-gray-600">성공적인 답변을 위한 6대 요소</span>
+<div class="mb-1 inline-block px-3 py-0.5 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase">
+                    DATA PARSING WORKFLOW
+                </div>
+<h1 class="text-3xl font-black leading-tight">
+                    데이터 파싱: <span class="accent-text">해체와 조합</span>
 </h1>
+<p class="text-gray-400 mt-1 text-base font-light">
+                    거대한 데이터 덩어리를 의미 단위로 쪼개고(Deconstruction), 새로운 관점으로 재조합(Reconstruction)
+                </p>
 </div>
-<div class="text-right max-w-md">
-<p class="text-sm text-gray-500 font-light leading-relaxed">
-                모호한 질문은 평범한 답변을 낳습니다.<br>
-                질문을 구조화하여 AI의 잠재력을 최대한 이끌어내세요.
-            </p>
+<div class="text-right">
+<div class="text-xs text-gray-500 font-mono">6-STEP PROCESS</div>
 </div>
 </div>
-<!-- Main Content Area -->
-<div class="flex-1 px-16 py-8 flex flex-col justify-center">
-<!-- 6 Elements Grid (2 Rows x 3 Columns) -->
-<div class="grid grid-cols-3 gap-6 h-full">
-<!-- Element 1: Command -->
-<div class="step-card bg-white p-5 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group flex flex-col justify-between">
+<!-- Main Image Area -->
+<div class="concept-image-container shadow-xl">
+<img alt="데이터 파싱 프로세스 다이어그램" class="concept-image" src="https://www.genspark.ai/api/files/s/3QZnrDXn">
+<div class="absolute bottom-3 right-3 bg-black bg-opacity-60 px-2 py-0.5 rounded text-xs text-gray-300">
+<i class="fas fa-sitemap mr-1"></i> Parsing Flow
+            </div>
+</div>
+<!-- Detailed Steps Grid (6 Columns) -->
+<div class="grid grid-cols-6 gap-3 mb-5 flex-1">
+<!-- Step 1: 수집 -->
+<div class="step-card">
+<span class="step-number">1</span>
+<div class="mb-2 text-teal-400 text-xl">
+<i class="fas fa-file-import"></i>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">수집<br><span class="text-xs font-normal text-gray-400">(Collection)</span></h3>
+<p class="text-xs text-gray-400 leading-snug">
+                    계약서, 기사, 판결문 등 원본 데이터 확보
+                </p>
+</div>
+<!-- Step 2: 파싱 -->
+<div class="step-card">
+<span class="step-number">2</span>
+<div class="mb-2 text-blue-400 text-xl">
+<i class="fas fa-cogs"></i>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">파싱<br><span class="text-xs font-normal text-gray-400">(Parsing)</span></h3>
+<p class="text-xs text-gray-400 leading-snug">
+                    문단, 문장, 키워드 단위로 데이터 분해
+                </p>
+</div>
+<!-- Step 3: 레이블링 -->
+<div class="step-card">
+<span class="step-number">3</span>
+<div class="mb-2 text-purple-400 text-xl">
+<i class="fas fa-tags"></i>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">레이블링<br><span class="text-xs font-normal text-gray-400">(Labeling)</span></h3>
+<p class="text-xs text-gray-400 leading-snug">
+                    감정, 입장, 중요도 등 의미 태그 부착
+                </p>
+</div>
+<!-- Step 4: 비교/대조 -->
+<div class="step-card">
+<span class="step-number">4</span>
+<div class="mb-2 text-pink-400 text-xl">
+<i class="fas fa-balance-scale"></i>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">비교/대조<br><span class="text-xs font-normal text-gray-400">(Compare)</span></h3>
+<p class="text-xs text-gray-400 leading-snug">
+                    기준에 따른 분류 및 차이점/공통점 분석
+                </p>
+</div>
+<!-- Step 5: 재조합 -->
+<div class="step-card">
+<span class="step-number">5</span>
+<div class="mb-2 text-orange-400 text-xl">
+<i class="fas fa-puzzle-piece"></i>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">재조합<br><span class="text-xs font-normal text-gray-400">(Recombine)</span></h3>
+<p class="text-xs text-gray-400 leading-snug">
+                    새로운 프레임워크로 데이터 구조 재설계
+                </p>
+</div>
+<!-- Step 6: 인사이트 -->
+<div class="step-card">
+<span class="step-number">6</span>
+<div class="mb-2 text-yellow-400 text-xl">
+<i class="fas fa-lightbulb"></i>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">인사이트<br><span class="text-xs font-normal text-gray-400">(Insight)</span></h3>
+<p class="text-xs text-gray-400 leading-snug">
+                    숨겨진 패턴 발견 및 전략적 시사점 도출
+                </p>
+</div>
+</div>
+<!-- Footer / Real-world Examples -->
+<div class="bg-gray-800 bg-opacity-40 rounded-lg p-3 border border-gray-700">
+<div class="flex items-center mb-2">
+<i class="fas fa-briefcase text-teal-400 mr-2"></i>
+<h4 class="text-sm font-bold text-white">PR 실무 적용 사례 (Use Cases)</h4>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<!-- Case 1 -->
+<div class="example-box flex items-start">
+<div class="text-teal-400 mt-1 mr-2"><i class="fas fa-file-signature"></i></div>
 <div>
-<div class="flex justify-between items-start mb-2">
-<span class="step-number text-2xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">01</span>
-<i class="fa-solid fa-terminal text-gray-400 group-hover:text-hbr-red transition-colors"></i>
+<h5 class="text-xs font-bold text-white">계약서 분석</h5>
+<p class="text-xs text-gray-400 mt-0.5">
+                            '을'의 입장에서 독소 조항 파싱 → 수정안 및 근거 데이터 재조합 → 검토 보고서 생성
+                        </p>
 </div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">명령 (Command)</h3>
-<p class="text-sm text-gray-600 leading-snug font-light mb-3">
-                        AI가 수행해야 할 구체적인 작업을 동사로 명확하게 지시합니다.
-                    </p>
 </div>
-<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono border-l-2 border-gray-300">
-                    "분석해줘", "요약해줘", "작성해줘"
-                </div>
-</div>
-<!-- Element 2: Context -->
-<div class="step-card bg-white p-5 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group flex flex-col justify-between">
+<!-- Case 2 -->
+<div class="example-box flex items-start">
+<div class="text-blue-400 mt-1 mr-2"><i class="fas fa-newspaper"></i></div>
 <div>
-<div class="flex justify-between items-start mb-2">
-<span class="step-number text-2xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">02</span>
-<i class="fa-solid fa-layer-group text-gray-400 group-hover:text-hbr-red transition-colors"></i>
+<h5 class="text-xs font-bold text-white">이슈/위기 분석</h5>
+<p class="text-xs text-gray-400 mt-0.5">
+                            사건 타임라인 해체 → 인물별 입장 및 대립 관계도 재조합 → 대응 논리 개발
+                        </p>
 </div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">맥락 (Context)</h3>
-<p class="text-sm text-gray-600 leading-snug font-light mb-3">
-                        배경 정보, 제약 조건, 타겟 독자 등 답변에 필요한 상황을 제공합니다.
-                    </p>
 </div>
-<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono border-l-2 border-gray-300">
-                    "우리는 20대 타겟의 스타트업이고..."
-                </div>
-</div>
-<!-- Element 3: Persona -->
-<div class="step-card bg-white p-5 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group flex flex-col justify-between">
+<!-- Case 3 -->
+<div class="example-box flex items-start">
+<div class="text-purple-400 mt-1 mr-2"><i class="fas fa-gavel"></i></div>
 <div>
-<div class="flex justify-between items-start mb-2">
-<span class="step-number text-2xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">03</span>
-<i class="fa-solid fa-user-tie text-gray-400 group-hover:text-hbr-red transition-colors"></i>
-</div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">페르소나 (Persona)</h3>
-<p class="text-sm text-gray-600 leading-snug font-light mb-3">
-                        AI에게 특정 전문가의 역할이나 관점을 부여하여 전문성을 높입니다.
-                    </p>
-</div>
-<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono border-l-2 border-gray-300">
-                    "당신은 30년 경력의 PR 전문가입니다."
-                </div>
-</div>
-<!-- Element 4: Examples -->
-<div class="step-card bg-white p-5 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group flex flex-col justify-between">
-<div>
-<div class="flex justify-between items-start mb-2">
-<span class="step-number text-2xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">04</span>
-<i class="fa-solid fa-list-check text-gray-400 group-hover:text-hbr-red transition-colors"></i>
-</div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">예시 (Examples)</h3>
-<p class="text-sm text-gray-600 leading-snug font-light mb-3">
-                        원하는 결과물의 샘플(Few-shot)을 제공하여 패턴을 학습시킵니다.
-                    </p>
-</div>
-<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono border-l-2 border-gray-300">
-                    "다음과 같은 스타일로 작성해줘: [예시]"
-                </div>
-</div>
-<!-- Element 5: Format -->
-<div class="step-card bg-white p-5 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group flex flex-col justify-between">
-<div>
-<div class="flex justify-between items-start mb-2">
-<span class="step-number text-2xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">05</span>
-<i class="fa-solid fa-table-list text-gray-400 group-hover:text-hbr-red transition-colors"></i>
-</div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">포맷 (Format)</h3>
-<p class="text-sm text-gray-600 leading-snug font-light mb-3">
-                        결과물의 형태(표, 리스트, 코드, JSON 등)를 구체적으로 지정합니다.
-                    </p>
-</div>
-<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono border-l-2 border-gray-300">
-                    "표로 정리하고 CSV 형식으로 출력해줘"
-                </div>
-</div>
-<!-- Element 6: Tone & Manner -->
-<div class="step-card bg-white p-5 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group flex flex-col justify-between">
-<div>
-<div class="flex justify-between items-start mb-2">
-<span class="step-number text-2xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">06</span>
-<i class="fa-solid fa-microphone-lines text-gray-400 group-hover:text-hbr-red transition-colors"></i>
-</div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">톤앤매너 (Tone)</h3>
-<p class="text-sm text-gray-600 leading-snug font-light mb-3">
-                        텍스트의 어조, 분위기, 문체 등을 설정하여 일관성을 유지합니다.
-                    </p>
-</div>
-<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono border-l-2 border-gray-300">
-                    "친근하고 격려하는 어조로 작성해줘"
-                </div>
+<h5 class="text-xs font-bold text-white">판결문/연설문 비교</h5>
+<p class="text-xs text-gray-400 mt-0.5">
+                            필수 구성 요소 파싱 → 텍스트 간 논리 구조 비교 → 완성도 평가 프레임워크 도출
+                        </p>
 </div>
 </div>
 </div>
-<!-- Footer Info -->
-<div class="px-16 pb-6 pt-2 flex justify-between items-center text-xs text-gray-400">
-<div class="flex items-center gap-2">
-<i class="fa-solid fa-lightbulb"></i>
-<span>이 6가지 요소는 '쓰레기를 넣으면 쓰레기가 나온다(GIGO)'는 문제를 해결하는 핵심 열쇠입니다.</span>
 </div>
-<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69f9b1eaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840fd78ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

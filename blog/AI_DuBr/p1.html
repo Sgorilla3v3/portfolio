@@ -1,36 +1,79 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
-<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
-<title>목차 - 학습 로드맵</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>목차 - PR 실무 고도화를 위한 AI 활용 전략</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #ffffff;
-            color: #1a1a1a;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: hidden;
         }
-        .serif-font {
-            font-family: 'Noto Serif KR', serif;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            position: relative;
+            background-color: #0f172a;
+            overflow: hidden;
         }
-        .hbr-red {
-            color: #B21F24;
+        .left-panel {
+            width: 35%;
+            background-color: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
         }
-        .bg-hbr-red {
-            background-color: #B21F24;
+        .right-panel {
+            width: 65%;
+            padding: 60px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
         }
-        .border-hbr-red {
-            border-color: #B21F24;
+        .accent-text {
+            color: #2dd4bf; /* Teal 400 */
         }
-        .section-card {
+        .chapter-item {
             transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        /* HBR Style List Numbering */
-        .list-number {
-            font-family: 'Noto Serif KR', serif;
+        .chapter-item:hover {
+            background-color: rgba(45, 212, 191, 0.1);
+            transform: translateX(10px);
+            border-radius: 8px;
+            border-bottom: 1px solid transparent;
+        }
+        .chapter-number {
+            color: #5eead4; /* Teal 300 */
+            font-family: 'Noto Sans KR', sans-serif;
             font-weight: 900;
-            line-height: 1;
+        }
+        #bgCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.4;
+        }
+        .glass-box {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
         }
     </style>
 <style id="slide-selected-style">
@@ -67,115 +110,204 @@
 
 
 </style></head>
-<body class="w-[1280px] min-h-[720px] flex flex-col p-16 relative overflow-hidden">
-<!-- Background Watermark -->
-<div class="absolute top-0 right-0 w-1/3 h-full bg-gray-50 opacity-50 z-0 skew-x-12 transform origin-top-right translate-x-20"></div>
-<!-- Header Section -->
-<div class="relative z-10 w-full mb-12 border-b border-gray-300 pb-6 flex justify-between items-end">
+<body>
+<div class="slide-container">
+<canvas id="bgCanvas" width="1280" height="720"></canvas>
+<!-- Left Title Panel -->
+<div class="left-panel">
+<div class="mb-6 inline-block">
+<span class="px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase">
+                    Agenda
+                </span>
+</div>
+<h1 class="text-5xl font-black leading-tight mb-6">
+                Table of<br>
+<span class="accent-text">Contents</span>
+</h1>
+<p class="text-gray-400 text-lg font-light leading-relaxed mb-10">
+                PR 실무와 AI 기술의 결합,<br>
+                이론부터 실전 자동화 구축까지<br>
+                단계별 학습 로드맵입니다.
+            </p>
+<div class="mt-auto">
+<div class="flex items-center text-gray-500 text-sm">
+<i class="fas fa-info-circle mr-2"></i>
+<p>총 13개 챕터 구성</p>
+</div>
+</div>
+</div>
+<!-- Right List Panel -->
+<div class="right-panel">
+<div class="grid grid-cols-2 gap-x-12 gap-y-3 h-full content-center">
+<!-- Column 1 -->
+<div class="space-y-3">
+<!-- Item 1 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">01</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-search"></i></div>
 <div>
-<div class="flex items-center gap-3 mb-2">
-<span class="h-1 w-10 bg-hbr-red inline-block"></span>
-<span class="text-hbr-red font-bold tracking-[0.2em] text-xs uppercase">Roadmap</span>
-</div>
-<h1 class="serif-font text-5xl font-bold text-gray-900 tracking-tight">Table of Contents</h1>
-</div>
-<div class="text-right">
-<p class="text-gray-500 font-light text-sm mb-1">Total Modules</p>
-<p class="serif-font text-3xl font-bold text-gray-800">06 <span class="text-base font-normal text-gray-400">Sections</span></p>
+<p class="font-bold text-white text-lg">AI의 본질: 패턴 인식 도구</p>
 </div>
 </div>
-<!-- Main Content Grid -->
-<div class="relative z-10 grid grid-cols-3 gap-x-12 gap-y-10 flex-1 content-start">
-<!-- Section 1 -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">01</span>
-<i class="fa-solid fa-flag-checkered text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">도입</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                Executive Summary 및 핵심 메시지.<br>
-                AI 시대의 생존 전략과 기대 효과.
-            </p>
+<!-- Item 2 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">02</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-history"></i></div>
+<div>
+<p class="font-bold text-gray-200">AI 생태계 타임라인</p>
 </div>
 </div>
-<!-- Section 2 -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">02</span>
-<i class="fa-solid fa-microchip text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">AI의 근본 이해</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                패턴 인식 도구로서의 AI 정의.<br>
-                작동 원리(토큰화, 임베딩)와 창발성.
-            </p>
+<!-- Item 3 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">03</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-cogs"></i></div>
+<div>
+<p class="font-bold text-gray-200">AI 작동 원리</p>
+<p class="text-xs text-gray-500">토큰화 → 임베딩 → 예측</p>
 </div>
 </div>
-<!-- Section 3 -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">03</span>
-<i class="fa-solid fa-globe text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">AI 주요 플레이어</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                OpenAI, Google, Anthropic 역사.<br>
-                주요 도구 생태계 및 특징 비교.
-            </p>
+<!-- Item 4 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">04</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-lightbulb"></i></div>
+<div>
+<p class="font-bold text-gray-200">창발적 능력 (Emergent Ability)</p>
 </div>
 </div>
-<!-- Section 4 -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">04</span>
-<i class="fa-solid fa-comments text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">프롬프트 엔지니어링</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                프롬프트 설계 6대 요소.<br>
-                CoT(생각의 연결) 및 Self-Prompt 전략.
-            </p>
+<!-- Item 5 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">05</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-pencil-alt"></i></div>
+<div>
+<p class="font-bold text-gray-200">프롬프트 설계 6대 요소</p>
 </div>
 </div>
-<!-- Section 5 -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">05</span>
-<i class="fa-solid fa-briefcase text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">PR 실무 적용</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                데이터 해체와 조합(Parsing) 방법론.<br>
-                계약서 리뷰, 이슈 분석, 글쓰기 실무.
-            </p>
+<!-- Item 6 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">06</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-link"></i></div>
+<div>
+<p class="font-bold text-gray-200">CoT: 생각의 연결</p>
 </div>
 </div>
-<!-- Section 6 -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">06</span>
-<i class="fa-solid fa-screwdriver-wrench text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">고급 도구 활용</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                MCP 프로토콜과 Cursor AI.<br>
-                바이브 코딩을 통한 자동화 시스템 구축.
-            </p>
+<!-- Item 7 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">07</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-user-cog"></i></div>
+<div>
+<p class="font-bold text-gray-200">Self-Prompt 전략</p>
 </div>
 </div>
 </div>
-<!-- Footer Info -->
-<div class="absolute bottom-8 left-16 right-16 border-t border-gray-200 pt-4 flex justify-between items-center text-xs text-gray-400">
-<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
-<span>© 2025 All Rights Reserved</span>
+<!-- Column 2 -->
+<div class="space-y-3">
+<!-- Item 8 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">08</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-database"></i></div>
+<div>
+<p class="font-bold text-gray-200">데이터 파싱: 해체와 조합</p>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9ac119e8b9fcd1d1&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+</div>
+<!-- Item 9 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">09</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-tools"></i></div>
+<div>
+<p class="font-bold text-gray-200">AI 도구 생태계 비교</p>
+</div>
+</div>
+<!-- Item 10 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">10</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-code"></i></div>
+<div>
+<p class="font-bold text-gray-200">MCP와 바이브 코딩</p>
+</div>
+</div>
+<!-- Item 11 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">11</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-sync"></i></div>
+<div>
+<p class="font-bold text-gray-200">업무 자동화 워크플로우</p>
+</div>
+</div>
+<!-- Item 12 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">12</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-brain"></i></div>
+<div>
+<p class="font-bold text-gray-200">PA x AI 듀얼 브레인</p>
+</div>
+</div>
+<!-- Item 13 -->
+<div class="chapter-item p-3 flex items-center">
+<span class="chapter-number text-xl w-10">13</span>
+<div class="w-8 text-center mr-3 text-gray-400"><i class="fas fa-flag-checkered"></i></div>
+<div>
+<p class="font-bold text-gray-200">마무리 및 다음 행동</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 40;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(45, 212, 191, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840dd32ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

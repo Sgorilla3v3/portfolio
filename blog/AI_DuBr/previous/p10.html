@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
+<title>CoT 전략: 사고의 연쇄</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+        .serif-font {
+            font-family: 'Noto Serif KR', serif;
+        }
+        .hbr-red {
+            color: #B21F24;
+        }
+        .bg-hbr-red {
+            background-color: #B21F24;
+        }
+        .border-hbr-red {
+            border-color: #B21F24;
+        }
+        .step-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .step-number {
+            font-family: 'Noto Serif KR', serif;
+        }
+        .flow-arrow::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 8px 0 8px 12px;
+            border-style: solid;
+            border-color: transparent transparent transparent #E5E7EB;
+        }
+        .flow-container {
+            position: relative;
+        }
+        .flow-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #E5E7EB;
+            z-index: 0;
+            transform: translateY(-50%);
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] min-h-[720px] flex flex-col relative overflow-hidden bg-gray-50">
+<!-- Top Accent Bar -->
+<div class="absolute top-0 left-0 w-full h-2 bg-gray-900">
+<div class="w-1/4 h-full bg-hbr-red"></div>
+</div>
+<!-- Header Section -->
+<div class="pt-12 px-16 pb-6 flex justify-between items-end bg-white border-b border-gray-200">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="text-hbr-red font-bold tracking-widest text-xs uppercase">Section 04</span>
+<span class="text-gray-300">|</span>
+<span class="text-gray-500 font-medium text-xs uppercase tracking-wider">Prompt Engineering</span>
+</div>
+<h1 class="serif-font text-4xl font-bold text-gray-900 leading-tight">
+                CoT 전략: <span class="font-normal text-gray-600">사고의 연쇄 (Chain of Thought)</span>
+</h1>
+</div>
+<div class="text-right max-w-lg">
+<p class="text-sm text-gray-500 font-light leading-relaxed">
+                복잡한 문제를 한 번에 해결하려 하지 않고, 단계별로 쪼개어<br>
+                AI와 논리적으로 대화하며 최적의 해답을 찾아가는 전략적 접근법입니다.
+            </p>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 px-16 py-10 flex flex-col justify-between">
+<!-- Logic Flow Diagram Area -->
+<div class="w-full mb-8 relative bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+<h3 class="serif-font text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+<i class="fa-solid fa-diagram-project text-hbr-red"></i>
+                CoT 프로세스 흐름도
+            </h3>
+<div class="flex justify-between items-center relative z-10 px-4">
+<!-- Flow Line Background -->
+<div class="absolute top-1/2 left-10 right-10 h-1 bg-gray-100 -z-10 transform -translate-y-1/2"></div>
+<!-- Step 1 -->
+<div class="flex flex-col items-center bg-white p-2">
+<div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mb-3 border-2 border-gray-200 shadow-sm">
+<i class="fa-solid fa-cloud-bolt text-xl"></i>
+</div>
+<span class="text-sm font-bold text-gray-800">복잡한 문제</span>
+<span class="text-xs text-gray-500 mt-1">입력 (Input)</span>
+</div>
+<!-- Arrow -->
+<i class="fa-solid fa-chevron-right text-gray-300"></i>
+<!-- Step 2 -->
+<div class="flex flex-col items-center bg-white p-2">
+<div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mb-3 border-2 border-blue-100 shadow-sm">
+<i class="fa-solid fa-layer-group text-xl"></i>
+</div>
+<span class="text-sm font-bold text-gray-800">Break Down</span>
+<span class="text-xs text-gray-500 mt-1">문제 쪼개기</span>
+</div>
+<!-- Arrow -->
+<i class="fa-solid fa-chevron-right text-gray-300"></i>
+<!-- Step 3 -->
+<div class="flex flex-col items-center bg-white p-2">
+<div class="w-16 h-16 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 mb-3 border-2 border-purple-100 shadow-sm">
+<i class="fa-solid fa-comments text-xl"></i>
+</div>
+<span class="text-sm font-bold text-gray-800">CoQ (대화)</span>
+<span class="text-xs text-gray-500 mt-1">질문과 답변</span>
+</div>
+<!-- Arrow -->
+<i class="fa-solid fa-chevron-right text-gray-300"></i>
+<!-- Step 4 -->
+<div class="flex flex-col items-center bg-white p-2">
+<div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-hbr-red mb-3 border-2 border-red-100 shadow-sm">
+<i class="fa-solid fa-lightbulb text-xl"></i>
+</div>
+<span class="text-sm font-bold text-gray-800">통찰 도출</span>
+<span class="text-xs text-gray-500 mt-1">해결 (Output)</span>
+</div>
+</div>
+</div>
+<!-- Detailed Concepts (3 Columns for CoT) -->
+<div class="grid grid-cols-3 gap-8 h-full">
+<!-- Concept 1: Break Down -->
+<div class="step-card bg-white p-6 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<span class="step-number text-3xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">01</span>
+<div class="bg-gray-50 p-3 rounded-full">
+<i class="fa-solid fa-puzzle-piece text-gray-400 group-hover:text-gray-600"></i>
+</div>
+</div>
+<h3 class="serif-font text-xl font-bold text-gray-900 mb-3 group-hover:text-hbr-red transition-colors">Break Down (문제 분해)</h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light mb-4 flex-grow">
+                    거대한 과업을 한 번에 지시하지 않고, 실행 가능한 작은 단위로 나눕니다. AI가 각 단계에 집중하게 하여 분석의 깊이를 더합니다.
+                </p>
+<div class="bg-gray-50 p-3 rounded border border-gray-100">
+<p class="text-xs text-gray-500 font-mono mb-1"><span class="font-bold text-gray-700">Example:</span> 마케팅 전략 수립</p>
+<p class="text-xs text-gray-500 font-mono pl-2 border-l-2 border-gray-300">
+                        1. 자사 분석 → 2. 시장 분석 → 3. 경쟁사 분석 → 4. 전략 도출
+                    </p>
+</div>
+</div>
+<!-- Concept 2: CoQ -->
+<div class="step-card bg-white p-6 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<span class="step-number text-3xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">02</span>
+<div class="bg-gray-50 p-3 rounded-full">
+<i class="fa-solid fa-clipboard-question text-gray-400 group-hover:text-gray-600"></i>
+</div>
+</div>
+<h3 class="serif-font text-xl font-bold text-gray-900 mb-3 group-hover:text-hbr-red transition-colors">CoQ (Chain of Question)</h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light mb-4 flex-grow">
+                    일방적인 '명령' 대신, AI가 사용자에게 필요한 정보를 '되묻게' 만듭니다. 이 과정을 통해 문제의 범위와 맥락을 명확히 설정합니다.
+                </p>
+<div class="bg-gray-50 p-3 rounded border border-gray-100">
+<p class="text-xs text-gray-500 font-mono mb-1"><span class="font-bold text-gray-700">Prompt:</span></p>
+<p class="text-xs text-gray-500 font-mono pl-2 border-l-2 border-gray-300">
+                        "내 기획안을 작성하기 위해, 나에게 필요한 질문 5가지를 해줘."
+                    </p>
+</div>
+</div>
+<!-- Concept 3: GIGO -->
+<div class="step-card bg-white p-6 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<span class="step-number text-3xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">03</span>
+<div class="bg-gray-50 p-3 rounded-full">
+<i class="fa-solid fa-filter text-gray-400 group-hover:text-gray-600"></i>
+</div>
+</div>
+<h3 class="serif-font text-xl font-bold text-gray-900 mb-3 group-hover:text-hbr-red transition-colors">GIGO (Garbage In, Out)</h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light mb-4 flex-grow">
+                    "쓰레기를 넣으면 쓰레기가 나온다." 모호하고 추상적인 질문은 평범한 답변을 낳습니다. CoT를 통해 입력(Input)의 품질을 높여야 합니다.
+                </p>
+<div class="bg-red-50 p-3 rounded border border-red-100">
+<p class="text-xs text-red-800 font-bold mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Avoid:</p>
+<p class="text-xs text-red-600 font-mono pl-2 border-l-2 border-red-300">
+                        "좋은 아이디어 좀 줘" (X) <br>
+                        → 맥락, 타겟, 제약조건 구체화 (O)
+                    </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="px-16 pb-8 pt-4 flex justify-between items-center text-xs text-gray-400">
+<div class="flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-hbr-red"></i>
+<span>CoT는 AI가 '생각할 시간'을 주는 것과 같습니다. 단계별 추론을 유도하면 정확도가 비약적으로 상승합니다.</span>
+</div>
+<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69f9b8eaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

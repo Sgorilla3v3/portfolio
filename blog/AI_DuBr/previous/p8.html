@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
+<title>AI 도구 선택 가이드</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+        .serif-font {
+            font-family: 'Noto Serif KR', serif;
+        }
+        .hbr-red {
+            color: #B21F24;
+        }
+        .bg-hbr-red {
+            background-color: #B21F24;
+        }
+        .border-hbr-red {
+            border-color: #B21F24;
+        }
+        /* Table Styles */
+        .comparison-row {
+            transition: background-color 0.2s ease;
+        }
+        .comparison-row:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] min-h-[720px] flex flex-col relative overflow-hidden bg-white">
+<!-- Top Accent Bar -->
+<div class="absolute top-0 left-0 w-full h-2 bg-gray-900">
+<div class="w-1/3 h-full bg-hbr-red"></div>
+</div>
+<!-- Header Section -->
+<div class="pt-10 px-16 pb-6 flex justify-between items-end border-b border-gray-200">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="text-hbr-red font-bold tracking-widest text-xs uppercase">Section 03</span>
+<span class="text-gray-300">|</span>
+<span class="text-gray-500 font-medium text-xs uppercase tracking-wider">Tool Selection Guide</span>
+</div>
+<h1 class="serif-font text-4xl font-bold text-gray-900 leading-tight">
+                목적별 최적의 <span class="text-hbr-red">AI 도구 선택</span> 가이드
+            </h1>
+</div>
+<div class="text-right">
+<p class="text-sm text-gray-500 font-light">
+                Strategic Selection: 업무 목적에 맞는 도구 매칭이 생산성의 핵심
+            </p>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 px-16 py-6 flex gap-10">
+<!-- Left Column: Concept Definition (30%) -->
+<div class="w-[30%] flex flex-col pt-2">
+<div class="mb-6">
+<h3 class="serif-font text-xl font-bold text-gray-900 mb-3 border-l-4 border-hbr-red pl-3">
+                    도구의 적재적소
+                </h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light text-justify mb-4">
+                    모든 AI 모델이 만능은 아닙니다. 각 모델은 학습 데이터와 설계 목적에 따라 특화된 강점(글쓰기, 코딩, 검색, 시각화)을 가집니다. 이를 이해하고 조합하는 '멀티 모델 전략'이 필요합니다.
+                </p>
+<div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+<div class="flex items-center gap-3 mb-2">
+<i class="fa-solid fa-layer-group text-hbr-red text-xl"></i>
+<span class="font-bold text-gray-800 text-sm">Best Practice</span>
+</div>
+<p class="text-xs text-gray-500 leading-snug">
+                        기획안 초안은 <strong>Claude</strong>로 구조를 잡고, 팩트 체크는 <strong>Perplexity</strong>로 검색하며, 최종 자료는 <strong>Genspark</strong>로 시각화하는 워크플로우를 권장합니다.
+                    </p>
+</div>
+</div>
+<div class="mt-auto mb-2">
+<div class="text-4xl text-gray-200 mb-2">
+<i class="fa-solid fa-cubes-stacked"></i>
+</div>
+<h4 class="font-bold text-gray-900 mb-1">Tool Mix Strategy</h4>
+<p class="text-xs text-gray-500 font-light">
+                    "하나의 도구에 의존하지 말고, 도구 간의 시너지를 설계하십시오."
+                </p>
+</div>
+</div>
+<!-- Right Column: Comparison Table (70%) -->
+<div class="w-[70%] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-full">
+<!-- Table Header -->
+<div class="grid grid-cols-12 bg-gray-900 text-white h-12 items-center px-6">
+<div class="col-span-3 text-xs font-bold uppercase tracking-wider text-gray-400">활용 목적 (Category)</div>
+<div class="col-span-3 text-sm font-bold border-r border-gray-700 pr-4">
+                    추천 도구 (Best Tool)
+                </div>
+<div class="col-span-6 text-sm font-bold pl-4 text-hbr-red">
+                    핵심 활용 포인트 (Key Usage)
+                </div>
+</div>
+<!-- Row 1: Strategy & Writing -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6">
+<div class="col-span-3 flex items-center gap-2">
+<i class="fa-solid fa-pen-nib text-gray-400 text-sm"></i>
+<span class="font-bold text-gray-800 text-sm">전략기획 · 글쓰기</span>
+</div>
+<div class="col-span-3 pr-4 border-r border-gray-100">
+<p class="text-sm text-hbr-red font-bold">Claude 3.5 Sonnet</p>
+</div>
+<div class="col-span-6 pl-4">
+<p class="text-sm text-gray-600">긴 맥락 이해, 논리적 구조화, 자연스러운 한국어 문체</p>
+</div>
+</div>
+<!-- Row 2: Coding & Automation -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6 bg-gray-50">
+<div class="col-span-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-gray-400 text-sm"></i>
+<span class="font-bold text-gray-800 text-sm">코딩 · 자동화</span>
+</div>
+<div class="col-span-3 pr-4 border-r border-gray-200">
+<p class="text-sm text-gray-900 font-bold">Cursor AI</p>
+</div>
+<div class="col-span-6 pl-4">
+<p class="text-sm text-gray-600">자연어로 앱/웹 개발, 데이터 스크래핑 툴 제작</p>
+</div>
+</div>
+<!-- Row 3: Research -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6">
+<div class="col-span-3 flex items-center gap-2">
+<i class="fa-solid fa-magnifying-glass text-gray-400 text-sm"></i>
+<span class="font-bold text-gray-800 text-sm">검색 · 리서치</span>
+</div>
+<div class="col-span-3 pr-4 border-r border-gray-100">
+<p class="text-sm text-gray-900 font-bold">Gemini / Perplexity</p>
+</div>
+<div class="col-span-6 pl-4">
+<p class="text-sm text-gray-600">실시간 최신 정보 검색, 출처(Source) 기반 팩트 체크</p>
+</div>
+</div>
+<!-- Row 4: Design & Visualization -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6 bg-gray-50">
+<div class="col-span-3 flex items-center gap-2">
+<i class="fa-solid fa-chart-pie text-gray-400 text-sm"></i>
+<span class="font-bold text-gray-800 text-sm">시각화 · PPT</span>
+</div>
+<div class="col-span-3 pr-4 border-r border-gray-200">
+<p class="text-sm text-hbr-red font-bold">Genspark</p>
+</div>
+<div class="col-span-6 pl-4">
+<p class="text-sm text-gray-600">복잡한 데이터의 시각적 구조화, 보고서 디자인 자동화</p>
+</div>
+</div>
+<!-- Row 5: Document Analysis -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-6">
+<div class="col-span-3 flex items-center gap-2">
+<i class="fa-solid fa-book-open text-gray-400 text-sm"></i>
+<span class="font-bold text-gray-800 text-sm">문서 연구 · 노트</span>
+</div>
+<div class="col-span-3 pr-4 border-r border-gray-100">
+<p class="text-sm text-gray-900 font-bold">NotebookLM</p>
+</div>
+<div class="col-span-6 pl-4">
+<p class="text-sm text-gray-600">PDF/논문 기반 질의응답, 나만의 지식 데이터베이스 구축</p>
+</div>
+</div>
+<!-- Row 6: Standard & General -->
+<div class="grid grid-cols-12 items-center comparison-row py-3 px-6 bg-gray-50">
+<div class="col-span-3 flex items-center gap-2">
+<i class="fa-solid fa-robot text-gray-400 text-sm"></i>
+<span class="font-bold text-gray-800 text-sm">표준 · 범용</span>
+</div>
+<div class="col-span-3 pr-4 border-r border-gray-200">
+<p class="text-sm text-gray-900 font-bold">ChatGPT (GPT-4)</p>
+</div>
+<div class="col-span-6 pl-4">
+<p class="text-sm text-gray-600">가장 대중적인 인터페이스, 다양한 플러그인 생태계</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="px-16 pb-6 pt-2 flex justify-between items-center text-xs text-gray-400 border-t border-gray-100 mt-auto">
+<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
+<span>*도구별 성능은 업데이트에 따라 변동될 수 있습니다. (2025.12 기준)</span>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69e9aaeaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

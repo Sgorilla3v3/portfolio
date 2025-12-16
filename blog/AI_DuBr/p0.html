@@ -1,132 +1,250 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="utf-8">
-    <meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
-    <title>마케팅 실무 고도화를 위한 AI 활용 전략 교육</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>PR 실무 고도화를 위한 AI 활용 전략</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
         body {
-            font-family: 'Noto Sans KR', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: hidden;
         }
-        .serif-font {
-            font-family: 'Noto Serif KR', serif;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0f172a;
+            overflow: hidden;
         }
-        .hbr-red {
-            background-color: #B21F24;
+        .accent-text {
+            color: #2dd4bf; /* Teal 400 */
         }
-        .text-hbr-red {
-            color: #B21F24;
+        .highlight-box {
+            background-color: rgba(45, 212, 191, 0.1);
+            border-left: 4px solid #2dd4bf;
         }
-        .bg-hbr-red {
-            background-color: #B21F24;
+        .learning-goal-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
         }
-        .gradient-overlay {
-            background: linear-gradient(135deg, rgba(178, 31, 36, 0.05) 0%, rgba(178, 31, 36, 0.02) 100%);
+        #networkCanvas {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 80px;
+        }
+        .bottom-bar {
+            position: relative;
+            z-index: 10;
+            padding: 40px 80px;
+            background-color: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
-</head>
-<body class="w-[1280px] h-[720px] bg-white overflow-hidden shadow-2xl">
-    <div class="relative w-full h-full flex">
-        
-        <!-- 왼쪽 메인 콘텐츠 영역 (70%) -->
-        <div class="w-[70%] h-full flex flex-col justify-between px-20 py-16 bg-white relative z-20">
-            
-            <!-- 상단 액센트 라인 -->
-            <div class="absolute top-0 left-0 w-full h-2 bg-hbr-red"></div>
-            
-            <!-- 헤더 영역 -->
-            <div>
-                <!-- 카테고리 태그 -->
-                <div class="mb-6">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 rounded-full">
-                        <i class="fa-solid fa-microchip text-hbr-red"></i>
-                        <span class="text-hbr-red font-bold tracking-wide text-xs uppercase">
-                            AI Transformation Strategy
-                        </span>
-                    </div>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Visual -->
+<canvas id="networkCanvas" width="1280" height="720"></canvas>
+<!-- Main Content -->
+<div class="content-wrapper">
+<div class="w-2/3">
+<div class="mb-4 inline-block px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-sm font-medium tracking-wider">
+                    PR &amp; AI INTEGRATION STRATEGY
                 </div>
-                
-                <!-- 메인 타이틀 -->
-                <div class="mb-8">
-                    <h1 class="serif-font text-[56px] font-black text-gray-900 leading-[1.15] tracking-tight">
-                        마케팅 실무<br>
-                        고도화를 위한<br>
-                        <span class="text-hbr-red">AI 활용 전략</span> 교육
-                    </h1>
-                </div>
-                
-                <!-- 서브타이틀 -->
-                <div class="pl-6 border-l-4 border-hbr-red">
-                    <p class="text-xl text-gray-700 font-light leading-relaxed">
-                        마케팅 전문가를 위한<br>
-                        <strong class="font-bold text-gray-900">'AI 듀얼 브레인'</strong> 구축 로드맵
-                    </p>
-                </div>
-            </div>
+<h1 class="text-6xl font-black leading-tight mb-4 tracking-tight">
+                    PR 실무 고도화를 위한<br>
+<span class="accent-text">AI 활용 전략 브리핑</span>
+</h1>
+<p class="text-2xl text-gray-300 font-light mb-10">
+                    PA x AI 듀얼 브레인으로<br>
+<strong>10배에서 50배까지</strong> 업무 생산성 혁신하기
+                </p>
+<div class="highlight-box p-6 rounded-r-lg max-w-2xl mb-8">
+<div class="flex items-start">
+<i class="fas fa-quote-left text-teal-500 text-2xl mr-4 mt-1"></i>
+<div>
+<p class="text-xl font-medium text-white italic leading-relaxed">
+                                "내 자리가 AI에 의해 사라지는 것이 아니라,<br>
+<span class="text-teal-300">AI를 사용하는 내 동료</span>에 의해서 사라진다."
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Learning Goals -->
+<div class="bottom-bar">
+<p class="text-sm text-gray-400 mb-4 font-bold tracking-widest uppercase">Key Learning Objectives</p>
+<div class="grid grid-cols-4 gap-6">
+<div class="learning-goal-item p-4 rounded-lg border border-gray-700 flex items-center">
+<div class="w-10 h-10 rounded-full bg-blue-900 flex items-center justify-center text-blue-300 mr-3 flex-shrink-0">
+<i class="fas fa-brain"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-200">AI 본질 이해</p>
+<p class="text-xs text-gray-400">패턴 인식 도구로서의 원리</p>
+</div>
+</div>
+<div class="learning-goal-item p-4 rounded-lg border border-gray-700 flex items-center">
+<div class="w-10 h-10 rounded-full bg-purple-900 flex items-center justify-center text-purple-300 mr-3 flex-shrink-0">
+<i class="fas fa-comments"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-200">프롬프트 전략</p>
+<p class="text-xs text-gray-400">CoT &amp; Self-Prompt 마스터</p>
+</div>
+</div>
+<div class="learning-goal-item p-4 rounded-lg border border-gray-700 flex items-center">
+<div class="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center text-green-300 mr-3 flex-shrink-0">
+<i class="fas fa-cubes"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-200">데이터 파싱</p>
+<p class="text-xs text-gray-400">정보의 해체와 창의적 재조합</p>
+</div>
+</div>
+<div class="learning-goal-item p-4 rounded-lg border border-gray-700 flex items-center">
+<div class="w-10 h-10 rounded-full bg-pink-900 flex items-center justify-center text-pink-300 mr-3 flex-shrink-0">
+<i class="fas fa-rocket"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-200">업무 자동화</p>
+<p class="text-xs text-gray-400">MCP &amp; 바이브 코딩 구축</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Canvas Animation for Abstract Network Background
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const nodes = [];
+        const numNodes = 60;
+        const connectionDistance = 180;
+
+        class Node {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5; // Very slow movement
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 3 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(45, 212, 191, 0.4)'; // Teal with low opacity
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < numNodes; i++) {
+                nodes.push(new Node());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            <!-- 하단 정보 영역 -->
-            <div class="pt-6 border-t-2 border-gray-200 flex items-center justify-between">
-                <div class="flex flex-col">
-                    <span class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Date</span>
-                    <span class="text-lg font-semibold text-gray-800">2025년 12월 10일</span>
-                </div>
-                <div class="flex flex-col text-right">
-                    <span class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Module</span>
-                    <span class="text-lg font-semibold text-gray-800">Advanced PR Strategy</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 오른쪽 이미지 영역 (30%) -->
-        <div class="w-[30%] h-full relative overflow-hidden">
-            <!-- 배경 그라데이션 -->
-            <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 z-0"></div>
-            
-            <!-- 이미지 -->
-            <img 
-                alt="AI Business Innovation" 
-                class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay z-10"
-                src="https://page.gensparksite.com/slides_images/bcfb46a4f3832bb22c2230b9ccf9adf2.webp"
-            >
-            
-            <!-- 장식 요소 -->
-            <div class="absolute inset-0 z-20 flex flex-col items-center justify-center p-8">
-                <!-- 아이콘 -->
-                <div class="mb-8 text-white opacity-20">
-                    <i class="fa-solid fa-brain text-8xl"></i>
-                </div>
-                
-                <!-- 인용구 -->
-                <div class="text-white text-center">
-                    <div class="text-4xl mb-4 opacity-30">
-                        <i class="fa-solid fa-quote-left"></i>
-                    </div>
-                    <p class="text-sm font-light tracking-wide opacity-80 leading-relaxed max-w-[200px] mx-auto">
-                        "AI is a tool for discovering hidden patterns and combining them."
-                    </p>
-                </div>
-            </div>
-            
-            <!-- 기하학적 패턴 -->
-            <svg class="absolute top-0 right-0 w-full h-full opacity-10 z-15" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <circle cx="20" cy="20" r="1" fill="white" opacity="0.3"/>
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)"/>
-            </svg>
-            
-            <!-- 하단 액센트 -->
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-hbr-red z-30"></div>
-        </div>
-        
-    </div>
-</body>
-</html>
+            // Draw connections
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(45, 212, 191, ${0.15 * (1 - distance / connectionDistance)})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Draw nodes
+            nodes.forEach(node => {
+                node.update();
+                node.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840dd27ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

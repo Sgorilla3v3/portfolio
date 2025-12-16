@@ -1,35 +1,202 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
-<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
-<title>Self-Prompt 고급 기법</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MCP와 바이브 코딩 아키텍처</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #ffffff;
-            color: #1a1a1a;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: hidden;
         }
-        .serif-font {
-            font-family: 'Noto Serif KR', serif;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0f172a;
+            overflow: hidden;
+            padding: 30px 50px;
         }
-        .hbr-red {
-            color: #B21F24;
+        .accent-text {
+            color: #2dd4bf; /* Teal 400 */
         }
-        .bg-hbr-red {
-            background-color: #B21F24;
+        
+        /* Main Grid Layout */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
-        .border-hbr-red {
-            border-color: #B21F24;
+
+        /* Common Panel Styles */
+        .arch-panel {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
-        .card-shadow {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        .panel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .prompt-box {
-            background-color: #f8f9fa;
-            border-left: 3px solid #B21F24;
+        .panel-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-right: 12px;
         }
+        
+        /* Left Panel: MCP Layers */
+        .mcp-layer-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+            justify-content: center;
+            position: relative;
+        }
+        .mcp-layer {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+        .layer-label {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 0.7rem;
+            color: #64748b;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%) rotate(180deg);
+            height: 100%;
+            text-align: center;
+        }
+        .layer-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .connector-arrow {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #64748b;
+            font-size: 1.2rem;
+            z-index: 1;
+        }
+        .item-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            margin: 0 4px;
+        }
+        
+        /* Right Panel: Vibe Coding Pipeline */
+        .pipeline-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+            position: relative;
+        }
+        .pipeline-step {
+            display: flex;
+            align-items: center;
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 14px;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.2s;
+        }
+        .pipeline-step:hover {
+            transform: translateX(5px);
+            background-color: rgba(30, 41, 59, 0.8);
+            border-color: rgba(45, 212, 191, 0.3);
+        }
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 0.8rem;
+        }
+        .step-content {
+            flex: 1;
+        }
+        .step-line {
+            position: absolute;
+            left: 28px; /* Center of icon (14+14) */
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+            margin-top: 40px; /* Start below first item */
+            margin-bottom: 40px; /* End above last item */
+        }
+        
+        /* Bottom Banner */
+        .bottom-banner {
+            background-color: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid #334155;
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Specific Colors */
+        .mcp-color { color: #f59e0b; } /* Amber */
+        .mcp-bg { background-color: rgba(245, 158, 11, 0.2); }
+        .mcp-border { border-color: rgba(245, 158, 11, 0.4); }
+        
+        .vibe-color { color: #38bdf8; } /* Sky */
+        .vibe-bg { background-color: rgba(56, 189, 248, 0.2); }
+        .vibe-border { border-color: rgba(56, 189, 248, 0.4); }
+
     </style>
 <style id="slide-selected-style">
   [data-slide-selected]::before
@@ -65,111 +232,144 @@
 
 
 </style></head>
-<body class="w-[1280px] min-h-[720px] flex flex-col relative overflow-hidden bg-white">
-<!-- Top Accent Bar -->
-<div class="absolute top-0 left-0 w-full h-2 bg-gray-900">
-<div class="w-2/3 h-full bg-hbr-red"></div>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="mb-4">
+<div class="flex items-center mb-2">
+<span class="px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase mr-3">
+                    Technical Architecture
+                </span>
+<span class="text-gray-400 text-sm">연결(Connect)과 생성(Create)의 기술적 구조</span>
 </div>
-<!-- Header Section -->
-<div class="pt-10 px-16 pb-6 flex justify-between items-end border-b border-gray-200">
+<h1 class="text-3xl font-black leading-tight">
+                MCP와 <span class="text-sky-400">바이브 코딩</span> 아키텍처
+            </h1>
+</div>
+<!-- Main Content: 2 Column Grid -->
+<div class="arch-grid">
+<!-- Left Panel: MCP (The Connect) -->
+<div class="arch-panel" style="border-top: 4px solid #f59e0b;">
+<div class="panel-header">
+<div class="panel-icon mcp-bg mcp-color">
+<i class="fas fa-network-wired"></i>
+</div>
 <div>
-<div class="flex items-center gap-2 mb-2">
-<span class="text-hbr-red font-bold tracking-widest text-xs uppercase">Section 04</span>
-<span class="text-gray-300">|</span>
-<span class="text-gray-500 font-medium text-xs uppercase tracking-wider">Prompt Engineering</span>
-</div>
-<h1 class="serif-font text-4xl font-bold text-gray-900 leading-tight">
-                Self-Prompt: <span class="font-normal text-gray-600">AI를 기획자로 만드는 기술</span>
-</h1>
-</div>
-<div class="text-right">
-<p class="text-sm text-gray-500 font-light">
-                내가 모르는 분야일수록 AI에게 질문 설계의 주도권을 위임하십시오.
-            </p>
+<h2 class="text-xl font-bold text-white">MCP Integration</h2>
+<p class="text-xs text-gray-400">Model Context Protocol: 모든 도구의 표준화된 연결</p>
 </div>
 </div>
-<!-- Main Content Area: 3 Cards Grid -->
-<div class="flex-1 px-16 py-10">
-<div class="grid grid-cols-3 gap-8 h-full">
-<!-- Card 1: Basic Self-Prompt -->
-<div class="flex flex-col bg-white rounded-xl border border-gray-200 card-shadow hover:border-hbr-red transition-colors duration-300 group h-full">
-<div class="p-8 flex flex-col h-full">
-<div class="flex justify-between items-start mb-6">
-<div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-hbr-red group-hover:bg-hbr-red group-hover:text-white transition-colors duration-300">
-<i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
+<div class="mcp-layer-container">
+<!-- Layer 1: Client / Host -->
+<div class="mcp-layer" style="border-color: rgba(245, 158, 11, 0.3);">
+<span class="absolute -left-16 text-xs text-gray-500 font-bold w-12 text-right">BRAIN</span>
+<div class="flex items-center w-full justify-center">
+<div class="item-box bg-yellow-900 bg-opacity-30 border-yellow-600 text-yellow-200">
+<i class="fas fa-robot mr-2"></i> Claude Desktop / IDE
+                            </div>
 </div>
-<span class="serif-font text-4xl text-gray-100 font-bold group-hover:text-red-50 transition-colors">01</span>
 </div>
-<h3 class="serif-font text-2xl font-bold text-gray-900 mb-3">기본 Self-Prompt</h3>
-<p class="text-sm text-gray-600 mb-6 leading-relaxed min-h-[40px]">
-                        과업의 목표만 제시하고, 이를 달성하기 위한 구체적인 프롬프트 설계 자체를 AI에게 맡기는 방식입니다.
-                    </p>
-<div class="mt-auto">
-<p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Recommended Prompt</p>
-<div class="prompt-box p-4 rounded-r-lg">
-<p class="font-mono text-xs text-gray-700 leading-relaxed">
-                                "기업의 위기 대응 전략 구축을 위한 <span class="font-bold text-hbr-red">최적의 프롬프트를 네가 직접 설계해 줘.</span> 나는 이 분야 전문가가 아니니 필요한 모든 요소를 포함해."
-                            </p>
+<!-- Arrow -->
+<div class="connector-arrow text-center" style="top: 28%; font-size: 0.8rem;">
+<i class="fas fa-arrow-down mb-1"></i><i class="fas fa-arrow-up"></i>
+</div>
+<!-- Layer 2: MCP Router & Servers -->
+<div class="mcp-layer py-6">
+<span class="absolute -left-16 text-xs text-gray-500 font-bold w-12 text-right">ROUTER</span>
+<div class="flex flex-col items-center w-full">
+<div class="text-xs font-mono text-gray-400 mb-2">MCP Protocol (JSON-RPC)</div>
+<div class="flex gap-2">
+<div class="item-box"><i class="fas fa-server mr-2 text-teal-400"></i> Local Server</div>
+<div class="item-box"><i class="fas fa-cloud mr-2 text-blue-400"></i> Remote Server</div>
 </div>
 </div>
 </div>
+<!-- Arrow -->
+<div class="connector-arrow text-center" style="top: 66%; font-size: 0.8rem;">
+<i class="fas fa-arrow-down mb-1"></i><i class="fas fa-arrow-up"></i>
 </div>
-<!-- Card 2: Reflective Dialogue -->
-<div class="flex flex-col bg-white rounded-xl border border-gray-200 card-shadow hover:border-hbr-red transition-colors duration-300 group h-full">
-<div class="p-8 flex flex-col h-full">
-<div class="flex justify-between items-start mb-6">
-<div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-hbr-red group-hover:bg-hbr-red group-hover:text-white transition-colors duration-300">
-<i class="fa-solid fa-arrows-rotate text-xl"></i>
-</div>
-<span class="serif-font text-4xl text-gray-100 font-bold group-hover:text-red-50 transition-colors">02</span>
-</div>
-<h3 class="serif-font text-2xl font-bold text-gray-900 mb-3">반성형 대화법</h3>
-<p class="text-sm text-gray-600 mb-6 leading-relaxed min-h-[40px]">
-                        AI가 내놓은 답변을 스스로 비판하게 하여 논리적 허점을 찾고 결과물의 완성도를 높이는 기법입니다.
-                    </p>
-<div class="mt-auto">
-<p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Recommended Prompt</p>
-<div class="prompt-box p-4 rounded-r-lg">
-<p class="font-mono text-xs text-gray-700 leading-relaxed">
-                                "네가 방금 제시한 답변을 냉철하게 비판하고, <span class="font-bold text-hbr-red">가장 취약한 점 5가지를 찾아</span> 구체적인 개선안과 함께 다시 작성해 줘."
-                            </p>
+<!-- Layer 3: Data Sources -->
+<div class="mcp-layer">
+<span class="absolute -left-16 text-xs text-gray-500 font-bold w-12 text-right">DATA</span>
+<div class="grid grid-cols-2 gap-2 w-full">
+<div class="item-box justify-center"><i class="fab fa-slack mr-2"></i> Slack</div>
+<div class="item-box justify-center"><i class="fab fa-github mr-2"></i> GitHub</div>
+<div class="item-box justify-center"><i class="fas fa-database mr-2"></i> PostgreSQL</div>
+<div class="item-box justify-center"><i class="fas fa-file-alt mr-2"></i> Notion</div>
 </div>
 </div>
 </div>
 </div>
-<!-- Card 3: Authoritative Dialogue -->
-<div class="flex flex-col bg-white rounded-xl border border-gray-200 card-shadow hover:border-hbr-red transition-colors duration-300 group h-full">
-<div class="p-8 flex flex-col h-full">
-<div class="flex justify-between items-start mb-6">
-<div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-hbr-red group-hover:bg-hbr-red group-hover:text-white transition-colors duration-300">
-<i class="fa-solid fa-user-graduate text-xl"></i>
+<!-- Right Panel: Vibe Coding (The Create) -->
+<div class="arch-panel" style="border-top: 4px solid #38bdf8;">
+<div class="panel-header">
+<div class="panel-icon vibe-bg vibe-color">
+<i class="fas fa-code"></i>
 </div>
-<span class="serif-font text-4xl text-gray-100 font-bold group-hover:text-red-50 transition-colors">03</span>
-</div>
-<h3 class="serif-font text-2xl font-bold text-gray-900 mb-3">권위형 대화법</h3>
-<p class="text-sm text-gray-600 mb-6 leading-relaxed min-h-[40px]">
-                        특정 분야의 세계적인 권위자나 이론을 페르소나로 지정하여 전문성과 깊이를 더하는 방식입니다.
-                    </p>
-<div class="mt-auto">
-<p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Recommended Prompt</p>
-<div class="prompt-box p-4 rounded-r-lg">
-<p class="font-mono text-xs text-gray-700 leading-relaxed">
-                                "마케팅의 대가 <span class="font-bold text-hbr-red">필립 코틀러의 관점에서</span> 나의 기획안을 검토하고, 현대적 마케팅 4.0 이론을 적용해 수정해 줘."
-                            </p>
+<div>
+<h2 class="text-xl font-bold text-white">Vibe Coding Pipeline</h2>
+<p class="text-xs text-gray-400">Cursor AI: 자연어로 나만의 도구 즉시 제작</p>
 </div>
 </div>
+<div class="pipeline-container pl-4">
+<div class="step-line" style="left: 28px;"></div>
+<!-- Step 1 -->
+<div class="pipeline-step">
+<div class="step-num bg-sky-900 text-sky-300 border border-sky-700">1</div>
+<div class="step-content">
+<h4 class="text-sm font-bold text-white">Pattern Recognition</h4>
+<p class="text-xs text-gray-400">타겟 웹사이트 구조 및 데이터 패턴 학습</p>
+</div>
+<i class="fas fa-search text-gray-500"></i>
+</div>
+<!-- Step 2 -->
+<div class="pipeline-step">
+<div class="step-num bg-sky-900 text-sky-300 border border-sky-700">2</div>
+<div class="step-content">
+<h4 class="text-sm font-bold text-white">Scraper Generation</h4>
+<p class="text-xs text-gray-400">"이 사이트 뉴스 긁어와줘" → Cursor가 코드 자동 생성</p>
+</div>
+<i class="fas fa-magic text-sky-400"></i>
+</div>
+<!-- Step 3 -->
+<div class="pipeline-step">
+<div class="step-num bg-sky-900 text-sky-300 border border-sky-700">3</div>
+<div class="step-content">
+<h4 class="text-sm font-bold text-white">Data Extraction</h4>
+<p class="text-xs text-gray-400">수집된 데이터를 CSV/JSON 등 구조화된 파일로 저장</p>
+</div>
+<i class="fas fa-file-csv text-green-400"></i>
+</div>
+<!-- Step 4 -->
+<div class="pipeline-step">
+<div class="step-num bg-sky-900 text-sky-300 border border-sky-700">4</div>
+<div class="step-content">
+<h4 class="text-sm font-bold text-white">Integration</h4>
+<p class="text-xs text-gray-400">분석용 LLM 프롬프트 파이프라인으로 데이터 연결</p>
+</div>
+<i class="fas fa-project-diagram text-purple-400"></i>
 </div>
 </div>
 </div>
 </div>
-<!-- Footer Info -->
-<div class="px-16 pb-8 pt-4 flex justify-between items-center text-xs text-gray-400">
-<div class="flex items-center gap-2">
-<i class="fa-solid fa-lightbulb text-yellow-500"></i>
-<span>Tip: 내가 잘 모르는 분야일수록 Self-Prompt 전략이 더욱 효과적입니다.</span>
+<!-- Bottom Banner -->
+<div class="bottom-banner">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-teal-900 flex items-center justify-center mr-4">
+<i class="fas fa-bolt text-teal-400"></i>
 </div>
-<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
+<div>
+<h4 class="text-sm font-bold text-white">PA x AI Synergy Effect</h4>
+<p class="text-xs text-gray-400">복잡한 API 연동 제거(MCP) + 필요한 도구 직접 제작(Vibe Coding) = <span class="text-teal-400 font-bold">업무 속도 10배 향상</span></p>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69f9b9eaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+</div>
+<div class="flex space-x-2">
+<span class="px-2 py-1 bg-gray-700 rounded text-xs text-gray-300">#Automation</span>
+<span class="px-2 py-1 bg-gray-700 rounded text-xs text-gray-300">#No-Code</span>
+<span class="px-2 py-1 bg-gray-700 rounded text-xs text-gray-300">#Connectivity</span>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840fd87ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

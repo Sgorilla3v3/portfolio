@@ -1,0 +1,284 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
+<title>AI 도구 생태계 비교</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+        .serif-font {
+            font-family: 'Noto Serif KR', serif;
+        }
+        .hbr-red {
+            color: #B21F24;
+        }
+        .bg-hbr-red {
+            background-color: #B21F24;
+        }
+        .border-hbr-red {
+            border-color: #B21F24;
+        }
+        /* Table Styles */
+        .comparison-row {
+            transition: background-color 0.2s ease;
+        }
+        .comparison-row:hover {
+            background-color: #f9fafb;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] min-h-[720px] flex flex-col relative overflow-hidden bg-white">
+<!-- Top Accent Bar -->
+<div class="absolute top-0 left-0 w-full h-2 bg-gray-900">
+<div class="w-1/3 h-full bg-hbr-red"></div>
+</div>
+<!-- Header Section -->
+<div class="pt-10 px-16 pb-6 flex justify-between items-end border-b border-gray-200">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="text-hbr-red font-bold tracking-widest text-xs uppercase">Section 03</span>
+<span class="text-gray-300">|</span>
+<span class="text-gray-500 font-medium text-xs uppercase tracking-wider">AI Ecosystem</span>
+</div>
+<h1 class="serif-font text-4xl font-bold text-gray-900 leading-tight">
+                AI 도구 생태계: <span class="text-hbr-red">최적의 조합 찾기</span>
+</h1>
+</div>
+<div class="text-right">
+<p class="text-sm text-gray-500 font-light">
+                Pattern Learning &amp; Parsing: 도구의 특성을 이해하고 조합하라
+            </p>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 px-16 py-6 flex gap-10 overflow-hidden">
+<!-- Left Column: Strategy (25%) -->
+<div class="w-[25%] flex flex-col pt-2">
+<div class="mb-6">
+<h3 class="serif-font text-lg font-bold text-gray-900 mb-3 border-l-4 border-hbr-red pl-3">
+                    도구 조합의 예술<br>(Orchestration)
+                </h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light text-justify mb-4">
+                    만능 AI는 존재하지 않습니다. 각 모델의 강점을 파악하고, 목적에 맞게 <span class="font-bold text-gray-800">해체(Parsing)</span>하고 <span class="font-bold text-gray-800">조합</span>하는 것이 핵심입니다.
+                </p>
+<div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+<h4 class="font-bold text-gray-800 text-sm mb-2 flex items-center">
+<i class="fa-solid fa-layer-group text-hbr-red mr-2"></i>추천 조합 전략
+                    </h4>
+<ul class="text-xs text-gray-600 space-y-2">
+<li class="flex items-start">
+<i class="fa-solid fa-check text-green-600 mt-0.5 mr-2 text-[10px]"></i>
+<span><b>기획/글쓰기:</b> Claude 3</span>
+</li>
+<li class="flex items-start">
+<i class="fa-solid fa-check text-green-600 mt-0.5 mr-2 text-[10px]"></i>
+<span><b>자료 조사:</b> Perplexity / Gemini</span>
+</li>
+<li class="flex items-start">
+<i class="fa-solid fa-check text-green-600 mt-0.5 mr-2 text-[10px]"></i>
+<span><b>도구 제작:</b> Cursor + Claude</span>
+</li>
+<li class="flex items-start">
+<i class="fa-solid fa-check text-green-600 mt-0.5 mr-2 text-[10px]"></i>
+<span><b>시각화:</b> Genspark</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Right Column: Comparison Table (75%) -->
+<div class="w-[75%] bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col overflow-hidden h-full">
+<!-- Table Header -->
+<div class="grid grid-cols-12 bg-gray-900 text-white h-12 items-center px-4 text-xs">
+<div class="col-span-3 font-bold uppercase tracking-wider">모델 / 도구</div>
+<div class="col-span-1 text-center font-bold border-l border-gray-700">평점</div>
+<div class="col-span-5 font-bold border-l border-gray-700 pl-4">핵심 특징 (Key Features)</div>
+<div class="col-span-3 font-bold border-l border-gray-700 pl-4 text-hbr-red">추천 용도 (Best Use)</div>
+</div>
+<!-- Scrollable Table Content -->
+<div class="overflow-y-auto flex-1 scrollbar-hide">
+<!-- Row 1: Claude -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-4">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+<i class="fa-solid fa-robot"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-900">Claude 3.5 Sonnet</p>
+<p class="text-[10px] text-gray-400">Anthropic</p>
+</div>
+</div>
+<div class="col-span-1 text-center text-sm font-bold text-gray-700">4.5</div>
+<div class="col-span-5 pl-4 text-xs text-gray-600 leading-snug">
+                        언어 추론 능력 최강, 자연스러운 한국어,<br>MCP 생태계 주도
+                    </div>
+<div class="col-span-3 pl-4">
+<span class="inline-block px-2 py-1 bg-purple-50 text-purple-700 text-[10px] font-bold rounded">전략 기획 / 최종 산출물</span>
+</div>
+</div>
+<!-- Row 2: Genspark -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-4 bg-blue-50/30">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-900">Genspark</p>
+<p class="text-[10px] text-gray-400">Spark AI</p>
+</div>
+</div>
+<div class="col-span-1 text-center text-sm font-bold text-gray-700">4.5</div>
+<div class="col-span-5 pl-4 text-xs text-gray-600 leading-snug">
+                        디자인 및 시각화 특화, PPT/보고서 자동 생성,<br>Sparkpage 기능
+                    </div>
+<div class="col-span-3 pl-4">
+<span class="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded">시각화 / 프레젠테이션</span>
+</div>
+</div>
+<!-- Row 3: Cursor -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-4">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
+<i class="fa-solid fa-terminal"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-900">Cursor</p>
+<p class="text-[10px] text-gray-400">Anysphere</p>
+</div>
+</div>
+<div class="col-span-1 text-center text-sm font-bold text-gray-700">4.5</div>
+<div class="col-span-5 pl-4 text-xs text-gray-600 leading-snug">
+                        코딩 전문 AI 에디터, 비개발자도 '바이브 코딩' 가능,<br>앱/웹/툴 제작
+                    </div>
+<div class="col-span-3 pl-4">
+<span class="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-[10px] font-bold rounded">업무 자동화 툴 개발</span>
+</div>
+</div>
+<!-- Row 4: ChatGPT -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-4">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+<i class="fa-solid fa-comments"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-900">ChatGPT 4o</p>
+<p class="text-[10px] text-gray-400">OpenAI</p>
+</div>
+</div>
+<div class="col-span-1 text-center text-sm font-bold text-gray-700">4.0</div>
+<div class="col-span-5 pl-4 text-xs text-gray-600 leading-snug">
+                        가장 대중적인 표준 모델, 강력한 코딩(Codex),<br>다양한 GPTs 생태계
+                    </div>
+<div class="col-span-3 pl-4">
+<span class="inline-block px-2 py-1 bg-green-50 text-green-700 text-[10px] font-bold rounded">표준 업무 / 범용성</span>
+</div>
+</div>
+<!-- Row 5: Gemini -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-4">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
+<i class="fa-brands fa-google"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-900">Gemini 2.0</p>
+<p class="text-[10px] text-gray-400">Google</p>
+</div>
+</div>
+<div class="col-span-1 text-center text-sm font-bold text-gray-700">4.0</div>
+<div class="col-span-5 pl-4 text-xs text-gray-600 leading-snug">
+                        Google 생태계 통합, 우수한 멀티모달(텍스트+이미지),<br>실시간 검색 연동
+                    </div>
+<div class="col-span-3 pl-4">
+<span class="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded">리서치 / 멀티모달 분석</span>
+</div>
+</div>
+<!-- Row 6: NotebookLM -->
+<div class="grid grid-cols-12 border-b border-gray-100 items-center comparison-row py-3 px-4">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
+<i class="fa-solid fa-book-open"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-900">NotebookLM</p>
+<p class="text-[10px] text-gray-400">Google</p>
+</div>
+</div>
+<div class="col-span-1 text-center text-sm font-bold text-hbr-red">5.0</div>
+<div class="col-span-5 pl-4 text-xs text-gray-600 leading-snug">
+                        사용자 문서 기반 답변(RAG), 환각 최소화,<br>데이터 해체와 재조합에 탁월
+                    </div>
+<div class="col-span-3 pl-4">
+<span class="inline-block px-2 py-1 bg-yellow-50 text-yellow-700 text-[10px] font-bold rounded">문헌 연구 / 인사이트 도출</span>
+</div>
+</div>
+<!-- Row 7: AI Studio -->
+<div class="grid grid-cols-12 items-center comparison-row py-3 px-4">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
+<i class="fa-solid fa-flask"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-900">AI Studio</p>
+<p class="text-[10px] text-gray-400">Google</p>
+</div>
+</div>
+<div class="col-span-1 text-center text-sm font-bold text-hbr-red">5.0</div>
+<div class="col-span-5 pl-4 text-xs text-gray-600 leading-snug">
+                        최신 모델 무료 사용, 100만~200만 토큰 제공,<br>긴 문맥 처리 가능
+                    </div>
+<div class="col-span-3 pl-4">
+<span class="inline-block px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded">실습 / 프로토타이핑</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="px-16 pb-8 pt-2 flex justify-between items-center text-xs text-gray-400 border-t border-gray-100 mt-auto">
+<span>* 평점은 PR/콘텐츠 제작 실무 활용성 기준 자체 평가 점수입니다.</span>
+<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69e9a9eaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

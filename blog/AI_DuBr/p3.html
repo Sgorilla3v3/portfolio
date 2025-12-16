@@ -1,27 +1,152 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
-<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
-<title>AI란 무엇인가</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AI 생태계 타임라인</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #ffffff;
-            color: #1a1a1a;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: hidden;
         }
-        .serif-font {
-            font-family: 'Noto Serif KR', serif;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            background-color: #0f172a;
+            position: relative;
+            overflow: hidden;
+            padding: 40px 60px;
         }
-        .hbr-red {
-            color: #B21F24;
+        .accent-text {
+            color: #2dd4bf; /* Teal 400 */
         }
-        .bg-hbr-red {
-            background-color: #B21F24;
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 20px;
+            height: 100%;
+            margin-top: 20px;
+            position: relative;
         }
-        .border-hbr-red {
-            border-color: #B21F24;
+        .companies-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding-top: 40px; /* Header space */
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        .events-area {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding-top: 40px;
+        }
+        .year-markers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .year-marker {
+            height: 100%;
+            border-left: 1px dashed rgba(255,255,255,0.1);
+            position: relative;
+            width: 1px; /* Just for spacing calculation in flex */
+            flex-grow: 1;
+        }
+        .year-label {
+            position: absolute;
+            top: -10px;
+            left: -20px;
+            width: 40px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 700;
+            background-color: #0f172a;
+            padding-bottom: 5px;
+        }
+        .company-logo-box {
+            width: 100px;
+            height: 80px;
+            background-color: rgba(30, 41, 59, 0.5);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .event-card {
+            position: absolute;
+            background-color: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            width: 140px;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .event-card:hover {
+            transform: scale(1.05);
+            border-color: #2dd4bf;
+            z-index: 20;
+        }
+        .event-card::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -6px;
+            width: 8px;
+            height: 8px;
+            background-color: inherit;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            transform: rotate(45deg) translateX(-50%);
+        }
+        .event-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #0f172a;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+        }
+        .openai-theme { border-left: 3px solid #10a37f; }
+        .openai-dot { background-color: #10a37f; }
+        
+        .google-theme { border-left: 3px solid #4285f4; }
+        .google-dot { background-color: #4285f4; }
+        
+        .anthropic-theme { border-left: 3px solid #d97757; }
+        .anthropic-dot { background-color: #d97757; }
+        
+        .others-theme { border-left: 3px solid #8b5cf6; }
+        .others-dot { background-color: #8b5cf6; }
+
+        .connector-line {
+            position: absolute;
+            height: 2px;
+            background-color: rgba(255,255,255,0.1);
+            top: 50%;
+            z-index: 1;
         }
     </style>
 <style id="slide-selected-style">
@@ -58,120 +183,166 @@
 
 
 </style></head>
-<body class="w-[1280px] min-h-[720px] flex flex-col p-16 relative overflow-hidden">
-<!-- Background Watermark -->
-<div class="absolute top-0 right-0 w-1/3 h-full bg-gray-50 opacity-50 z-0 skew-x-12 transform origin-top-right translate-x-20"></div>
-<!-- Header Section -->
-<div class="relative z-10 w-full mb-10 border-b border-gray-300 pb-6 flex justify-between items-end">
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-6">
 <div>
-<div class="flex items-center gap-3 mb-2">
-<span class="h-1 w-10 bg-hbr-red inline-block"></span>
-<span class="text-hbr-red font-bold tracking-[0.2em] text-xs uppercase">Fundamental Understanding</span>
+<div class="flex items-center mb-2">
+<span class="px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase mr-3">
+                        Ecosystem
+                    </span>
+<span class="text-gray-400 text-sm">2017 - 2024+</span>
 </div>
-<h1 class="serif-font text-5xl font-bold text-gray-900 tracking-tight">AI란 무엇인가?</h1>
-<p class="text-gray-500 mt-2 text-lg font-light">패턴 인식 도구로서의 재정의</p>
+<h1 class="text-4xl font-black leading-tight">
+                    AI 생태계 <span class="accent-text">주요 플레이어 타임라인</span>
+</h1>
 </div>
 <div class="text-right">
-<p class="text-gray-500 font-light text-sm mb-1">Section</p>
-<p class="serif-font text-3xl font-bold text-gray-800">02</p>
-</div>
-</div>
-<!-- Main Content Grid -->
-<div class="relative z-10 grid grid-cols-3 gap-8 flex-1 content-start">
-<!-- Column 1: Definition -->
-<div class="flex flex-col h-full">
-<div class="border-t-4 border-hbr-red pt-4 mb-4">
-<div class="flex items-center gap-3 mb-4">
-<div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-hbr-red">
-<i class="fa-solid fa-fingerprint text-xl"></i>
-</div>
-<h3 class="serif-font text-2xl font-bold text-gray-900">정의 (Definition)</h3>
-</div>
-<p class="text-lg font-bold text-gray-800 mb-4 leading-snug">
-                    "방대한 데이터 속에서 숨겨진 패턴을 발견하고 조합하는 도구"
+<p class="text-gray-400 text-sm max-w-md">
+                    주요 기업들의 경쟁적 발전이 AI의 창발적 능력을 가속화했습니다.<br>
+                    단순 모델 개발을 넘어 플랫폼과 생태계 구축으로 진화하고 있습니다.
                 </p>
-<p class="text-sm text-gray-600 leading-relaxed text-justify mb-6">
-                    AI는 단순한 자동화 기계가 아닙니다. 인간의 인지 능력을 넘어선 규모로 데이터를 스캔하고, 그 안에 잠재된 규칙성과 의미를 찾아내는 <span class="font-bold text-hbr-red">패턴 인식 엔진</span>입니다.
-                </p>
-<div class="bg-gray-50 p-5 rounded-lg border border-gray-100 mt-auto">
-<h4 class="font-bold text-gray-700 mb-2 text-xs uppercase tracking-wide">Key Insight</h4>
-<p class="text-sm text-gray-600 italic">
-                        "단순 업무 자동화를 넘어, 데이터 기반의 정교한 여론 분석과 전략 기획을 가능케 하는 핵심 파트너"
-                    </p>
+</div>
+</div>
+<!-- Main Timeline Chart -->
+<div class="timeline-grid">
+<!-- Left Column: Company Logos -->
+<div class="companies-column">
+<div class="company-logo-box">
+<i class="fas fa-cube text-3xl text-green-500 mb-2"></i>
+<span class="font-bold text-xs text-gray-300">OpenAI</span>
+</div>
+<div class="company-logo-box">
+<i class="fab fa-google text-3xl text-blue-500 mb-2"></i>
+<span class="font-bold text-xs text-gray-300">Google</span>
+</div>
+<div class="company-logo-box">
+<i class="fas fa-brain text-3xl text-orange-400 mb-2"></i>
+<span class="font-bold text-xs text-gray-300">Anthropic</span>
+</div>
+<div class="company-logo-box">
+<i class="fas fa-network-wired text-3xl text-purple-400 mb-2"></i>
+<span class="font-bold text-xs text-gray-300">Others</span>
+</div>
+</div>
+<!-- Right Column: Timeline Events -->
+<div class="events-area">
+<!-- Background Years -->
+<div class="year-markers">
+<div class="year-marker"><div class="year-label">2017</div></div>
+<div class="year-marker"><div class="year-label">2018</div></div>
+<div class="year-marker"><div class="year-label">2019</div></div>
+<div class="year-marker"><div class="year-label">2020</div></div>
+<div class="year-marker"><div class="year-label">2021</div></div>
+<div class="year-marker"><div class="year-label">2022</div></div>
+<div class="year-marker"><div class="year-label">2023</div></div>
+<div class="year-marker"><div class="year-label">2024</div></div>
+</div>
+<!-- OpenAI Row -->
+<div class="w-full h-20 relative">
+<div class="connector-line w-full"></div>
+<!-- GPT-1 -->
+<div class="event-dot openai-dot" style="left: 14%;"></div>
+<div class="event-card openai-theme" style="left: 14%; top: 25px; transform: translateX(-50%);">
+<p class="font-bold text-white">GPT-1</p>
+<p class="text-gray-400 text-xs">LLM 가능성 확인</p>
+</div>
+<!-- GPT-3 -->
+<div class="event-dot openai-dot" style="left: 42%;"></div>
+<div class="event-card openai-theme" style="left: 42%; top: -65px; transform: translateX(-50%);">
+<p class="font-bold text-white">GPT-3</p>
+<p class="text-gray-400 text-xs">파라미터 급증</p>
+</div>
+<!-- ChatGPT -->
+<div class="event-dot openai-dot" style="left: 70%;"></div>
+<div class="event-card openai-theme" style="left: 70%; top: 25px; transform: translateX(-50%);">
+<p class="font-bold text-white">ChatGPT</p>
+<p class="text-gray-400 text-xs">생성형 AI 혁명</p>
+</div>
+<!-- GPT-4 -->
+<div class="event-dot openai-dot" style="left: 85%;"></div>
+<div class="event-card openai-theme" style="left: 85%; top: -65px; transform: translateX(-50%);">
+<p class="font-bold text-white">GPT-4</p>
+<p class="text-gray-400 text-xs">멀티모달 통합</p>
+</div>
+</div>
+<!-- Google Row -->
+<div class="w-full h-20 relative">
+<div class="connector-line w-full"></div>
+<!-- Transformer -->
+<div class="event-dot google-dot" style="left: 5%;"></div>
+<div class="event-card google-theme" style="left: 5%; top: -65px; transform: translateX(-50%); width: 160px;">
+<p class="font-bold text-white">Transformer</p>
+<p class="text-gray-400 text-xs">"Attention is All You Need"</p>
+</div>
+<!-- Bard -->
+<div class="event-dot google-dot" style="left: 82%;"></div>
+<div class="event-card google-theme" style="left: 82%; top: 25px; transform: translateX(-50%);">
+<p class="font-bold text-white">Bard</p>
+<p class="text-gray-400 text-xs">대화형 AI 출시</p>
+</div>
+<!-- Gemini -->
+<div class="event-dot google-dot" style="left: 95%;"></div>
+<div class="event-card google-theme" style="left: 95%; top: -65px; transform: translateX(-50%);">
+<p class="font-bold text-white">Gemini</p>
+<p class="text-gray-400 text-xs">통합 생태계</p>
+</div>
+</div>
+<!-- Anthropic Row -->
+<div class="w-full h-20 relative">
+<div class="connector-line w-full"></div>
+<!-- Founded -->
+<div class="event-dot anthropic-dot" style="left: 57%;"></div>
+<div class="event-card anthropic-theme" style="left: 57%; top: 25px; transform: translateX(-50%);">
+<p class="font-bold text-white">Anthropic 설립</p>
+<p class="text-gray-400 text-xs">OpenAI 전 연구진</p>
+</div>
+<!-- Claude 3 -->
+<div class="event-dot anthropic-dot" style="left: 92%;"></div>
+<div class="event-card anthropic-theme" style="left: 92%; top: -65px; transform: translateX(-50%); width: 150px;">
+<p class="font-bold text-white">Claude 3 &amp; MCP</p>
+<p class="text-gray-400 text-xs">확장성 및 안전성</p>
+</div>
+</div>
+<!-- Others Row -->
+<div class="w-full h-20 relative">
+<div class="connector-line w-full"></div>
+<!-- Perplexity -->
+<div class="event-dot others-dot" style="left: 75%;"></div>
+<div class="event-card others-theme" style="left: 75%; top: -65px; transform: translateX(-50%);">
+<p class="font-bold text-white">Perplexity</p>
+<p class="text-gray-400 text-xs">AI 검색 엔진</p>
+</div>
+<!-- AWS Bedrock -->
+<div class="event-dot others-dot" style="left: 88%;"></div>
+<div class="event-card others-theme" style="left: 88%; top: 25px; transform: translateX(-50%); width: 150px;">
+<p class="font-bold text-white">AWS Bedrock</p>
+<p class="text-gray-400 text-xs">AI 인프라 플랫폼</p>
 </div>
 </div>
 </div>
-<!-- Column 2: Philosophy -->
-<div class="flex flex-col h-full">
-<div class="border-t-4 border-gray-300 pt-4 mb-4">
-<div class="flex items-center gap-3 mb-4">
-<div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-<i class="fa-solid fa-network-wired text-xl"></i>
 </div>
-<h3 class="serif-font text-2xl font-bold text-gray-900">작동 철학 (Logic)</h3>
+<!-- Legend / Footer -->
+<div class="mt-4 flex items-center justify-center space-x-8 text-xs text-gray-400 border-t border-gray-800 pt-4">
+<div class="flex items-center">
+<div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+<span>OpenAI: 모델 성능 혁신</span>
 </div>
-<ul class="space-y-6">
-<li class="flex items-start gap-3">
-<i class="fa-solid fa-brain text-gray-400 mt-1"></i>
-<div>
-<span class="block font-bold text-gray-800 text-sm">뉴럴 네트워크 (Neural Network)</span>
-<span class="block text-xs text-gray-500 mt-1">인간의 뇌신경 망을 모방하여 정보를 학습하고 처리하는 구조</span>
+<div class="flex items-center">
+<div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+<span>Google: 아키텍처 및 생태계</span>
 </div>
-</li>
-<li class="flex items-start gap-3">
-<i class="fa-solid fa-square-root-variable text-gray-400 mt-1"></i>
-<div>
-<span class="block font-bold text-gray-800 text-sm">수학적 연산 (Mathematics)</span>
-<span class="block text-xs text-gray-500 mt-1">미분, 행렬, 확률, 벡터 연산을 통해 데이터 간의 관계를 수치화</span>
+<div class="flex items-center">
+<div class="w-3 h-3 rounded-full bg-orange-400 mr-2"></div>
+<span>Anthropic: 안전성 및 확장성</span>
 </div>
-</li>
-<li class="flex items-start gap-3">
-<i class="fa-solid fa-robot text-gray-400 mt-1"></i>
-<div>
-<span class="block font-bold text-gray-800 text-sm">자가 학습 (Self-Learning)</span>
-<span class="block text-xs text-gray-500 mt-1">입력된 데이터의 패턴을 스스로 학습하여 최적의 결과값 도출</span>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<!-- Column 3: Examples -->
-<div class="flex flex-col h-full">
-<div class="border-t-4 border-gray-300 pt-4 mb-4">
-<div class="flex items-center gap-3 mb-4">
-<div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-<i class="fa-solid fa-lightbulb text-xl"></i>
-</div>
-<h3 class="serif-font text-2xl font-bold text-gray-900">실제 사례 (Cases)</h3>
-</div>
-<div class="space-y-6">
-<div class="group cursor-pointer">
-<h4 class="font-bold text-hbr-red mb-1 group-hover:underline text-lg">AlphaFold (바이오)</h4>
-<p class="text-sm text-gray-600 mb-2">단백질 아미노산 서열 패턴 분석 → 3차원 구조 예측</p>
-<p class="text-xs text-gray-400 border-l-2 border-gray-200 pl-2">
-                            결과(기능)를 정의하고 원인(구조)을 역설계하여 신약 개발 혁신에 기여
-                        </p>
-</div>
-<div class="border-t border-gray-100 pt-4 group cursor-pointer">
-<h4 class="font-bold text-hbr-red mb-1 group-hover:underline text-lg">Animal Communication</h4>
-<p class="text-sm text-gray-600 mb-2">돌고래/코끼리 음성 및 저주파 패턴 분석</p>
-<p class="text-xs text-gray-400 border-l-2 border-gray-200 pl-2">
-                            인간이 인지하지 못했던 고유 이름과 언어 체계 패턴 발견
-                        </p>
-</div>
-</div>
-<!-- Bottom decorative element -->
-<div class="mt-auto bg-gray-800 text-white p-4 rounded text-center">
-<p class="serif-font text-sm font-light">"패턴을 읽는 자가 미래를 예측한다"</p>
+<div class="flex items-center">
+<div class="w-3 h-3 rounded-full bg-purple-400 mr-2"></div>
+<span>Others: 검색 및 인프라</span>
 </div>
 </div>
 </div>
-</div>
-<!-- Footer Info -->
-<div class="absolute bottom-8 left-16 right-16 border-t border-gray-200 pt-4 flex justify-between items-center text-xs text-gray-400">
-<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
-<span>© 2025 All Rights Reserved</span>
-</div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9ac119e8ba09d1d1&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840ed45ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

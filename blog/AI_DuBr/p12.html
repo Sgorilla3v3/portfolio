@@ -1,36 +1,179 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
-<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
-<title>실전 프롬프트 템플릿 예시</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>업무 자동화 워크플로우</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #ffffff;
-            color: #1a1a1a;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: hidden;
         }
-        .serif-font {
-            font-family: 'Noto Serif KR', serif;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0f172a;
+            overflow: hidden;
+            padding: 30px 50px;
         }
-        .hbr-red {
-            color: #B21F24;
+        .accent-text {
+            color: #2dd4bf; /* Teal 400 */
         }
-        .bg-hbr-red {
-            background-color: #B21F24;
+        
+        /* Workflow Grid */
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            flex: 1;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            position: relative;
         }
-        .border-hbr-red {
-            border-color: #B21F24;
+
+        /* Lane Styles */
+        .lane {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
         }
-        .section-card {
-            transition: all 0.3s ease;
+
+        .lane-header {
+            background-color: rgba(30, 41, 59, 0.8);
+            border-bottom: 4px solid;
+            border-radius: 8px 8px 0 0;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 10px;
         }
-        /* HBR Style List Numbering */
-        .list-number {
-            font-family: 'Noto Serif KR', serif;
-            font-weight: 900;
-            line-height: 1;
+
+        .lane-body {
+            flex: 1;
+            background-color: rgba(30, 41, 59, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0 0 8px 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        /* Connector Arrows */
+        .lane-connector {
+            position: absolute;
+            top: 50%;
+            right: -14px;
+            z-index: 10;
+            color: #64748b;
+            font-size: 1.2rem;
+            transform: translateY(-50%);
+        }
+
+        /* Task Cards */
+        .task-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .task-card:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .tool-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+            background-color: rgba(15, 23, 42, 0.5);
+            color: #cbd5e1;
+        }
+
+        /* Specific Lane Colors */
+        /* 1. Collection */
+        .lane-1 .lane-header { border-color: #38bdf8; background-color: rgba(56, 189, 248, 0.15); }
+        .lane-1 .header-icon { color: #38bdf8; }
+        .lane-1 .header-title { color: #e0f2fe; }
+
+        /* 2. Preprocessing */
+        .lane-2 .lane-header { border-color: #818cf8; background-color: rgba(129, 140, 248, 0.15); }
+        .lane-2 .header-icon { color: #818cf8; }
+        .lane-2 .header-title { color: #e0e7ff; }
+
+        /* 3. Analysis */
+        .lane-3 .lane-header { border-color: #c084fc; background-color: rgba(192, 132, 252, 0.15); }
+        .lane-3 .header-icon { color: #c084fc; }
+        .lane-3 .header-title { color: #f3e8ff; }
+
+        /* 4. Generation */
+        .lane-4 .lane-header { border-color: #f472b6; background-color: rgba(244, 114, 182, 0.15); }
+        .lane-4 .header-icon { color: #f472b6; }
+        .lane-4 .header-title { color: #fce7f3; }
+
+        /* 5. Storage */
+        .lane-5 .lane-header { border-color: #2dd4bf; background-color: rgba(45, 212, 191, 0.15); }
+        .lane-5 .header-icon { color: #2dd4bf; }
+        .lane-5 .header-title { color: #ccfbf1; }
+
+        /* Bottom Section */
+        .bottom-section {
+            display: flex;
+            align-items: stretch;
+            gap: 20px;
+            height: 80px;
+        }
+
+        .feedback-loop {
+            flex: 2;
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px dashed #64748b;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .effect-box {
+            flex: 1;
+            background-color: rgba(45, 212, 191, 0.1);
+            border-left: 4px solid #2dd4bf;
+            border-radius: 0 8px 8px 0;
+            padding: 10px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .loop-arrow {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 15px;
+            border-bottom: 2px dashed #64748b;
+            border-left: 2px dashed #64748b;
+            border-right: 2px dashed #64748b;
+            border-radius: 0 0 10px 10px;
+            display: none; /* Hidden simple CSS arrow, using icon instead */
         }
     </style>
 <style id="slide-selected-style">
@@ -67,115 +210,145 @@
 
 
 </style></head>
-<body class="w-[1280px] min-h-[720px] flex flex-col p-16 relative overflow-hidden">
-<!-- Background Watermark -->
-<div class="absolute top-0 right-0 w-1/3 h-full bg-gray-50 opacity-50 z-0 skew-x-12 transform origin-top-right translate-x-20"></div>
-<!-- Header Section -->
-<div class="relative z-10 w-full mb-10 border-b border-gray-300 pb-5 flex justify-between items-end">
-<div>
-<div class="flex items-center gap-3 mb-2">
-<span class="h-1 w-10 bg-hbr-red inline-block"></span>
-<span class="text-hbr-red font-bold tracking-[0.2em] text-xs uppercase">Prompt Templates</span>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="mb-4">
+<div class="flex items-center mb-2">
+<span class="px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase mr-3">
+                    Automated Workflow
+                </span>
+<span class="text-gray-400 text-sm">PR 여론 분석 및 보고 자동화 파이프라인</span>
 </div>
-<h1 class="serif-font text-4xl font-bold text-gray-900 tracking-tight">실전 프롬프트 템플릿 예시</h1>
+<h1 class="text-3xl font-black leading-tight">
+                업무 자동화 <span class="accent-text">워크플로우</span> (Swimlane)
+            </h1>
 </div>
-<div class="text-right">
-<p class="text-gray-500 font-light text-sm mb-1">Practical Use Cases</p>
-<p class="serif-font text-3xl font-bold text-gray-800">03 <span class="text-base font-normal text-gray-400">Cases &amp; Tips</span></p>
+<!-- Main Workflow Grid -->
+<div class="workflow-grid">
+<!-- Lane 1: 수집 -->
+<div class="lane lane-1">
+<div class="lane-header">
+<i class="fas fa-magnet header-icon text-2xl mb-2"></i>
+<h3 class="header-title font-bold text-lg">1. 수집<br><span class="text-xs font-normal opacity-80">(Collection)</span></h3>
 </div>
+<div class="lane-body">
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-terminal mr-1"></i> Cursor</span>
+<p class="font-bold text-white mb-1">웹 스크래핑</p>
+<p class="text-xs text-gray-400">뉴스 사이트, 커뮤니티 게시판 구조 패턴 학습 및 데이터 추출</p>
 </div>
-<!-- Main Content Grid -->
-<div class="relative z-10 grid grid-cols-3 gap-x-12 gap-y-8 flex-1 content-start">
-<!-- Case 1: Crisis Response -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-3 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-3xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">01</span>
-<i class="fa-solid fa-triangle-exclamation text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">위기 대응 (Crisis Response)</h3>
-<div class="text-sm text-gray-600 leading-relaxed font-light space-y-1">
-<p><span class="font-medium text-gray-800">Role:</span> 20년차 PR 위기관리 디렉터</p>
-<p><span class="font-medium text-gray-800">Input:</span> 이슈 현황, 언론 반응, 기업 입장</p>
-<p><span class="font-medium text-gray-800">Output:</span> 공식 입장문, 예상 Q&amp;A 리스트, 시간대별 미디어 대응 타임라인</p>
-</div>
-</div>
-</div>
-<!-- Case 2: Report Automation -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-3 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-3xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">02</span>
-<i class="fa-solid fa-file-csv text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">보고서 자동 생성 (Report)</h3>
-<div class="text-sm text-gray-600 leading-relaxed font-light space-y-1">
-<p><span class="font-medium text-gray-800">Role:</span> 데이터 분석가 &amp; 전략 기획자</p>
-<p><span class="font-medium text-gray-800">Input:</span> 뉴스 클리핑 CSV, 커뮤니티 데이터</p>
-<p><span class="font-medium text-gray-800">Output:</span> 기존 주간 보고서 양식(Format)에 맞춘 이슈 분석 및 인사이트 리포트</p>
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-file-csv mr-1"></i> CSV</span>
+<p class="font-bold text-white mb-1">데이터 적재</p>
+<p class="text-xs text-gray-400">날짜, 제목, 본문, 댓글수 등 구조화된 파일로 저장</p>
 </div>
 </div>
+<div class="lane-connector"><i class="fas fa-chevron-right"></i></div>
 </div>
-<!-- Case 3: Style Transfer -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-3 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-3xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">03</span>
-<i class="fa-solid fa-pen-nib text-gray-400 group-hover:text-gray-800 text-lg"></i>
+<!-- Lane 2: 전처리 -->
+<div class="lane lane-2">
+<div class="lane-header">
+<i class="fas fa-filter header-icon text-2xl mb-2"></i>
+<h3 class="header-title font-bold text-lg">2. 전처리<br><span class="text-xs font-normal opacity-80">(Preprocessing)</span></h3>
 </div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">스타일 변환 (Style Transfer)</h3>
-<div class="text-sm text-gray-600 leading-relaxed font-light space-y-1">
-<p><span class="font-medium text-gray-800">Role:</span> 감성적인 매거진 에디터</p>
-<p><span class="font-medium text-gray-800">Input:</span> 딱딱한 사실 위주의 보도자료</p>
-<p><span class="font-medium text-gray-800">Output:</span> 스토리텔링이 가미된 블로그/매거진용 기획 기사 (Few-shot 예시 활용)</p>
+<div class="lane-body">
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-code mr-1"></i> Python</span>
+<p class="font-bold text-white mb-1">데이터 정제</p>
+<p class="text-xs text-gray-400">중복 기사 제거 (Dedup), 광고성 키워드 필터링</p>
 </div>
-</div>
-</div>
-<!-- Tip 1: Persona Definition -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-3 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-3xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">Tip</span>
-<i class="fa-solid fa-user-tie text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">명확한 페르소나 (Persona)</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                    단순히 "글 써줘"가 아닌, "너는 20년 경력의 위기관리 전문가야"와 같이 구체적인 직책과 연차를 부여하여 답변의 전문성과 톤을 제어해야 합니다.
-                </p>
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-tags mr-1"></i> Tagging</span>
+<p class="font-bold text-white mb-1">메타데이터 태깅</p>
+<p class="text-xs text-gray-400">매체 유형(보수/진보), 작성자 정보 등 속성 부여</p>
 </div>
 </div>
-<!-- Tip 2: Reference & Few-shot -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-3 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-3xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">Tip</span>
-<i class="fa-solid fa-copy text-gray-400 group-hover:text-gray-800 text-lg"></i>
+<div class="lane-connector"><i class="fas fa-chevron-right"></i></div>
 </div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">예시 제공 (Few-shot)</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                    원하는 스타일의 '이전 우수 보고서'나 '작가 글' 2~3개를 예시로 입력하면, AI가 해당 구조와 톤앤매너를 모방하여 결과물의 품질을 극대화합니다.
-                </p>
+<!-- Lane 3: 분석 -->
+<div class="lane lane-3">
+<div class="lane-header">
+<i class="fas fa-brain header-icon text-2xl mb-2"></i>
+<h3 class="header-title font-bold text-lg">3. 분석<br><span class="text-xs font-normal opacity-80">(Analysis)</span></h3>
 </div>
+<div class="lane-body">
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-robot mr-1"></i> LLM</span>
+<p class="font-bold text-white mb-1">프레임 분석</p>
+<p class="text-xs text-gray-400">기사에 적용된 핵심 프레임 및 논조(Tone &amp; Manner) 파악</p>
 </div>
-<!-- Tip 3: Constraints & Quality Check -->
-<div class="section-card group">
-<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-3 mb-2">
-<div class="flex justify-between items-baseline mb-2">
-<span class="list-number text-3xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">Tip</span>
-<i class="fa-solid fa-list-check text-gray-400 group-hover:text-gray-800 text-lg"></i>
-</div>
-<h3 class="serif-font text-lg font-bold text-gray-900 mb-2">제약 조건 및 검증 (Constraints)</h3>
-<p class="text-sm text-gray-600 leading-relaxed font-light">
-                    "3문단 이내", "법률 용어 제외", "팩트체크 필수" 등 제약 조건을 명시하고, 결과물에 대해 다시 한번 검증 프롬프트(Self-Correction)를 실행하십시오.
-                </p>
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-chart-pie mr-1"></i> Insight</span>
+<p class="font-bold text-white mb-1">심층 분석</p>
+<p class="text-xs text-gray-400">감성 분석(긍/부정), 주요 의제(Agenda), 핵심 행위자 추출</p>
 </div>
 </div>
+<div class="lane-connector"><i class="fas fa-chevron-right"></i></div>
 </div>
-<!-- Footer Info -->
-<div class="absolute bottom-8 left-16 right-16 border-t border-gray-200 pt-4 flex justify-between items-center text-xs text-gray-400">
-<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
-<span>© 2025 All Rights Reserved</span>
+<!-- Lane 4: 생성 -->
+<div class="lane lane-4">
+<div class="lane-header">
+<i class="fas fa-pen-nib header-icon text-2xl mb-2"></i>
+<h3 class="header-title font-bold text-lg">4. 생성<br><span class="text-xs font-normal opacity-80">(Generation)</span></h3>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69f9c0eaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<div class="lane-body">
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-wand-magic-sparkles mr-1"></i> Genspark</span>
+<p class="font-bold text-white mb-1">리포트 자동화</p>
+<p class="text-xs text-gray-400">일일 여론 동향 보고서(Daily Brief) 초안 자동 작성</p>
+</div>
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-chart-line mr-1"></i> Viz</span>
+<p class="font-bold text-white mb-1">시각화 대시보드</p>
+<p class="text-xs text-gray-400">키워드 추이, 감성 분포 그래프 생성</p>
+</div>
+</div>
+<div class="lane-connector"><i class="fas fa-chevron-right"></i></div>
+</div>
+<!-- Lane 5: 저장 -->
+<div class="lane lane-5">
+<div class="lane-header">
+<i class="fas fa-archive header-icon text-2xl mb-2"></i>
+<h3 class="header-title font-bold text-lg">5. 저장<br><span class="text-xs font-normal opacity-80">(Storage)</span></h3>
+</div>
+<div class="lane-body">
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-cube mr-1"></i> Obsidian</span>
+<p class="font-bold text-white mb-1">Second Brain</p>
+<p class="text-xs text-gray-400">분석 완료 데이터를 지식 베이스(Vault)에 영구 보존</p>
+</div>
+<div class="task-card">
+<span class="tool-badge"><i class="fas fa-shield-alt mr-1"></i> Trust</span>
+<p class="font-bold text-white mb-1">환각 방지</p>
+<p class="text-xs text-gray-400">원본 출처(Source) 링크를 유지하여 데이터 신뢰성 확보</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Feedback & Effect -->
+<div class="bottom-section">
+<div class="feedback-loop">
+<div class="absolute left-4 text-gray-400 text-2xl"><i class="fas fa-undo"></i></div>
+<div class="text-center">
+<p class="text-sm font-bold text-teal-400 mb-1">Continuous Feedback Loop</p>
+<p class="text-xs text-gray-400">분석 결과의 오류를 수정하여 프롬프트 및 전처리 규칙을 지속적으로 개선</p>
+</div>
+<div class="absolute right-4 text-gray-400 text-xs">
+<i class="fas fa-arrow-left mr-2"></i> Back to Collection/Prompting
+                </div>
+</div>
+<div class="effect-box">
+<h4 class="text-sm font-bold text-white mb-2"><i class="fas fa-bolt text-teal-400 mr-2"></i>Expected Impact</h4>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<p class="text-gray-300"><i class="fas fa-check text-teal-500 mr-1"></i> 리드타임 90% 단축</p>
+<p class="text-gray-300"><i class="fas fa-check text-teal-500 mr-1"></i> 휴먼 에러 제거</p>
+<p class="text-gray-300"><i class="fas fa-check text-teal-500 mr-1"></i> 실시간 모니터링</p>
+<p class="text-gray-300"><i class="fas fa-check text-teal-500 mr-1"></i> 데이터 자산화</p>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840fd89ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

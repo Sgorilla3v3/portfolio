@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
+<title>AI란 무엇인가</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+        .serif-font {
+            font-family: 'Noto Serif KR', serif;
+        }
+        .hbr-red {
+            color: #B21F24;
+        }
+        .bg-hbr-red {
+            background-color: #B21F24;
+        }
+        .border-hbr-red {
+            border-color: #B21F24;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] min-h-[720px] flex flex-col p-16 relative overflow-hidden">
+<!-- Background Watermark -->
+<div class="absolute top-0 right-0 w-1/3 h-full bg-gray-50 opacity-50 z-0 skew-x-12 transform origin-top-right translate-x-20"></div>
+<!-- Header Section -->
+<div class="relative z-10 w-full mb-10 border-b border-gray-300 pb-6 flex justify-between items-end">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="h-1 w-10 bg-hbr-red inline-block"></span>
+<span class="text-hbr-red font-bold tracking-[0.2em] text-xs uppercase">Fundamental Understanding</span>
+</div>
+<h1 class="serif-font text-5xl font-bold text-gray-900 tracking-tight">AI란 무엇인가?</h1>
+<p class="text-gray-500 mt-2 text-lg font-light">패턴 인식 도구로서의 재정의</p>
+</div>
+<div class="text-right">
+<p class="text-gray-500 font-light text-sm mb-1">Section</p>
+<p class="serif-font text-3xl font-bold text-gray-800">02</p>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="relative z-10 grid grid-cols-3 gap-8 flex-1 content-start">
+<!-- Column 1: Definition -->
+<div class="flex flex-col h-full">
+<div class="border-t-4 border-hbr-red pt-4 mb-4">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-hbr-red">
+<i class="fa-solid fa-fingerprint text-xl"></i>
+</div>
+<h3 class="serif-font text-2xl font-bold text-gray-900">정의 (Definition)</h3>
+</div>
+<p class="text-lg font-bold text-gray-800 mb-4 leading-snug">
+                    "방대한 데이터 속에서 숨겨진 패턴을 발견하고 조합하는 도구"
+                </p>
+<p class="text-sm text-gray-600 leading-relaxed text-justify mb-6">
+                    AI는 단순한 자동화 기계가 아닙니다. 인간의 인지 능력을 넘어선 규모로 데이터를 스캔하고, 그 안에 잠재된 규칙성과 의미를 찾아내는 <span class="font-bold text-hbr-red">패턴 인식 엔진</span>입니다.
+                </p>
+<div class="bg-gray-50 p-5 rounded-lg border border-gray-100 mt-auto">
+<h4 class="font-bold text-gray-700 mb-2 text-xs uppercase tracking-wide">Key Insight</h4>
+<p class="text-sm text-gray-600 italic">
+                        "단순 업무 자동화를 넘어, 데이터 기반의 정교한 여론 분석과 전략 기획을 가능케 하는 핵심 파트너"
+                    </p>
+</div>
+</div>
+</div>
+<!-- Column 2: Philosophy -->
+<div class="flex flex-col h-full">
+<div class="border-t-4 border-gray-300 pt-4 mb-4">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
+<i class="fa-solid fa-network-wired text-xl"></i>
+</div>
+<h3 class="serif-font text-2xl font-bold text-gray-900">작동 철학 (Logic)</h3>
+</div>
+<ul class="space-y-6">
+<li class="flex items-start gap-3">
+<i class="fa-solid fa-brain text-gray-400 mt-1"></i>
+<div>
+<span class="block font-bold text-gray-800 text-sm">뉴럴 네트워크 (Neural Network)</span>
+<span class="block text-xs text-gray-500 mt-1">인간의 뇌신경 망을 모방하여 정보를 학습하고 처리하는 구조</span>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<i class="fa-solid fa-square-root-variable text-gray-400 mt-1"></i>
+<div>
+<span class="block font-bold text-gray-800 text-sm">수학적 연산 (Mathematics)</span>
+<span class="block text-xs text-gray-500 mt-1">미분, 행렬, 확률, 벡터 연산을 통해 데이터 간의 관계를 수치화</span>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<i class="fa-solid fa-robot text-gray-400 mt-1"></i>
+<div>
+<span class="block font-bold text-gray-800 text-sm">자가 학습 (Self-Learning)</span>
+<span class="block text-xs text-gray-500 mt-1">입력된 데이터의 패턴을 스스로 학습하여 최적의 결과값 도출</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Column 3: Examples -->
+<div class="flex flex-col h-full">
+<div class="border-t-4 border-gray-300 pt-4 mb-4">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
+<i class="fa-solid fa-lightbulb text-xl"></i>
+</div>
+<h3 class="serif-font text-2xl font-bold text-gray-900">실제 사례 (Cases)</h3>
+</div>
+<div class="space-y-6">
+<div class="group cursor-pointer">
+<h4 class="font-bold text-hbr-red mb-1 group-hover:underline text-lg">AlphaFold (바이오)</h4>
+<p class="text-sm text-gray-600 mb-2">단백질 아미노산 서열 패턴 분석 → 3차원 구조 예측</p>
+<p class="text-xs text-gray-400 border-l-2 border-gray-200 pl-2">
+                            결과(기능)를 정의하고 원인(구조)을 역설계하여 신약 개발 혁신에 기여
+                        </p>
+</div>
+<div class="border-t border-gray-100 pt-4 group cursor-pointer">
+<h4 class="font-bold text-hbr-red mb-1 group-hover:underline text-lg">Animal Communication</h4>
+<p class="text-sm text-gray-600 mb-2">돌고래/코끼리 음성 및 저주파 패턴 분석</p>
+<p class="text-xs text-gray-400 border-l-2 border-gray-200 pl-2">
+                            인간이 인지하지 못했던 고유 이름과 언어 체계 패턴 발견
+                        </p>
+</div>
+</div>
+<!-- Bottom decorative element -->
+<div class="mt-auto bg-gray-800 text-white p-4 rounded text-center">
+<p class="serif-font text-sm font-light">"패턴을 읽는 자가 미래를 예측한다"</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="absolute bottom-8 left-16 right-16 border-t border-gray-200 pt-4 flex justify-between items-center text-xs text-gray-400">
+<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
+<span>© 2025 All Rights Reserved</span>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9ac119e8ba09d1d1&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>
