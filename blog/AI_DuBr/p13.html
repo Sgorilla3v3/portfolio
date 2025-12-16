@@ -1,42 +1,40 @@
-<!DOCTYPE html><html lang="ko"><head>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>AI 듀얼 브레인 종합 전략</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #0f172a; /* Slate 900 */
+            background-color: #0f172a;
             color: white;
             overflow: auto;
         }
         .slide-container {
             width: 1280px;
-            height: 720px;
+            min-height: 720px;
             display: flex;
             flex-direction: column;
             position: relative;
             background-color: #0f172a;
-            overflow: auto;
-            padding: 40px 60px;
+            padding: 30px 60px 40px 60px;
         }
         .accent-text {
-            color: #2dd4bf; /* Teal 400 */
+            color: #2dd4bf;
         }
         
         /* Hub & Spoke Layout */
         .diagram-area {
-            flex: 1;
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            width: 100%;
+            height: 520px;
+            margin: 20px 0;
         }
 
         /* SVG Lines */
@@ -58,71 +56,149 @@
 
         /* Central Hub */
         .hub-circle {
-            width: 260px;
-            height: 260px;
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            top: 38%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             border-radius: 50%;
-            background-color: rgba(15, 23, 42, 0.9);
+            background-color: rgba(15, 23, 42, 0.95);
             border: 4px solid #2dd4bf;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 10;
-            box-shadow: 0 0 30px rgba(45, 212, 191, 0.2);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 0 40px rgba(45, 212, 191, 0.3);
         }
+        
+        .hub-content {
+            text-align: center;
+            z-index: 2;
+        }
+        
         .hub-divider {
             position: absolute;
             width: 2px;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: rotate(0deg);
+            background: linear-gradient(to bottom, 
+                rgba(249, 115, 22, 0.3) 0%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                rgba(45, 212, 191, 0.3) 100%);
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            z-index: 1;
         }
-        .hub-content {
-            z-index: 2;
-            text-align: center;
-            width: 100%;
-        }
-        .brain-half {
-            position: absolute;
+        
+        .hub-split {
+            display: flex;
             width: 100%;
             height: 100%;
+            position: absolute;
             top: 0;
             left: 0;
-            opacity: 0.05;
-            z-index: 1;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .hub-left, .hub-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 10px;
+        }
+        
+        .hub-left { 
+            background: linear-gradient(90deg, rgba(249, 115, 22, 0.08) 0%, rgba(249, 115, 22, 0) 100%); 
+        }
+        .hub-right { 
+            background: linear-gradient(-90deg, rgba(45, 212, 191, 0.08) 0%, rgba(45, 212, 191, 0) 100%); 
+        }
+        
+        .hub-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+        
+        .hub-sub-list {
+            font-size: 0.6rem;
+            color: #cbd5e1;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        .hub-sub-list p {
+            margin: 2px 0;
+        }
+        
+        .hub-main-text {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            font-weight: 900;
+            text-align: center;
+            line-height: 1;
+            z-index: 5;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.7);
         }
         
         /* Spoke Items */
         .spoke-card {
             position: absolute;
-            width: 280px;
-            background-color: rgba(30, 41, 59, 0.8);
+            width: 240px;
+            background-color: rgba(30, 41, 59, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 10px;
+            padding: 14px;
             z-index: 5;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
+        
         .spoke-card:hover {
             transform: scale(1.05);
             background-color: rgba(30, 41, 59, 0.95);
             border-color: #2dd4bf;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             z-index: 20;
         }
         
-        /* Positioning */
-        .pos-left-top { top: 10%; left: 5%; }
-        .pos-left-mid { top: 42%; left: 0%; }
-        .pos-left-bot { bottom: 10%; left: 5%; }
+        /* Positioning - 중앙 기준 (640px, 197px) */
+        .pos-left-top { 
+            top: 20px; 
+            left: 80px; 
+        }
+        .pos-left-mid { 
+            top: 38%; 
+            left: 30px; 
+            transform: translateY(-50%);
+        }
+        .pos-left-bot { 
+            bottom: 110px; 
+            left: 80px; 
+        }
         
-        .pos-right-top { top: 10%; right: 5%; }
-        .pos-right-mid { top: 42%; right: 0%; }
-        .pos-right-bot { bottom: 10%; right: 5%; }
+        .pos-right-top { 
+            top: 20px; 
+            right: 80px; 
+        }
+        .pos-right-mid { 
+            top: 38%; 
+            right: 30px; 
+            transform: translateY(-50%);
+        }
+        .pos-right-bot { 
+            bottom: 110px; 
+            right: 80px; 
+        }
 
         /* Card Content */
         .card-header {
@@ -130,27 +206,30 @@
             align-items: center;
             margin-bottom: 8px;
         }
+        
         .card-icon {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 12px;
-            font-size: 1.1rem;
+            margin-right: 10px;
+            font-size: 0.95rem;
             flex-shrink: 0;
         }
+        
         .card-title {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: white;
             line-height: 1.2;
         }
+        
         .card-desc {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #94a3b8;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         /* Colors */
@@ -165,265 +244,205 @@
         .bottom-banner {
             background-color: rgba(15, 23, 42, 0.6);
             border-top: 2px solid #334155;
-            padding: 12px 0;
+            padding: 14px 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 50px;
             border-radius: 12px;
             margin-top: auto;
         }
+        
         .metric-item {
             display: flex;
             align-items: center;
             color: #e2e8f0;
             font-weight: 500;
+            font-size: 0.9rem;
         }
+        
         .metric-icon {
             margin-right: 8px;
             color: #2dd4bf;
+            font-size: 1rem;
         }
+        
         .metric-value {
             font-weight: 800;
             color: white;
-            margin-left: 4px;
+            margin-left: 6px;
             font-size: 1.1rem;
         }
-
-        /* Hub Internal Layout */
-        .hub-split {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        .hub-left, .hub-right {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-        .hub-left { background: linear-gradient(90deg, rgba(249, 115, 22, 0.05) 0%, rgba(249, 115, 22, 0) 100%); }
-        .hub-right { background: linear-gradient(-90deg, rgba(45, 212, 191, 0.05) 0%, rgba(45, 212, 191, 0) 100%); }
-        
-        .hub-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-        }
-        .hub-main-text {
-            font-size: 1.4rem;
-            font-weight: 900;
-            text-align: center;
-            line-height: 1.1;
-            margin: 10px 0;
-            z-index: 5;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-        .hub-sub-list {
-            font-size: 0.65rem;
-            color: #cbd5e1;
-            text-align: center;
-            line-height: 1.4;
-        }
     </style>
-<style id="slide-selected-style">
-  [data-slide-selected]::before
-  /* [data-slide-hover-selected]::before */ {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    width: 100%;
-    height: 100%;
-    box-sizing: content-box;
-    padding: 4px;
-    border-radius: 0px;
-    outline: 2px solid #0f7fff !important;
-    z-index: 10000;
-    pointer-events: none;
-  }
-
- /* [data-slide-hover-selected], */
-  [data-slide-selected] {
-    position: relative;
-    outline: none;
-    cursor: default;
-  }
-
-  img[data-slide-selected],
-  img[data-slide-hover-selected],
-  [data-slide-hover-selected],
-  [item-slide-click-selected],
-  [item-slide-selected] {
-    border: 2px solid #0f7fff !important;
-  }
-
-
-</style></head>
+</head>
 <body>
 <div class="slide-container">
-<!-- Header -->
-<div class="mb-2 z-20">
-<div class="flex items-center mb-2">
-<span class="px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase mr-3">
-                    Strategy Framework
-                </span>
-<span class="text-gray-400 text-sm">AI 듀얼 브레인 종합 전략</span>
-</div>
-<h1 class="text-3xl font-black leading-tight">
-                AI <span class="accent-text">Dual Brain Strategy</span>
-</h1>
-</div>
-<!-- Diagram Area -->
-<div class="diagram-area">
-<!-- Connecting Lines (SVG) -->
-<svg class="connector-lines">
-<!-- Center to Left Top -->
-<path class="line-path" d="M580,300 L260,140"></path>
-<!-- Center to Left Mid -->
-<path class="line-path" d="M520,360 L320,360"></path>
-<!-- Center to Left Bot -->
-<path class="line-path" d="M580,420 L260,580"></path>
-<!-- Center to Right Top -->
-<path class="line-path" d="M700,300 L1020,140"></path>
-<!-- Center to Right Mid -->
-<path class="line-path" d="M760,360 L960,360"></path>
-<!-- Center to Right Bot -->
-<path class="line-path" d="M700,420 L1020,580"></path>
-</svg>
-<!-- Central Hub -->
-<div class="hub-circle">
-<div class="hub-split">
-<div class="hub-left">
-<span class="hub-label text-orange-400">HUMAN</span>
-<div class="mb-6"></div> <!-- Spacer -->
-<div class="hub-sub-list">
-<p>문제정의</p>
-<p>윤리/판단</p>
-<p>Context</p>
-</div>
-</div>
-<div class="hub-divider"></div>
-<div class="hub-right">
-<span class="hub-label text-teal-400">AI AGENT</span>
-<div class="mb-6"></div> <!-- Spacer -->
-<div class="hub-sub-list">
-<p>패턴탐지</p>
-<p>초안생성</p>
-<p>자동화</p>
-</div>
-</div>
-</div>
-<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-<div class="hub-main-text">
-<span class="block text-white">DUAL</span>
-<span class="block text-teal-400">BRAIN</span>
-</div>
-</div>
-</div>
-<!-- Left Spokes -->
-<!-- Spoke 1 -->
-<div class="spoke-card pos-left-top">
-<div class="card-header">
-<div class="card-icon c-orange">
-<i class="fas fa-terminal"></i>
-</div>
-<h3 class="card-title">프롬프트 시스템<br><span class="text-xs font-normal text-gray-400">Prompt System</span></h3>
-</div>
-<p class="card-desc">
-                    업무별 최적화된 프롬프트 템플릿 라이브러리 구축 및 CoT 설계 표준화
-                </p>
-</div>
-<!-- Spoke 2 -->
-<div class="spoke-card pos-left-mid">
-<div class="card-header">
-<div class="card-icon c-purple">
-<i class="fas fa-puzzle-piece"></i>
-</div>
-<h3 class="card-title">데이터 파싱 프레임<br><span class="text-xs font-normal text-gray-400">Data Parsing</span></h3>
-</div>
-<p class="card-desc">
-                    비정형 데이터(뉴스, 계약서)를 구조화된 데이터로 해체 및 재조합하는 분석 체계
-                </p>
-</div>
-<!-- Spoke 3 -->
-<div class="spoke-card pos-left-bot">
-<div class="card-header">
-<div class="card-icon c-blue">
-<i class="fas fa-network-wired"></i>
-</div>
-<h3 class="card-title">MCP 통합<br><span class="text-xs font-normal text-gray-400">MCP Integration</span></h3>
-</div>
-<p class="card-desc">
-                    사내 데이터베이스, 슬랙, 노션 등 외부 도구와 AI 모델을 안전하게 연결하는 프로토콜
-                </p>
-</div>
-<!-- Right Spokes -->
-<!-- Spoke 4 -->
-<div class="spoke-card pos-right-top">
-<div class="card-header">
-<div class="card-icon c-teal">
-<i class="fas fa-code"></i>
-</div>
-<h3 class="card-title">바이브 코딩 툴킷<br><span class="text-xs font-normal text-gray-400">Vibe Coding</span></h3>
-</div>
-<p class="card-desc">
-                    Cursor AI 등을 활용하여 실무자가 직접 필요한 스크래퍼 및 자동화 도구 즉시 제작
-                </p>
-</div>
-<!-- Spoke 5 -->
-<div class="spoke-card pos-right-mid">
-<div class="card-header">
-<div class="card-icon c-pink">
-<i class="fas fa-chart-line"></i>
-</div>
-<h3 class="card-title">품질 KPI<br><span class="text-xs font-normal text-gray-400">Quality Metrics</span></h3>
-</div>
-<p class="card-desc">
-                    리드타임 단축, 정확도, 커버리지 등 AI 협업 성과를 측정하는 정량적 지표 관리
-                </p>
-</div>
-<!-- Spoke 6 -->
-<div class="spoke-card pos-right-bot">
-<div class="card-header">
-<div class="card-icon c-green">
-<i class="fas fa-shield-alt"></i>
-</div>
-<h3 class="card-title">거버넌스<br><span class="text-xs font-normal text-gray-400">Governance</span></h3>
-</div>
-<p class="card-desc">
-                    환각(Hallucination) 방지, 보안 가이드라인, 프롬프트 버전 관리 및 윤리 규정
-                </p>
-</div>
-</div>
-<!-- Bottom Banner -->
-<div class="bottom-banner">
-<div class="metric-item">
-<i class="fas fa-bolt metric-icon"></i>
-<span>생산성 향상</span>
-<span class="metric-value">10~50x</span>
-</div>
-<div class="h-4 w-px bg-gray-600 mx-4"></div>
-<div class="metric-item">
-<i class="fas fa-check-circle metric-icon"></i>
-<span>일관된 품질</span>
-<span class="metric-value">Standardized</span>
-</div>
-<div class="h-4 w-px bg-gray-600 mx-4"></div>
-<div class="metric-item">
-<i class="fas fa-expand-arrows-alt metric-icon"></i>
-<span>무한한 확장성</span>
-<span class="metric-value">Scalability</span>
-</div>
-</div>
-</div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840fd92ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+    <!-- Header -->
+    <div class="mb-4 z-20">
+        <div class="flex items-center mb-2">
+            <span class="px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase mr-3">
+                Strategy Framework
+            </span>
+            <span class="text-gray-400 text-sm">AI 듀얼 브레인 종합 전략</span>
+        </div>
+        <h1 class="text-3xl font-black leading-tight">
+            AI <span class="accent-text">Dual Brain Strategy</span>
+        </h1>
+    </div>
 
-<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>
+    <!-- Diagram Area -->
+    <div class="diagram-area">
+        <!-- Connecting Lines (SVG) -->
+        <svg class="connector-lines">
+            <!-- 중앙 원 중심: (640, 197), 반지름: 110px -->
+            
+            <!-- Left Top: 원의 왼쪽 상단 테두리 -->
+            <line class="line-path" x1="562" y1="119" x2="320" y2="70"/>
+            
+            <!-- Left Mid: 원의 정확한 왼쪽 테두리 -->
+            <line class="line-path" x1="530" y1="197" x2="270" y2="197"/>
+            
+            <!-- Left Bot: 원의 왼쪽 하단 테두리 -->
+            <line class="line-path" x1="562" y1="275" x2="320" y2="324"/>
+            
+            <!-- Right Top: 원의 오른쪽 상단 테두리 -->
+            <line class="line-path" x1="718" y1="119" x2="960" y2="70"/>
+            
+            <!-- Right Mid: 원의 정확한 오른쪽 테두리 -->
+            <line class="line-path" x1="750" y1="197" x2="1010" y2="197"/>
+            
+            <!-- Right Bot: 원의 오른쪽 하단 테두리 -->
+            <line class="line-path" x1="718" y1="275" x2="960" y2="324"/>
+        </svg>
+
+        <!-- Central Hub -->
+        <div class="hub-circle">
+            <div class="hub-split">
+                <div class="hub-left">
+                    <span class="hub-label text-orange-400">HUMAN</span>
+                    <div class="hub-sub-list">
+                        <p>문제정의</p>
+                        <p>윤리/판단</p>
+                        <p>Context</p>
+                    </div>
+                </div>
+                <div class="hub-right">
+                    <span class="hub-label text-teal-400">AI AGENT</span>
+                    <div class="hub-sub-list">
+                        <p>패턴탐지</p>
+                        <p>초안생성</p>
+                        <p>자동화</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hub-divider"></div>
+            <div class="hub-main-text">
+                <div class="block text-white">DUAL</div>
+                <div class="block text-teal-400" style="margin-top: 4px;">BRAIN</div>
+            </div>
+        </div>
+
+        <!-- Left Spokes -->
+        <!-- Spoke 1 -->
+        <div class="spoke-card pos-left-top">
+            <div class="card-header">
+                <div class="card-icon c-orange">
+                    <i class="fas fa-terminal"></i>
+                </div>
+                <h3 class="card-title">프롬프트 시스템<br><span class="text-xs font-normal text-gray-400">Prompt System</span></h3>
+            </div>
+            <p class="card-desc">
+                업무별 최적화된 프롬프트 템플릿 라이브러리 구축 및 CoT 설계 표준화
+            </p>
+        </div>
+
+        <!-- Spoke 2 -->
+        <div class="spoke-card pos-left-mid">
+            <div class="card-header">
+                <div class="card-icon c-purple">
+                    <i class="fas fa-puzzle-piece"></i>
+                </div>
+                <h3 class="card-title">데이터 파싱 프레임<br><span class="text-xs font-normal text-gray-400">Data Parsing</span></h3>
+            </div>
+            <p class="card-desc">
+                비정형 데이터(뉴스, 계약서)를 구조화된 데이터로 해체 및 재조합하는 분석 체계
+            </p>
+        </div>
+
+        <!-- Spoke 3 -->
+        <div class="spoke-card pos-left-bot">
+            <div class="card-header">
+                <div class="card-icon c-blue">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <h3 class="card-title">MCP 통합<br><span class="text-xs font-normal text-gray-400">MCP Integration</span></h3>
+            </div>
+            <p class="card-desc">
+                사내 데이터베이스, 슬랙, 노션 등 외부 도구와 AI 모델을 안전하게 연결하는 프로토콜
+            </p>
+        </div>
+
+        <!-- Right Spokes -->
+        <!-- Spoke 4 -->
+        <div class="spoke-card pos-right-top">
+            <div class="card-header">
+                <div class="card-icon c-teal">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="card-title">바이브 코딩 툴킷<br><span class="text-xs font-normal text-gray-400">Vibe Coding</span></h3>
+            </div>
+            <p class="card-desc">
+                Cursor AI 등을 활용하여 실무자가 직접 필요한 스크래퍼 및 자동화 도구 즉시 제작
+            </p>
+        </div>
+
+        <!-- Spoke 5 -->
+        <div class="spoke-card pos-right-mid">
+            <div class="card-header">
+                <div class="card-icon c-pink">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="card-title">품질 KPI<br><span class="text-xs font-normal text-gray-400">Quality Metrics</span></h3>
+            </div>
+            <p class="card-desc">
+                리드타임 단축, 정확도, 커버리지 등 AI 협업 성과를 측정하는 정량적 지표 관리
+            </p>
+        </div>
+
+        <!-- Spoke 6 -->
+        <div class="spoke-card pos-right-bot">
+            <div class="card-header">
+                <div class="card-icon c-green">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="card-title">거버넌스<br><span class="text-xs font-normal text-gray-400">Governance</span></h3>
+            </div>
+            <p class="card-desc">
+                환각(Hallucination) 방지, 보안 가이드라인, 프롬프트 버전 관리 및 윤리 규정
+            </p>
+        </div>
+    </div>
+
+    <!-- Bottom Banner -->
+    <div class="bottom-banner">
+        <div class="metric-item">
+            <i class="fas fa-bolt metric-icon"></i>
+            <span>생산성 향상</span>
+            <span class="metric-value">10~50x</span>
+        </div>
+        <div style="height: 20px; width: 1px; background-color: #4b5563;"></div>
+        <div class="metric-item">
+            <i class="fas fa-check-circle metric-icon"></i>
+            <span>일관된 품질</span>
+            <span class="metric-value">Standardized</span>
+        </div>
+        <div style="height: 20px; width: 1px; background-color: #4b5563;"></div>
+        <div class="metric-item">
+            <i class="fas fa-expand-arrows-alt metric-icon"></i>
+            <span>무한한 확장성</span>
+            <span class="metric-value">Scalability</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
