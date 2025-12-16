@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
+<title>AI 글쓰기 실무: 보도자료 자동화</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+        .serif-font {
+            font-family: 'Noto Serif KR', serif;
+        }
+        .hbr-red {
+            color: #B21F24;
+        }
+        .bg-hbr-red {
+            background-color: #B21F24;
+        }
+        .border-hbr-red {
+            border-color: #B21F24;
+        }
+        .section-card {
+            transition: all 0.3s ease;
+        }
+        /* HBR Style List Numbering */
+        .list-number {
+            font-family: 'Noto Serif KR', serif;
+            font-weight: 900;
+            line-height: 1;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] min-h-[720px] flex flex-col p-16 relative overflow-hidden">
+<!-- Background Watermark -->
+<div class="absolute top-0 right-0 w-1/3 h-full bg-gray-50 opacity-50 z-0 skew-x-12 transform origin-top-right translate-x-20"></div>
+<!-- Header Section -->
+<div class="relative z-10 w-full mb-10 border-b border-gray-300 pb-6 flex justify-between items-end">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="h-1 w-10 bg-hbr-red inline-block"></span>
+<span class="text-hbr-red font-bold tracking-[0.2em] text-xs uppercase">Section 05 | Practical Application</span>
+</div>
+<h1 class="serif-font text-4xl font-bold text-gray-900 tracking-tight">AI 글쓰기 실무: 보도자료 자동화</h1>
+</div>
+<div class="text-right">
+<p class="text-gray-500 font-light text-sm mb-1">Process Steps</p>
+<p class="serif-font text-3xl font-bold text-gray-800">04 <span class="text-base font-normal text-gray-400">Stages</span></p>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="relative z-10 grid grid-cols-2 gap-x-16 gap-y-10 flex-1 content-center px-4">
+<!-- Card 1: 사전 학습 -->
+<div class="section-card group">
+<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
+<div class="flex justify-between items-baseline mb-3">
+<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">01</span>
+<i class="fa-solid fa-book-open-reader text-gray-400 group-hover:text-gray-800 text-2xl"></i>
+</div>
+<h3 class="serif-font text-2xl font-bold text-gray-900 mb-3">사전 학습 (Pre-training)</h3>
+<div class="text-gray-600 leading-relaxed font-light">
+<ul class="list-disc list-outside ml-4 space-y-1">
+<li><p><strong>내부 가이드라인 학습:</strong> 회사 고유의 톤앤매너와 작성 원칙 주입</p></li>
+<li><p><strong>Few-shot Learning:</strong> 우수 보도자료 샘플 3~5개를 제공하여 구조 학습</p></li>
+<li><p><strong>Context Injection:</strong> 산업 전문 용어 및 최신 트렌드 데이터베이스 연동</p></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Card 2: 프롬프트 설계 -->
+<div class="section-card group">
+<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
+<div class="flex justify-between items-baseline mb-3">
+<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">02</span>
+<i class="fa-solid fa-terminal text-gray-400 group-hover:text-gray-800 text-2xl"></i>
+</div>
+<h3 class="serif-font text-2xl font-bold text-gray-900 mb-3">프롬프트 설계 (Prompting)</h3>
+<div class="text-gray-600 leading-relaxed font-light">
+<ul class="list-disc list-outside ml-4 space-y-1">
+<li><p><strong>명확한 지시:</strong> 목적, 타겟 독자, 핵심 메시지(Key Message) 정의</p></li>
+<li><p><strong>구조화 요청:</strong> 역피라미드(Inverted Pyramid) 구조 적용 지시</p></li>
+<li><p><strong>CoT 적용:</strong> "제목 작성 → 리드문 작성 → 본문 구성" 단계별 생성 유도</p></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Card 3: 톤앤매너 관리 -->
+<div class="section-card group">
+<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
+<div class="flex justify-between items-baseline mb-3">
+<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">03</span>
+<i class="fa-solid fa-pen-nib text-gray-400 group-hover:text-gray-800 text-2xl"></i>
+</div>
+<h3 class="serif-font text-2xl font-bold text-gray-900 mb-3">톤앤매너 관리 (Tone &amp; Manner)</h3>
+<div class="text-gray-600 leading-relaxed font-light">
+<ul class="list-disc list-outside ml-4 space-y-1">
+<li><p><strong>브랜드 보이스:</strong> 신뢰감, 혁신성 등 브랜드 페르소나 설정</p></li>
+<li><p><strong>스타일 변환:</strong> 딱딱한 기술 문서를 대중적 언어로, 혹은 특정 작가 문체로 윤문</p></li>
+<li><p><strong>일관성 유지:</strong> 용어 통일성 및 문장 호흡 조절</p></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Card 4: 품질 검증 -->
+<div class="section-card group">
+<div class="border-t-2 border-gray-200 group-hover:border-hbr-red transition-colors duration-300 pt-4 mb-3">
+<div class="flex justify-between items-baseline mb-3">
+<span class="list-number text-4xl text-gray-300 group-hover:text-hbr-red transition-colors duration-300">04</span>
+<i class="fa-solid fa-magnifying-glass-chart text-gray-400 group-hover:text-gray-800 text-2xl"></i>
+</div>
+<h3 class="serif-font text-2xl font-bold text-gray-900 mb-3">품질 검증 (Quality Assurance)</h3>
+<div class="text-gray-600 leading-relaxed font-light">
+<ul class="list-disc list-outside ml-4 space-y-1">
+<li><p><strong>Fact Check:</strong> 수치, 날짜, 인용구의 정확성 교차 검증</p></li>
+<li><p><strong>Compliance:</strong> 법적 리스크, 금칙어, 과장 광고 표현 필터링</p></li>
+<li><p><strong>Source Verification:</strong> 생성된 내용의 원본 출처 및 근거 확인</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="absolute bottom-8 left-16 right-16 border-t border-gray-200 pt-4 flex justify-between items-center text-xs text-gray-400">
+<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
+<span>© 2025 All Rights Reserved</span>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69f9c9eaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

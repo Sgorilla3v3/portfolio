@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
+<title>PR 실무 사례 모음</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+        .serif-font {
+            font-family: 'Noto Serif KR', serif;
+        }
+        .hbr-red {
+            color: #B21F24;
+        }
+        .bg-hbr-red {
+            background-color: #B21F24;
+        }
+        .border-hbr-red {
+            border-color: #B21F24;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        .result-box {
+            background-color: #f8f9fa;
+            border-top: 2px solid #B21F24;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] min-h-[720px] flex flex-col relative overflow-hidden bg-white">
+<!-- Top Accent Bar -->
+<div class="absolute top-0 left-0 w-full h-2 bg-gray-900">
+<div class="w-2/3 h-full bg-hbr-red"></div>
+</div>
+<!-- Header Section -->
+<div class="pt-10 px-12 pb-6 flex justify-between items-end border-b border-gray-200">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="text-hbr-red font-bold tracking-widest text-xs uppercase">Section 05</span>
+<span class="text-gray-300">|</span>
+<span class="text-gray-500 font-medium text-xs uppercase tracking-wider">Practical Application</span>
+</div>
+<h1 class="serif-font text-4xl font-bold text-gray-900 leading-tight">
+                PR 실무 적용: <span class="font-normal text-gray-600">데이터 파싱 &amp; 분석 사례</span>
+</h1>
+</div>
+<div class="text-right">
+<p class="text-sm text-gray-500 font-light">
+                방대한 비정형 데이터를 구조화하여 새로운 인사이트를 도출합니다.
+            </p>
+</div>
+</div>
+<!-- Main Content Area: 4 Cards Grid -->
+<div class="flex-1 px-12 py-8">
+<div class="grid grid-cols-4 gap-5 h-full">
+<!-- Card 1: 계약서 분석 -->
+<div class="flex flex-col bg-white rounded-xl border border-gray-200 card-shadow hover:border-hbr-red transition-colors duration-300 group h-full">
+<div class="p-6 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-hbr-red group-hover:bg-hbr-red group-hover:text-white transition-colors duration-300">
+<i class="fa-solid fa-file-signature text-lg"></i>
+</div>
+<span class="serif-font text-3xl text-gray-100 font-bold group-hover:text-red-50 transition-colors">01</span>
+</div>
+<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">계약서 정밀 검토</h3>
+<p class="text-xs text-gray-600 mb-4 leading-relaxed flex-grow">
+                        AI에게 '을'의 페르소나를 부여하여 계약 조항을 검토합니다. 독소 조항을 찾아내고, 수정이 필요한 이유와 합리적인 대안을 제시합니다.
+                    </p>
+<div class="mt-auto">
+<div class="result-box p-3 rounded-b-lg">
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Key Outcome</p>
+<p class="font-medium text-xs text-gray-800 leading-tight">
+                                조항별 중요도 점수화 &amp;<br>수정 의견서 자동 생성
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: 이슈 심층 분석 -->
+<div class="flex flex-col bg-white rounded-xl border border-gray-200 card-shadow hover:border-hbr-red transition-colors duration-300 group h-full">
+<div class="p-6 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-hbr-red group-hover:bg-hbr-red group-hover:text-white transition-colors duration-300">
+<i class="fa-solid fa-newspaper text-lg"></i>
+</div>
+<span class="serif-font text-3xl text-gray-100 font-bold group-hover:text-red-50 transition-colors">02</span>
+</div>
+<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">이슈 심층 분석</h3>
+<p class="text-xs text-gray-600 mb-4 leading-relaxed flex-grow">
+                        복잡한 사건 기사들을 학습시켜 타임라인을 재구성합니다. 핵심 인물 간의 관계도와 입장 차이를 구조화하여 갈등의 원인을 파악합니다.
+                    </p>
+<div class="mt-auto">
+<div class="result-box p-3 rounded-b-lg">
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Key Outcome</p>
+<p class="font-medium text-xs text-gray-800 leading-tight">
+                                사건의 인과관계 도식화 &amp;<br>입장별 논리 구조 분석
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: 판결문 비교 -->
+<div class="flex flex-col bg-white rounded-xl border border-gray-200 card-shadow hover:border-hbr-red transition-colors duration-300 group h-full">
+<div class="p-6 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-hbr-red group-hover:bg-hbr-red group-hover:text-white transition-colors duration-300">
+<i class="fa-solid fa-scale-balanced text-lg"></i>
+</div>
+<span class="serif-font text-3xl text-gray-100 font-bold group-hover:text-red-50 transition-colors">03</span>
+</div>
+<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">판결문 비교 분석</h3>
+<p class="text-xs text-gray-600 mb-4 leading-relaxed flex-grow">
+                        주요 탄핵 판결문 등을 학습하여 법리적 구성 요소를 추출합니다. 이를 기준으로 각 판결문의 논리적 완결성과 설득력을 비교 평가합니다.
+                    </p>
+<div class="mt-auto">
+<div class="result-box p-3 rounded-b-lg">
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Key Outcome</p>
+<p class="font-medium text-xs text-gray-800 leading-tight">
+                                헌법재판소 판결문 평가<br>프레임워크 설계
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 4: 성향 테스트 개발 -->
+<div class="flex flex-col bg-white rounded-xl border border-gray-200 card-shadow hover:border-hbr-red transition-colors duration-300 group h-full">
+<div class="p-6 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-hbr-red group-hover:bg-hbr-red group-hover:text-white transition-colors duration-300">
+<i class="fa-solid fa-mobile-screen-button text-lg"></i>
+</div>
+<span class="serif-font text-3xl text-gray-100 font-bold group-hover:text-red-50 transition-colors">04</span>
+</div>
+<h3 class="serif-font text-xl font-bold text-gray-900 mb-2">진단 앱 개발 기획</h3>
+<p class="text-xs text-gray-600 mb-4 leading-relaxed flex-grow">
+                        MBTI 로직을 응용하여 '미디어 편향성 자가 진단' 등의 테스트를 기획합니다. 분석부터 기술 구현(코드)까지 AI로 설계합니다.
+                    </p>
+<div class="mt-auto">
+<div class="result-box p-3 rounded-b-lg">
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Key Outcome</p>
+<p class="font-medium text-xs text-gray-800 leading-tight">
+                                알고리즘 설계 및<br>앱 프로토타입 구현
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="px-12 pb-6 pt-2 flex justify-between items-center text-xs text-gray-400">
+<div class="flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-yellow-500"></i>
+<span>Tip: 데이터 파싱(Parsing)의 핵심은 거대한 덩어리를 의미 있는 최소 단위로 쪼개는 것입니다.</span>
+</div>
+<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aea4a69f9c7eaa3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

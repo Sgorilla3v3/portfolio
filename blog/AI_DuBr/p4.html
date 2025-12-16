@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport">
+<title>AI 작동 원리</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+        .serif-font {
+            font-family: 'Noto Serif KR', serif;
+        }
+        .hbr-red {
+            color: #B21F24;
+        }
+        .bg-hbr-red {
+            background-color: #B21F24;
+        }
+        .border-hbr-red {
+            border-color: #B21F24;
+        }
+        .step-card {
+            transition: transform 0.2s ease-in-out;
+        }
+        .step-number {
+            font-family: 'Noto Serif KR', serif;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] min-h-[720px] flex flex-col relative overflow-hidden bg-gray-50">
+<!-- Top Accent Bar -->
+<div class="absolute top-0 left-0 w-full h-2 bg-gray-900">
+<div class="w-1/4 h-full bg-hbr-red"></div>
+</div>
+<!-- Header Section -->
+<div class="pt-12 px-16 pb-6 flex justify-between items-end bg-white border-b border-gray-200">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="text-hbr-red font-bold tracking-widest text-xs uppercase">Section 02</span>
+<span class="text-gray-300">|</span>
+<span class="text-gray-500 font-medium text-xs uppercase tracking-wider">Fundamental Understanding</span>
+</div>
+<h1 class="serif-font text-4xl font-bold text-gray-900 leading-tight">
+                AI 작동 원리: <span class="font-normal text-gray-600">데이터에서 패턴으로</span>
+</h1>
+</div>
+<div class="text-right max-w-md">
+<p class="text-sm text-gray-500 font-light leading-relaxed">
+                인공지능은 입력된 텍스트를 수치화된 벡터로 변환하고,<br>
+                문맥을 파악하여 다음 단어를 확률적으로 예측하는 과정입니다.
+            </p>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 px-16 py-10 flex flex-col justify-between">
+<!-- Process Diagram Visual -->
+<div class="w-full flex justify-center items-center mb-8 relative">
+<div class="absolute inset-0 bg-white opacity-50 z-0 rounded-xl"></div>
+<div class="relative z-10 w-full max-w-5xl bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+<!-- Using the generated image URL -->
+<img alt="AI Text Processing Workflow" class="w-full h-auto object-contain max-h-[280px] rounded-lg" src="https://www.genspark.ai/api/files/s/1zKklMsr?cache_control=3600">
+</div>
+</div>
+<!-- Detailed Steps (4 Columns) -->
+<div class="grid grid-cols-4 gap-6">
+<!-- Step 1: Tokenization -->
+<div class="step-card bg-white p-6 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="step-number text-3xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">01</span>
+<i class="fa-solid fa-scissors text-gray-400"></i>
+</div>
+<h3 class="serif-font text-lg font-bold text-gray-900 mb-2 group-hover:text-hbr-red transition-colors">토큰화 (Tokenization)</h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light mb-3">
+                    문장을 AI가 이해할 수 있는 최소 단위인 '토큰(Token)'으로 분해합니다.
+                </p>
+<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono">
+                    "안녕하세요" → [안녕, 하, 세요]
+                </div>
+</div>
+<!-- Step 2: Embedding -->
+<div class="step-card bg-white p-6 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="step-number text-3xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">02</span>
+<i class="fa-solid fa-cube text-gray-400"></i>
+</div>
+<h3 class="serif-font text-lg font-bold text-gray-900 mb-2 group-hover:text-hbr-red transition-colors">임베딩 (Embedding)</h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light mb-3">
+                    토큰을 다차원 벡터 공간의 수치로 변환하여 의미적 유사성을 표현합니다.
+                </p>
+<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono">
+                    King - Man + Woman = Queen
+                </div>
+</div>
+<!-- Step 3: Attention -->
+<div class="step-card bg-white p-6 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="step-number text-3xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">03</span>
+<i class="fa-solid fa-network-wired text-gray-400"></i>
+</div>
+<h3 class="serif-font text-lg font-bold text-gray-900 mb-2 group-hover:text-hbr-red transition-colors">어텐션 (Attention)</h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light mb-3">
+                    문장 내 단어들 간의 관계와 중요도를 파악하여 문맥을 이해합니다.
+                </p>
+<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono">
+                    "은행" → (금융? 강가?) 문맥 판단
+                </div>
+</div>
+<!-- Step 4: Prediction -->
+<div class="step-card bg-white p-6 rounded-lg border-t-4 border-gray-300 hover:border-hbr-red shadow-sm group h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="step-number text-3xl font-bold text-gray-200 group-hover:text-hbr-red transition-colors">04</span>
+<i class="fa-solid fa-wand-magic-sparkles text-gray-400"></i>
+</div>
+<h3 class="serif-font text-lg font-bold text-gray-900 mb-2 group-hover:text-hbr-red transition-colors">예측 (Prediction)</h3>
+<p class="text-sm text-gray-600 leading-relaxed font-light mb-3">
+                    학습된 패턴을 기반으로 다음에 올 가장 적절한 토큰의 확률을 계산합니다.
+                </p>
+<div class="bg-gray-50 p-2 rounded text-xs text-gray-500 font-mono">
+                    "하늘은" → [파랗다: 80%, 높다: 15%]
+                </div>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="px-16 pb-8 pt-4 flex justify-between items-center text-xs text-gray-400">
+<div class="flex items-center gap-2">
+<i class="fa-solid fa-circle-info"></i>
+<span>Temperature 파라미터로 예측의 창의성(무작위성)을 조절할 수 있습니다.</span>
+</div>
+<span>PR 실무 고도화를 위한 AI 활용 전략 교육</span>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9ac119e8ba0ed1d1&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>
