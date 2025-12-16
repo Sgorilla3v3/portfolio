@@ -16,7 +16,7 @@
         }
         .slide-container {
             width: 1280px;
-            height: 720px;
+            min-height: 720px; /* height → min-height */
             display: flex;
             flex-direction: column;
             position: relative;
@@ -53,7 +53,7 @@
         }
         .concept-image-container {
             width: 100%;
-            max-height: 480px; /* 480px → 400px로 축소 */
+            max-height: 480px; /* 최대 높이 유지 */
             min-height: 200px;
             display: flex;
             justify-content: center;
@@ -62,16 +62,16 @@
             background-color: rgba(0, 0, 0, 0.2);
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            overflow: auto; /* visible → hidden으로 변경 */
+            overflow: visible; /* auto → visible */
             position: relative;
-            padding: 20px;
+            padding: 15px; /* 20px → 15px */
         }
 
         .concept-image {
-            width: auto;
-            height: auto;
-            max-width: calc(100% - 40px); /* padding 20px * 2 고려 */
-            max-height: calc(400px - 40px); /* 컨테이너 높이 - padding 고려 */
+            width: auto; /* 비율 유지 */
+            height: auto; /* 비율 유지 */
+            max-width: 100%; /* 컨테이너 초과 방지 */
+            max-height: 480px; /* 최대 높이 제한 */
             object-fit: contain;
             display: block;
         }
