@@ -16,7 +16,7 @@
         }
         .slide-container {
             width: 1280px;
-            height: 720px;
+            min-height: 720px; /* height → min-height */
             display: flex;
             flex-direction: column;
             position: relative;
@@ -29,7 +29,8 @@
         }
         .flow-image-container {
             width: 100%;
-            height: 560px;
+            max-height: 480px; /* 고정 높이 → 최대 높이 */
+            min-height: 200px; /* 최소 높이 추가 */
             background-color: rgba(30, 41, 59, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
@@ -37,13 +38,17 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 24px;
-            overflow: auto;
+            overflow: visible; /* auto → visible */
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            padding: 15px; /* 여백 추가 */
         }
         .flow-image {
-            width: 100%;
-            height: 100%;
+            width: auto; /* 100% → auto */
+            height: auto; /* 100% → auto */
+            max-width: 100%; /* 컨테이너 초과 방지 */
+            max-height: 480px; /* 최대 높이 제한 */
             object-fit: contain;
+            display: block;
         }
         .steps-container {
             display: grid;

@@ -53,7 +53,8 @@
         }
         .concept-image-container {
             width: 100%;
-            height: 480px; /* 고정 높이 */
+            max-height: 480px; /* 고정 높이 대신 최대 높이 */
+            min-height: 200px; /* 최소 높이 */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -61,13 +62,18 @@
             background-color: rgba(0, 0, 0, 0.2);
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            overflow: auto;
+            overflow: visible; /* 스크롤 제거 */
             position: relative;
+            padding: 20px; /* 여백 추가 */
         }
+
         .concept-image {
-            width: 100%;
-            height: 100%;
+            width: auto; /* 자동 너비 */
+            height: auto; /* 자동 높이 */
+            max-width: 100%; /* 컨테이너 넘지 않도록 */
+            max-height: 480px; /* 최대 높이 제한 */
             object-fit: contain;
+            display: block;
         }
         .insight-box {
             background-color: rgba(45, 212, 191, 0.05);
