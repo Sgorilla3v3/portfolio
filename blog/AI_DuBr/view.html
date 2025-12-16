@@ -285,10 +285,7 @@
         /* iframe 컨테이너 */
         .iframe-container {
             flex: 1;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 20px;
             overflow: auto;
             height: calc(100vh - 80px); /* 네비게이션 헤더 높이 제외 */
         }
@@ -303,6 +300,8 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             background: white;
             transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto; /* 수평 중앙 정렬 */
         }
 
         .slide-frame:hover {
@@ -604,7 +603,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-title">프레젠테이션 목차</div>
-                <div class="sidebar-subtitle">자동 로드된 슬라이드</div>
+                <div class="sidebar-subtitle" id="presentation-subtitle">자동 로드된 슬라이드</div>
             </div>
             <div class="toc-list">
             </div>
@@ -814,8 +813,16 @@
                             // p0의 title 태그를 문서 제목으로 설정
                             const titleElement = doc.querySelector('title');
                             if (titleElement && titleElement.textContent.trim()) {
-                                document.title = titleElement.textContent.trim();
-                                console.log('뷰어 제목 설정:', titleElement.textContent.trim());
+                                const p0Title = titleElement.textContent.trim();
+                                document.title = p0Title;
+                                
+                                // 사이드바 부제목에도 표시
+                                const subtitleElement = document.getElementById('presentation-subtitle');
+                                if (subtitleElement) {
+                                    subtitleElement.textContent = p0Title;
+                                }
+                                
+                                console.log('뷰어 제목 설정:', p0Title);
                             }
                             // 목차에는 "표지"로 표시
                             this.pageTitles.push('표지');
