@@ -294,8 +294,8 @@
         }
 
         .slide-frame {
-            width: 100%;
-            height: 100%;
+            width: 1280px;
+            height: 720px;
             max-width: none;
             max-height: none;
             border: none;
@@ -809,24 +809,36 @@
                         const parser = new DOMParser();
                         const doc = parser.parseFromString(html, 'text/html');
                         
-                        // h1 태그에서 제목 추출
-                        const h1Element = doc.querySelector('h1');
-                        if (h1Element) {
-                            // 텍스트만 추출 (태그 제거)
-                            const title = h1Element.textContent.trim();
-                            this.pageTitles.push(title || `페이지 ${i + 1}`);
-                        } else {
-                            // h1이 없으면 title 태그 시도
+                        // p0는 목차에 "표지"로 표시
+                        if (i === 0) {
+                            // p0의 title 태그를 문서 제목으로 설정
                             const titleElement = doc.querySelector('title');
-                            if (titleElement) {
-                                this.pageTitles.push(titleElement.textContent.trim() || `페이지 ${i + 1}`);
+                            if (titleElement && titleElement.textContent.trim()) {
+                                document.title = titleElement.textContent.trim();
+                                console.log('뷰어 제목 설정:', titleElement.textContent.trim());
+                            }
+                            // 목차에는 "표지"로 표시
+                            this.pageTitles.push('표지');
+                        } else {
+                            // h1 태그에서 제목 추출
+                            const h1Element = doc.querySelector('h1');
+                            if (h1Element) {
+                                // 텍스트만 추출 (태그 제거)
+                                const title = h1Element.textContent.trim();
+                                this.pageTitles.push(title || `페이지 ${i + 1}`);
                             } else {
-                                this.pageTitles.push(`페이지 ${i + 1}`);
+                                // h1이 없으면 title 태그 시도
+                                const titleElement = doc.querySelector('title');
+                                if (titleElement) {
+                                    this.pageTitles.push(titleElement.textContent.trim() || `페이지 ${i + 1}`);
+                                } else {
+                                    this.pageTitles.push(`페이지 ${i + 1}`);
+                                }
                             }
                         }
                     } catch (error) {
                         console.warn(`${this.pageFiles[i]} 제목 로드 실패:`, error);
-                        this.pageTitles.push(`페이지 ${i + 1}`);
+                        this.pageTitles.push(i === 0 ? '표지' : `페이지 ${i + 1}`);
                     }
                 }
                 console.log('로드된 페이지 제목:', this.pageTitles);
@@ -954,6 +966,15 @@
             }
 
             toggleEditMode() {
+                // 편집 모드를 켜려고 할 때만 비밀번호 확인
+                if (!this.isEditMode) {
+                    const password = prompt('편집 모드 비밀번호를 입력하세요:');
+                    if (password !== '9090') {
+                        alert('비밀번호가 올바르지 않습니다.');
+                        return;
+                    }
+                }
+                
                 this.isEditMode = !this.isEditMode;
                 this.iframeContainer.classList.toggle('edit-mode', this.isEditMode);
                 
