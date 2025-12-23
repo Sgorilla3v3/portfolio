@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>설치 및 초기 설정</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+        }
+        .font-mono {
+            font-family: 'Nanum Gothic Coding', monospace;
+        }
+        .step-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .step-number {
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            color: #8b949e;
+            font-family: 'Nanum Gothic Coding', monospace;
+        }
+        .active-step .step-number {
+            background-color: #1f6feb;
+            color: white;
+            border-color: #1f6feb;
+        }
+        .active-step .step-title {
+            color: #58a6ff;
+        }
+        .terminal-window {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+        }
+        .cmd-prompt::before {
+            content: "➜ ";
+            color: #2ea043;
+        }
+        .cmd-path {
+            color: #58a6ff;
+        }
+        .checklist-item i {
+            width: 20px;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
+<!-- Header -->
+<div class="w-full max-w-6xl mb-6 flex justify-between items-end border-b border-gray-800 pb-4">
+<div>
+<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
+<i class="fa-solid fa-download text-green-400 mr-3"></i>
+                설치 및 초기 설정
+            </h1>
+<p class="text-gray-400">안전하고 효율적인 환경 구성을 위한 단계별 가이드</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-gray-800 rounded text-xs text-gray-400 border border-gray-700 font-mono">npm v8+</span>
+<span class="px-3 py-1 bg-gray-800 rounded text-xs text-gray-400 border border-gray-700 font-mono">macOS/Linux</span>
+</div>
+</div>
+<!-- Main Content -->
+<div class="w-full max-w-6xl flex-1 flex gap-8 h-full">
+<!-- Left Column: Steps (45%) -->
+<div class="w-[45%] flex flex-col gap-4 h-full justify-between">
+<!-- Step 1: Prerequisites -->
+<div class="step-card p-4 flex gap-4">
+<div class="flex flex-col items-center">
+<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-2">01</div>
+<div class="w-0.5 flex-1 bg-gray-800"></div>
+</div>
+<div class="flex-1 pb-2">
+<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">사전 준비</h3>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center text-sm text-gray-400 bg-[#21262d] p-2 rounded border border-[#30363d]">
+<i class="fa-brands fa-git-alt text-orange-500 mr-2"></i> Git
+                        </div>
+<div class="flex items-center text-sm text-gray-400 bg-[#21262d] p-2 rounded border border-[#30363d]">
+<i class="fa-solid fa-terminal text-gray-400 mr-2"></i> Bash/Zsh
+                        </div>
+<div class="flex items-center text-sm text-gray-400 bg-[#21262d] p-2 rounded border border-[#30363d]">
+<i class="fa-solid fa-code text-blue-400 mr-2"></i> Editor
+                        </div>
+<div class="flex items-center text-sm text-gray-400 bg-[#21262d] p-2 rounded border border-[#30363d]">
+<i class="fa-brands fa-github text-white mr-2"></i> GitHub CLI
+                        </div>
+</div>
+</div>
+</div>
+<!-- Step 2: Installation -->
+<div class="step-card p-4 flex gap-4 active-step border-blue-900 bg-[#11161d]">
+<div class="flex flex-col items-center">
+<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-2">02</div>
+<div class="w-0.5 flex-1 bg-gray-800"></div>
+</div>
+<div class="flex-1 pb-2">
+<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">패키지 설치</h3>
+<p class="text-sm text-gray-400 mb-2">NPM을 통해 글로벌 패키지로 설치합니다.</p>
+<div class="bg-black p-2 rounded border border-gray-700 font-mono text-sm text-green-400">
+                        npm install -g @anthropic-ai/claude-code
+                    </div>
+</div>
+</div>
+<!-- Step 3: Init -->
+<div class="step-card p-4 flex gap-4">
+<div class="flex flex-col items-center">
+<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-2">03</div>
+<div class="w-0.5 flex-1 bg-gray-800"></div>
+</div>
+<div class="flex-1 pb-2">
+<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">프로젝트 초기화</h3>
+<p class="text-sm text-gray-400 mb-2">프로젝트 루트에서 컨텍스트 파일을 생성합니다.</p>
+<div class="flex gap-2 text-xs text-gray-500">
+<span class="flex items-center"><i class="fa-regular fa-file-code mr-1"></i> CLAUDE.md 생성</span>
+<span class="flex items-center"><i class="fa-solid fa-folder-open mr-1"></i> .claude/ 구성</span>
+</div>
+</div>
+</div>
+<!-- Step 4: Verification -->
+<div class="step-card p-4 flex gap-4">
+<div class="flex flex-col items-center">
+<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">04</div>
+</div>
+<div class="flex-1">
+<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">기본 점검 및 원칙</h3>
+<p class="text-sm text-gray-400">설정 파일 확인 및 최소 권한 원칙 적용</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Terminal & Principles (55%) -->
+<div class="w-[55%] flex flex-col gap-6 h-full">
+<!-- Terminal Simulation -->
+<div class="terminal-window flex-1 flex flex-col shadow-2xl overflow-hidden">
+<div class="bg-[#161b22] px-4 py-2 flex items-center border-b border-[#30363d]">
+<div class="flex gap-2 mr-4">
+<div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+<div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+<div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+</div>
+<div class="text-xs text-gray-500 font-mono flex-1 text-center">user@dev: ~/my-project</div>
+</div>
+<div class="p-6 font-mono text-sm leading-relaxed overflow-y-auto custom-scrollbar">
+<p class="mb-2"><span class="cmd-prompt"></span><span class="cmd-path">~</span> cd my-awesome-project</p>
+<p class="mb-2"><span class="cmd-prompt"></span><span class="cmd-path">~/my-awesome-project</span> claude init</p>
+<p class="text-gray-400 mb-1">🤖 Claude Code Initializing...</p>
+<p class="text-gray-400 mb-1">✓ Detected Git repository</p>
+<p class="text-gray-400 mb-4">✓ Created CLAUDE.md configuration file</p>
+<p class="text-blue-300 mb-2">? Which tools should Claude have access to?</p>
+<p class="text-white ml-4 mb-1">◉ Read files (essential)</p>
+<p class="text-white ml-4 mb-1">◉ Execute bash commands</p>
+<p class="text-white ml-4 mb-4">○ Write files (safe mode)</p>
+<p class="mb-2"><span class="cmd-prompt"></span><span class="cmd-path">~/my-awesome-project</span> ls -la .claude</p>
+<p class="text-gray-300">drwxr-xr-x  4 user  staff  128  Dec 22 10:00 .</p>
+<p class="text-gray-300">drwxr-xr-x  8 user  staff  256  Dec 22 10:00 ..</p>
+<p class="text-gray-300">-rw-r--r--  1 user  staff  420  Dec 22 10:00 settings.json</p>
+<p class="text-gray-300 mb-2">drwxr-xr-x  2 user  staff   64  Dec 22 10:00 mcp-servers</p>
+<p class="mb-1"><span class="cmd-prompt"></span><span class="cmd-path">~/my-awesome-project</span> <span class="animate-pulse">_</span></p>
+</div>
+</div>
+<!-- Principles Box -->
+<div class="bg-[#1c2128] border-l-4 border-green-500 p-5 rounded-r-lg shadow-lg">
+<h4 class="text-green-400 font-bold mb-3 flex items-center">
+<i class="fa-solid fa-shield-halved mr-2"></i>운영 원칙: Start Small, Expand Later
+                </h4>
+<ul class="space-y-2 text-sm text-gray-300">
+<li class="flex items-start checklist-item">
+<i class="fa-solid fa-check text-green-500 mt-1"></i>
+<span><strong class="text-white">최소 권한:</strong> 처음에는 읽기 전용으로 시작하고, 신뢰가 쌓이면 쓰기 권한 부여</span>
+</li>
+<li class="flex items-start checklist-item">
+<i class="fa-solid fa-check text-green-500 mt-1"></i>
+<span><strong class="text-white">PR 기반 추적:</strong> Claude가 작성한 코드는 반드시 Pull Request를 통해 검토 후 병합</span>
+</li>
+<li class="flex items-start checklist-item">
+<i class="fa-solid fa-check text-green-500 mt-1"></i>
+<span><strong class="text-white">설정 검증:</strong> .claude/settings.json 파일은 .gitignore에 포함하지 않고 팀 공유 권장</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b44eaa3d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>도구 허용 목록 관리</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+        }
+        .font-mono {
+            font-family: 'Nanum Gothic Coding', monospace;
+        }
+        
+        /* Custom Scrollbar for Code Block */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1117; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #30363d; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #484f58; 
+        }
+
+        /* Checklist Item Styling */
+        .checklist-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .checklist-card:hover {
+            border-color: #58a6ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .check-circle {
+            min-width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: rgba(35, 134, 54, 0.2);
+            border: 1px solid #238636;
+            color: #2ea043;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* Editor Window Styling */
+        .editor-window {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+        .editor-header {
+            background-color: #161b22;
+            padding: 8px 12px;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        /* Syntax Highlighting */
+        .syntax-key { color: #79c0ff; } /* Blue */
+        .syntax-string { color: #a5d6ff; } /* Light Blue */
+        .syntax-bool { color: #ff7b72; } /* Red */
+        .syntax-array { color: #d2a8ff; } /* Purple */
+        .syntax-comment { color: #8b949e; font-style: italic; }
+
+        /* Security Badge */
+        .security-badge {
+            background-color: rgba(248, 81, 73, 0.1);
+            color: #ff7b72;
+            border: 1px solid rgba(248, 81, 73, 0.4);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
+<!-- Header Area -->
+<div class="w-full max-w-6xl mb-8 flex justify-between items-end border-b border-gray-800 pb-4">
+<div>
+<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
+<i class="fa-solid fa-list-check text-blue-500 mr-3"></i>
+                도구 허용 목록 관리
+            </h1>
+<p class="text-gray-400">시스템 안전과 에이전트 자율성 사이의 균형 설정</p>
+</div>
+<div class="flex gap-2">
+<span class="security-badge">
+<i class="fa-solid fa-shield-cat mr-1"></i> Security First
+            </span>
+</div>
+</div>
+<!-- Main Content: Split Layout -->
+<div class="w-full max-w-6xl flex-1 flex gap-8 min-h-0">
+<!-- Left Column: Management Methods & Policies (55%) -->
+<div class="w-[55%] flex flex-col gap-5 h-full overflow-y-auto pr-2">
+<!-- Section 1: Management Methods -->
+<div>
+<h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 pl-1 flex items-center">
+<i class="fa-solid fa-sliders mr-2"></i> 관리 방법
+                </h3>
+<div class="grid grid-cols-1 gap-3">
+<!-- Method 1 -->
+<div class="checklist-card p-4 flex items-start">
+<div class="check-circle mr-3 mt-1"><i class="fa-solid fa-check"></i></div>
+<div>
+<p class="text-gray-200 font-bold text-sm mb-1">대화형 승인 (Interactive)</p>
+<p class="text-gray-400 text-xs leading-relaxed">
+                                세션 중 권한 요청 시 "Always allow"를 선택하여 현재 세션 동안 권한 부여. <span class="text-yellow-500">가장 기본적인 방법.</span>
+</p>
+</div>
+</div>
+<!-- Method 2 -->
+<div class="checklist-card p-4 flex items-start">
+<div class="check-circle mr-3 mt-1"><i class="fa-solid fa-check"></i></div>
+<div>
+<p class="text-gray-200 font-bold text-sm mb-1">CLI 명령어</p>
+<p class="text-gray-400 text-xs leading-relaxed font-mono bg-gray-800 inline-block px-1 rounded">
+                                /allowed-tools
+                            </p>
+<p class="text-gray-400 text-xs leading-relaxed inline">
+                                명령어를 입력하여 실행 중인 세션의 도구 목록을 즉시 추가하거나 제거.
+                            </p>
+</div>
+</div>
+<!-- Method 3 -->
+<div class="checklist-card p-4 flex items-start">
+<div class="check-circle mr-3 mt-1"><i class="fa-solid fa-check"></i></div>
+<div>
+<p class="text-gray-200 font-bold text-sm mb-1">구성 파일 편집 (Persistent)</p>
+<p class="text-gray-400 text-xs leading-relaxed">
+<span class="font-mono text-blue-300">.claude/settings.json</span> 파일을 직접 수정하여 프로젝트별 영구적인 권한 정책 수립.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Recommended Policies -->
+<div class="flex-1">
+<h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 pl-1 flex items-center">
+<i class="fa-solid fa-gavel mr-2"></i> 권장 보안 정책
+                </h3>
+<div class="bg-[#1c2128] border-l-4 border-green-500 rounded p-4 shadow-md">
+<ul class="space-y-3">
+<li class="flex items-start">
+<i class="fa-solid fa-lock text-green-500 mt-1 mr-3 text-xs"></i>
+<div>
+<p class="text-gray-200 text-sm font-bold">기본 원칙: Read-Only</p>
+<p class="text-gray-500 text-xs">초기 설정은 읽기 권한만 부여하고, 쓰기 권한은 필요에 따라 점진적으로 확장.</p>
+</div>
+</li>
+<li class="flex items-start">
+<i class="fa-solid fa-folder-tree text-green-500 mt-1 mr-3 text-xs"></i>
+<div>
+<p class="text-gray-200 text-sm font-bold">범위 제한 (Scoping)</p>
+<p class="text-gray-500 text-xs">전체 파일 시스템이 아닌 <span class="font-mono bg-gray-800 px-1 rounded text-gray-300">src/</span>, <span class="font-mono bg-gray-800 px-1 rounded text-gray-300">tests/</span> 등 특정 디렉토리로 쓰기 권한 한정.</p>
+</div>
+</li>
+<li class="flex items-start">
+<i class="fa-solid fa-triangle-exclamation text-yellow-500 mt-1 mr-3 text-xs"></i>
+<div>
+<p class="text-gray-200 text-sm font-bold">파괴적 명령 금지</p>
+<p class="text-gray-500 text-xs"><span class="font-mono text-red-400">rm -rf</span>, <span class="font-mono text-red-400">git push --force</span> 등 되돌릴 수 없는 명령은 자동 실행 목록에서 배제.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Right Column: Code Example & Visualization (45%) -->
+<div class="w-[45%] flex flex-col h-full">
+<h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 pl-1 flex items-center">
+<i class="fa-solid fa-code mr-2"></i> 설정 파일 예시
+            </h3>
+<div class="editor-window flex-1 flex flex-col mb-4">
+<div class="editor-header">
+<div class="flex items-center gap-2">
+<i class="fa-solid fa-gear text-gray-400 text-xs"></i>
+<span class="text-xs text-gray-300 font-mono">.claude/settings.json</span>
+</div>
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-red-500 opacity-60"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-yellow-500 opacity-60"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-green-500 opacity-60"></div>
+</div>
+</div>
+<div class="p-4 bg-[#0d1117] font-mono text-xs leading-6 overflow-y-auto flex-1">
+<p>{</p>
+<p class="pl-4"><span class="syntax-key">"commands"</span>: {</p>
+<p class="pl-8"><span class="syntax-comment">// 승인 없이 자동 실행할 명령어</span></p>
+<p class="pl-8"><span class="syntax-key">"allow"</span>: [</p>
+<p class="pl-12"><span class="syntax-string">"ls"</span>,</p>
+<p class="pl-12"><span class="syntax-string">"cat"</span>,</p>
+<p class="pl-12"><span class="syntax-string">"grep"</span>,</p>
+<p class="pl-12"><span class="syntax-string">"git status"</span>,</p>
+<p class="pl-12"><span class="syntax-string">"npm test"</span></p>
+<p class="pl-8">],</p>
+<p class="pl-8"><span class="syntax-comment">// 실행 전 사용자 승인이 필요한 명령어</span></p>
+<p class="pl-8"><span class="syntax-key">"deny"</span>: [</p>
+<p class="pl-12"><span class="syntax-string">"rm"</span>,</p>
+<p class="pl-12"><span class="syntax-string">"curl"</span>,</p>
+<p class="pl-12"><span class="syntax-string">"ssh"</span></p>
+<p class="pl-8">]</p>
+<p class="pl-4">},</p>
+<p class="pl-4"><span class="syntax-key">"filesystem"</span>: {</p>
+<p class="pl-8"><span class="syntax-key">"read"</span>: <span class="syntax-bool">true</span>,</p>
+<p class="pl-8"><span class="syntax-key">"write"</span>: [</p>
+<p class="pl-12"><span class="syntax-string">"./src"</span>,</p>
+<p class="pl-12"><span class="syntax-string">"./docs"</span>,</p>
+<p class="pl-12"><span class="syntax-string">"./tests"</span></p>
+<p class="pl-8">]</p>
+<p class="pl-4">},</p>
+<p class="pl-4"><span class="syntax-key">"autoCommit"</span>: <span class="syntax-bool">false</span></p>
+<p>}</p>
+</div>
+</div>
+<!-- Audit Log Tip -->
+<div class="bg-[#161b22] border border-[#30363d] rounded p-3 flex items-center">
+<div class="w-10 h-10 rounded-full bg-blue-900/30 flex items-center justify-center mr-3 text-blue-400">
+<i class="fa-solid fa-file-signature"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-200">감사 로그 기록</p>
+<p class="text-xs text-gray-500">
+                        변경 권한을 부여한 경우, <span class="text-blue-300 font-mono">CLAUDE.md</span>에 주요 변경 내역과 관련 PR 링크를 기록하도록 에이전트에게 지시하세요.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b44eb93d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>
