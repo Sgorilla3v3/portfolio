@@ -1,55 +1,159 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>MCP 연동 설정</title>
+<title>핵심 이점 #3: 개발자 워크플로우 완전 통합</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #0d1117;
             color: #c9d1d9;
-            overflow: auto;
+            overflow: hidden;
         }
-        .font-mono {
-            font-family: 'Nanum Gothic Coding', monospace;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0d1117;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-        .step-card {
+        /* Code Editor Style */
+        .code-editor {
             background-color: #161b22;
             border: 1px solid #30363d;
             border-radius: 8px;
-            transition: all 0.2s ease;
+            overflow: hidden;
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        .step-number {
+        .editor-header {
+            background-color: #0d1117;
+            padding: 10px 16px;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .file-tab {
+            background-color: #161b22;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+        }
+        .editor-body {
+            padding: 20px;
+            overflow-y: auto;
+            color: #e6edf3;
+            font-size: 13px;
+            line-height: 1.6;
+            flex: 1;
+        }
+        /* JS Syntax Highlighting */
+        .sy-kwd { color: #ff7b72; } /* Keywords (const, return) */
+        .sy-func { color: #d2a8ff; } /* Functions */
+        .sy-str { color: #a5d6ff; } /* Strings */
+        .sy-obj { color: #79c0ff; } /* Objects/Properties */
+        .sy-cmt { color: #8b949e; font-style: italic; } /* Comments */
+        .sy-num { color: #79c0ff; } /* Numbers */
+        .sy-op { color: #ff7b72; } /* Operators */
+
+        /* Feature Cards */
+        .feature-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        /* Sync Process Visual */
+        .sync-process {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10px;
+            position: relative;
+        }
+        .process-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            width: 80px;
+        }
+        .node-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             background-color: #21262d;
             border: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+        .node-label {
+            font-size: 11px;
             color: #8b949e;
-            font-family: 'Nanum Gothic Coding', monospace;
+            text-align: center;
+            font-weight: 500;
         }
-        .active-step {
-            border-color: #77bdfb;
-            background-color: #11161d;
-            box-shadow: 0 0 0 1px #77bdfb;
+        .process-arrow {
+            flex: 1;
+            height: 2px;
+            background-color: #30363d;
+            position: relative;
+            margin: 0 10px;
+            top: -15px;
         }
-        .active-step .step-number {
-            background-color: #1f6feb;
-            color: white;
-            border-color: #1f6feb;
+        .process-arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid #30363d;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
         }
-        .active-step .step-title {
-            color: #58a6ff;
-        }
-        .terminal-window {
+        .active-flow .node-icon {
+            border-color: #238636;
             background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 8px;
+            color: #3fb950;
+            box-shadow: 0 0 15px rgba(35, 134, 54, 0.2);
         }
-        .json-key { color: #79c0ff; }
-        .json-string { color: #a5d6ff; }
-        .json-cmd { color: #7ee787; }
-        .checklist-item i {
-            width: 20px;
+        .active-flow .process-arrow {
+            background-color: #238636;
+        }
+        .active-flow .process-arrow::after {
+            border-left-color: #238636;
+        }
+
+        .badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .badge-js {
+            background-color: #f7df1e;
+            color: #000;
         }
     </style>
 <style id="slide-selected-style">
@@ -86,144 +190,121 @@
 
 
 </style></head>
-<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
+<body>
+<div class="slide-container p-10">
 <!-- Header -->
-<div class="w-full max-w-6xl mb-6 flex justify-between items-end border-b border-gray-800 pb-4">
+<div class="flex items-center space-x-4 mb-8">
+<div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+<i class="fas fa-code-branch text-3xl text-blue-400"></i>
+</div>
 <div>
-<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
-<i class="fa-solid fa-network-wired text-purple-400 mr-3"></i>
-                MCP 연동 설정
-            </h1>
-<p class="text-gray-400">외부 데이터와 도구를 연결하는 Model Context Protocol 설정 가이드</p>
-</div>
-<div class="flex gap-2">
-<span class="px-3 py-1 bg-gray-800 rounded text-xs text-gray-400 border border-gray-700 font-mono">MCP Protocol</span>
-<span class="px-3 py-1 bg-gray-800 rounded text-xs text-gray-400 border border-gray-700 font-mono">Extensibility</span>
+<h1 class="text-3xl font-bold text-white tracking-tight">핵심 이점 #3: 개발자 워크플로우 완전 통합</h1>
+<p class="text-gray-400 mt-1">코드 변경사항과 기술 문서의 실시간 동기화 자동화</p>
 </div>
 </div>
-<!-- Main Content -->
-<div class="w-full max-w-6xl flex-1 flex gap-8 h-full">
-<!-- Left Column: Steps (45%) -->
-<div class="w-[45%] flex flex-col gap-4 h-full">
-<!-- Step 1: Definition & Scope -->
-<div class="step-card p-5 flex gap-4">
-<div class="flex flex-col items-center">
-<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-2">01</div>
-<div class="w-0.5 flex-1 bg-gray-800"></div>
+<!-- Main Layout -->
+<div class="flex flex-1 space-x-8 h-full overflow-hidden pb-4">
+<!-- Left Column: Concepts & Visualization -->
+<div class="w-2/5 flex flex-col">
+<!-- Concept Card 1 -->
+<div class="feature-card">
+<h3 class="text-lg font-bold text-white mb-2 flex items-center">
+<i class="fas fa-file-code text-yellow-400 mr-2"></i>
+                        문서화 자동화
+                    </h3>
+<p class="text-gray-400 text-sm leading-relaxed mb-0">
+<code>git diff</code>를 분석하여 변경된 코드의 로직을 문서에 자동 반영하고, 새로운 기술 부채나 TODO를 노트로 추출합니다.
+                    </p>
 </div>
-<div class="flex-1 pb-2">
-<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">기획 및 범위 결정</h3>
-<p class="text-sm text-gray-400 mb-3">연동할 도구를 식별하고 적용 범위를 설정합니다.</p>
-<ul class="text-sm space-y-2">
-<li class="flex items-center text-gray-300">
-<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">1</span>
-<span>필요 도구 정의 (GitHub, Obsidian, DB 등)</span>
-</li>
-<li class="flex items-center text-gray-300">
-<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">2</span>
-<span>범위 결정: 전역 vs 프로젝트 전용</span>
-</li>
-</ul>
-</div>
-</div>
-<!-- Step 2: Installation & Config -->
-<div class="step-card p-5 flex gap-4 active-step">
-<div class="flex flex-col items-center">
-<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-2">02</div>
-<div class="w-0.5 flex-1 bg-gray-800"></div>
-</div>
-<div class="flex-1 pb-2">
-<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">서버 설치 및 구성</h3>
-<p class="text-sm text-gray-400 mb-3">MCP 서버를 설치하고 설정 파일을 작성합니다.</p>
-<div class="bg-black p-2 rounded border border-gray-700 font-mono text-xs text-gray-300 mb-2">
-                        .claude/mcp-servers/claude_mcp_config.json
-                    </div>
-<ul class="text-sm space-y-2">
-<li class="flex items-center text-gray-300">
-<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">3</span>
-<span>MCP 서버 설치 (npm/pip)</span>
-</li>
-</ul>
+<!-- Concept Card 2 -->
+<div class="feature-card">
+<h3 class="text-lg font-bold text-white mb-2 flex items-center">
+<i class="fas fa-sync-alt text-blue-400 mr-2"></i>
+                        실시간 동기화
+                    </h3>
+<p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        파일 감시자(Watcher)가 코드 변경을 실시간으로 감지하여 관련 기술 문서와 API 스펙을 즉시 업데이트합니다.
+                    </p>
+<div class="flex items-center space-x-2">
+<span class="badge badge-js">Node.js</span>
+<span class="badge bg-purple-900 text-purple-300">Chokidar</span>
 </div>
 </div>
-<!-- Step 3: Verification -->
-<div class="step-card p-5 flex gap-4">
-<div class="flex flex-col items-center">
-<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">03</div>
+<!-- Sync Process Visualization -->
+<div class="mt-auto bg-gray-900 border border-gray-800 rounded-xl p-6 relative">
+<h4 class="text-xs font-bold text-gray-500 uppercase mb-2 text-center tracking-wider">Real-time Sync Loop</h4>
+<div class="sync-process active-flow">
+<div class="process-node">
+<div class="node-icon"><i class="fas fa-code"></i></div>
+<span class="node-label">Code Change</span>
 </div>
-<div class="flex-1">
-<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">검증 및 문서화</h3>
-<p class="text-sm text-gray-400 mb-3">연결을 테스트하고 사용법을 기록합니다.</p>
-<ul class="text-sm space-y-2">
-<li class="flex items-center text-gray-300">
-<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">4</span>
-<span>CLAUDE.md에 도구 사용법 문서화</span>
-</li>
-<li class="flex items-center text-gray-300">
-<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">5</span>
-<span>Claude 재시작 및 호출 테스트</span>
-</li>
-</ul>
+<div class="process-arrow"></div>
+<div class="process-node">
+<div class="node-icon"><i class="fas fa-eye"></i></div>
+<span class="node-label">Watcher</span>
+</div>
+<div class="process-arrow"></div>
+<div class="process-node">
+<div class="node-icon"><i class="fas fa-robot"></i></div>
+<span class="node-label">Claude Code</span>
+</div>
+<div class="process-arrow"></div>
+<div class="process-node">
+<div class="node-icon"><i class="fas fa-book-medical"></i></div>
+<span class="node-label">Doc Update</span>
 </div>
 </div>
 </div>
-<!-- Right Column: Config & Tips (55%) -->
-<div class="w-[55%] flex flex-col gap-6 h-full">
-<!-- JSON Config Preview -->
-<div class="terminal-window flex-1 flex flex-col shadow-2xl overflow-hidden">
-<div class="bg-[#161b22] px-4 py-2 flex items-center justify-between border-b border-[#30363d]">
-<div class="flex gap-2">
-<div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
-<div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-<div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
 </div>
-<span class="text-xs text-gray-500 font-mono">config.json</span>
-</div>
-<div class="p-6 font-mono text-sm leading-relaxed overflow-y-auto custom-scrollbar bg-[#0d1117]">
-<div class="text-gray-300">
-<span class="text-yellow-300">{</span><br>
-<span class="pl-4 json-key">"mcpServers"</span>: <span class="text-yellow-300">{</span><br>
-<span class="pl-8 json-key">"github"</span>: <span class="text-yellow-300">{</span><br>
-<span class="pl-12 json-key">"command"</span>: <span class="json-string">"npx"</span>,<br>
-<span class="pl-12 json-key">"args"</span>: <span class="text-yellow-300">[</span><br>
-<span class="pl-16 json-string">"-y"</span>,<br>
-<span class="pl-16 json-string">"@modelcontextprotocol/server-github"</span><br>
-<span class="pl-12 text-yellow-300">]</span>,<br>
-<span class="pl-12 json-key">"env"</span>: <span class="text-yellow-300">{</span><br>
-<span class="pl-16 json-key">"GITHUB_TOKEN"</span>: <span class="json-string">"ghp_..."</span><br>
-<span class="pl-12 text-yellow-300">}</span><br>
-<span class="pl-8 text-yellow-300">}</span>,<br>
-<span class="pl-8 json-key">"obsidian"</span>: <span class="text-yellow-300">{</span><br>
-<span class="pl-12 json-key">"command"</span>: <span class="json-string">"node"</span>,<br>
-<span class="pl-12 json-key">"args"</span>: <span class="text-yellow-300">[</span><span class="json-string">"path/to/server.js"</span><span class="text-yellow-300">]</span><br>
-<span class="pl-8 text-yellow-300">}</span><br>
-<span class="pl-4 text-yellow-300">}</span><br>
-<span class="text-yellow-300">}</span>
+<!-- Right Column: Code Example -->
+<div class="w-3/5 h-full">
+<div class="code-editor">
+<div class="editor-header">
+<div class="file-tab">
+<i class="fab fa-js text-yellow-400 mr-2"></i>
+                            auto-knowledge-sync.js
+                        </div>
+<div class="flex space-x-1.5">
+<div class="w-3 h-3 rounded-full bg-red-500 opacity-50"></div>
+<div class="w-3 h-3 rounded-full bg-yellow-500 opacity-50"></div>
+<div class="w-3 h-3 rounded-full bg-green-500 opacity-50"></div>
 </div>
 </div>
-</div>
-<!-- Security & Operations Box -->
-<div class="bg-[#1c2128] border-l-4 border-purple-500 p-5 rounded-r-lg shadow-lg">
-<h4 class="text-purple-400 font-bold mb-3 flex items-center">
-<i class="fa-solid fa-lock mr-2"></i>보안 및 운영 팁
-                </h4>
-<ul class="space-y-2 text-sm text-gray-300">
-<li class="flex items-start checklist-item">
-<i class="fa-solid fa-key text-purple-500 mt-1"></i>
-<span><strong class="text-white">자격 증명 분리:</strong> API Key 등 민감 정보는 환경 변수(.env)로 관리하여 노출 방지</span>
-</li>
-<li class="flex items-start checklist-item">
-<i class="fa-solid fa-shield-cat text-purple-500 mt-1"></i>
-<span><strong class="text-white">최소 권한 원칙:</strong> 파일 시스템 접근 시 읽기 전용으로 먼저 설정하고 필요 시 확장</span>
-</li>
-<li class="flex items-start checklist-item">
-<i class="fa-solid fa-triangle-exclamation text-purple-500 mt-1"></i>
-<span><strong class="text-white">폴백(Fallback) 전략:</strong> MCP 서버 연결 실패 시 수동 처리 절차를 CLAUDE.md에 명시</span>
-</li>
-</ul>
+<div class="editor-body">
+<div><span class="sy-kwd">const</span> <span class="sy-obj">{ exec }</span> <span class="sy-op">=</span> <span class="sy-func">require</span>(<span class="sy-str">'child_process'</span>);</div>
+<div><span class="sy-kwd">const</span> <span class="sy-obj">chokidar</span> <span class="sy-op">=</span> <span class="sy-func">require</span>(<span class="sy-str">'chokidar'</span>);</div>
+<br>
+<div><span class="sy-cmt">// 1. 프로젝트 코드 변경 감시 (소스코드)</span></div>
+<div><span class="sy-obj">chokidar</span>.<span class="sy-func">watch</span>(<span class="sy-str">'./src/**/*.{js,ts}'</span>).<span class="sy-func">on</span>(<span class="sy-str">'change'</span>, (<span class="sy-obj">filePath</span>) <span class="sy-op">=&gt;</span> {</div>
+<div>&nbsp;&nbsp;<span class="sy-obj">console</span>.<span class="sy-func">log</span>(<span class="sy-str">`💻 코드 변경 감지: ${filePath}`</span>);</div>
+<br>
+<div>&nbsp;&nbsp;<span class="sy-cmt">// Git diff를 분석하여 개발 노트 업데이트 명령 실행</span></div>
+<div>&nbsp;&nbsp;<span class="sy-kwd">const</span> <span class="sy-obj">cmd</span> <span class="sy-op">=</span> <span class="sy-str">`git diff HEAD -- "${filePath}" | claude-code "이 코드 변경사항을 분석해서:</span></div>
+<div><span class="sy-str">&nbsp;&nbsp;1. 변경된 로직 요약 및 관련 개발 노트 업데이트</span></div>
+<div><span class="sy-str">&nbsp;&nbsp;2. 새로운 기술적 학습 포인트 기록</span></div>
+<div><span class="sy-str">&nbsp;&nbsp;3. TODO 리스트 자동 갱신"`</span>;</div>
+<br>
+<div>&nbsp;&nbsp;<span class="sy-func">exec</span>(<span class="sy-obj">cmd</span>, (<span class="sy-obj">error</span>, <span class="sy-obj">stdout</span>) <span class="sy-op">=&gt;</span> {</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-kwd">if</span> (<span class="sy-obj">!error</span>) {</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-obj">console</span>.<span class="sy-func">log</span>(<span class="sy-str">`✅ 자동 문서화 완료: ${stdout}`</span>);</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;}</div>
+<div>&nbsp;&nbsp;});</div>
+<div>});</div>
+<br>
+<div><span class="sy-cmt">// 2. 옵시디언 노트 변경 감시 (양방향 동기화)</span></div>
+<div><span class="sy-obj">chokidar</span>.<span class="sy-func">watch</span>(<span class="sy-str">'/path/to/vault/**/*.md'</span>).<span class="sy-func">on</span>(<span class="sy-str">'change'</span>, (<span class="sy-obj">filePath</span>) <span class="sy-op">=&gt;</span> {</div>
+<div>&nbsp;&nbsp;<span class="sy-obj">console</span>.<span class="sy-func">log</span>(<span class="sy-str">`📝 노트 변경 감지: ${filePath}`</span>);</div>
+<div>&nbsp;&nbsp;<span class="sy-cmt">// 노트 간 연결성 및 백링크 자동 관리 로직 실행...</span></div>
+<div>});</div>
 </div>
 </div>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b44ec03d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+</div>
+<!-- Footer -->
+<div class="absolute bottom-6 left-12 text-gray-600 text-xs font-mono">
+<span>SYSTEM: Event-Driven Documentation Architecture</span>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f6cb9723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

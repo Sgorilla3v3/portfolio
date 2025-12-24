@@ -1,0 +1,404 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>경로 처리 주의사항</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 4rem;
+            box-sizing: border-box;
+        }
+
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 600px;
+            height: 600px;
+            background-color: #fab387; /* Orange for warning */
+            top: -200px;
+            right: -200px;
+        }
+        .deco-2 {
+            width: 500px;
+            height: 500px;
+            background-color: #f38ba8; /* Red */
+            bottom: -150px;
+            left: -100px;
+        }
+
+        /* Header */
+        .header-section {
+            margin-bottom: 2rem;
+            z-index: 20;
+            position: relative;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .page-title i {
+            color: #fab387;
+            margin-right: 1rem;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-left: 3.5rem;
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            display: flex;
+            gap: 2.5rem;
+            flex: 1;
+            z-index: 10;
+            height: 100%;
+        }
+
+        /* Left Panel: Problem & Solution */
+        .warning-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .alert-box {
+            background-color: rgba(250, 179, 135, 0.1);
+            border: 2px solid #fab387;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-icon {
+            font-size: 2rem;
+            color: #fab387;
+            margin-top: 0.2rem;
+        }
+
+        .alert-content h3 {
+            color: #fab387;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .alert-content p {
+            color: #cdd6f4;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .comparison-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .comparison-card {
+            padding: 1.2rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .card-bad {
+            background-color: rgba(243, 139, 168, 0.1);
+            border: 1px solid rgba(243, 139, 168, 0.3);
+        }
+
+        .card-good {
+            background-color: rgba(166, 227, 161, 0.1);
+            border: 1px solid rgba(166, 227, 161, 0.3);
+        }
+
+        .status-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .bad-icon { background-color: rgba(243, 139, 168, 0.2); color: #f38ba8; }
+        .good-icon { background-color: rgba(166, 227, 161, 0.2); color: #a6e3a1; }
+
+        .path-label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        .label-bad { color: #f38ba8; }
+        .label-good { color: #a6e3a1; }
+
+        .code-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: #cdd6f4;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+        }
+
+        /* Right Panel: Code Examples */
+        .example-panel {
+            flex: 0.9;
+            background-color: #313244; /* Surface0 */
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .panel-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-title {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .code-block-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .os-example {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .os-label {
+            display: flex;
+            align-items: center;
+            color: #bac2de;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .os-label i { margin-right: 0.5rem; width: 16px; text-align: center; }
+
+        .json-block {
+            background-color: #11111b; /* Crust */
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #cdd6f4;
+            border: 1px solid #45475a;
+            position: relative;
+        }
+
+        .syntax-key { color: #89b4fa; }
+        .syntax-string { color: #a6e3a1; }
+        .syntax-punc { color: #9399b2; }
+
+        .highlight-slash {
+            color: #fab387;
+            font-weight: 700;
+            background-color: rgba(250, 179, 135, 0.15);
+            border-radius: 2px;
+        }
+
+        .note-text {
+            font-size: 0.85rem;
+            color: #9399b2;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-exclamation-triangle"></i>
+            경로 처리 주의사항
+        </h1>
+<p class="page-subtitle">
+            설정 파일 작성 시 가장 많이 발생하는 경로 오류를 방지하는 방법입니다.
+        </p>
+</div>
+<!-- Content -->
+<div class="content-wrapper">
+<!-- Left: Warning & Solution -->
+<div class="warning-panel">
+<!-- Alert Box -->
+<div class="alert-box">
+<div class="alert-icon">
+<i class="fas fa-bug"></i>
+</div>
+<div class="alert-content">
+<h3>Windows 사용자 필독</h3>
+<p>
+                        JSON 파일에서 백슬래시(<code>\</code>)는 <strong>이스케이프 문자</strong>로 인식됩니다.<br>
+                        단순히 폴더 경로를 복사해서 붙여넣으면 오류가 발생합니다.
+                    </p>
+</div>
+</div>
+<!-- Comparison -->
+<div class="comparison-area">
+<div class="comparison-card card-bad">
+<div class="status-icon bad-icon"><i class="fas fa-times"></i></div>
+<div style="flex: 1;">
+<span class="path-label label-bad">❌ 잘못된 예시 (Syntax Error)</span>
+<div class="code-display">"C:\Users\Name\Vault"</div>
+<p style="font-size: 0.8rem; color: #f38ba8; margin: 0.3rem 0 0 0;">'\U', '\N' 등을 특수문자로 잘못 해석함</p>
+</div>
+</div>
+<div class="comparison-card card-good">
+<div class="status-icon good-icon"><i class="fas fa-check"></i></div>
+<div style="flex: 1;">
+<span class="path-label label-good">✅ 추천 방법 (슬래시 변환)</span>
+<div class="code-display">"C:/Users/Name/Vault"</div>
+<p style="font-size: 0.8rem; color: #a6e3a1; margin: 0.3rem 0 0 0;">가장 깔끔하고 오류가 없는 방식</p>
+</div>
+</div>
+<div class="comparison-card card-good">
+<div class="status-icon good-icon"><i class="fas fa-check"></i></div>
+<div style="flex: 1;">
+<span class="path-label label-good">✅ 대안 (이중 백슬래시)</span>
+<div class="code-display">"C:\\Users\\Name\\Vault"</div>
+<p style="font-size: 0.8rem; color: #a6e3a1; margin: 0.3rem 0 0 0;">이스케이프 문자를 한 번 더 이스케이프</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Actual Code Examples -->
+<div class="example-panel">
+<div class="panel-header">
+<div class="panel-title">
+<i class="fas fa-code mr-2"></i>운영체제별 설정 파일 예시
+            </div>
+</div>
+<div class="code-block-wrapper">
+<!-- Windows -->
+<div class="os-example">
+<div class="os-label"><i class="fab fa-windows"></i>Windows</div>
+<div class="json-block">
+<span class="syntax-string">"args"</span><span class="syntax-punc">: [</span><br>
+<span class="syntax-string">"..."</span><span class="syntax-punc">,</span><br>
+<span class="syntax-string">"C<span class="highlight-slash">/</span>Users<span class="highlight-slash">/</span>YourName<span class="highlight-slash">/</span>Documents<span class="highlight-slash">/</span>MyVault"</span><br>
+<span class="syntax-punc">]</span>
+</div>
+</div>
+<!-- macOS -->
+<div class="os-example">
+<div class="os-label"><i class="fab fa-apple"></i>macOS</div>
+<div class="json-block">
+<span class="syntax-string">"args"</span><span class="syntax-punc">: [</span><br>
+<span class="syntax-string">"..."</span><span class="syntax-punc">,</span><br>
+<span class="syntax-string">"/Users/YourName/Documents/MyVault"</span><br>
+<span class="syntax-punc">]</span>
+</div>
+</div>
+<!-- Linux -->
+<div class="os-example">
+<div class="os-label"><i class="fab fa-linux"></i>Linux</div>
+<div class="json-block">
+<span class="syntax-string">"args"</span><span class="syntax-punc">: [</span><br>
+<span class="syntax-string">"..."</span><span class="syntax-punc">,</span><br>
+<span class="syntax-string">"/home/username/Documents/MyVault"</span><br>
+<span class="syntax-punc">]</span>
+</div>
+</div>
+</div>
+<div class="note-text">
+<i class="fas fa-info-circle"></i>
+<p>설정 변경 후에는 반드시 Claude Desktop을 완전히 종료하고 재시작해야 적용됩니다.</p>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067cc94830bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

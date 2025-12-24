@@ -1,0 +1,446 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Obsidian 설치 가이드</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 3.5rem 4rem;
+            box-sizing: border-box;
+        }
+
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 600px;
+            height: 600px;
+            background-color: #cba6f7; /* Obsidian Purple */
+            top: -200px;
+            right: -200px;
+        }
+        .deco-2 {
+            width: 500px;
+            height: 500px;
+            background-color: #89b4fa;
+            bottom: -150px;
+            left: -100px;
+        }
+
+        /* Header */
+        .header-section {
+            margin-bottom: 2.5rem;
+            z-index: 20;
+            position: relative;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .page-title i {
+            color: #cba6f7; /* Obsidian Purple */
+            margin-right: 1rem;
+        }
+        .badge {
+            background-color: #313244;
+            color: #cba6f7;
+            font-size: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            margin-left: 1rem;
+            font-weight: 600;
+            border: 1px solid rgba(203, 166, 247, 0.3);
+            display: flex;
+            align-items: center;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-left: 3.5rem;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            display: flex;
+            gap: 3rem;
+            flex: 1;
+            z-index: 10;
+        }
+
+        /* Left Column: Steps */
+        .steps-column {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .step-item {
+            background-color: rgba(49, 50, 68, 0.4);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            border: 1px solid rgba(186, 194, 222, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-item:hover {
+            background-color: rgba(49, 50, 68, 0.8);
+            transform: translateX(5px);
+            border-color: rgba(203, 166, 247, 0.3);
+        }
+
+        /* Connecting line between steps */
+        .step-line {
+            position: absolute;
+            left: 2.6rem;
+            top: 3.5rem;
+            bottom: -1.5rem;
+            width: 2px;
+            background-color: rgba(203, 166, 247, 0.2);
+            z-index: 0;
+        }
+        .step-item:last-child .step-line {
+            display: none;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background-color: #313244;
+            color: #cba6f7;
+            border: 2px solid #cba6f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-right: 1.2rem;
+            flex-shrink: 0;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(203, 166, 247, 0.2);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .step-desc {
+            font-size: 0.95rem;
+            color: #cdd6f4;
+            line-height: 1.4;
+        }
+
+        .highlight-text {
+            color: #cba6f7;
+            font-weight: 600;
+        }
+
+        /* Right Column: Tips & Preview */
+        .info-column {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Tip Box */
+        .tip-box {
+            background: linear-gradient(135deg, rgba(49, 50, 68, 0.8) 0%, rgba(30, 30, 46, 0.8) 100%);
+            border-left: 4px solid #f9e2af; /* Yellow/Gold */
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .tip-header {
+            display: flex;
+            align-items: center;
+            color: #f9e2af;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        /* App Window Preview */
+        .app-window {
+            background-color: #1e1e2e;
+            border-radius: 10px;
+            border: 1px solid #45475a;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .app-header {
+            background-color: #181825;
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #313244;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 6px;
+            margin-right: 1rem;
+        }
+
+        .control { width: 12px; height: 12px; border-radius: 50%; }
+        .close { background-color: #ff5f56; }
+        .minimize { background-color: #ffbd2e; }
+        .maximize { background-color: #27c93f; }
+
+        .app-title {
+            color: #9399b2;
+            font-size: 0.8rem;
+            flex: 1;
+            text-align: center;
+            margin-right: 3rem;
+            font-family: sans-serif;
+        }
+
+        .app-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #1e1e2e;
+            padding: 2rem;
+        }
+
+        .obsidian-logo-mock {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #7c3aed, #cba6f7);
+            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M432,256c0,17.7-6.3,34.4-17.7,47.7l-94.6,108.3c-11.7,13.4-28.8,21-46.7,21H168.9c-17.9,0-35-7.6-46.7-21L27.7,303.7C16.3,290.4,10,273.7,10,256V96c0-35.3,28.7-64,64-64h364c35.3,0,64,28.7,64,64V256z"/></svg>');
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 12L12 22L22 12L12 2Z"/></svg>'); /* Simple diamond shape fallback */
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            background-color: #cba6f7;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .mock-button {
+            width: 80%;
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            background-color: #313244;
+            border: 1px solid #45475a;
+            border-radius: 8px;
+            color: #cdd6f4;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        
+        .mock-button:first-of-type {
+            border-color: #cba6f7;
+            background-color: rgba(203, 166, 247, 0.1);
+        }
+
+        .mock-button i {
+            color: #9399b2;
+        }
+        
+        .mock-button:first-of-type i {
+            color: #cba6f7;
+        }
+
+        .version-text {
+            margin-top: 1rem;
+            font-size: 0.7rem;
+            color: #585b70;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-cube"></i>
+                Obsidian 설치
+                <span class="badge">모든 OS 공통</span>
+</h1>
+<p class="page-subtitle">
+                나만의 지식 보관소를 만들기 위한 첫 단계, 옵시디언 설치 및 실행 과정을 알아봅니다.
+            </p>
+</div>
+<!-- Content -->
+<div class="content-wrapper">
+<!-- Left: Steps -->
+<div class="steps-column">
+<!-- Step 1 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">1</div>
+<div class="step-content">
+<div class="step-title">공식 웹사이트 방문</div>
+<p class="step-desc">
+                        브라우저 주소창에 <span class="highlight-text">obsidian.md</span>를 입력하여 공식 홈페이지에 접속합니다. 메인 화면에 OS에 맞는 다운로드 버튼이 표시됩니다.
+                    </p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">2</div>
+<div class="step-content">
+<div class="step-title">설치 파일 다운로드</div>
+<p class="step-desc">
+                        Windows는 <span class="highlight-text">Get Obsidian for Windows</span>, Mac은 macOS용 버튼을 클릭하여 설치 파일을 다운로드합니다.
+                    </p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">3</div>
+<div class="step-content">
+<div class="step-title">설치 및 실행</div>
+<p class="step-desc">
+                        다운로드한 파일을 실행하면 자동으로 설치가 완료되고 앱이 열립니다. 별도의 복잡한 설치 마법사 과정이 없습니다.
+                    </p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">4</div>
+<div class="step-content">
+<div class="step-title">첫 실행 화면 확인</div>
+<p class="step-desc">
+                        앱이 실행되고 <span class="highlight-text">'Create new vault'</span>(새 보관소 만들기) 메뉴가 보인다면 설치가 성공적으로 완료된 것입니다.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Right: Info & Preview -->
+<div class="info-column">
+<!-- Tip Box -->
+<div class="tip-box">
+<div class="tip-header">
+<i class="fas fa-lightbulb mr-2"></i>
+                    설치 팁
+                </div>
+<p style="font-size: 0.95rem; color: #cdd6f4; line-height: 1.5;">
+                    옵시디언은 <strong>100% 로컬 기반</strong>으로 작동합니다. 설치 후 인터넷 연결 없이도 모든 기능을 사용할 수 있으며, 데이터가 내 컴퓨터에만 안전하게 저장됩니다.
+                </p>
+</div>
+<!-- App Window Preview -->
+<div class="app-window">
+<div class="app-header">
+<div class="window-controls">
+<div class="control close"></div>
+<div class="control minimize"></div>
+<div class="control maximize"></div>
+</div>
+<div class="app-title">Obsidian</div>
+</div>
+<div class="app-body">
+<div class="obsidian-logo-mock">
+<i class="fas fa-gem" style="color: #1e1e2e; font-size: 2.5rem; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;"></i>
+</div>
+<div class="mock-button">
+<span>Create new vault</span>
+<i class="fas fa-folder-plus"></i>
+</div>
+<div class="mock-button">
+<span>Open folder as vault</span>
+<i class="fas fa-folder-open"></i>
+</div>
+<div class="mock-button">
+<span>Open from Obsidian Sync</span>
+<i class="fas fa-cloud"></i>
+</div>
+<div class="version-text">Obsidian v1.5.x</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067ca91030bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

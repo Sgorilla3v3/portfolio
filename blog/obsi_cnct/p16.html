@@ -1,0 +1,453 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MCP Server 설치 - npm 전역 설치</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 4rem;
+            box-sizing: border-box;
+        }
+
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 700px;
+            height: 700px;
+            background-color: #f5c2e7; /* Pink */
+            top: -300px;
+            right: -200px;
+        }
+        .deco-2 {
+            width: 600px;
+            height: 600px;
+            background-color: #89b4fa; /* Blue */
+            bottom: -200px;
+            left: -100px;
+        }
+
+        /* Header */
+        .header-section {
+            margin-bottom: 2.5rem;
+            z-index: 20;
+            position: relative;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .page-title i {
+            color: #f5c2e7;
+            margin-right: 1rem;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-left: 3.5rem;
+        }
+
+        /* Main Layout */
+        .content-wrapper {
+            display: flex;
+            gap: 3rem;
+            flex: 1;
+            z-index: 10;
+            height: 100%;
+        }
+
+        /* Left Panel: Instructions */
+        .instruction-panel {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .step-card {
+            background-color: rgba(49, 50, 68, 0.4);
+            border-left: 4px solid #89b4fa;
+            border-radius: 0 12px 12px 0;
+            padding: 1.5rem;
+            position: relative;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            background-color: rgba(49, 50, 68, 0.7);
+            transform: translateX(5px);
+        }
+
+        .step-badge {
+            position: absolute;
+            top: -12px;
+            left: -16px;
+            background-color: #89b4fa;
+            color: #1e1e2e;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .step-desc {
+            font-size: 1rem;
+            color: #cdd6f4;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .highlight-text {
+            color: #f5c2e7;
+            font-weight: 600;
+            background-color: rgba(245, 194, 231, 0.1);
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(250, 179, 135, 0.1) 0%, rgba(250, 179, 135, 0.05) 100%);
+            border: 1px solid rgba(250, 179, 135, 0.3);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .info-icon {
+            color: #fab387;
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+        }
+
+        .info-content h4 {
+            color: #fab387;
+            margin: 0 0 0.3rem 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .info-content p {
+            color: #bac2de;
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Right Panel: Terminal */
+        .terminal-panel {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-window {
+            background-color: #1e1e2e; /* Catppuccin Base */
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid #45475a;
+            font-family: 'Fira Code', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .terminal-header {
+            background-color: #181825;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #313244;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+            margin-right: 1.5rem;
+        }
+
+        .control { width: 12px; height: 12px; border-radius: 50%; }
+        .close { background-color: #ff5f56; }
+        .minimize { background-color: #ffbd2e; }
+        .maximize { background-color: #27c93f; }
+
+        .terminal-tab {
+            color: #cdd6f4;
+            font-size: 0.9rem;
+            background-color: #313244;
+            padding: 0.3rem 1rem;
+            border-radius: 6px 6px 0 0;
+            margin-bottom: -0.9rem; /* Stick to bottom of header */
+            border-top: 1px solid #45475a;
+            border-left: 1px solid #45475a;
+            border-right: 1px solid #45475a;
+        }
+
+        .terminal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            color: #cdd6f4;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            flex: 1;
+            background-color: #11111b; /* Darker background for content */
+        }
+
+        /* Code Styling */
+        .line {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        
+        .prompt {
+            color: #f5c2e7; /* Pink */
+            margin-right: 1rem;
+            user-select: none;
+            font-weight: 600;
+        }
+
+        .command {
+            color: #a6e3a1; /* Green */
+            font-weight: 500;
+        }
+
+        .args {
+            color: #89b4fa; /* Blue */
+        }
+
+        .flag {
+            color: #fab387; /* Orange */
+        }
+
+        .comment {
+            color: #6c7086; /* Overlay1 */
+            font-style: italic;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+        .output {
+            color: #bac2de; /* Subtext1 */
+            margin-bottom: 1.5rem;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        .success {
+            color: #a6e3a1;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background-color: #a6adc8;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Copy Button */
+        .copy-btn {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid #45475a;
+            color: #9399b2;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-terminal"></i>
+            npm 전역 설치 (권장)
+        </h1>
+<p class="page-subtitle">
+            가장 간단하고 빠르게 Obsidian MCP 서버를 설치하는 방법입니다.
+        </p>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Left: Instruction Panel -->
+<div class="instruction-panel">
+<!-- Step 1 -->
+<div class="step-card">
+<div class="step-badge">1</div>
+<span class="step-title">설치 명령어 실행</span>
+<p class="step-desc">
+                    터미널을 열고 <span class="highlight-text">npm install</span> 명령어를 사용하여 패키지를 전역(-g)으로 설치합니다.
+                </p>
+</div>
+<!-- Step 2 -->
+<div class="step-card">
+<div class="step-badge">2</div>
+<span class="step-title">설치 확인</span>
+<p class="step-desc">
+<span class="highlight-text">npm list</span> 명령어로 패키지가 정상적으로 설치되었는지 확인합니다. 버전 정보가 출력되면 성공입니다.
+                </p>
+</div>
+<!-- Tip Box -->
+<div class="info-box">
+<div class="info-icon">
+<i class="fas fa-lightbulb"></i>
+</div>
+<div class="info-content">
+<h4>전역 설치(-g)를 하는 이유</h4>
+<p>MCP 서버는 특정 프로젝트가 아닌 시스템 전체에서 도구로 사용되므로, 전역으로 설치하여 어디서든 실행 가능하게 만드는 것이 편리합니다.</p>
+</div>
+</div>
+</div>
+<!-- Right: Terminal Panel -->
+<div class="terminal-panel">
+<div class="terminal-window">
+<div class="terminal-header">
+<div class="window-controls">
+<div class="control close"></div>
+<div class="control minimize"></div>
+<div class="control maximize"></div>
+</div>
+<div class="terminal-tab">Terminal</div>
+<button class="copy-btn"><i class="far fa-copy"></i> Copy</button>
+</div>
+<div class="terminal-body">
+<!-- Install Command -->
+<span class="comment"># 1. MCP Obsidian 패키지 전역 설치</span>
+<div class="line">
+<span class="prompt">➜</span>
+<span class="command">npm</span>
+<span class="args">&nbsp;install</span>
+<span class="flag">&nbsp;-g</span>
+<span class="args">&nbsp;@mcp-packages/obsidian</span>
+</div>
+<div class="output">
+added 1 package, and audited 2 packages in 3s
+found 0 vulnerabilities
+                    </div>
+<!-- Verify Command 1 -->
+<span class="comment"># 2. 설치 확인 (방법 A: 리스트 확인)</span>
+<div class="line">
+<span class="prompt">➜</span>
+<span class="command">npm</span>
+<span class="args">&nbsp;list</span>
+<span class="flag">&nbsp;-g</span>
+<span class="args">&nbsp;@mcp-packages/obsidian</span>
+</div>
+<div class="output">
+/usr/local/lib
+└── @mcp-packages/obsidian@0.1.0
+                    </div>
+<!-- Verify Command 2 -->
+<span class="comment"># 3. 실행 테스트 (방법 B: 버전 확인)</span>
+<div class="line">
+<span class="prompt">➜</span>
+<span class="command">npx</span>
+<span class="args">&nbsp;@mcp-packages/obsidian</span>
+<span class="flag">&nbsp;--version</span>
+</div>
+<div class="output">0.1.0</div>
+<!-- Active Line -->
+<div class="line">
+<span class="prompt">➜</span>
+<span class="cursor"></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067cb92a30bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

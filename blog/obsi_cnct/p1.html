@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>목차 - 옵시디언-Claude MCP 연동 완전 가이드</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 600px;
+            height: 600px;
+            background-color: #cba6f7;
+            top: -200px;
+            left: -200px;
+        }
+        .deco-2 {
+            width: 500px;
+            height: 500px;
+            background-color: #89b4fa;
+            bottom: -150px;
+            right: -100px;
+        }
+
+        /* Layout */
+        .left-panel {
+            width: 35%;
+            padding: 5rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+            background: linear-gradient(90deg, rgba(30,30,46,0.8) 0%, rgba(30,30,46,0) 100%);
+        }
+
+        .right-panel {
+            width: 65%;
+            padding: 4rem 5rem 4rem 2rem;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
+
+        /* Typography */
+        .toc-title {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .toc-subtitle {
+            font-size: 1.2rem;
+            color: #a6adc8;
+            font-weight: 300;
+            line-height: 1.6;
+            border-left: 3px solid #cba6f7;
+            padding-left: 1.5rem;
+        }
+
+        /* TOC Grid */
+        .toc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 3rem;
+            row-gap: 1.5rem;
+            width: 100%;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 12px;
+            background-color: rgba(49, 50, 68, 0.4);
+            border: 1px solid rgba(186, 194, 222, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .toc-number {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #89b4fa;
+            margin-right: 1rem;
+            min-width: 40px;
+            opacity: 0.8;
+        }
+
+        .toc-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #cdd6f4;
+            flex: 1;
+        }
+
+        .toc-icon {
+            font-size: 1rem;
+            color: #6c7086;
+            margin-left: 0.5rem;
+            opacity: 0.5;
+        }
+
+        /* Specific accent colors for variety */
+        .toc-item:nth-child(1) .toc-number { color: #f38ba8; }
+        .toc-item:nth-child(2) .toc-number { color: #fab387; }
+        .toc-item:nth-child(3) .toc-number { color: #f9e2af; }
+        .toc-item:nth-child(4) .toc-number { color: #a6e3a1; }
+        .toc-item:nth-child(5) .toc-number { color: #94e2d5; }
+        .toc-item:nth-child(6) .toc-number { color: #89b4fa; }
+        .toc-item:nth-child(7) .toc-number { color: #cba6f7; }
+        .toc-item:nth-child(8) .toc-number { color: #f5c2e7; }
+        .toc-item:nth-child(9) .toc-number { color: #bac2de; }
+
+        .chapter-badge {
+            position: absolute;
+            top: 3rem;
+            left: 4rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #585b70;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<div class="chapter-badge">Overview</div>
+<!-- Left Panel -->
+<div class="left-panel">
+<h1 class="toc-title">
+                Table of<br>
+<span style="color: #cba6f7;">Contents</span>
+</h1>
+<p class="toc-subtitle">
+                이 가이드는 환경 설정부터<br>
+                실무 활용까지 단계별로 구성되어 있습니다.<br>
+                순서대로 학습하는 것을 권장합니다.
+            </p>
+</div>
+<!-- Right Panel -->
+<div class="right-panel">
+<div class="toc-grid">
+<!-- Item 1 -->
+<div class="toc-item">
+<span class="toc-number">01</span>
+<p class="toc-text">기본 환경 구축</p>
+<i class="fas fa-server toc-icon"></i>
+</div>
+<!-- Item 2 -->
+<div class="toc-item">
+<span class="toc-number">02</span>
+<p class="toc-text">옵시디언 설치 및 설정</p>
+<i class="fas fa-gem toc-icon"></i>
+</div>
+<!-- Item 3 -->
+<div class="toc-item">
+<span class="toc-number">03</span>
+<p class="toc-text">Claude Desktop 설치</p>
+<i class="fas fa-desktop toc-icon"></i>
+</div>
+<!-- Item 4 -->
+<div class="toc-item">
+<span class="toc-number">04</span>
+<p class="toc-text">MCP Server 설치</p>
+<i class="fas fa-network-wired toc-icon"></i>
+</div>
+<!-- Item 5 -->
+<div class="toc-item">
+<span class="toc-number">05</span>
+<p class="toc-text">Claude Desktop MCP 설정</p>
+<i class="fas fa-sliders-h toc-icon"></i>
+</div>
+<!-- Item 6 -->
+<div class="toc-item">
+<span class="toc-number">06</span>
+<p class="toc-text">연결 테스트 및 확인</p>
+<i class="fas fa-check-circle toc-icon"></i>
+</div>
+<!-- Item 7 -->
+<div class="toc-item">
+<span class="toc-number">07</span>
+<p class="toc-text">실무 활용 방법</p>
+<i class="fas fa-briefcase toc-icon"></i>
+</div>
+<!-- Item 8 -->
+<div class="toc-item">
+<span class="toc-number">08</span>
+<p class="toc-text">문제 해결 및 고급 설정</p>
+<i class="fas fa-wrench toc-icon"></i>
+</div>
+<!-- Item 9 -->
+<div class="toc-item">
+<span class="toc-number">09</span>
+<p class="toc-text">마무리</p>
+<i class="fas fa-flag-checkered toc-icon"></i>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067c98e430bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

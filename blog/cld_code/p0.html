@@ -1,55 +1,61 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Claude Code 세팅 가이드</title>
+<title>Claude Code + 옵시디언 MCP 연동 완전 가이드</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #0d1117; /* GitHub Dark Mode Background */
+            background-color: #0d1117; /* GitHub Dark Background */
             color: #c9d1d9; /* GitHub Text Color */
-            overflow: auto;
+            overflow: hidden;
         }
-        .font-mono {
-            font-family: 'Nanum Gothic Coding', monospace;
-        }
-        .terminal-window {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-        }
-        .terminal-header {
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
             background-color: #0d1117;
-            border-bottom: 1px solid #30363d;
-            padding: 10px 16px;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
         }
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        .dot-red { background-color: #ff5f56; }
-        .dot-yellow { background-color: #ffbd2e; }
-        .dot-green { background-color: #27c93f; }
-        
         .accent-text {
             color: #58a6ff; /* GitHub Blue */
         }
         .secondary-text {
             color: #8b949e;
         }
-        .glass-badge {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
+        .border-card {
+            border: 1px solid #30363d;
+            background-color: #161b22;
+        }
+        .code-font {
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+        }
+        /* Decorative elements */
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, #21262d 1px, transparent 1px),
+                linear-gradient(to bottom, #21262d 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.1; 
+            /* Note: Instruction said no CSS gradients, but linear-gradient for grid lines is usually fine for patterns. 
+               However, to strictly follow "Do not use any CSS gradients", I will simulate grid with SVG or just skip it.
+               Let's skip the grid pattern to be safe and use a solid background with geometric shapes using divs.
+            */
+            background-image: none;
+        }
+        
+        .circle-decor {
+            position: absolute;
+            border-radius: 50%;
+            background-color: #1f6feb;
+            opacity: 0.05;
+            z-index: 0;
         }
     </style>
 <style id="slide-selected-style">
@@ -86,70 +92,72 @@
 
 
 </style></head>
-<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center relative">
-<!-- Decorative Elements -->
-<div class="absolute top-0 left-0 w-full h-2 bg-gray-700"></div>
-<!-- Main Content Container -->
-<div class="z-10 w-full max-w-6xl flex flex-col items-center text-center px-12">
-<!-- Logo / Icon Area -->
-<div class="mb-8 animate-bounce" style="animation-duration: 3s;">
-<div class="w-20 h-20 bg-gray-800 rounded-2xl flex items-center justify-center shadow-xl border border-gray-700">
-<i class="fa-solid fa-terminal text-4xl text-blue-400"></i>
+<body>
+<div class="slide-container relative">
+<!-- Background Decorations -->
+<div class="circle-decor" style="width: 600px; height: 600px; top: -100px; right: -100px;"></div>
+<div class="circle-decor" style="width: 400px; height: 400px; bottom: -50px; left: -50px; background-color: #238636;"></div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col justify-center items-center z-10 px-16 relative">
+<!-- Icon/Logo Area -->
+<div class="mb-8 flex items-center justify-center space-x-6">
+<div class="w-20 h-20 bg-gray-800 rounded-2xl flex items-center justify-center border border-gray-700 shadow-lg">
+<i class="fas fa-terminal text-4xl text-white"></i>
+</div>
+<div class="h-1 w-12 bg-gray-600 rounded"></div>
+<div class="w-20 h-20 bg-gray-800 rounded-2xl flex items-center justify-center border border-gray-700 shadow-lg">
+<i class="fas fa-brain text-4xl text-purple-400"></i>
 </div>
 </div>
-<!-- Title Area -->
-<h1 class="text-6xl font-black text-white mb-6 tracking-tight leading-none">
-            Claude Code<br>
-<span class="accent-text">세팅 가이드</span>
-</h1>
-<!-- Subtitle -->
-<p class="text-2xl text-gray-400 mb-10 font-light max-w-4xl leading-relaxed">
-            유연하고 강력한 에이전트 코딩 CLI로<br>
-            팀과 개인의 생산성을 극대화하는 실전 전략
-        </p>
-<!-- Terminal Visualization -->
-<div class="terminal-window w-full max-w-2xl mb-10 text-left transform hover:scale-105 transition-transform duration-300">
-<div class="terminal-header">
-<div class="dot dot-red"></div>
-<div class="dot dot-yellow"></div>
-<div class="dot dot-green"></div>
-<p class="ml-4 text-xs text-gray-500 font-mono">user@dev:~/claude-code</p>
+<!-- Title -->
+<div class="text-center mb-6">
+<h1 class="text-6xl font-black mb-4 tracking-tight text-white leading-tight">
+                    Claude Code <span class="text-gray-500 font-light">+</span> <span class="accent-text">옵시디언 MCP</span><br>
+                    연동 완전 가이드
+                </h1>
+<p class="text-2xl secondary-text font-light mt-4">
+                    터미널 기반 AI 워크플로우로 지식관리와 개발을 재정의
+                </p>
 </div>
-<div class="p-5 font-mono text-sm leading-relaxed">
-<p class="mb-2"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> claude init --project-name "My Agentic Workflow"</p>
-<p class="text-gray-400 mb-2">Creating CLAUDE.md configuration...</p>
-<p class="text-gray-400 mb-2">Setting up MCP servers for GitHub &amp; Obsidian...</p>
-<p class="mb-2"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> claude config --allowed-tools "read,write,bash"</p>
-<p class="text-white"><span class="text-green-400">✔</span> Ready. How can I help you code today?</p>
-<p class="animate-pulse inline-block w-2 h-4 bg-gray-500 align-middle ml-1"></p>
+<!-- Separator -->
+<div class="w-24 h-1 bg-gray-700 rounded mb-10"></div>
+<!-- Learning Objectives Box -->
+<div class="border-card rounded-xl p-8 w-full max-w-4xl shadow-2xl relative overflow-hidden">
+<!-- Top border accent -->
+<div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+<h2 class="text-xl font-bold text-white mb-6 flex items-center">
+<i class="fas fa-bullseye text-blue-400 mr-3"></i>
+                    학습 목표
+                </h2>
+<div class="grid grid-cols-2 gap-x-8 gap-y-4">
+<div class="flex items-start">
+<i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-sm"></i>
+<p class="text-gray-300 text-lg leading-snug">Claude Code의 개념과 MCP 연동 구조 이해</p>
 </div>
+<div class="flex items-start">
+<i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-sm"></i>
+<p class="text-gray-300 text-lg leading-snug">설치부터 인증, 서버 설정까지 단계별 셋업</p>
 </div>
-<!-- Target Audience & Modules Pills -->
-<div class="flex flex-wrap justify-center gap-4">
-<div class="px-5 py-2 glass-badge rounded-full flex items-center">
-<i class="fa-solid fa-laptop-code text-blue-400 mr-2"></i>
-<p class="text-sm text-gray-200 font-medium">개발자 &amp; 파워유저</p>
+<div class="flex items-start">
+<i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-sm"></i>
+<p class="text-gray-300 text-lg leading-snug">자동화, CI/CD, 대용량 처리 등 핵심 이점 습득</p>
 </div>
-<div class="px-5 py-2 glass-badge rounded-full flex items-center">
-<i class="fa-solid fa-book-journal-whills text-purple-400 mr-2"></i>
-<p class="text-sm text-gray-200 font-medium">지식관리 (Obsidian)</p>
+<div class="flex items-start">
+<i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-sm"></i>
+<p class="text-gray-300 text-lg leading-snug">연구자, 개발자 등 역할별 실무 시나리오 적용</p>
 </div>
-<div class="px-5 py-2 glass-badge rounded-full flex items-center">
-<i class="fa-solid fa-robot text-green-400 mr-2"></i>
-<p class="text-sm text-gray-200 font-medium">MCP &amp; 워크플로우 자동화</p>
-</div>
-<div class="px-5 py-2 glass-badge rounded-full flex items-center">
-<i class="fa-solid fa-shield-halved text-red-400 mr-2"></i>
-<p class="text-sm text-gray-200 font-medium">안전한 운영 전략</p>
+<div class="flex items-start col-span-2">
+<i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-sm"></i>
+<p class="text-gray-300 text-lg leading-snug">모니터링, 품질관리 및 시스템 확장 전략 수립</p>
 </div>
 </div>
 </div>
 <!-- Footer Info -->
-<div class="absolute bottom-6 w-full text-center border-t border-gray-800 pt-4">
-<p class="text-gray-600 text-xs font-mono">
-<i class="fa-brands fa-github mr-1"></i> Based on Anthropic Claude Code Briefing • 2025 Edition
-        </p>
+<div class="absolute bottom-8 text-gray-600 text-sm font-mono">
+<p>Created: 2025-12-23 | Difficulty: 고급 | Tags: AI, Automation, Obsidian</p>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b43e883d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f5c8d723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

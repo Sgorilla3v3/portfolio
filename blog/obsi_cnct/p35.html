@@ -1,0 +1,472 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>보안, 백업 및 확장 설정</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1a1b26;
+        overflow: hidden;
+    }
+    .slide-container {
+        width: 1280px;
+        height: 720px;
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        padding: 3rem 4rem;
+        box-sizing: border-box;
+    }
+
+    /* Background Decorations */
+    .bg-decoration {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.1;
+        z-index: 0;
+    }
+    .deco-1 {
+        width: 700px;
+        height: 700px;
+        background-color: #a6e3a1; /* Green for security */
+        top: -300px;
+        right: -200px;
+    }
+    .deco-2 {
+        width: 600px;
+        height: 600px;
+        background-color: #fab387; /* Orange */
+        bottom: -200px;
+        left: -100px;
+    }
+
+    /* Header */
+    .header-section {
+        margin-bottom: 2.5rem;
+        z-index: 20;
+        position: relative;
+    }
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .page-title i {
+        color: #a6e3a1; /* Green icon */
+        margin-right: 1rem;
+    }
+    .page-subtitle {
+        font-size: 1.1rem;
+        color: #bac2de;
+        font-weight: 300;
+        margin-left: 3.5rem;
+    }
+
+    /* Main Layout */
+    .content-wrapper {
+        display: flex;
+        gap: 3rem;
+        flex: 1;
+        z-index: 10;
+        height: 100%;
+    }
+
+    /* Left Panel: Instructions */
+    .instruction-panel {
+        flex: 0.8;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .step-card {
+        background-color: rgba(49, 50, 68, 0.4);
+        border-left: 4px solid #a6e3a1; /* Green border */
+        border-radius: 0 12px 12px 0;
+        padding: 1.5rem;
+        position: relative;
+        backdrop-filter: blur(5px);
+        transition: transform 0.3s ease;
+    }
+
+    .step-card:hover {
+        background-color: rgba(49, 50, 68, 0.7);
+        transform: translateX(5px);
+    }
+
+    .step-badge {
+        position: absolute;
+        top: -12px;
+        left: -16px;
+        background-color: #a6e3a1; /* Green badge */
+        color: #1e1e2e;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .step-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .step-desc {
+        font-size: 1rem;
+        color: #cdd6f4;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .highlight-text {
+        color: #a6e3a1;
+        font-weight: 600;
+        background-color: rgba(166, 227, 161, 0.1);
+        padding: 0 4px;
+        border-radius: 4px;
+    }
+
+    /* Info Box */
+    .info-box {
+        background: linear-gradient(135deg, rgba(249, 226, 175, 0.1) 0%, rgba(249, 226, 175, 0.05) 100%);
+        border: 1px solid rgba(249, 226, 175, 0.3);
+        border-radius: 12px;
+        padding: 1.2rem;
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .info-icon {
+        color: #f9e2af; /* Yellow */
+        font-size: 1.2rem;
+        margin-top: 0.2rem;
+    }
+
+    .info-content h4 {
+        color: #f9e2af;
+        margin: 0 0 0.3rem 0;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .info-content p {
+        color: #bac2de;
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+
+    /* Right Panel: Terminal */
+    .terminal-panel {
+        flex: 1.2;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .terminal-window {
+        background-color: #1e1e2e;
+        border-radius: 12px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        border: 1px solid #45475a;
+        font-family: 'Fira Code', monospace;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .terminal-header {
+        background-color: #181825;
+        padding: 0.8rem 1rem;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #313244;
+    }
+
+    .window-controls {
+        display: flex;
+        gap: 8px;
+        margin-right: 1.5rem;
+    }
+
+    .control { width: 12px; height: 12px; border-radius: 50%; }
+    .close { background-color: #ff5f56; }
+    .minimize { background-color: #ffbd2e; }
+    .maximize { background-color: #27c93f; }
+
+    .terminal-tab {
+        color: #cdd6f4;
+        font-size: 0.9rem;
+        background-color: #313244;
+        padding: 0.3rem 1rem;
+        border-radius: 6px 6px 0 0;
+        margin-bottom: -0.9rem;
+        border-top: 1px solid #45475a;
+        border-left: 1px solid #45475a;
+        border-right: 1px solid #45475a;
+    }
+
+    .terminal-body {
+        padding: 2rem;
+        overflow-y: auto;
+        color: #cdd6f4;
+        font-size: 0.95rem;
+        line-height: 1.8;
+        flex: 1;
+        background-color: #11111b;
+    }
+
+    /* Code Styling */
+    .line {
+        display: flex;
+        margin-bottom: 0.5rem;
+    }
+    
+    .prompt {
+        color: #a6e3a1; /* Green Prompt */
+        margin-right: 1rem;
+        user-select: none;
+        font-weight: 600;
+    }
+
+    .command {
+        color: #f5c2e7; /* Pink Command */
+        font-weight: 500;
+    }
+
+    .args {
+        color: #89b4fa; /* Blue */
+    }
+    
+    .string {
+        color: #a6e3a1; /* Green String */
+    }
+
+    .key {
+        color: #eba0ac; /* Red/Pink Key */
+    }
+
+    .comment {
+        color: #6c7086;
+        font-style: italic;
+        margin-bottom: 0.2rem;
+        display: block;
+        margin-top: 1.5rem;
+    }
+    .comment:first-child {
+        margin-top: 0;
+    }
+
+    .output {
+        color: #bac2de;
+        margin-bottom: 0.5rem;
+        display: block;
+        white-space: pre-wrap;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 10px;
+        height: 18px;
+        background-color: #a6adc8;
+        animation: blink 1s step-end infinite;
+        vertical-align: middle;
+        margin-left: 5px;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+    
+    .copy-btn {
+        margin-left: auto;
+        background: transparent;
+        border: 1px solid #45475a;
+        color: #9399b2;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+</style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-shield-alt"></i>
+            보안, 백업 및 확장 설정
+        </h1>
+<p class="page-subtitle">
+            데이터를 안전하게 보호하고, 추가 MCP 서버로 기능을 확장하는 방법입니다.
+        </p>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Left: Instruction Panel -->
+<div class="instruction-panel">
+<!-- Step 1 -->
+<div class="step-card">
+<div class="step-badge">1</div>
+<span class="step-title">보안 및 로컬 원칙</span>
+<p class="step-desc">
+                    MCP는 로컬 환경에서 실행되므로 데이터는 외부로 전송되지 않습니다. 단, <span class="highlight-text">민감한 정보</span>는 분리된 볼트에서 관리하는 것을 권장합니다.
+                </p>
+</div>
+<!-- Step 2 -->
+<div class="step-card">
+<div class="step-badge">2</div>
+<span class="step-title">Git을 이용한 백업</span>
+<p class="step-desc">
+<span class="highlight-text">git init</span>으로 볼트를 버전 관리 하에 두고, 정기적으로 커밋하여 데이터 손실을 방지하세요.
+                </p>
+</div>
+<!-- Step 3 -->
+<div class="step-card">
+<div class="step-badge">3</div>
+<span class="step-title">MCP 서버 확장</span>
+<p class="step-desc">
+                    설정 파일(JSON)에 filesystem이나 github 같은 <span class="highlight-text">다른 서버를 추가</span>하여 기능을 확장할 수 있습니다.
+                </p>
+</div>
+<!-- Tip Box -->
+<div class="info-box">
+<div class="info-icon">
+<i class="fas fa-lightbulb"></i>
+</div>
+<div class="info-content">
+<h4>자동화 팁</h4>
+<p>백업 스크립트를 작성하여 스케줄러(cron 등)에 등록하면, 매일 자동으로 노트 변경사항을 백업할 수 있습니다.</p>
+</div>
+</div>
+</div>
+<!-- Right: Terminal Panel -->
+<div class="terminal-panel">
+<div class="terminal-window">
+<div class="terminal-header">
+<div class="window-controls">
+<div class="control close"></div>
+<div class="control minimize"></div>
+<div class="control maximize"></div>
+</div>
+<div class="terminal-tab">Terminal</div>
+<button class="copy-btn"><i class="far fa-copy"></i> Copy</button>
+</div>
+<div class="terminal-body">
+<!-- Git Backup Section -->
+<span class="comment"># 1. Git 초기화 및 첫 커밋</span>
+<div class="line">
+<span class="prompt">➜</span>
+<span class="command">cd</span>
+<span class="args"> /path/to/your/vault</span>
+</div>
+<div class="line">
+<span class="prompt">➜</span>
+<span class="command">git</span>
+<span class="args"> init</span>
+</div>
+<div class="output">Initialized empty Git repository in /vault/.git/</div>
+<div class="line">
+<span class="prompt">➜</span>
+<span class="command">git</span>
+<span class="args"> add .</span>
+</div>
+<div class="line">
+<span class="prompt">➜</span>
+<span class="command">git</span>
+<span class="args"> commit</span>
+<span class="args"> -m</span>
+<span class="string"> "Initial backup"</span>
+</div>
+<div class="output">[main (root-commit)] Initial backup
+ 12 files changed, 108 insertions(+)</div>
+<!-- Extension Config Section -->
+<span class="comment"># 2. 확장 설정 예시 (filesystem 서버 추가)</span>
+<div class="line">
+<span class="prompt">➜</span>
+<span class="command">cat</span>
+<span class="args"> claude_desktop_config.json</span>
+</div>
+<div class="output" style="color: #cdd6f4;">{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"obsidian"</span>: { ... },
+    <span class="key">"filesystem"</span>: {
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: [<span class="string">"@mcp-packages/filesystem"</span>, <span class="string">"/path/docs"</span>]
+    }
+  }
+}</div>
+<!-- Active Line -->
+<div class="line">
+<span class="prompt">➜</span>
+<span class="cursor"></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067cd97830bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

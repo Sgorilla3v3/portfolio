@@ -1,81 +1,96 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>CLAUDE.md 작성 가이드</title>
+<title>핵심 이점 #1: 자동화와 스크립팅</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #0d1117;
             color: #c9d1d9;
-            overflow: auto;
+            overflow: hidden;
         }
-        .font-mono {
-            font-family: 'Nanum Gothic Coding', monospace;
-        }
-        .editor-window {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0d1117;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-        .editor-header {
-            background-color: #0d1117;
-            border-bottom: 1px solid #30363d;
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .tab {
-            background-color: #161b22;
-            color: #c9d1d9;
-            padding: 4px 12px;
-            border-top: 2px solid #f78166;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-        }
-        .line-numbers {
-            color: #484f58;
-            text-align: right;
-            padding-right: 16px;
-            user-select: none;
-        }
-        .code-content {
-            color: #e6edf3;
-        }
-        /* Syntax Highlighting */
-        .syntax-comment { color: #8b949e; font-style: italic; }
-        .syntax-keyword { color: #ff7b72; } /* Red */
-        .syntax-string { color: #a5d6ff; } /* Light Blue */
-        .syntax-header { color: #79c0ff; font-weight: bold; } /* Blue */
-        .syntax-list { color: #d2a8ff; } /* Purple */
-        .syntax-cmd { color: #7ee787; } /* Green */
-        
-        .guide-card {
+        .benefit-card {
             background-color: #161b22;
             border: 1px solid #30363d;
-            border-left: 4px solid #1f6feb;
-            padding: 16px;
-            margin-bottom: 16px;
-            border-radius: 6px;
-        }
-        .section-badge {
-            display: inline-block;
-            padding: 2px 8px;
             border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            background-color: rgba(56, 139, 253, 0.1);
-            color: #58a6ff;
-            border: 1px solid rgba(56, 139, 253, 0.3);
-            margin-bottom: 4px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        .terminal-window {
+            background-color: #010409;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .terminal-header {
+            background-color: #161b22;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+        .window-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .terminal-body {
+            padding: 24px;
+            color: #e6edf3;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-y: auto;
+        }
+        .prompt-sign {
+            color: #238636; /* GitHub Green */
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        .cmd-text {
+            color: #e6edf3;
+        }
+        .string-text {
+            color: #a5d6ff;
+        }
+        .output-text {
+            color: #8b949e;
+            margin-top: 4px;
+            margin-bottom: 16px;
+            padding-left: 20px;
+            border-left: 2px solid #30363d;
         }
     </style>
 <style id="slide-selected-style">
@@ -112,135 +127,118 @@
 
 
 </style></head>
-<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
+<body>
+<div class="slide-container p-10">
 <!-- Header -->
-<div class="w-full max-w-7xl mb-6 flex justify-between items-end border-b border-gray-800 pb-4">
+<div class="flex items-center space-x-4 mb-8">
+<div class="bg-purple-900 bg-opacity-30 p-3 rounded-xl border border-purple-800">
+<i class="fas fa-magic text-3xl text-purple-400"></i>
+</div>
 <div>
-<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
-<i class="fa-regular fa-file-code text-yellow-400 mr-3"></i>
-                CLAUDE.md 작성 가이드
-            </h1>
-<p class="text-gray-400">에이전트를 위한 프로젝트 컨텍스트 및 규칙 정의서</p>
-</div>
-<div class="flex items-center gap-2 text-sm text-gray-500 bg-[#161b22] px-3 py-1 rounded border border-[#30363d]">
-<i class="fa-solid fa-location-dot"></i>
-<span class="font-mono">PROJECT_ROOT/CLAUDE.md</span>
+<h1 class="text-3xl font-bold text-white tracking-tight">핵심 이점 #1: 자동화와 스크립팅</h1>
+<p class="text-gray-400 mt-1">단 한 줄의 명령어로 수백 개의 노트를 일괄 처리</p>
 </div>
 </div>
-<!-- Main Content: Split Layout -->
-<div class="w-full max-w-7xl flex-1 flex gap-8 overflow-hidden">
-<!-- Left Column: Guide & Explanations (35%) -->
-<div class="w-[35%] flex flex-col h-full justify-between">
-<div class="flex flex-col gap-4">
-<!-- Role Definition -->
-<div class="guide-card border-l-blue-500">
-<h3 class="text-white font-bold mb-2 flex items-center">
-<i class="fa-solid fa-robot text-blue-400 mr-2"></i> 역할
-                    </h3>
-<p class="text-sm text-gray-300 leading-relaxed">
-                        Claude가 대화를 시작할 때마다 <span class="text-blue-300 font-bold">자동으로 로드</span>하는 컨텍스트 파일입니다. 프로젝트의 지도이자 헌법 역할을 수행합니다.
+<!-- Main Content -->
+<div class="flex flex-1 space-x-8 h-full overflow-hidden pb-8">
+<!-- Left Side: Benefit Cards -->
+<div class="w-1/3 flex flex-col space-y-4">
+<div class="benefit-card">
+<div class="benefit-icon bg-blue-900 bg-opacity-30 text-blue-400 border border-blue-800">
+<i class="fas fa-sync-alt"></i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">일괄 노트 처리</h3>
+<p class="text-gray-400 text-sm leading-relaxed flex-1">
+                        수작업으로 몇 시간이 걸릴 작업을 수 초만에 완료합니다. 태그 정리, 제목 변경, 링크 수정을 패턴 기반으로 자동화하여 단순 반복 업무를 제거합니다.
                     </p>
 </div>
-<!-- Recommended Sections -->
-<div class="bg-[#161b22] border border-[#30363d] rounded-lg p-5">
-<h3 class="text-white font-bold mb-4 flex items-center border-b border-[#30363d] pb-2">
-<i class="fa-solid fa-list-check text-green-400 mr-2"></i> 권장 섹션
-                    </h3>
-<div class="space-y-3">
-<div class="flex items-start">
-<i class="fa-solid fa-terminal text-gray-500 mt-1 mr-3 w-4 text-center"></i>
-<div>
-<p class="text-sm font-bold text-gray-200">Commands</p>
-<p class="text-xs text-gray-500">빌드, 테스트, 린트 등 자주 쓰는 명령어</p>
+<div class="benefit-card">
+<div class="benefit-icon bg-green-900 bg-opacity-30 text-green-400 border border-green-800">
+<i class="fas fa-chart-pie"></i>
 </div>
+<h3 class="text-lg font-bold text-white mb-2">자동 리포트 생성</h3>
+<p class="text-gray-400 text-sm leading-relaxed flex-1">
+                        특정 기간의 활동을 분석하여 주간 보고서나 프로젝트 현황 요약을 자동으로 생성하고, 지연된 프로젝트나 중요한 이슈를 식별합니다.
+                    </p>
 </div>
-<div class="flex items-start">
-<i class="fa-regular fa-folder-open text-gray-500 mt-1 mr-3 w-4 text-center"></i>
-<div>
-<p class="text-sm font-bold text-gray-200">Architecture</p>
-<p class="text-xs text-gray-500">핵심 디렉토리 구조 및 파일 설명</p>
+<div class="benefit-card">
+<div class="benefit-icon bg-yellow-900 bg-opacity-30 text-yellow-400 border border-yellow-800">
+<i class="fas fa-tags"></i>
 </div>
-</div>
-<div class="flex items-start">
-<i class="fa-solid fa-scale-balanced text-gray-500 mt-1 mr-3 w-4 text-center"></i>
-<div>
-<p class="text-sm font-bold text-gray-200">Code Style</p>
-<p class="text-xs text-gray-500">언어별 규칙, 네이밍 컨벤션, 패턴</p>
-</div>
-</div>
-<div class="flex items-start">
-<i class="fa-solid fa-ban text-gray-500 mt-1 mr-3 w-4 text-center"></i>
-<div>
-<p class="text-sm font-bold text-gray-200">Constraints</p>
-<p class="text-xs text-gray-500">금지 사항, 안전 규칙 (배포 금지 등)</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Tip Box -->
-<div class="bg-[#1c2128] p-4 rounded border border-yellow-800/50 flex items-start">
-<i class="fa-regular fa-lightbulb text-yellow-500 mt-1 mr-3 text-lg"></i>
-<div>
-<p class="text-sm text-yellow-100 font-bold mb-1">Pro Tip</p>
-<p class="text-xs text-yellow-200/70">
-                        대화 중 유용한 지침이 생기면 <span class="bg-yellow-900/50 px-1 rounded font-mono text-white">#</span> 키를 눌러 즉시 CLAUDE.md에 추가할 수 있습니다.
+<h3 class="text-lg font-bold text-white mb-2">메타데이터 관리</h3>
+<p class="text-gray-400 text-sm leading-relaxed flex-1">
+                        Frontmatter 프로퍼티를 일괄 추가하거나 형식을 통일하여 데이터베이스로서의 노트 활용성을 극대화하고 데이터 무결성을 유지합니다.
                     </p>
 </div>
 </div>
+<!-- Right Side: Terminal Simulation -->
+<div class="w-2/3">
+<div class="terminal-window">
+<div class="terminal-header">
+<div class="window-control bg-red-500"></div>
+<div class="window-control bg-yellow-500"></div>
+<div class="window-control bg-green-500"></div>
+<div class="text-gray-500 text-xs ml-4">user@claude-code:~/obsidian-vault</div>
 </div>
-<!-- Right Column: Code Example (65%) -->
-<div class="w-[65%] h-full flex flex-col">
-<div class="editor-window flex-1">
-<!-- Editor Header -->
-<div class="editor-header">
+<div class="terminal-body">
+<!-- Command 1 -->
+<div class="mb-6">
+<div class="flex items-start mb-2">
+<span class="prompt-sign">➜</span>
+<span class="cmd-text">claude-code <span class="string-text">"모든 #프로젝트 태그 노트를 찾아서 상태가 '진행중'인 것들의 진행률을 확인하고 지연된 프로젝트가 있다면 알려줘"</span></span>
+</div>
+<div class="output-text">
+<div class="text-blue-400 mb-1">ℹ️ Analyzing 12 files tagged with #프로젝트...</div>
+<div>✅ Analysis Complete. Found 3 delayed projects:</div>
+<div class="pl-4 mt-1 text-yellow-500">- [[Project Alpha]]: 마감일(12/20) 지남, 진행률 80%</div>
+<div class="pl-4 text-yellow-500">- [[Website Redesign]]: 에셋 대기중 상태로 2주간 변동 없음</div>
+</div>
+</div>
+<!-- Command 2 -->
+<div class="mb-6">
+<div class="flex items-start mb-2">
+<span class="prompt-sign">➜</span>
+<span class="cmd-text">claude-code <span class="string-text">"2024년에 생성된 모든 노트에 'created-year: 2024' 프로퍼티를 frontmatter에 추가해줘"</span></span>
+</div>
+<div class="output-text">
+<div class="text-blue-400 mb-1">ℹ️ Found 156 files created in 2024.</div>
+<div>⚡ Updating frontmatter...</div>
+<div class="text-green-400">✨ Successfully updated 156 files.</div>
+</div>
+</div>
+<!-- Command 3 -->
+<div class="mb-4">
+<div class="flex items-start mb-2">
+<span class="prompt-sign">➜</span>
+<span class="cmd-text">claude-code <span class="string-text">"지난 7일간 수정된 노트를 분석해서 주간 활동 요약 리포트를 생성해줘"</span></span>
+</div>
+<div class="output-text">
+<div>📝 Reading 42 modified files...</div>
+<div>🤖 Generating summary...</div>
+<div>💾 Saved report to: <span class="text-white underline">Weekly-Report-2025-W52.md</span></div>
+</div>
+</div>
+<!-- Cursor -->
 <div class="flex items-center">
-<div class="tab">
-<i class="fa-brands fa-markdown text-blue-400 mr-2"></i>
-                            CLAUDE.md
-                            <i class="fa-solid fa-xmark ml-2 text-gray-500 text-xs"></i>
-</div>
-</div>
-<div class="flex gap-2">
-<div class="w-3 h-3 rounded-full bg-gray-600"></div>
-<div class="w-3 h-3 rounded-full bg-gray-600"></div>
-</div>
-</div>
-<!-- Editor Content -->
-<div class="p-6 font-mono text-sm leading-7 overflow-y-auto flex bg-[#0d1117] flex-1">
-<div class="line-numbers text-gray-600 border-r border-gray-800 pr-4 mr-4 select-none">
-                        1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21
-                    </div>
-<div class="code-content w-full">
-<p><span class="syntax-header"># Project: AI Agent Workflow Automation</span></p>
-<p class="mb-2"><span class="syntax-comment">&gt; 이 프로젝트는 TypeScript와 Python을 사용하여 에이전트 시스템을 구축합니다.</span></p>
-<p class="mt-4"><span class="syntax-header">## 🛠 Build &amp; Test Commands</span></p>
-<p><span class="syntax-list">-</span> build: <span class="syntax-cmd">npm run build</span></p>
-<p><span class="syntax-list">-</span> test: <span class="syntax-cmd">npm test</span> (Unit tests only)</p>
-<p><span class="syntax-list">-</span> lint: <span class="syntax-cmd">npm run lint:fix</span></p>
-<p><span class="syntax-list">-</span> server: <span class="syntax-cmd">python src/server.py</span></p>
-<p class="mt-4"><span class="syntax-header">## 📂 Key Directories</span></p>
-<p><span class="syntax-list">-</span> <span class="syntax-string">src/agents/</span>: Individual agent logic implementation</p>
-<p><span class="syntax-list">-</span> <span class="syntax-string">src/shared/</span>: Shared utilities and types</p>
-<p><span class="syntax-list">-</span> <span class="syntax-string">docs/architecture/</span>: System design diagrams</p>
-<p class="mt-4"><span class="syntax-header">## 📝 Code Style Guidelines</span></p>
-<p><span class="syntax-list">1.</span> <span class="syntax-keyword">TypeScript</span>: Use strict mode, prefer interfaces over types</p>
-<p><span class="syntax-list">2.</span> <span class="syntax-keyword">Error Handling</span>: All async functions must use try-catch blocks</p>
-<p><span class="syntax-list">3.</span> <span class="syntax-keyword">Tests</span>: Write tests BEFORE implementation (TDD)</p>
-<p class="mt-4"><span class="syntax-header">## ⚠️ Critical Constraints</span></p>
-<p><span class="syntax-list">-</span> <span class="syntax-keyword">NEVER</span> commit directly to main branch</p>
-<p><span class="syntax-list">-</span> <span class="syntax-keyword">DO NOT</span> expose API keys in logs or code</p>
-<p><span class="syntax-list">-</span> <span class="syntax-keyword">ALWAYS</span> update CHANGELOG.md after finishing a task</p>
+<span class="prompt-sign">➜</span>
+<span class="w-2 h-4 bg-gray-500 animate-pulse"></span>
 </div>
 </div>
 </div>
-<!-- Code Explanation Footer -->
-<div class="mt-3 flex justify-between text-xs text-gray-500 font-mono px-1">
-<span>Markdown Format</span>
-<span>UTF-8 • LF</span>
+</div>
+</div>
+<!-- Footer -->
+<div class="absolute bottom-6 left-12 right-12 flex justify-between items-center text-gray-600 text-xs font-mono border-t border-gray-800 pt-4">
+<div class="flex items-center">
+<i class="fas fa-robot mr-2"></i>
+<span>Powered by Claude Sonnet 3.5</span>
+</div>
+<div>
+<span class="mr-4">Batch Processing</span>
+<span>Automation</span>
 </div>
 </div>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b44eaf3d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f6cb1723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Claude Desktop 설치</title>
+<!-- Tailwind CSS -->
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+    /* Base Styles */
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1a1b26;
+        overflow: hidden;
+    }
+    .slide-container {
+        width: 1280px;
+        height: 720px;
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        padding: 3rem 4rem;
+        box-sizing: border-box;
+    }
+
+    /* Background Decorations */
+    .bg-decoration {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.1;
+        z-index: 0;
+    }
+    .deco-1 {
+        width: 600px;
+        height: 600px;
+        background-color: #f38ba8; /* Redish for Claude brand */
+        top: -200px;
+        right: -200px;
+    }
+    .deco-2 {
+        width: 500px;
+        height: 500px;
+        background-color: #fab387; /* Orange */
+        bottom: -150px;
+        left: -100px;
+    }
+
+    /* Header */
+    .header-section {
+        margin-bottom: 2rem;
+        z-index: 20;
+        position: relative;
+    }
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    .page-title i {
+        color: #f38ba8;
+        margin-right: 1rem;
+    }
+    .os-badge {
+        background-color: #313244;
+        color: #cba6f7;
+        font-size: 1rem;
+        padding: 0.3rem 0.8rem;
+        border-radius: 6px;
+        margin-left: 1rem;
+        font-weight: 600;
+        border: 1px solid rgba(203, 166, 247, 0.3);
+        display: flex;
+        align-items: center;
+    }
+    .page-subtitle {
+        font-size: 1.1rem;
+        color: #bac2de;
+        font-weight: 300;
+        margin-left: 4rem;
+    }
+
+    /* Comparison Container - 3 Columns Adaptation */
+    .comparison-container {
+        display: flex;
+        gap: 1.5rem;
+        flex: 1;
+        z-index: 10;
+        height: 100%;
+        align-items: stretch;
+    }
+
+    /* OS Card */
+    .os-card {
+        flex: 1;
+        min-width: 0;
+        background-color: rgba(49, 50, 68, 0.4);
+        border-radius: 16px;
+        border: 1px solid rgba(186, 194, 222, 0.1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+    .os-card:hover {
+        border-color: rgba(137, 180, 250, 0.3);
+        background-color: rgba(49, 50, 68, 0.6);
+        transform: translateY(-5px);
+    }
+
+    /* Card Header */
+    .card-header {
+        padding: 1rem 1.2rem;
+        background-color: rgba(30, 30, 46, 0.6);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+    }
+    
+    .os-icon {
+        font-size: 1.5rem;
+        margin-right: 0.8rem;
+        width: 30px;
+        text-align: center;
+    }
+    .windows-accent .os-icon { color: #89b4fa; }
+    .macos-accent .os-icon { color: #ffffff; }
+    .linux-accent .os-icon { color: #fab387; }
+
+    .os-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .os-desc {
+        padding: 1rem 1.2rem;
+        color: #cdd6f4;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        flex-shrink: 0;
+        height: 80px;
+    }
+
+    /* Terminal Area */
+    .terminal-area {
+        flex: 1;
+        padding: 0 1.2rem 1.2rem 1.2rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .terminal-window {
+        background-color: #11111b;
+        border-radius: 8px;
+        border: 1px solid #45475a;
+        font-family: 'Fira Code', monospace;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .terminal-bar {
+        background-color: #313244;
+        padding: 0.4rem 0.6rem;
+        display: flex;
+        gap: 5px;
+        border-bottom: 1px solid #45475a;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .red { background-color: #ff5f56; }
+    .yellow { background-color: #ffbd2e; }
+    .green { background-color: #27c93f; }
+
+    .terminal-content {
+        padding: 1rem;
+        color: #a6e3a1;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        overflow-y: auto;
+    }
+
+    .comment { color: #6c7086; display: block; margin-bottom: 0.2rem; margin-top: 0.8rem; }
+    .comment:first-child { margin-top: 0; }
+    .command { color: #cdd6f4; display: block; margin-bottom: 0.5rem; word-break: break-all; }
+    .prompt { color: #89b4fa; user-select: none; margin-right: 0.5rem; }
+    
+    .windows-accent { border-top: 4px solid #89b4fa; }
+    .macos-accent { border-top: 4px solid #ffffff; }
+    .linux-accent { border-top: 4px solid #fab387; }
+</style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-robot"></i>
+            Claude Desktop 설치
+            <span class="os-badge">
+<i class="fab fa-windows mr-2"></i>Win
+                <span class="mx-2">/</span>
+<i class="fab fa-apple mr-2"></i>Mac
+                <span class="mx-2">/</span>
+<i class="fab fa-linux mr-2"></i>Linux
+            </span>
+</h1>
+<p class="page-subtitle">
+            MCP 연동을 위해서는 웹 버전이 아닌 <strong>Claude Desktop 애플리케이션</strong> 설치가 필수입니다.
+        </p>
+</div>
+<!-- Comparison Content -->
+<div class="comparison-container">
+<!-- Windows Card -->
+<div class="os-card windows-accent">
+<div class="card-header">
+<i class="fab fa-windows os-icon"></i>
+<span class="os-name">Windows</span>
+</div>
+<div class="os-desc">
+<p>claude.ai에서 Windows용 인스톨러(.exe)를 다운로드하여 설치합니다.</p>
+</div>
+<div class="terminal-area">
+<div class="terminal-window">
+<div class="terminal-bar">
+<div class="dot red"></div>
+<div class="dot yellow"></div>
+<div class="dot green"></div>
+</div>
+<div class="terminal-content">
+<span class="comment"># 1. 설치 파일 실행</span>
+<span class="command">Run Claude-Setup-x64.exe</span>
+<span class="comment"># 2. 설치 마법사</span>
+<span class="command">Follow instructions...</span>
+<span class="comment"># 3. 로그인</span>
+<span class="command">Sign in with email</span>
+</div>
+</div>
+</div>
+</div>
+<!-- macOS Card -->
+<div class="os-card macos-accent">
+<div class="card-header">
+<i class="fab fa-apple os-icon"></i>
+<span class="os-name">macOS</span>
+</div>
+<div class="os-desc">
+<p>DMG 파일을 다운로드하고 Applications 폴더로 드래그하여 설치합니다.</p>
+</div>
+<div class="terminal-area">
+<div class="terminal-window">
+<div class="terminal-bar">
+<div class="dot red"></div>
+<div class="dot yellow"></div>
+<div class="dot green"></div>
+</div>
+<div class="terminal-content">
+<span class="comment"># 1. 이미지 마운트</span>
+<span class="command">Open Claude.dmg</span>
+<span class="comment"># 2. 설치 (Drag &amp; Drop)</span>
+<span class="command">Claude.app → /Applications</span>
+<span class="comment"># 3. 앱 실행</span>
+<span class="command">Open Launchpad &gt; Claude</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Linux Card -->
+<div class="os-card linux-accent">
+<div class="card-header">
+<i class="fab fa-linux os-icon"></i>
+<span class="os-name">Linux</span>
+</div>
+<div class="os-desc">
+<p>AppImage 또는 .deb 패키지를 지원합니다. (Ubuntu/Debian 계열)</p>
+</div>
+<div class="terminal-area">
+<div class="terminal-window">
+<div class="terminal-bar">
+<div class="dot red"></div>
+<div class="dot yellow"></div>
+<div class="dot green"></div>
+</div>
+<div class="terminal-content">
+<span class="comment"># 방법 A: AppImage 실행</span>
+<span class="command"><span class="prompt">$</span>chmod +x Claude.AppImage</span>
+<span class="command"><span class="prompt">$</span>./Claude.AppImage</span>
+<span class="comment"># 방법 B: .deb 설치</span>
+<span class="command"><span class="prompt">$</span>sudo dpkg -i claude.deb</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067cb92430bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

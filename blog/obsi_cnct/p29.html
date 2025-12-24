@@ -1,0 +1,417 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>템플릿 시스템 구축 - 프로젝트 템플릿</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 4rem;
+            box-sizing: border-box;
+        }
+
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 700px;
+            height: 700px;
+            background-color: #f5c2e7; /* Pink */
+            top: -300px;
+            right: -200px;
+        }
+        .deco-2 {
+            width: 600px;
+            height: 600px;
+            background-color: #89b4fa; /* Blue */
+            bottom: -200px;
+            left: -100px;
+        }
+
+        /* Header */
+        .header-section {
+            margin-bottom: 2.5rem;
+            z-index: 20;
+            position: relative;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .page-title i {
+            color: #f5c2e7;
+            margin-right: 1rem;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-left: 3.5rem;
+        }
+
+        /* Main Layout */
+        .content-wrapper {
+            display: flex;
+            gap: 3rem;
+            flex: 1;
+            z-index: 10;
+            height: 100%;
+        }
+
+        /* Left Panel: Instructions */
+        .instruction-panel {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .step-card {
+            background-color: rgba(49, 50, 68, 0.4);
+            border-left: 4px solid #89b4fa;
+            border-radius: 0 12px 12px 0;
+            padding: 1.5rem;
+            position: relative;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            background-color: rgba(49, 50, 68, 0.7);
+            transform: translateX(5px);
+        }
+
+        .step-badge {
+            position: absolute;
+            top: -12px;
+            left: -16px;
+            background-color: #89b4fa;
+            color: #1e1e2e;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .step-desc {
+            font-size: 1rem;
+            color: #cdd6f4;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .highlight-text {
+            color: #f5c2e7;
+            font-weight: 600;
+            background-color: rgba(245, 194, 231, 0.1);
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: rgba(250, 179, 135, 0.1); /* No gradient */
+            border: 1px solid rgba(250, 179, 135, 0.3);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .info-icon {
+            color: #fab387;
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+        }
+
+        .info-content h4 {
+            color: #fab387;
+            margin: 0 0 0.3rem 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .info-content p {
+            color: #bac2de;
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Right Panel: Terminal/Editor */
+        .terminal-panel {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-window {
+            background-color: #1e1e2e; /* Catppuccin Base */
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid #45475a;
+            font-family: 'Fira Code', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .terminal-header {
+            background-color: #181825;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #313244;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+            margin-right: 1.5rem;
+        }
+
+        .control { width: 12px; height: 12px; border-radius: 50%; }
+        .close { background-color: #ff5f56; }
+        .minimize { background-color: #ffbd2e; }
+        .maximize { background-color: #27c93f; }
+
+        .terminal-tab {
+            color: #cdd6f4;
+            font-size: 0.9rem;
+            background-color: #313244;
+            padding: 0.3rem 1rem;
+            border-radius: 6px 6px 0 0;
+            margin-bottom: -0.9rem;
+            border-top: 1px solid #45475a;
+            border-left: 1px solid #45475a;
+            border-right: 1px solid #45475a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .terminal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            color: #cdd6f4;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex: 1;
+            background-color: #11111b; 
+        }
+
+        /* Code Styling */
+        .line {
+            display: block;
+            margin-bottom: 0.2rem;
+            white-space: pre;
+        }
+        
+        .prompt { color: #f5c2e7; margin-right: 1rem; user-select: none; font-weight: 600; }
+        .command { color: #a6e3a1; font-weight: 500; }
+        .args { color: #89b4fa; }
+        
+        /* Markdown Syntax Highlighting */
+        .md-meta { color: #6c7086; }
+        .md-key { color: #f38ba8; }
+        .md-val { color: #a6e3a1; }
+        .md-var { color: #fab387; font-weight: bold; }
+        .md-h1 { color: #89b4fa; font-weight: bold; font-size: 1.1em; }
+        .md-h2 { color: #89b4fa; font-weight: bold; }
+        .md-h3 { color: #89dceb; font-weight: bold; }
+        .md-list { color: #f9e2af; }
+        .md-checkbox { color: #cba6f7; }
+
+        /* Copy Button */
+        .copy-btn {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid #45475a;
+            color: #9399b2;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-file-code"></i>
+            템플릿 시스템 구축
+        </h1>
+<p class="page-subtitle">
+            옵시디언의 Templater 플러그인을 활용하여 표준화된 프로젝트 노트를 자동 생성합니다.
+        </p>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Left: Instruction Panel -->
+<div class="instruction-panel">
+<!-- Step 1 -->
+<div class="step-card">
+<div class="step-badge">1</div>
+<span class="step-title">메타데이터 정의 (Frontmatter)</span>
+<p class="step-desc">
+                    파일 상단에 <span class="highlight-text">YAML</span> 형식을 사용하여 태그, 생성일, 상태 등의 정보를 미리 정의합니다. Dataview 쿼리에 유용합니다.
+                </p>
+</div>
+<!-- Step 2 -->
+<div class="step-card">
+<div class="step-badge">2</div>
+<span class="step-title">동적 변수 활용</span>
+<p class="step-desc">
+<span class="highlight-text">{{date}}</span>, <span class="highlight-text">{{title}}</span> 등 Templater 변수를 사용하여 파일 생성 시점에 자동으로 내용이 채워지도록 설정합니다.
+                </p>
+</div>
+<!-- Info Box -->
+<div class="info-box">
+<div class="info-icon">
+<i class="fas fa-lightbulb"></i>
+</div>
+<div class="info-content">
+<h4>템플릿 활용 팁</h4>
+<p>이 파일을 'Templates' 폴더에 저장하고, 새 노트를 만들 때 'Insert template' 명령어를 사용하면 복잡한 서식을 매번 입력할 필요가 없습니다.</p>
+</div>
+</div>
+</div>
+<!-- Right: Terminal/Editor Panel -->
+<div class="terminal-panel">
+<div class="terminal-window">
+<div class="terminal-header">
+<div class="window-controls">
+<div class="control close"></div>
+<div class="control minimize"></div>
+<div class="control maximize"></div>
+</div>
+<div class="terminal-tab"><i class="fas fa-edit text-xs"></i> Project_Template.md</div>
+<button class="copy-btn"><i class="far fa-copy"></i> Copy</button>
+</div>
+<div class="terminal-body">
+<!-- Command to create/edit file -->
+<div class="line" style="margin-bottom: 1.5rem; border-bottom: 1px solid #313244; padding-bottom: 0.5rem;">
+<span class="prompt">➜</span>
+<span class="command">vim</span>
+<span class="args">&nbsp;Templates/Project_Template.md</span>
+</div>
+<!-- File Content -->
+<div class="line"><span class="md-meta">---</span></div>
+<div class="line"><span class="md-key">tags</span>: [<span class="md-val">프로젝트</span>, <span class="md-var">{{태그}}</span>]</div>
+<div class="line"><span class="md-key">created</span>: <span class="md-var">{{date}}</span></div>
+<div class="line"><span class="md-key">status</span>: <span class="md-val">진행중</span></div>
+<div class="line"><span class="md-key">priority</span>: <span class="md-val">High</span></div>
+<div class="line"><span class="md-meta">---</span></div>
+<div class="line"> </div>
+<div class="line"><span class="md-h1"># <span class="md-var">{{title}}</span></span></div>
+<div class="line"> </div>
+<div class="line"><span class="md-h2">## 개요</span></div>
+<div class="line"><span class="md-list">-</span> 시작일: <span class="md-var">{{date}}</span></div>
+<div class="line"><span class="md-list">-</span> 예상 완료일: </div>
+<div class="line"><span class="md-list">-</span> 담당자: </div>
+<div class="line"> </div>
+<div class="line"><span class="md-h2">## 목표</span></div>
+<div class="line"><span class="md-list">-</span> <span class="md-checkbox">[ ]</span> 핵심 기능 구현 완료</div>
+<div class="line"><span class="md-list">-</span> <span class="md-checkbox">[ ]</span> 문서화 작업</div>
+<div class="line"> </div>
+<div class="line"><span class="md-h2">## 진행상황</span></div>
+<div class="line"><span class="md-h3">### <span class="md-var">{{date}}</span></span></div>
+<div class="line"><span class="md-list">-</span> 프로젝트 착수 및 환경 설정</div>
+<div class="line"> </div>
+<div class="line"><span class="md-h2">## 관련 노트</span></div>
+<div class="line"><span class="md-list">-</span> </div>
+<div class="line"> </div>
+<div class="line"><span class="md-meta">~</span></div>
+<div class="line"><span class="md-meta">~</span></div>
+<div class="line" style="margin-top: 0.5rem;"><span class="prompt">-- INSERT --</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067cd96e30bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

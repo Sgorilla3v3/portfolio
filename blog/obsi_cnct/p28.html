@@ -1,0 +1,402 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>백링크와 연결성 강화</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 3.5rem 4rem;
+            box-sizing: border-box;
+        }
+
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 600px;
+            height: 600px;
+            background-color: #cba6f7; /* Obsidian Purple */
+            top: -200px;
+            right: -200px;
+        }
+        .deco-2 {
+            width: 500px;
+            height: 500px;
+            background-color: #89b4fa;
+            bottom: -150px;
+            left: -100px;
+        }
+
+        /* Header */
+        .header-section {
+            margin-bottom: 2.5rem;
+            z-index: 20;
+            position: relative;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .page-title i {
+            color: #cba6f7; /* Obsidian Purple */
+            margin-right: 1rem;
+        }
+        .category-badge {
+            background-color: #313244;
+            color: #cba6f7;
+            font-size: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            margin-left: 1rem;
+            font-weight: 600;
+            border: 1px solid rgba(203, 166, 247, 0.3);
+            display: flex;
+            align-items: center;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-left: 3.5rem;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            display: flex;
+            gap: 3rem;
+            flex: 1;
+            z-index: 10;
+        }
+
+        /* Left Column: Steps */
+        .steps-column {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .step-item {
+            background-color: rgba(49, 50, 68, 0.4);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            border: 1px solid rgba(186, 194, 222, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-item:hover {
+            background-color: rgba(49, 50, 68, 0.8);
+            transform: translateX(5px);
+            border-color: rgba(203, 166, 247, 0.3);
+        }
+
+        /* Connecting line between steps */
+        .step-line {
+            position: absolute;
+            left: 2.6rem;
+            top: 3.5rem;
+            bottom: -1.5rem;
+            width: 2px;
+            background-color: rgba(203, 166, 247, 0.2);
+            z-index: 0;
+        }
+        .step-item:last-child .step-line {
+            display: none;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background-color: #313244;
+            color: #cba6f7;
+            border: 2px solid #cba6f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-right: 1.2rem;
+            flex-shrink: 0;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(203, 166, 247, 0.2);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .step-desc {
+            font-size: 0.95rem;
+            color: #cdd6f4;
+            line-height: 1.4;
+        }
+
+        .code-snippet {
+            background-color: #11111b;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #f5c2e7;
+            border: 1px solid #45475a;
+        }
+
+        /* Right Column: Tips & Preview */
+        .info-column {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Tip Box */
+        .tip-box {
+            background: linear-gradient(135deg, rgba(49, 50, 68, 0.8) 0%, rgba(30, 30, 46, 0.8) 100%);
+            border-left: 4px solid #f9e2af; /* Yellow */
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .tip-header {
+            display: flex;
+            align-items: center;
+            color: #f9e2af;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        /* Editor Window (Adapted from Terminal) */
+        .editor-window {
+            background-color: #1e1e2e;
+            border-radius: 10px;
+            border: 1px solid #45475a;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            font-family: 'Fira Code', monospace;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-header {
+            background-color: #313244;
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #45475a;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 6px;
+            margin-right: 1rem;
+        }
+
+        .control { width: 12px; height: 12px; border-radius: 50%; }
+        .close { background-color: #ff5f56; }
+        .minimize { background-color: #ffbd2e; }
+        .maximize { background-color: #27c93f; }
+
+        .editor-title {
+            color: #9399b2;
+            font-size: 0.8rem;
+            flex: 1;
+            text-align: center;
+            margin-right: 3rem;
+        }
+
+        .editor-body {
+            padding: 1.5rem;
+            color: #cdd6f4;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .md-h1 { color: #f38ba8; font-weight: bold; }
+        .md-link { color: #cba6f7; text-decoration: underline; }
+        .md-quote { color: #9399b2; font-style: italic; border-left: 2px solid #585b70; padding-left: 0.8rem; }
+        .ai-cursor { display: inline-block; width: 2px; height: 1.2em; background-color: #cba6f7; animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .highlight-text {
+            color: #cba6f7;
+            font-weight: 600;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-project-diagram"></i>
+                백링크와 연결성 강화
+                <span class="category-badge"><i class="fas fa-share-alt mr-2"></i>Workflow</span>
+</h1>
+<p class="page-subtitle">
+                지식 그래프를 확장하고 노트 간의 유기적 연결을 만드는 방법을 알아봅니다.
+            </p>
+</div>
+<!-- Content -->
+<div class="content-wrapper">
+<!-- Left: Steps -->
+<div class="steps-column">
+<!-- Step 1 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">1</div>
+<div class="step-content">
+<div class="step-title">양방향 링크(Wiki Link) 생성</div>
+<p class="step-desc">
+                        노트 작성 중 <span class="code-snippet">[[ ]]</span>를 입력하여 관련 노트로 즉시 연결합니다. 이 간단한 습관이 지식 네트워크의 기초가 됩니다.
+                    </p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">2</div>
+<div class="step-content">
+<div class="step-title">백링크(Backlinks) 활용</div>
+<p class="step-desc">
+                        우측 사이드바의 'Backlinks' 패널을 통해 현재 노트를 언급하고 있는 다른 문서들을 확인하고, 생각의 흐름을 역추적합니다.
+                    </p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">3</div>
+<div class="step-content">
+<div class="step-title">Claude 활용: 연결 제안</div>
+<p class="step-desc">
+                        MCP를 통해 Claude에게 <span class="highlight-text">"이 노트와 관련된 다른 노트들을 찾아 연결점을 제안해줘"</span>라고 요청하여 숨겨진 연관성을 발견합니다.
+                    </p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">4</div>
+<div class="step-content">
+<div class="step-title">지식 그래프 확장</div>
+<p class="step-desc">
+                        Graph View를 통해 시각적으로 연결 상태를 점검하고, 고립된 노트(Orphaned notes)들을 찾아 기존 지식 체계에 통합시킵니다.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Right: Info & Preview -->
+<div class="info-column">
+<!-- Tip Box -->
+<div class="tip-box">
+<div class="tip-header">
+<i class="fas fa-lightbulb mr-2"></i>
+                    연결의 가치
+                </div>
+<p style="font-size: 0.95rem; color: #cdd6f4; line-height: 1.5;">
+                    단순한 정보 수집을 넘어, 노트 간의 <strong>연결(Context)</strong>이 지식을 통찰로 발전시킵니다. Claude는 방대한 노트 속에서 여러분이 놓친 문맥을 찾아주는 훌륭한 조수 역할을 합니다.
+                </p>
+</div>
+<!-- Editor Preview -->
+<div class="editor-window">
+<div class="editor-header">
+<div class="window-controls">
+<div class="control close"></div>
+<div class="control minimize"></div>
+<div class="control maximize"></div>
+</div>
+<div class="editor-title">Obsidian Editor</div>
+</div>
+<div class="editor-body">
+<span class="md-h1"># 인공지능 윤리 가이드</span>
+
+이 문서는 <span class="md-link">[[AI 안전성 원칙]]</span> 및 <span class="md-link">[[데이터 편향성]]</span> 연구와 밀접하게 연관됩니다.
+
+<span class="md-quote">&gt; Claude 제안:</span>
+<span class="md-quote">&gt; 현재 내용과 관련하여 <span class="md-link">[[알고리즘 투명성]]</span> 노트의 '설명 가능한 AI' 섹션을 참조하는 것이 좋습니다. 또한 <span class="md-link">[[GDPR 규정]]</span>과의 비교 분석을 추가해보세요.</span><span class="ai-cursor"></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067cd96c30bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

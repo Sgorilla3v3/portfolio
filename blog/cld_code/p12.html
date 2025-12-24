@@ -1,23 +1,65 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>마무리 및 다음 단계</title>
+<title>실무 시나리오 #4: 컨텐츠 크리에이터</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #0d1117;
             color: #c9d1d9;
-            overflow: auto;
+            overflow: hidden;
         }
-        .font-mono {
-            font-family: 'Nanum Gothic Coding', monospace;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0d1117;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 40px;
         }
         
-        /* Card Styles */
-        .summary-card {
+        /* Role Banner */
+        .role-banner {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .role-icon-box {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(210, 168, 255, 0.1);
+            border: 1px solid rgba(210, 168, 255, 0.3);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #d2a8ff;
+            margin-right: 24px;
+        }
+        
+        /* Scenario Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            flex: 1;
+            min-height: 0; /* Fix flex overflow */
+        }
+        
+        .scenario-card {
             background-color: #161b22;
             border: 1px solid #30363d;
             border-radius: 12px;
@@ -25,77 +67,56 @@
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
+            height: 100%;
         }
-        .summary-card:hover {
-            border-color: #58a6ff;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            transform: translateY(-2px);
+        .scenario-card:hover {
+            border-color: #8b949e;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-
-        /* Checklist Styles */
-        .check-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            background-color: #0d1117;
-            border: 1px solid #21262d;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            transition: background-color 0.2s;
-        }
-        .check-item:hover {
-            background-color: #1c2128;
-        }
-        .check-box {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #3fb950;
-            border-radius: 4px;
+        
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 12px;
-            background-color: rgba(63, 185, 80, 0.1);
-            color: #3fb950;
-            font-size: 12px;
-        }
-
-        /* Action Button */
-        .action-btn {
-            background-color: #238636;
-            color: white;
-            border: 1px solid rgba(240, 246, 252, 0.1);
-            border-radius: 6px;
-            padding: 12px 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s;
-        }
-        .action-btn:hover {
-            background-color: #2ea043;
-        }
-
-        /* Section Titles */
-        .section-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: #e6edf3;
+            font-size: 20px;
             margin-bottom: 16px;
-            display: flex;
-            align-items: center;
         }
-        .section-icon {
-            width: 32px;
-            height: 32px;
+        
+        /* Terminal Mini Style */
+        .terminal-mini {
+            background-color: #010409;
+            border: 1px solid #30363d;
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            font-size: 1rem;
+            padding: 16px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #e6edf3;
+            margin-top: auto;
+            position: relative;
         }
+        .terminal-mini::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #30363d; /* Header bar simulation */
+        }
+        
+        .cmd-prompt { color: #238636; margin-right: 8px; font-weight: bold; user-select: none; }
+        .cmd-text { color: #d2a8ff; } /* Purple */
+        .cmd-arg { color: #a5d6ff; } /* Light Blue */
+        
+        /* Specific Colors */
+        .theme-blue .card-icon { background: rgba(56, 139, 253, 0.15); color: #58a6ff; border: 1px solid rgba(56, 139, 253, 0.3); }
+        .theme-green .card-icon { background: rgba(35, 134, 54, 0.15); color: #3fb950; border: 1px solid rgba(35, 134, 54, 0.3); }
+        .theme-purple .card-icon { background: rgba(163, 113, 247, 0.15); color: #d2a8ff; border: 1px solid rgba(163, 113, 247, 0.3); }
     </style>
 <style id="slide-selected-style">
   [data-slide-selected]::before
@@ -131,151 +152,101 @@
 
 
 </style></head>
-<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
+<body>
+<div class="slide-container">
 <!-- Header -->
-<div class="w-full max-w-7xl mb-8 flex justify-between items-end border-b border-gray-800 pb-4">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center space-x-4">
+<div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+<i class="fas fa-pen-nib text-3xl text-purple-400"></i>
+</div>
 <div>
-<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
-<i class="fa-solid fa-flag-checkered text-purple-400 mr-3"></i>
-                마무리 및 다음 단계
-            </h1>
-<p class="text-gray-400">성공적인 에이전트 코딩 도입을 위한 최종 점검과 로드맵</p>
-</div>
-<div class="flex items-center gap-2">
-<span class="px-3 py-1 bg-purple-900/30 text-purple-400 border border-purple-800/50 rounded-full text-xs font-bold">
-<i class="fa-solid fa-rocket mr-1"></i> Ready to Launch
-            </span>
+<h1 class="text-3xl font-bold text-white tracking-tight">실무 시나리오 #4: 컨텐츠 크리에이터</h1>
+<p class="text-gray-400 mt-1">아이디어 발상부터 브랜드 품질 관리까지 창작 프로세스 혁신</p>
 </div>
 </div>
-<!-- Main Content Grid -->
-<div class="w-full max-w-7xl flex-1 grid grid-cols-3 gap-6 min-h-0">
-<!-- Column 1: Quick Checklist (Left) -->
-<div class="summary-card col-span-1 border-t-4 border-t-green-500">
-<div class="section-title">
-<div class="section-icon bg-green-900/30 text-green-400">
-<i class="fa-solid fa-clipboard-check"></i>
-</div>
-<p>배포 전 퀵 체크리스트</p>
-</div>
-<div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-<div class="check-item">
-<div class="check-box"><i class="fa-solid fa-check"></i></div>
-<div>
-<p class="text-sm font-bold text-gray-200">CLAUDE.md 작성</p>
-<p class="text-xs text-gray-500">프로젝트 컨텍스트 및 규칙 정의 완료</p>
+<div class="bg-purple-900 bg-opacity-20 border border-purple-800 px-4 py-2 rounded-full">
+<span class="text-purple-400 text-sm font-bold">Creative &amp; Media</span>
 </div>
 </div>
-<div class="check-item">
-<div class="check-box"><i class="fa-solid fa-check"></i></div>
-<div>
-<p class="text-sm font-bold text-gray-200">권한 설정 (Allowed Tools)</p>
-<p class="text-xs text-gray-500">최소 권한 원칙 적용 확인</p>
+<!-- Role Banner -->
+<div class="role-banner">
+<div class="role-icon-box">
+<i class="fas fa-magic"></i>
+</div>
+<div class="flex-1">
+<h2 class="text-xl font-bold text-white mb-2">창의적 컨텐츠 엔진 (Creative Content Engine)</h2>
+<p class="text-gray-400 text-sm leading-relaxed">
+                    데이터 기반의 트렌드 분석으로 영감을 얻고, 체계적인 에디토리얼 캘린더로 생산성을 극대화하며, 
+                    모든 채널에서 일관된 브랜드 보이스를 유지합니다. 단순 반복 작업은 AI가, 당신은 크리에이티브에 집중하세요.
+                </p>
 </div>
 </div>
-<div class="check-item">
-<div class="check-box"><i class="fa-solid fa-check"></i></div>
-<div>
-<p class="text-sm font-bold text-gray-200">MCP 도구 연결</p>
-<p class="text-xs text-gray-500">필수 외부 도구 연동 테스트 완료</p>
+<!-- Scenarios Grid -->
+<div class="cards-grid">
+<!-- Scenario 1 -->
+<div class="scenario-card theme-blue">
+<div class="card-icon">
+<i class="fas fa-lightbulb"></i>
 </div>
-</div>
-<div class="check-item">
-<div class="check-box"><i class="fa-solid fa-check"></i></div>
-<div>
-<p class="text-sm font-bold text-gray-200">슬래시 커맨드 준비</p>
-<p class="text-xs text-gray-500">자주 쓰는 1~2개 템플릿 등록</p>
+<h3 class="text-lg font-bold text-white mb-3">전략 및 아이디어 엔진</h3>
+<p class="text-gray-400 text-sm mb-6 flex-1">
+                    타겟 오디언스의 관심사 트렌드와 바이럴 패턴을 분석하여 성공 가능성이 높은 컨텐츠 주제를 발굴하고, 실험적인 아이디어 리스트를 제안합니다.
+                </p>
+<div class="terminal-mini">
+<div class="flex">
+<span class="cmd-prompt">➜</span>
+<div class="flex-1">
+<span class="text-white">claude-code</span>
+<span class="cmd-arg">"모든 아이디어 노트와 성과 데이터를 분석해서 타겟 오디언스 트렌드, 바이럴 패턴을 추출하고 새로운 실험 아이디어 50개를 제안해줘"</span>
 </div>
 </div>
 </div>
 </div>
-<!-- Column 2: Operations & Advanced (Center) -->
-<div class="flex flex-col gap-6 col-span-1">
-<!-- Operations & Safety -->
-<div class="summary-card flex-1 border-t-4 border-t-yellow-500">
-<div class="section-title">
-<div class="section-icon bg-yellow-900/30 text-yellow-500">
-<i class="fa-solid fa-shield-halved"></i>
+<!-- Scenario 2 -->
+<div class="scenario-card theme-green">
+<div class="card-icon">
+<i class="fas fa-calendar-alt"></i>
 </div>
-<p>운영 및 안전 가이드</p>
-</div>
-<ul class="space-y-3 pl-2">
-<li class="flex items-start">
-<i class="fa-solid fa-triangle-exclamation text-yellow-500 mt-1 mr-3 text-xs"></i>
-<div>
-<p class="text-gray-300 text-sm font-bold">Safe YOLO 모드 주의</p>
-<p class="text-gray-500 text-xs mt-0.5">인터넷 차단된 격리 컨테이너 환경에서만 사용</p>
-</div>
-</li>
-<li class="flex items-start">
-<i class="fa-solid fa-robot text-yellow-500 mt-1 mr-3 text-xs"></i>
-<div>
-<p class="text-gray-300 text-sm font-bold">헤드리스(-p) 자동화</p>
-<p class="text-gray-500 text-xs mt-0.5">사전 정의된 시나리오 검증 후 CI/CD 적용</p>
-</div>
-</li>
-</ul>
-</div>
-<!-- Advanced Features -->
-<div class="summary-card flex-1 border-t-4 border-t-blue-500">
-<div class="section-title">
-<div class="section-icon bg-blue-900/30 text-blue-400">
-<i class="fa-solid fa-layer-group"></i>
-</div>
-<p>고급 활용 방향</p>
-</div>
-<ul class="space-y-3 pl-2">
-<li class="flex items-start">
-<i class="fa-solid fa-people-arrows text-blue-400 mt-1 mr-3 text-xs"></i>
-<div>
-<p class="text-gray-300 text-sm font-bold">멀티 인스턴스 워크플로우</p>
-<p class="text-gray-500 text-xs mt-0.5">작성(Coder)과 리뷰(Reviewer) 에이전트 분리 운영</p>
-</div>
-</li>
-<li class="flex items-start">
-<i class="fa-solid fa-code-branch text-blue-400 mt-1 mr-3 text-xs"></i>
-<div>
-<p class="text-gray-300 text-sm font-bold">Git Worktree 병렬 작업</p>
-<p class="text-gray-500 text-xs mt-0.5">여러 브랜치 동시 체크아웃으로 생산성 극대화</p>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<!-- Column 3: Next Actions (Right) -->
-<div class="summary-card col-span-1 border-t-4 border-t-purple-500 bg-gradient-to-b from-[#161b22] to-[#1c1626]">
-<div class="section-title">
-<div class="section-icon bg-purple-900/30 text-purple-400">
-<i class="fa-solid fa-forward-step"></i>
-</div>
-<p>다음 액션 (Next Steps)</p>
-</div>
-<div class="flex flex-col justify-between h-full">
-<div class="space-y-4 mb-6">
-<div class="bg-[#21262d] border border-[#30363d] rounded-lg p-4">
-<p class="text-purple-300 font-bold text-sm mb-2"><i class="fa-solid fa-users-gear mr-2"></i>팀 표준화</p>
-<p class="text-gray-400 text-xs leading-relaxed">
-                            사내 공통 <span class="text-white font-mono bg-gray-700 px-1 rounded">CLAUDE.md</span> 템플릿 저장소를 생성하고 배포하세요.
-                        </p>
-</div>
-<div class="bg-[#21262d] border border-[#30363d] rounded-lg p-4">
-<p class="text-purple-300 font-bold text-sm mb-2"><i class="fa-solid fa-book-open mr-2"></i>가이드 문서화</p>
-<p class="text-gray-400 text-xs leading-relaxed">
-                            성공적인 프롬프트 패턴과 실패 사례를 <span class="text-white">Wiki</span>에 기록하여 지식을 자산화하세요.
-                        </p>
-</div>
-</div>
-<div class="mt-auto">
-<div class="action-btn cursor-pointer">
-<i class="fa-solid fa-terminal mr-2"></i>
-                        Start Claude Code Now
-                    </div>
-<p class="text-center text-xs text-gray-500 mt-3 font-mono">
-                        $ claude
-                    </p>
+<h3 class="text-lg font-bold text-white mb-3">에디토리얼 캘린더 관리</h3>
+<p class="text-gray-400 text-sm mb-6 flex-1">
+                    컨텐츠 성과 데이터와 시즌 이슈를 종합하여 최적의 발행 시간과 주기를 산출하고, 주제별 밸런스를 고려한 스마트한 발행 계획을 수립합니다.
+                </p>
+<div class="terminal-mini">
+<div class="flex">
+<span class="cmd-prompt">➜</span>
+<div class="flex-1">
+<span class="text-white">claude-code</span>
+<span class="cmd-arg">"컨텐츠 성과와 계획을 종합해서 최적의 발행 시간, 주제별 밸런스, 시즌별 기획을 포함한 에디토리얼 캘린더를 최적화해줘"</span>
 </div>
 </div>
 </div>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b45efa3d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<!-- Scenario 3 -->
+<div class="scenario-card theme-purple">
+<div class="card-icon">
+<i class="fas fa-gem"></i>
+</div>
+<h3 class="text-lg font-bold text-white mb-3">브랜드 일관성 관리</h3>
+<p class="text-gray-400 text-sm mb-6 flex-1">
+                    모든 발행 컨텐츠를 전수 검사하여 톤앤매너의 일관성, 메시지 정렬도, 브랜드 가이드라인 준수 여부를 확인하고 품질을 보증합니다.
+                </p>
+<div class="terminal-mini">
+<div class="flex">
+<span class="cmd-prompt">➜</span>
+<div class="flex-1">
+<span class="text-white">claude-code</span>
+<span class="cmd-arg">"모든 컨텐츠를 분석해서 톤앤매너 일관성, 메시지 정렬도, 브랜드 가이드라인 준수 여부를 확인하고 개선점을 제안해줘"</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="absolute bottom-6 right-12 text-gray-600 text-xs font-mono">
+<span>SCENARIO: Creator_Workflow_v2.0</span>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f7cdd723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

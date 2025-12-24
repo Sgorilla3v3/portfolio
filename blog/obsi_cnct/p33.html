@@ -1,0 +1,363 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>일반적인 문제와 해결방법</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 4rem;
+            box-sizing: border-box;
+        }
+
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 600px;
+            height: 600px;
+            background-color: #fab387; /* Orange */
+            top: -200px;
+            right: -200px;
+        }
+        .deco-2 {
+            width: 500px;
+            height: 500px;
+            background-color: #f38ba8; /* Red */
+            bottom: -150px;
+            left: -100px;
+        }
+
+        /* Header */
+        .header-section {
+            margin-bottom: 2rem;
+            z-index: 20;
+            position: relative;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .page-title i {
+            color: #fab387;
+            margin-right: 1rem;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-left: 3.5rem;
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            display: flex;
+            gap: 2.5rem;
+            flex: 1;
+            z-index: 10;
+            height: 100%;
+        }
+
+        /* Left Panel: Issues */
+        .warning-panel {
+            flex: 1.1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .alert-box {
+            background-color: rgba(243, 139, 168, 0.1);
+            border: 2px solid #f38ba8;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+        }
+
+        .alert-icon {
+            font-size: 2rem;
+            color: #f38ba8;
+            margin-top: 0.2rem;
+        }
+
+        .alert-content h3 {
+            color: #f38ba8;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .alert-content p {
+            color: #cdd6f4;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .checklist-ul {
+            margin: 0.5rem 0 0 0;
+            padding-left: 1.2rem;
+            color: #cdd6f4;
+            font-size: 0.9rem;
+        }
+        .checklist-ul li {
+            margin-bottom: 0.3rem;
+        }
+
+        .issue-card {
+            background-color: rgba(250, 179, 135, 0.05);
+            border: 1px solid rgba(250, 179, 135, 0.3);
+            border-radius: 10px;
+            padding: 1.2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .issue-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(250, 179, 135, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fab387;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .issue-content h4 {
+            color: #fab387;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 0 0.4rem 0;
+        }
+
+        .issue-content p {
+            color: #bac2de;
+            font-size: 0.9rem;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Right Panel: Code Solutions */
+        .example-panel {
+            flex: 0.9;
+            background-color: #313244;
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .panel-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-title {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .code-block-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .terminal-block {
+            background-color: #11111b;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #cdd6f4;
+            border: 1px solid #45475a;
+        }
+
+        .cmd { color: #a6e3a1; }
+        .arg { color: #89b4fa; }
+        .comment { color: #6c7086; display: block; margin-bottom: 0.3rem; font-style: italic;}
+        .prompt { color: #fab387; margin-right: 0.5rem; }
+
+        .solution-label {
+            display: block;
+            color: #bac2de;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-text {
+            font-size: 0.85rem;
+            color: #9399b2;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: rgba(147, 153, 178, 0.1);
+            padding: 0.8rem;
+            border-radius: 8px;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-tools"></i>
+            일반적인 문제와 해결방법
+        </h1>
+<p class="page-subtitle">
+            자주 발생하는 오류 유형과 신속한 대응 가이드입니다.
+        </p>
+</div>
+<!-- Content -->
+<div class="content-wrapper">
+<!-- Left: Issues -->
+<div class="warning-panel">
+<!-- Critical Issue -->
+<div class="alert-box">
+<div class="alert-icon">
+<i class="fas fa-plug"></i>
+</div>
+<div class="alert-content">
+<h3>MCP 서버 연결 실패</h3>
+<p>Claude에서 "옵시디언에 접근할 수 없습니다" 메시지가 뜬다면 다음을 확인하세요:</p>
+<ul class="checklist-ul">
+<li>설정 파일(JSON)의 쉼표(,) 등 문법 오류 재확인</li>
+<li>볼트 경로가 실제 경로와 일치하는지 확인</li>
+<li><strong>Claude Desktop을 완전히 종료 후 재시작</strong></li>
+</ul>
+</div>
+</div>
+<!-- Secondary Issues -->
+<div class="issue-card">
+<div class="issue-icon"><i class="fas fa-font"></i></div>
+<div class="issue-content">
+<h4>한글 파일명 깨짐</h4>
+<p>
+                        UTF-8 인코딩 문제일 수 있습니다.<br>
+                        가능하면 파일명에 특수문자를 피하고, 지속적인 문제 발생 시 테스트를 위해 영문 파일명으로 변경해 보세요.
+                    </p>
+</div>
+</div>
+<div class="issue-card">
+<div class="issue-icon"><i class="fas fa-file-code"></i></div>
+<div class="issue-content">
+<h4>JSON 구문 오류</h4>
+<p>
+                        경로에 역슬래시(<code>\</code>) 사용 시 이스케이프 처리가 안 되어 발생하는 오류가 가장 흔합니다. 슬래시(<code>/</code>) 사용을 권장합니다.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Right: Solutions (Code) -->
+<div class="example-panel">
+<div class="panel-header">
+<div class="panel-title">
+<i class="fas fa-shield-alt mr-2"></i>권한 오류 해결 (Linux/macOS)
+            </div>
+</div>
+<div class="code-block-wrapper">
+<!-- Solution 1 -->
+<div>
+<span class="solution-label">방법 1: sudo 권한 사용 (빠른 해결)</span>
+<div class="terminal-block">
+<span class="comment"># 관리자 권한으로 설치 시도</span>
+<div><span class="prompt">$</span><span class="cmd">sudo</span> <span class="arg">npm install -g @mcp-packages/obsidian</span></div>
+</div>
+</div>
+<!-- Solution 2 -->
+<div>
+<span class="solution-label">방법 2: nvm 사용 (권장)</span>
+<div class="terminal-block">
+<span class="comment"># nvm 설치 후 Node.js 재설치</span>
+<div><span class="prompt">$</span><span class="cmd">curl</span> <span class="arg">-o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash</span></div>
+<div><span class="prompt">$</span><span class="cmd">nvm</span> <span class="arg">install node</span></div>
+</div>
+</div>
+</div>
+<div class="note-text">
+<i class="fas fa-info-circle"></i>
+<p>권한 오류는 주로 전역(Global) 설치 시 시스템 폴더 접근 권한 때문에 발생합니다. NVM을 사용하면 사용자 영역에 설치되어 이 문제를 예방할 수 있습니다.</p>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067cd97530bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>학습 점검 체크리스트</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 5rem;
+            box-sizing: border-box;
+        }
+
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 600px;
+            height: 600px;
+            background-color: #cba6f7;
+            top: -200px;
+            left: -200px;
+        }
+        .deco-2 {
+            width: 500px;
+            height: 500px;
+            background-color: #a6e3a1;
+            bottom: -150px;
+            right: -100px;
+        }
+
+        /* Header */
+        .header-section {
+            margin-bottom: 2.5rem;
+            z-index: 20;
+            position: relative;
+        }
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .page-title i {
+            color: #a6e3a1;
+            margin-right: 1.2rem;
+            font-size: 2.4rem;
+        }
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-left: 0.2rem;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            flex: 1;
+            z-index: 10;
+        }
+
+        /* Cards */
+        .check-card {
+            background-color: rgba(49, 50, 68, 0.6);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid rgba(186, 194, 222, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .check-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(49, 50, 68, 0.8);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-right: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .card-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.2rem;
+        }
+
+        /* Lists */
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            background-color: rgba(255,255,255,0.03);
+            transition: background 0.2s;
+        }
+
+        .list-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .list-item:hover {
+            background-color: rgba(255,255,255,0.07);
+        }
+
+        .item-icon {
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            margin-top: 0.2rem;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #cdd6f4;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+        .item-detail {
+            font-size: 0.9rem;
+            color: #a6adc8;
+            font-weight: 300;
+            line-height: 1.35;
+        }
+
+        /* Setup Style (Purple/Pink based) */
+        .setup .card-icon {
+            background: rgba(203, 166, 247, 0.2);
+            color: #cba6f7;
+        }
+        .setup .card-desc {
+            color: #cba6f7;
+        }
+        .setup .item-icon {
+            color: #cba6f7;
+        }
+        .setup {
+            border-top: 5px solid #cba6f7;
+        }
+
+        /* Usage Style (Green based) */
+        .usage .card-icon {
+            background: rgba(166, 227, 161, 0.2);
+            color: #a6e3a1;
+        }
+        .usage .card-desc {
+            color: #a6e3a1;
+        }
+        .usage .item-icon {
+            color: #a6e3a1;
+        }
+        .usage {
+            border-top: 5px solid #a6e3a1;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-tasks"></i>
+            학습 점검 체크리스트
+        </h1>
+<p class="page-subtitle">
+            옵시디언과 Claude MCP 연동 과정의 핵심 단계를 최종 점검합니다.
+        </p>
+</div>
+<!-- Main Content -->
+<div class="content-grid">
+<!-- Environment & Setup Card -->
+<div class="check-card setup">
+<div class="card-header">
+<div class="card-icon">
+<i class="fas fa-server"></i>
+</div>
+<div class="card-title-group">
+<span class="card-title">환경 및 연동 설정</span>
+<span class="card-desc">Environment Setup</span>
+</div>
+</div>
+<ul class="check-list">
+<li class="list-item">
+<div class="item-icon">
+<i class="fab fa-node-js"></i>
+</div>
+<div class="item-content">
+<span class="item-title">Node.js &amp; Git 설치</span>
+<p class="item-detail">터미널에서 node -v 및 git --version 명령어로 설치된 버전을 확인했습니다.</p>
+</div>
+</li>
+<li class="list-item">
+<div class="item-icon">
+<i class="fas fa-cube"></i>
+</div>
+<div class="item-content">
+<span class="item-title">Obsidian 볼트 준비</span>
+<p class="item-detail">옵시디언을 설치하고 MCP와 연동할 볼트 경로를 정확히 파악했습니다.</p>
+</div>
+</li>
+<li class="list-item">
+<div class="item-icon">
+<i class="fas fa-download"></i>
+</div>
+<div class="item-content">
+<span class="item-title">MCP 서버 패키지 설치</span>
+<p class="item-detail">npm install -g 명령어로 옵시디언 MCP 서버를 성공적으로 설치했습니다.</p>
+</div>
+</li>
+<li class="list-item">
+<div class="item-icon">
+<i class="fas fa-file-code"></i>
+</div>
+<div class="item-content">
+<span class="item-title">설정 파일(JSON) 구성</span>
+<p class="item-detail">OS별 경로에 맞게 claude_desktop_config.json 파일을 올바르게 작성했습니다.</p>
+</div>
+</li>
+</ul>
+</div>
+<!-- Testing & Usage Card -->
+<div class="check-card usage">
+<div class="card-header">
+<div class="card-icon">
+<i class="fas fa-rocket"></i>
+</div>
+<div class="card-title-group">
+<span class="card-title">기능 테스트 및 활용</span>
+<span class="card-desc">Testing &amp; Advanced</span>
+</div>
+</div>
+<ul class="check-list">
+<li class="list-item">
+<div class="item-icon">
+<i class="fas fa-search"></i>
+</div>
+<div class="item-content">
+<span class="item-title">기본 연결 확인</span>
+<p class="item-detail">Claude에게 볼트 내 파일 목록을 요청하여 정상적으로 읽어오는지 확인했습니다.</p>
+</div>
+</li>
+<li class="list-item">
+<div class="item-icon">
+<i class="fas fa-pen-to-square"></i>
+</div>
+<div class="item-content">
+<span class="item-title">노트 생성 테스트</span>
+<p class="item-detail">프롬프트를 통해 새로운 노트를 생성하고 내용이 옵시디언에 반영되는지 검증했습니다.</p>
+</div>
+</li>
+<li class="list-item">
+<div class="item-icon">
+<i class="fas fa-tags"></i>
+</div>
+<div class="item-content">
+<span class="item-title">태그 및 검색 활용</span>
+<p class="item-detail">특정 태그나 키워드가 포함된 노트를 검색하고 분석하는 기능을 테스트했습니다.</p>
+</div>
+</li>
+<li class="list-item">
+<div class="item-icon">
+<i class="fas fa-shield-halved"></i>
+</div>
+<div class="item-content">
+<span class="item-title">백업 및 워크플로우</span>
+<p class="item-detail">데이터 안전을 위한 백업(Git 등)을 설정하고 나만의 활용 워크플로우를 구상했습니다.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067ce97a30bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

@@ -1,44 +1,41 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>목차</title>
+<title>목차 - Claude Code + 옵시디언 MCP 연동</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #0d1117;
             color: #c9d1d9;
-            overflow: auto;
+            overflow: hidden;
         }
-        .font-mono {
-            font-family: 'Nanum Gothic Coding', monospace;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0d1117;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
         .agenda-card {
             background-color: #161b22;
             border: 1px solid #30363d;
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
         }
-        .agenda-card:hover {
-            border-color: #58a6ff;
-            background-color: #1c2128;
-            transform: translateX(5px);
+        .agenda-number {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 900;
+            color: #238636;
         }
-        .number-badge {
-            background-color: #21262d;
-            color: #8b949e;
-            font-family: 'Nanum Gothic Coding', monospace;
-            border: 1px solid #30363d;
-        }
-        .agenda-card:hover .number-badge {
-            background-color: #58a6ff;
-            color: #ffffff;
-            border-color: #58a6ff;
-        }
-        .section-title {
-            color: #58a6ff;
-            border-bottom: 2px solid #30363d;
+        .code-font {
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
         }
     </style>
 <style id="slide-selected-style">
@@ -75,135 +72,110 @@
 
 
 </style></head>
-<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-12">
+<body>
+<div class="slide-container p-12">
 <!-- Header -->
-<div class="w-full max-w-6xl mb-8 flex justify-between items-end border-b border-gray-800 pb-4">
-<div>
-<h1 class="text-4xl font-bold text-white mb-2">
-<i class="fa-solid fa-list-ul text-blue-400 mr-3"></i>목차
-            </h1>
-<p class="text-gray-400 text-lg">Claude Code 세팅 및 활용 가이드 로드맵</p>
+<div class="flex items-center justify-between mb-10 border-b border-gray-800 pb-4">
+<div class="flex items-center space-x-4">
+<div class="bg-gray-800 p-2 rounded-lg">
+<i class="fas fa-list-ol text-2xl text-blue-400"></i>
 </div>
-<div class="text-right">
-<span class="px-3 py-1 rounded-full bg-gray-800 text-xs text-gray-400 border border-gray-700 font-mono">Total 13 Chapters</span>
+<h1 class="text-4xl font-bold text-white tracking-tight">목차</h1>
 </div>
+<p class="text-gray-500 font-mono text-sm">Claude Code + 옵시디언 MCP 연동 가이드</p>
 </div>
-<!-- Main Content (2 Columns) -->
-<div class="w-full max-w-6xl flex-1 flex gap-12">
-<!-- Column 1: Foundation & Setup -->
-<div class="flex-1 flex flex-col gap-3">
-<div class="mb-2">
-<h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 pl-1 flex items-center">
-<i class="fa-solid fa-layer-group mr-2"></i>기본 개념 및 환경 설정
-                </h3>
+<!-- Agenda Grid -->
+<div class="flex-1 grid grid-cols-2 gap-x-12 gap-y-6 content-start">
+<!-- Column 1 -->
+<div class="space-y-5">
+<!-- Item 1 -->
+<div class="agenda-card p-4 flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center border border-gray-800">
+<span class="agenda-number text-2xl">01</span>
 </div>
-<!-- Items 1-6 -->
-<!-- 1 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">01</div>
 <div class="flex-1">
-<p class="font-medium text-lg text-gray-200">Claude Code 소개와 핵심 개념</p>
+<h3 class="text-lg font-bold text-white mb-1">소개</h3>
+<p class="text-sm text-gray-400">Claude Code란? MCP 연동의 의미와 중요성</p>
 </div>
 </div>
-<!-- 2 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">02</div>
+<!-- Item 2 -->
+<div class="agenda-card p-4 flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center border border-gray-800">
+<span class="agenda-number text-2xl">02</span>
+</div>
 <div class="flex-1">
-<p class="font-medium text-lg text-gray-200">설치 및 초기 설정</p>
+<h3 class="text-lg font-bold text-white mb-1">설치와 설정</h3>
+<p class="text-sm text-gray-400">NPM 설치, 인증 프로세스, MCP 서버 구성</p>
 </div>
 </div>
-<!-- 3 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">03</div>
+<!-- Item 3 -->
+<div class="agenda-card p-4 flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center border border-gray-800">
+<span class="agenda-number text-2xl">03</span>
+</div>
 <div class="flex-1">
-<p class="font-medium text-lg text-gray-200">CLAUDE.md 작성 가이드</p>
+<h3 class="text-lg font-bold text-white mb-1">핵심 이점</h3>
+<p class="text-sm text-gray-400">자동화, CI/CD, 워크플로우 통합, 대용량 처리</p>
 </div>
 </div>
-<!-- 4 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">04</div>
+<!-- Item 4 -->
+<div class="agenda-card p-4 flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center border border-gray-800">
+<span class="agenda-number text-2xl">04</span>
+</div>
 <div class="flex-1">
-<p class="font-medium text-lg text-gray-200">도구 허용 목록 관리</p>
+<h3 class="text-lg font-bold text-white mb-1">실무 시나리오</h3>
+<p class="text-sm text-gray-400">연구자, PM, 개발자, 크리에이터별 활용법</p>
 </div>
 </div>
-<!-- 5 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">05</div>
+</div>
+<!-- Column 2 -->
+<div class="space-y-5">
+<!-- Item 5 -->
+<div class="agenda-card p-4 flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center border border-gray-800">
+<span class="agenda-number text-2xl">05</span>
+</div>
 <div class="flex-1">
-<p class="font-medium text-lg text-gray-200">MCP 연동 설정</p>
+<h3 class="text-lg font-bold text-white mb-1">성능 비교</h3>
+<p class="text-sm text-gray-400">GUI vs CLI 속도 및 효율성 비교 분석</p>
 </div>
 </div>
-<!-- 6 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">06</div>
+<!-- Item 6 -->
+<div class="agenda-card p-4 flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center border border-gray-800">
+<span class="agenda-number text-2xl">06</span>
+</div>
 <div class="flex-1">
-<p class="font-medium text-lg text-gray-200">슬래시 커맨드 활용</p>
+<h3 class="text-lg font-bold text-white mb-1">고급 설정</h3>
+<p class="text-sm text-gray-400">프로필 커스터마이징, 환경 변수, 플러그인</p>
 </div>
 </div>
+<!-- Item 7 -->
+<div class="agenda-card p-4 flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center border border-gray-800">
+<span class="agenda-number text-2xl">07</span>
 </div>
-<!-- Column 2: Advanced Usage -->
-<div class="flex-1 flex flex-col gap-3">
-<div class="mb-2">
-<h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 pl-1 flex items-center">
-<i class="fa-solid fa-code-branch mr-2"></i>실전 워크플로우 및 최적화
-                </h3>
-</div>
-<!-- Items 7-13 -->
-<!-- 7 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">07</div>
 <div class="flex-1">
-<p class="font-medium text-lg text-gray-200">실전: Explore–Plan–Code–Commit</p>
+<h3 class="text-lg font-bold text-white mb-1">모니터링/품질 관리</h3>
+<p class="text-sm text-gray-400">사용량 추적 및 컨텐츠 품질 보증 시스템</p>
 </div>
 </div>
-<!-- 8 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">08</div>
+<!-- Item 8 & 9 Combined for space efficiency or list them separately if space allows -->
+<div class="agenda-card p-4 flex items-start space-x-4">
+<div class="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center border border-gray-800">
+<span class="agenda-number text-2xl" style="color: #79c0ff;">08</span>
+</div>
 <div class="flex-1">
-<p class="font-medium text-lg text-gray-200">실전: TDD 패턴</p>
-</div>
-</div>
-<!-- 9 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">09</div>
-<div class="flex-1">
-<p class="font-medium text-lg text-gray-200">Obsidian 연동 가이드</p>
-</div>
-</div>
-<!-- 10 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">10</div>
-<div class="flex-1">
-<p class="font-medium text-lg text-gray-200">프롬프트 작성 모범 사례</p>
-</div>
-</div>
-<!-- 11 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">11</div>
-<div class="flex-1">
-<p class="font-medium text-lg text-gray-200">운영·최적화 포인트</p>
-</div>
-</div>
-<!-- 12 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4">12</div>
-<div class="flex-1">
-<p class="font-medium text-lg text-gray-200">체크리스트 요약</p>
-</div>
-</div>
-<!-- 13 -->
-<div class="agenda-card rounded-lg p-3 flex items-center cursor-default border-blue-900 bg-blue-900 bg-opacity-10">
-<div class="number-badge w-8 h-8 rounded flex items-center justify-center text-sm font-bold mr-4 bg-blue-900 border-blue-700 text-blue-200">13</div>
-<div class="flex-1">
-<p class="font-medium text-lg text-blue-200">마무리 및 다음 단계</p>
+<h3 class="text-lg font-bold text-white mb-1">미래 확장 및 요약</h3>
+<p class="text-sm text-gray-400">멀티모달 AI, 음성 통합 및 다음 단계 액션</p>
 </div>
 </div>
 </div>
 </div>
-<!-- Footer Decorative -->
-<div class="absolute bottom-0 right-0 p-6 opacity-20 pointer-events-none">
-<i class="fa-brands fa-github text-9xl text-white"></i>
+<!-- Decorative footer line -->
+<div class="absolute bottom-0 left-0 w-full h-2 bg-blue-600"></div>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b43e9b3d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f6c98723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

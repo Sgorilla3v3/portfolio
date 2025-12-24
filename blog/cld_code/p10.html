@@ -1,95 +1,122 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Obsidian 연동 가이드</title>
+<title>실무 시나리오 #2: 프로젝트 매니저</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #0d1117;
             color: #c9d1d9;
-            overflow: auto;
+            overflow: hidden;
         }
-        .font-mono {
-            font-family: 'Nanum Gothic Coding', monospace;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0d1117;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 40px;
         }
         
-        /* Method Card Styling */
-        .method-card {
+        /* Role Banner */
+        .role-banner {
             background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .role-icon-box {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(56, 139, 253, 0.1);
+            border: 1px solid rgba(56, 139, 253, 0.3);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #58a6ff;
+            margin-right: 24px;
+        }
+        
+        /* Scenario Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            flex: 1;
+            min-height: 0; /* Fix flex overflow */
+        }
+        
+        .scenario-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .scenario-card:hover {
+            border-color: #8b949e;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        
+        /* Terminal Mini Style */
+        .terminal-mini {
+            background-color: #010409;
             border: 1px solid #30363d;
             border-radius: 8px;
             padding: 16px;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.2s ease;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #e6edf3;
+            margin-top: auto;
             position: relative;
-            overflow: hidden;
         }
-        .method-card:hover {
-            border-color: #a371f7;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-        .method-card::before {
-            content: "";
+        .terminal-mini::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-        }
-        .border-green { border-top-color: #2ea043; } /* Easy */
-        .border-blue { border-top-color: #58a6ff; } /* Medium */
-        .border-purple { border-top-color: #a371f7; } /* Hard */
-        .border-orange { border-top-color: #d29922; } /* Specific */
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            margin-bottom: 12px;
+            height: 4px;
+            background-color: #30363d; /* Header bar simulation */
         }
         
-        /* Badges */
-        .difficulty-badge {
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-            margin-left: auto;
-        }
-        .diff-easy { background-color: rgba(46, 160, 67, 0.15); color: #3fb950; border: 1px solid rgba(46, 160, 67, 0.4); }
-        .diff-medium { background-color: rgba(88, 166, 255, 0.15); color: #58a6ff; border: 1px solid rgba(88, 166, 255, 0.4); }
-        .diff-hard { background-color: rgba(163, 113, 247, 0.15); color: #a371f7; border: 1px solid rgba(163, 113, 247, 0.4); }
-
-        /* Example Box */
-        .example-box {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            font-family: 'Nanum Gothic Coding', monospace;
-            font-size: 0.8rem;
-            padding: 12px;
-            position: relative;
-        }
-        .cmd-prefix { color: #8b949e; margin-right: 8px; user-select: none; }
-        .obsidian-link { color: #a371f7; text-decoration: underline; text-decoration-style: dotted; }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            font-size: 0.8rem;
-            color: #8b949e;
-            margin-bottom: 4px;
-        }
-        .feature-icon { width: 16px; text-align: center; margin-right: 6px; }
+        .cmd-prompt { color: #238636; margin-right: 8px; font-weight: bold; user-select: none; }
+        .cmd-text { color: #d2a8ff; } /* Purple */
+        .cmd-arg { color: #a5d6ff; } /* Light Blue */
+        
+        /* Specific Colors */
+        .theme-blue .card-icon { background: rgba(56, 139, 253, 0.15); color: #58a6ff; border: 1px solid rgba(56, 139, 253, 0.3); }
+        .theme-green .card-icon { background: rgba(35, 134, 54, 0.15); color: #3fb950; border: 1px solid rgba(35, 134, 54, 0.3); }
+        .theme-purple .card-icon { background: rgba(163, 113, 247, 0.15); color: #d2a8ff; border: 1px solid rgba(163, 113, 247, 0.3); }
     </style>
 <style id="slide-selected-style">
   [data-slide-selected]::before
@@ -125,157 +152,101 @@
 
 
 </style></head>
-<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
+<body>
+<div class="slide-container">
 <!-- Header -->
-<div class="w-full max-w-7xl mb-6 flex justify-between items-end border-b border-gray-800 pb-4">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center space-x-4">
+<div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+<i class="fas fa-user-tie text-3xl text-blue-400"></i>
+</div>
 <div>
-<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
-<i class="fa-solid fa-gem text-purple-500 mr-3"></i>
-                Obsidian 연동 가이드
-            </h1>
-<p class="text-gray-400">개인 지식 저장소(Vault)를 AI 기반 RAG 시스템으로 전환하는 4가지 전략</p>
-</div>
-<div class="flex items-center gap-2">
-<span class="px-3 py-1 bg-purple-900/20 text-purple-300 rounded border border-purple-800/50 text-xs font-bold font-mono">
-                Knowledge Graph Automation
-            </span>
+<h1 class="text-3xl font-bold text-white tracking-tight">실무 시나리오 #2: 프로젝트 매니저</h1>
+<p class="text-gray-400 mt-1">데이터 기반 의사결정과 빈틈없는 커뮤니케이션 관리</p>
 </div>
 </div>
-<!-- Main Content -->
-<div class="w-full max-w-7xl flex-1 flex flex-col gap-6 min-h-0">
-<!-- Section 1: Comparison Cards (Grid) -->
-<div class="grid grid-cols-4 gap-4 h-[340px]">
-<!-- Method 1: File System -->
-<div class="method-card border-t-4 border-green">
-<div class="flex items-start justify-between mb-2">
-<div class="card-icon bg-gray-800 text-gray-400">
-<i class="fa-regular fa-folder-open"></i>
-</div>
-<span class="difficulty-badge diff-easy">난이도: 하</span>
-</div>
-<h3 class="text-lg font-bold text-gray-100 mb-1">파일 시스템 직접 접근</h3>
-<p class="text-xs text-gray-500 mb-4 h-8">Vault 폴더에서 Claude Code를 직접 실행</p>
-<div class="flex-1 space-y-2">
-<div class="feature-item text-green-400"><i class="fa-solid fa-check feature-icon"></i>설정 불필요</div>
-<div class="feature-item text-green-400"><i class="fa-solid fa-check feature-icon"></i>즉시 사용 가능</div>
-<div class="feature-item text-red-400"><i class="fa-solid fa-xmark feature-icon"></i>내부 링크/태그 인식 약함</div>
-</div>
-<div class="mt-4 pt-3 border-t border-gray-800 text-xs text-gray-400">
-<strong class="text-gray-200">추천:</strong> 입문자, 빠른 PoC
-                </div>
-</div>
-<!-- Method 2: Official MCP -->
-<div class="method-card border-t-4 border-blue">
-<div class="flex items-start justify-between mb-2">
-<div class="card-icon bg-blue-900/20 text-blue-400">
-<i class="fa-solid fa-plug"></i>
-</div>
-<span class="difficulty-badge diff-medium">난이도: 중</span>
-</div>
-<h3 class="text-lg font-bold text-gray-100 mb-1">공식 MCP 플러그인</h3>
-<p class="text-xs text-gray-500 mb-4 h-8">WebSocket/SSE로 Claude와 통신</p>
-<div class="flex-1 space-y-2">
-<div class="feature-item text-blue-400"><i class="fa-solid fa-check feature-icon"></i>전용 검색 도구 제공</div>
-<div class="feature-item text-blue-400"><i class="fa-solid fa-check feature-icon"></i>안정적인 파일 조작</div>
-<div class="feature-item text-yellow-500"><i class="fa-solid fa-triangle-exclamation feature-icon"></i>플러그인 설치 필요</div>
-</div>
-<div class="mt-4 pt-3 border-t border-gray-800 text-xs text-gray-400">
-<strong class="text-gray-200">추천:</strong> 파워유저, 상시 활용
-                </div>
-</div>
-<!-- Method 3: REST API Server -->
-<div class="method-card border-t-4 border-purple">
-<div class="flex items-start justify-between mb-2">
-<div class="card-icon bg-purple-900/20 text-purple-400">
-<i class="fa-solid fa-server"></i>
-</div>
-<span class="difficulty-badge diff-hard">난이도: 상</span>
-</div>
-<h3 class="text-lg font-bold text-gray-100 mb-1">REST API MCP 서버</h3>
-<p class="text-xs text-gray-500 mb-4 h-8">Python 서버와 로컬 API 플러그인 조합</p>
-<div class="flex-1 space-y-2">
-<div class="feature-item text-purple-400"><i class="fa-solid fa-check feature-icon"></i>모든 기능 제어 가능</div>
-<div class="feature-item text-purple-400"><i class="fa-solid fa-check feature-icon"></i>강력한 커스터마이징</div>
-<div class="feature-item text-red-400"><i class="fa-solid fa-xmark feature-icon"></i>복잡한 환경 구성</div>
-</div>
-<div class="mt-4 pt-3 border-t border-gray-800 text-xs text-gray-400">
-<strong class="text-gray-200">추천:</strong> 개발자, 고급 자동화
-                </div>
-</div>
-<!-- Method 4: CLI Plugin -->
-<div class="method-card border-t-4 border-orange">
-<div class="flex items-start justify-between mb-2">
-<div class="card-icon bg-yellow-900/20 text-yellow-500">
-<i class="fa-solid fa-terminal"></i>
-</div>
-<span class="difficulty-badge diff-medium">난이도: 중</span>
-</div>
-<h3 class="text-lg font-bold text-gray-100 mb-1">CLI 직접 호출</h3>
-<p class="text-xs text-gray-500 mb-4 h-8">Obsidian UI 내에서 명령어 실행 (claude-docs)</p>
-<div class="flex-1 space-y-2">
-<div class="feature-item text-yellow-500"><i class="fa-solid fa-check feature-icon"></i>UI 이탈 없이 즉시 실행</div>
-<div class="feature-item text-yellow-500"><i class="fa-solid fa-check feature-icon"></i>단발성 작업에 최적</div>
-<div class="feature-item text-red-400"><i class="fa-solid fa-xmark feature-icon"></i>대화형 세션 불가</div>
-</div>
-<div class="mt-4 pt-3 border-t border-gray-800 text-xs text-gray-400">
-<strong class="text-gray-200">추천:</strong> 특정 반복 작업
-                </div>
+<div class="bg-blue-900 bg-opacity-20 border border-blue-800 px-4 py-2 rounded-full">
+<span class="text-blue-400 text-sm font-bold">Project Management</span>
 </div>
 </div>
-<!-- Section 2: Practical Examples (Two Column) -->
-<div class="flex-1 flex gap-6">
-<!-- Example 1 -->
-<div class="flex-1 bg-[#161b22] border border-[#30363d] rounded-lg p-5 flex flex-col justify-between">
-<div>
-<h3 class="text-white font-bold mb-1 flex items-center">
-<span class="bg-blue-600 text-white text-xs px-2 py-0.5 rounded mr-2">Case 1</span>
-                        Inbox 노트 자동 정리
-                    </h3>
-<p class="text-xs text-gray-400 mb-3">임시 메모를 분석하여 제목, 태그, 메타데이터를 추가하고 적절한 폴더로 이동</p>
+<!-- Role Banner -->
+<div class="role-banner">
+<div class="role-icon-box">
+<i class="fas fa-project-diagram"></i>
 </div>
-<div class="example-box">
-<div class="flex items-center text-xs text-gray-500 mb-2 border-b border-gray-800 pb-1">
-<i class="fa-solid fa-terminal mr-2"></i> Terminal
-                    </div>
-<p class="text-gray-300">
-<span class="cmd-prefix">$</span>claude
-                    </p>
-<p class="text-green-400 mt-1">
-<span class="text-purple-400 font-bold">/process-inbox-note</span>
-</p>
-<div class="text-gray-500 italic mt-2 text-xs border-l-2 border-gray-700 pl-2">
-                        Processing "Untitled 1.md"...<br>
-                        -&gt; Renamed to "2024-12-22-Marketing-Plan.md"<br>
-                        -&gt; Added tags: #work #marketing<br>
-                        -&gt; Moved to "Projects/Q4"
-                    </div>
+<div class="flex-1">
+<h2 class="text-xl font-bold text-white mb-2">데이터 기반의 리더십 (Data-Driven Leadership)</h2>
+<p class="text-gray-400 text-sm leading-relaxed">
+                흩어진 회의록과 업무 로그를 실시간 인사이트로 변환합니다. 팀의 숨겨진 병목을 찾아내고, 
+                이해관계자들에게 정확한 타이밍에 필요한 정보를 전달하여 프로젝트 성공률을 극대화합니다.
+            </p>
 </div>
 </div>
-<!-- Example 2 -->
-<div class="flex-1 bg-[#161b22] border border-[#30363d] rounded-lg p-5 flex flex-col justify-between">
-<div>
-<h3 class="text-white font-bold mb-1 flex items-center">
-<span class="bg-purple-600 text-white text-xs px-2 py-0.5 rounded mr-2">Case 2</span>
-                        공격적 자동 링크 (Aggressive Linking)
-                    </h3>
-<p class="text-xs text-gray-400 mb-3">하루의 생각을 기록하면 핵심 키워드를 추출하여 자동으로 위키 링크 생성</p>
+<!-- Scenarios Grid -->
+<div class="cards-grid">
+<!-- Scenario 1 -->
+<div class="scenario-card theme-blue">
+<div class="card-icon">
+<i class="fas fa-tachometer-alt"></i>
 </div>
-<div class="example-box">
-<div class="flex items-center text-xs text-gray-500 mb-2 border-b border-gray-800 pb-1">
-<i class="fa-solid fa-file-lines mr-2"></i> Editor Preview
-                    </div>
-<p class="text-gray-300 leading-relaxed text-xs">
-                        오늘 회의에서 <span class="obsidian-link">[[RAG 시스템]]</span>의 성능 개선을 위해 <span class="obsidian-link">[[임베딩 모델]]</span> 교체를 논의했다.
-                        특히 <span class="obsidian-link">[[Claude Code]]</span>를 활용한 <span class="obsidian-link">[[지식 그래프]]</span> 구축이 핵심이다.
-                    </p>
-<div class="mt-3 flex gap-2">
-<span class="text-[10px] bg-gray-800 text-gray-400 px-2 py-1 rounded border border-gray-700">#meeting</span>
-<span class="text-[10px] bg-gray-800 text-gray-400 px-2 py-1 rounded border border-gray-700">#ai-research</span>
+<h3 class="text-lg font-bold text-white mb-3">팀 성과 종합 대시보드</h3>
+<p class="text-gray-400 text-sm mb-6 flex-1">
+                지난달의 모든 프로젝트 노트를 분석하여 팀원별 기여도, 진행률, 리소스 배분 현황을 시각화하고 최적화 방안을 도출합니다.
+            </p>
+<div class="terminal-mini">
+<div class="flex">
+<span class="cmd-prompt">➜</span>
+<div class="flex-1">
+<span class="text-white">claude-code</span>
+<span class="cmd-arg">"지난달 프로젝트 노트를 분석해 팀원별 기여도, 진행률, 리스크 요소를 정리하고 리더십 보고용 대시보드를 만들어줘"</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Scenario 2 -->
+<div class="scenario-card theme-green">
+<div class="card-icon">
+<i class="fas fa-comments"></i>
+</div>
+<h3 class="text-lg font-bold text-white mb-3">스테이크홀더 커뮤니케이션</h3>
+<p class="text-gray-400 text-sm mb-6 flex-1">
+                수많은 회의록과 업데이트 사항 중 각 이해관계자에게 필요한 핵심 정보만 추출하여 맞춤형 보고 메시지를 자동으로 생성합니다.
+            </p>
+<div class="terminal-mini">
+<div class="flex">
+<span class="cmd-prompt">➜</span>
+<div class="flex-1">
+<span class="text-white">claude-code</span>
+<span class="cmd-arg">"최근 2주간의 미팅 노트에서 의사결정이 필요한 이슈를 추리고, 스테이크홀더별 맞춤 주간 보고서 초안을 작성해줘"</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Scenario 3 -->
+<div class="scenario-card theme-purple">
+<div class="card-icon">
+<i class="fas fa-shield-alt"></i>
+</div>
+<h3 class="text-lg font-bold text-white mb-3">리스크 예측 및 관리</h3>
+<p class="text-gray-400 text-sm mb-6 flex-1">
+                과거 프로젝트의 실패 패턴과 현재 진행 상황을 비교 분석하여 잠재적 리스크를 조기에 감지하고, 구체적인 완화 계획을 수립합니다.
+            </p>
+<div class="terminal-mini">
+<div class="flex">
+<span class="cmd-prompt">➜</span>
+<div class="flex-1">
+<span class="text-white">claude-code</span>
+<span class="cmd-arg">"모든 프로젝트 노트의 패턴을 분석해 잠재적 리스크를 예측하고, 우선순위에 따른 리스크 완화 액션 플랜을 제안해줘"</span>
 </div>
 </div>
 </div>
 </div>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b45ef03d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<!-- Footer -->
+<div class="absolute bottom-6 right-12 text-gray-600 text-xs font-mono">
+<span>SCENARIO: PM_Workflow_v1.5</span>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f7ccc723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

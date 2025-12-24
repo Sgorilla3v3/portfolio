@@ -1,0 +1,421 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Claude 계정 설정 및 확인</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 3.5rem 4rem;
+            box-sizing: border-box;
+        }
+
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 600px;
+            height: 600px;
+            background-color: #fab387; /* Claude Orange */
+            top: -200px;
+            right: -200px;
+        }
+        .deco-2 {
+            width: 500px;
+            height: 500px;
+            background-color: #d20f39; /* Claude Reddish */
+            bottom: -150px;
+            left: -100px;
+        }
+
+        /* Header */
+        .header-section {
+            margin-bottom: 2.5rem;
+            z-index: 20;
+            position: relative;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .page-title i {
+            color: #fab387; /* Claude Orange */
+            margin-right: 1rem;
+        }
+        .os-badge {
+            background-color: #313244;
+            color: #fab387;
+            font-size: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            margin-left: 1rem;
+            font-weight: 600;
+            border: 1px solid rgba(250, 179, 135, 0.3);
+            display: flex;
+            align-items: center;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-left: 3.5rem;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            display: flex;
+            gap: 3rem;
+            flex: 1;
+            z-index: 10;
+        }
+
+        /* Left Column: Steps */
+        .steps-column {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .step-item {
+            background-color: rgba(49, 50, 68, 0.4);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            border: 1px solid rgba(186, 194, 222, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-item:hover {
+            background-color: rgba(49, 50, 68, 0.8);
+            transform: translateX(5px);
+            border-color: rgba(250, 179, 135, 0.3);
+        }
+
+        /* Connecting line between steps */
+        .step-line {
+            position: absolute;
+            left: 2.6rem;
+            top: 3.5rem;
+            bottom: -1.5rem;
+            width: 2px;
+            background-color: rgba(250, 179, 135, 0.2);
+            z-index: 0;
+        }
+        .step-item:last-child .step-line {
+            display: none;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background-color: #313244;
+            color: #fab387;
+            border: 2px solid #fab387;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-right: 1.2rem;
+            flex-shrink: 0;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(250, 179, 135, 0.2);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .step-desc {
+            font-size: 0.95rem;
+            color: #cdd6f4;
+            line-height: 1.4;
+        }
+
+        .code-snippet {
+            background-color: #11111b;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #fab387;
+            border: 1px solid #45475a;
+        }
+
+        /* Right Column: Tips & Preview */
+        .info-column {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Tip Box */
+        .tip-box {
+            background: linear-gradient(135deg, rgba(49, 50, 68, 0.8) 0%, rgba(30, 30, 46, 0.8) 100%);
+            border-left: 4px solid #fab387; /* Claude Orange */
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .tip-header {
+            display: flex;
+            align-items: center;
+            color: #fab387;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        /* Checklist Container (Modified from Terminal Window) */
+        .check-list-container {
+            background-color: #1e1e2e;
+            border-radius: 10px;
+            border: 1px solid #45475a;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            gap: 1rem;
+        }
+
+        .check-header {
+            color: #bac2de;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            background-color: #313244;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(69, 71, 90, 0.5);
+            transition: all 0.2s;
+        }
+        
+        .check-item:hover {
+            border-color: rgba(250, 179, 135, 0.3);
+            background-color: #363a4f;
+        }
+
+        .check-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .status-ok { background-color: #a6e3a1; color: #1e1e2e; }
+        .status-wait { background-color: #fab387; color: #1e1e2e; }
+        
+        .check-text { 
+            color: #cdd6f4; 
+            font-weight: 500; 
+            flex: 1;
+        }
+        
+        .check-sub { 
+            font-size: 0.8rem; 
+            color: #bac2de; 
+            font-family: 'Fira Code', monospace;
+            background-color: #11111b;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .highlight-text {
+            color: #fab387;
+            font-weight: 600;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-robot"></i>
+                Claude 계정 설정 및 확인
+                <span class="os-badge"><i class="fas fa-check-circle mr-2"></i>Preparation</span>
+</h1>
+<p class="page-subtitle">
+                MCP 서버 연동을 시작하기 전, Claude Desktop 앱의 상태와 계정 준비를 완료합니다.
+            </p>
+</div>
+<!-- Content -->
+<div class="content-wrapper">
+<!-- Left: Steps -->
+<div class="steps-column">
+<!-- Step 1 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">1</div>
+<div class="step-content">
+<div class="step-title">계정 로그인 및 동기화</div>
+<p class="step-desc">
+                        Claude Desktop 앱을 실행하고 로그인합니다. <span class="highlight-text">claude.ai</span> 웹 버전과 동일한 계정을 사용하여 대화 기록이 동기화되는지 확인하세요.
+                    </p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">2</div>
+<div class="step-content">
+<div class="step-title">최신 버전 확인</div>
+<p class="step-desc">
+                        MCP 기능은 최신 버전에서 지원됩니다. 메뉴바의 <span class="code-snippet">Check for Updates...</span>를 클릭하여 앱을 최신 상태로 업데이트합니다.
+                    </p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">3</div>
+<div class="step-content">
+<div class="step-title">MCP 연동 준비 상태 확인</div>
+<p class="step-desc">
+                        별도의 'MCP 활성화' 버튼은 없습니다. 앱이 정상 실행되고 대화 입력창이 보인다면 MCP 서버를 연결할 준비가 완료된 것입니다.
+                    </p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="step-item">
+<div class="step-line"></div>
+<div class="step-number">4</div>
+<div class="step-content">
+<div class="step-title">설정 파일 경로 파악</div>
+<p class="step-desc">
+                        OS별 설정 파일이 저장될 위치를 미리 확인해둡니다. 파일이 아직 없더라도 괜찮습니다. 다음 단계에서 생성합니다.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Right: Info & Preview -->
+<div class="info-column">
+<!-- Tip Box -->
+<div class="tip-box">
+<div class="tip-header">
+<i class="fas fa-info-circle mr-2"></i>
+                    Claude Pro가 필요한가요?
+                </div>
+<p style="font-size: 0.95rem; color: #cdd6f4; line-height: 1.5;">
+                    아니요, MCP(Model Context Protocol) 기능은 <strong>무료 사용자(Free Tier)</strong>도 사용할 수 있습니다. 로컬 환경의 옵시디언과 연동하는 것은 추가적인 API 비용이 발생하지 않습니다.
+                </p>
+</div>
+<!-- System Readiness Check -->
+<div class="check-list-container">
+<div class="check-header">
+                    SYSTEM READINESS CHECK
+                    <i class="fas fa-server text-gray-500"></i>
+</div>
+<div class="check-item">
+<div class="check-icon status-ok"><i class="fas fa-check"></i></div>
+<div class="check-text">Claude Account</div>
+<div class="check-sub">Active</div>
+</div>
+<div class="check-item">
+<div class="check-icon status-ok"><i class="fas fa-check"></i></div>
+<div class="check-text">Desktop Version</div>
+<div class="check-sub">Latest</div>
+</div>
+<div class="check-item">
+<div class="check-icon status-wait"><i class="fas fa-exclamation"></i></div>
+<div class="check-text">MCP Configuration</div>
+<div class="check-sub">Pending</div>
+</div>
+<div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid #45475a; font-size: 0.85rem; color: #9399b2; text-align: center;">
+<i class="fas fa-arrow-right mr-1"></i> 다음 단계에서 설정을 완료하세요
+                </div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067cb92630bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>슬래시 커맨드 활용</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: auto;
+        }
+        .font-mono {
+            font-family: 'Nanum Gothic Coding', monospace;
+        }
+        .editor-window {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .editor-header {
+            background-color: #0d1117;
+            border-bottom: 1px solid #30363d;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .tab {
+            background-color: #161b22;
+            color: #c9d1d9;
+            padding: 4px 12px;
+            border-top: 2px solid #f78166;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+        .line-numbers {
+            color: #484f58;
+            text-align: right;
+            padding-right: 16px;
+            user-select: none;
+        }
+        .code-content {
+            color: #e6edf3;
+        }
+        /* Syntax Highlighting */
+        .syntax-comment { color: #8b949e; font-style: italic; }
+        .syntax-keyword { color: #ff7b72; } /* Red */
+        .syntax-string { color: #a5d6ff; } /* Light Blue */
+        .syntax-header { color: #79c0ff; font-weight: bold; } /* Blue */
+        .syntax-list { color: #d2a8ff; } /* Purple */
+        .syntax-cmd { color: #7ee787; } /* Green */
+        .syntax-var { color: #ffa657; font-weight: bold; } /* Orange */
+        
+        .guide-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-left: 4px solid #a371f7;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-radius: 6px;
+        }
+        .key-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Nanum Gothic Coding', monospace;
+            background-color: rgba(110, 118, 129, 0.4);
+            color: #c9d1d9;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
+<!-- Header -->
+<div class="w-full max-w-7xl mb-6 flex justify-between items-end border-b border-gray-800 pb-4">
+<div>
+<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
+<i class="fa-solid fa-terminal text-purple-400 mr-3"></i>
+                슬래시 커맨드 활용
+            </h1>
+<p class="text-gray-400">반복 작업을 자동화하는 사용자 정의 프롬프트 템플릿</p>
+</div>
+<div class="flex items-center gap-2 text-sm text-gray-500 bg-[#161b22] px-3 py-1 rounded border border-[#30363d]">
+<i class="fa-regular fa-folder-open"></i>
+<span class="font-mono">PROJECT_ROOT/.claude/commands/</span>
+</div>
+</div>
+<!-- Main Content: Split Layout -->
+<div class="w-full max-w-7xl flex-1 flex gap-8 overflow-hidden">
+<!-- Left Column: Guide & Explanations (35%) -->
+<div class="w-[35%] flex flex-col h-full justify-between">
+<div class="flex flex-col gap-4">
+<!-- Concept Definition -->
+<div class="guide-card border-l-purple-500">
+<h3 class="text-white font-bold mb-2 flex items-center">
+<i class="fa-solid fa-bolt text-purple-400 mr-2"></i> 개념 및 작동 원리
+                    </h3>
+<p class="text-sm text-gray-300 leading-relaxed mb-2">
+<span class="font-mono text-purple-300">.claude/commands/</span> 폴더 내의 마크다운 파일이 곧 사용자 정의 명령어가 됩니다.
+                    </p>
+<div class="bg-black/30 p-2 rounded text-xs font-mono text-gray-400 mt-2">
+                        파일명: <span class="text-white">review-pr.md</span><br>
+                        호출명: <span class="text-purple-300">/project:review-pr</span>
+</div>
+</div>
+<!-- Rules & Syntax -->
+<div class="bg-[#161b22] border border-[#30363d] rounded-lg p-5">
+<h3 class="text-white font-bold mb-4 flex items-center border-b border-[#30363d] pb-2">
+<i class="fa-solid fa-code text-blue-400 mr-2"></i> 작성 규칙
+                    </h3>
+<div class="space-y-4">
+<div class="flex items-start">
+<i class="fa-solid fa-dollar-sign text-gray-500 mt-1 mr-3 w-4 text-center"></i>
+<div>
+<p class="text-sm font-bold text-gray-200">인수 전달 (Arguments)</p>
+<p class="text-xs text-gray-500 mt-1">
+<span class="key-badge">$ARGUMENTS</span> 키워드를 사용하면 명령어 뒤에 입력한 값을 템플릿 내부로 가져옵니다.
+                                </p>
+</div>
+</div>
+<div class="flex items-start">
+<i class="fa-solid fa-file-lines text-gray-500 mt-1 mr-3 w-4 text-center"></i>
+<div>
+<p class="text-sm font-bold text-gray-200">마크다운 포맷</p>
+<p class="text-xs text-gray-500 mt-1">일반 프롬프트와 동일하게 작성하되, 에이전트의 역할과 절차를 명확히 구조화합니다.</p>
+</div>
+</div>
+<div class="flex items-start">
+<i class="fa-solid fa-paper-plane text-gray-500 mt-1 mr-3 w-4 text-center"></i>
+<div>
+<p class="text-sm font-bold text-gray-200">사용 예시</p>
+<p class="text-xs text-green-400 font-mono mt-1 bg-gray-900 p-1 rounded inline-block">
+                                    /project:review-pr 1234
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Tip Box -->
+<div class="bg-[#1c2128] p-4 rounded border border-blue-900/50 flex items-start">
+<i class="fa-solid fa-lightbulb text-blue-400 mt-1 mr-3 text-lg"></i>
+<div>
+<p class="text-sm text-blue-100 font-bold mb-1">운영 Tip</p>
+<p class="text-xs text-blue-200/70">
+                        팀 내에서 자주 쓰는 복잡한 작업(버그 리포트 분석, 테스트 케이스 생성 등)을 템플릿화하여 <span class="text-white font-bold">표준화</span>하세요.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Right Column: Code Example (65%) -->
+<div class="w-[65%] h-full flex flex-col">
+<div class="editor-window flex-1">
+<!-- Editor Header -->
+<div class="editor-header">
+<div class="flex items-center">
+<div class="tab">
+<i class="fa-brands fa-markdown text-purple-400 mr-2"></i>
+                            review-pr.md
+                            <i class="fa-solid fa-xmark ml-2 text-gray-500 text-xs"></i>
+</div>
+</div>
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-gray-600"></div>
+<div class="w-3 h-3 rounded-full bg-gray-600"></div>
+</div>
+</div>
+<!-- Editor Content -->
+<div class="p-6 font-mono text-sm leading-7 overflow-y-auto flex bg-[#0d1117] flex-1">
+<div class="line-numbers text-gray-600 border-r border-gray-800 pr-4 mr-4 select-none">
+                        1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20
+                    </div>
+<div class="code-content w-full">
+<p><span class="syntax-header"># PR Review Automation Agent</span></p>
+<p class="mb-4"><span class="syntax-comment">&gt; GitHub PR을 분석하고 전문적인 리뷰 코멘트를 작성합니다.</span></p>
+<p><span class="syntax-comment">!-- Step 1: Capture User Input --</span></p>
+<p class="mb-2"><span class="syntax-keyword">PR_NUMBER</span> = <span class="syntax-var">$ARGUMENTS</span></p>
+<p class="mt-4"><span class="syntax-header">## 🤖 Instructions</span></p>
+<p class="mb-2">You are a Senior Tech Lead. Please review the PR following these steps:</p>
+<p><span class="syntax-list">1.</span> Fetch PR details: <span class="syntax-cmd">gh pr view $PR_NUMBER</span></p>
+<p><span class="syntax-list">2.</span> Analyze changes: <span class="syntax-cmd">gh pr diff $PR_NUMBER</span></p>
+<p><span class="syntax-list">3.</span> Check for:</p>
+<p class="pl-4"><span class="syntax-list">-</span> Security vulnerabilities</p>
+<p class="pl-4"><span class="syntax-list">-</span> Performance bottlenecks</p>
+<p class="pl-4"><span class="syntax-list">-</span> Code style consistency</p>
+<p class="mt-4"><span class="syntax-header">## 📝 Output Format</span></p>
+<p><span class="syntax-header">### 🔍 Summary</span></p>
+<p>(Briefly explain what this PR does)</p>
+<p class="mt-2"><span class="syntax-header">### ⚠️ Critical Issues</span></p>
+<p>(List critical bugs or security risks, if any)</p>
+<p class="mt-2"><span class="syntax-header">### 💡 Suggestions</span></p>
+<p>(Refactoring ideas using clean code principles)</p>
+</div>
+</div>
+</div>
+<!-- Code Explanation Footer -->
+<div class="mt-3 flex justify-between text-xs text-gray-500 font-mono px-1">
+<span>Argument Injection</span>
+<span>Path: .claude/commands/review-pr.md</span>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b44eca3d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

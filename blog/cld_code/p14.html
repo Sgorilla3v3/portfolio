@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>고급 설정 및 커스터마이징</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0d1117;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        /* Header */
+        .header-box {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Card Style */
+        .config-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            position: relative;
+        }
+        .config-card:hover {
+            border-color: #58a6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #30363d;
+            background-color: #1c2128;
+            display: flex;
+            align-items: center;
+        }
+        .icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 16px;
+        }
+
+        .card-body {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Mini Code Editor */
+        .mini-editor {
+            background-color: #010409;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.6;
+            padding: 16px;
+            color: #e6edf3;
+            margin-top: auto;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .filename-badge {
+            position: absolute;
+            top: -10px;
+            right: 12px;
+            background-color: #30363d;
+            color: #c9d1d9;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            border: 1px solid #484f58;
+            font-weight: 500;
+        }
+
+        /* Syntax Highlighting */
+        .sy-key { color: #79c0ff; } /* Blue */
+        .sy-str { color: #a5d6ff; } /* Light Blue */
+        .sy-num { color: #d2a8ff; } /* Purple */
+        .sy-bool { color: #ff7b72; } /* Red */
+        .sy-kwd { color: #ff7b72; } /* Red (Keywords) */
+        .sy-func { color: #d2a8ff; } /* Purple (Functions) */
+        .sy-cls { color: #d2a8ff; font-weight: bold; } /* Class */
+        .sy-cmt { color: #8b949e; font-style: italic; }
+
+        /* Specific Theme Colors */
+        .theme-blue .icon-box { background: rgba(56, 139, 253, 0.15); color: #58a6ff; border: 1px solid rgba(56, 139, 253, 0.3); }
+        .theme-orange .icon-box { background: rgba(210, 153, 34, 0.15); color: #d29922; border: 1px solid rgba(210, 153, 34, 0.3); }
+        .theme-purple .icon-box { background: rgba(163, 113, 247, 0.15); color: #d2a8ff; border: 1px solid rgba(163, 113, 247, 0.3); }
+
+        .arrow-indicator {
+            position: absolute;
+            right: -16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #30363d;
+            font-size: 24px;
+            z-index: 5;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header-box">
+<div class="flex items-center space-x-4">
+<div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+<i class="fas fa-sliders-h text-3xl text-gray-300"></i>
+</div>
+<div>
+<h1 class="text-3xl font-bold text-white tracking-tight">고급 설정 및 커스터마이징</h1>
+<p class="text-gray-400 mt-1">프로필, 환경, 플러그인을 통한 워크플로우 무한 확장</p>
+</div>
+</div>
+<div class="flex space-x-2">
+<span class="px-3 py-1 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-400 font-mono">~/.claude-code/config.json</span>
+</div>
+</div>
+<!-- Main Content: 3 Columns -->
+<div class="flex flex-1 gap-6 min-h-0">
+<!-- Column 1: Profiles -->
+<div class="flex-1 min-w-0">
+<div class="config-card theme-blue">
+<div class="card-header">
+<div class="icon-box">
+<i class="fas fa-id-card-alt"></i>
+</div>
+<h2 class="text-lg font-bold text-white">프로필 시스템</h2>
+</div>
+<div class="card-body">
+<p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            연구자, 개발자 등 역할에 따라 최적화된 명령어 세트와 프롬프트 템플릿을 정의하여 컨텍스트 전환을 가속화합니다.
+                        </p>
+<div class="mini-editor">
+<div class="filename-badge">profiles/researcher.json</div>
+<div><span class="sy-key">"commands"</span>: {</div>
+<div>&nbsp;&nbsp;<span class="sy-key">"paper-analysis"</span>: {</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-key">"desc"</span>: <span class="sy-str">"논문 분석 및 노트 생성"</span>,</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-key">"template"</span>: <span class="sy-str">"새 논문을 분석해서..."</span>,</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-key">"auto_tag"</span>: <span class="sy-bool">true</span>,</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-key">"create_backlinks"</span>: <span class="sy-bool">true</span></div>
+<div>&nbsp;&nbsp;}</div>
+<div>}</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 2: Environments -->
+<div class="flex-1 min-w-0">
+<div class="config-card theme-orange">
+<div class="card-header">
+<div class="icon-box">
+<i class="fas fa-server"></i>
+</div>
+<h2 class="text-lg font-bold text-white">동적 환경 설정</h2>
+</div>
+<div class="card-body">
+<p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            개발(Dev), 운영(Prod) 환경에 따라 볼트 경로와 안전 장치(Safety Checks)를 동적으로 분리하여 운영합니다.
+                        </p>
+<div class="mini-editor">
+<div class="filename-badge">env/production.json</div>
+<div>{</div>
+<div>&nbsp;&nbsp;<span class="sy-key">"environment"</span>: <span class="sy-str">"production"</span>,</div>
+<div>&nbsp;&nbsp;<span class="sy-key">"vault_path"</span>: <span class="sy-str">"/prod/knowledge-base"</span>,</div>
+<div>&nbsp;&nbsp;<span class="sy-key">"model"</span>: <span class="sy-str">"claude-3-opus-20240229"</span>,</div>
+<div>&nbsp;&nbsp;<span class="sy-key">"safety_checks"</span>: <span class="sy-bool">true</span>,</div>
+<div>&nbsp;&nbsp;<span class="sy-key">"backup_before_modify"</span>: <span class="sy-bool">true</span>,</div>
+<div>&nbsp;&nbsp;<span class="sy-key">"audit_log"</span>: <span class="sy-bool">true</span></div>
+<div>}</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 3: Plugins -->
+<div class="flex-1 min-w-0">
+<div class="config-card theme-purple">
+<div class="card-header">
+<div class="icon-box">
+<i class="fas fa-puzzle-piece"></i>
+</div>
+<h2 class="text-lg font-bold text-white">플러그인 확장</h2>
+</div>
+<div class="card-body">
+<p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            JavaScript를 사용하여 명령어 전처리(Pre) 및 결과 후처리(Post) 로직을 주입하고 기능을 커스터마이징합니다.
+                        </p>
+<div class="mini-editor">
+<div class="filename-badge">plugins/enhancer.js</div>
+<div><span class="sy-kwd">class</span> <span class="sy-cls">ObsidianEnhancer</span> {</div>
+<div>&nbsp;&nbsp;<span class="sy-func">preProcess</span>(<span class="sy-str">cmd</span>) {</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-cmt">// 최근 파일 컨텍스트 자동 주입</span></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-kwd">return</span> <span class="sy-str">cmd</span> + <span class="sy-func">getRecentFiles</span>();</div>
+<div>&nbsp;&nbsp;}</div>
+<div>&nbsp;&nbsp;<span class="sy-func">postProcess</span>(<span class="sy-str">result</span>) {</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-cmt">// 품질 검사 및 메타데이터 추가</span></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-kwd">return</span> <span class="sy-func">addMetadata</span>(<span class="sy-str">result</span>);</div>
+<div>&nbsp;&nbsp;}</div>
+<div>}</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-8 flex justify-between items-center text-xs text-gray-500 font-mono border-t border-gray-800 pt-4">
+<div class="flex items-center">
+<i class="fas fa-terminal mr-2"></i>
+<span>Usage: claude-code --profile researcher --env production</span>
+</div>
+<div>
+<span>EXTENSIBILITY: High</span>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f8ceb723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

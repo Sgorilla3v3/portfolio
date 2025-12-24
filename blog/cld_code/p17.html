@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>요약 및 다음 단계</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0d1117;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 40px;
+        }
+        
+        /* Column Styles */
+        .column-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 24px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        .column-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #30363d;
+        }
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        /* Summary Items */
+        .summary-item {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .summary-icon {
+            color: #58a6ff;
+            margin-top: 4px;
+            margin-right: 12px;
+        }
+        
+        /* Checklist Items */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(35, 134, 54, 0.1);
+            border: 1px solid rgba(35, 134, 54, 0.3);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+        .checklist-item:hover {
+            background-color: rgba(35, 134, 54, 0.2);
+            transform: translateX(4px);
+        }
+        .check-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #3fb950;
+            border-radius: 4px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #238636;
+        }
+        
+        /* Next Steps Timeline */
+        .step-container {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 24px;
+        }
+        .step-container::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 24px;
+            bottom: -24px;
+            width: 2px;
+            background-color: #30363d;
+        }
+        .step-container:last-child::before {
+            display: none;
+        }
+        .step-dot {
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #1f6feb;
+            border: 2px solid #0d1117;
+            box-shadow: 0 0 0 2px #1f6feb;
+        }
+        
+        /* Decoration */
+        .corner-decoration {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-size: 140px;
+            opacity: 0.03;
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center space-x-4">
+<div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+<i class="fas fa-flag-checkered text-3xl text-green-400"></i>
+</div>
+<div>
+<h1 class="text-3xl font-bold text-white tracking-tight">요약 및 다음 단계</h1>
+<p class="text-gray-400 mt-1">지능형 지식 관리 시스템 구축을 위한 로드맵</p>
+</div>
+</div>
+<div class="bg-green-900 bg-opacity-20 border border-green-800 px-4 py-2 rounded-full flex items-center">
+<div class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
+<span class="text-green-400 text-sm font-bold">System Ready</span>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-3 gap-6 flex-1 h-full min-h-0">
+<!-- Column 1: Key Summary -->
+<div class="column-card">
+<div class="column-header">
+<div class="header-icon bg-blue-900 bg-opacity-20 text-blue-400 border border-blue-900">
+<i class="fas fa-lightbulb"></i>
+</div>
+<h2 class="text-xl font-bold text-white">핵심 요약</h2>
+</div>
+<div class="flex-1 overflow-y-auto pr-2">
+<div class="summary-item">
+<i class="fas fa-tachometer-alt summary-icon"></i>
+<div>
+<p class="text-white font-bold text-sm mb-1">압도적인 효율성</p>
+<p class="text-gray-400 text-xs leading-relaxed">
+                                CLI 기반 배치 처리로 수동 작업 대비 10배 이상의 속도 향상과 대규모 데이터 분석이 가능해집니다.
+                            </p>
+</div>
+</div>
+<div class="summary-item">
+<i class="fas fa-shield-alt summary-icon"></i>
+<div>
+<p class="text-white font-bold text-sm mb-1">안전한 통합</p>
+<p class="text-gray-400 text-xs leading-relaxed">
+                                MCP 표준을 통해 옵시디언 볼트에 안전하게 접근하며, 보안이 보장된 환경에서 AI를 활용합니다.
+                            </p>
+</div>
+</div>
+<div class="summary-item">
+<i class="fas fa-sync summary-icon"></i>
+<div>
+<p class="text-white font-bold text-sm mb-1">완전한 워크플로우 통합</p>
+<p class="text-gray-400 text-xs leading-relaxed">
+                                GitHub Actions와 연동하여 개발, 문서화, 지식 관리가 하나의 파이프라인으로 자동화됩니다.
+                            </p>
+</div>
+</div>
+</div>
+<i class="fas fa-quote-right corner-decoration text-white"></i>
+</div>
+<!-- Column 2: Action Checklist -->
+<div class="column-card" style="border-color: #238636;">
+<div class="column-header">
+<div class="header-icon bg-green-900 bg-opacity-20 text-green-400 border border-green-900">
+<i class="fas fa-tasks"></i>
+</div>
+<h2 class="text-xl font-bold text-white">바로 실행 체크리스트</h2>
+</div>
+<div class="flex-1">
+<div class="checklist-item">
+<div class="check-box"><i class="fas fa-check text-white text-xs"></i></div>
+<div>
+<p class="text-white font-bold text-sm">Claude Code 설치</p>
+<p class="text-gray-400 text-xs mt-0.5"><code>npm install -g @anthropic-ai/claude-code</code></p>
+</div>
+</div>
+<div class="checklist-item">
+<div class="check-box"><i class="fas fa-check text-white text-xs"></i></div>
+<div>
+<p class="text-white font-bold text-sm">볼트 경로 설정</p>
+<p class="text-gray-400 text-xs mt-0.5">MCP 서버 설정 파일에 실제 경로 입력</p>
+</div>
+</div>
+<div class="checklist-item">
+<div class="check-box"><i class="fas fa-check text-white text-xs"></i></div>
+<div>
+<p class="text-white font-bold text-sm">기본 명령 테스트</p>
+<p class="text-gray-400 text-xs mt-0.5">"지난 주 노트를 분석해줘" 등 간단한 명령 실행</p>
+</div>
+</div>
+<div class="checklist-item">
+<div class="check-box"><i class="fas fa-check text-white text-xs"></i></div>
+<div>
+<p class="text-white font-bold text-sm">자동화 스크립트 작성</p>
+<p class="text-gray-400 text-xs mt-0.5">주간 리포트 생성 등 반복 업무 1개 자동화</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 3: Next Steps -->
+<div class="column-card">
+<div class="column-header">
+<div class="header-icon bg-purple-900 bg-opacity-20 text-purple-400 border border-purple-900">
+<i class="fas fa-map-signs"></i>
+</div>
+<h2 class="text-xl font-bold text-white">다음 단계</h2>
+</div>
+<div class="flex-1 pt-2">
+<div class="step-container">
+<div class="step-dot"></div>
+<h4 class="text-white font-bold text-sm mb-1">고급 커스터마이징</h4>
+<p class="text-gray-400 text-xs">
+                            자신만의 업무 스타일에 맞춘 '프로필'을 생성하고, 자주 쓰는 명령어를 템플릿화하여 효율을 극대화하세요.
+                        </p>
+</div>
+<div class="step-container">
+<div class="step-dot" style="background-color: #a371f7; box-shadow: 0 0 0 2px #a371f7;"></div>
+<h4 class="text-white font-bold text-sm mb-1">모니터링 체계 구축</h4>
+<p class="text-gray-400 text-xs">
+                            지식 베이스의 품질을 주기적으로 감사하고, 자동 수정 스크립트를 통해 무결성을 유지하세요.
+                        </p>
+</div>
+<div class="step-container">
+<div class="step-dot" style="background-color: #f78166; box-shadow: 0 0 0 2px #f78166;"></div>
+<h4 class="text-white font-bold text-sm mb-1">확장 (Expansion)</h4>
+<p class="text-gray-400 text-xs">
+                            멀티모달 기능을 활용하여 이미지와 차트를 통합하고, 음성 워크플로우를 도입하여 상호작용 방식을 확장하세요.
+                        </p>
+</div>
+</div>
+<i class="fas fa-rocket corner-decoration text-white"></i>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-6 flex justify-between items-center text-xs text-gray-500 font-mono border-t border-gray-800 pt-4">
+<p>Generated for: Claude Code + Obsidian Integration Guide</p>
+<p>Final Step: Launch Your Knowledge System</p>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f8d01723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

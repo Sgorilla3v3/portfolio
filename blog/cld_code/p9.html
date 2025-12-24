@@ -1,80 +1,122 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>실전 워크플로우: TDD 패턴</title>
+<title>실무 시나리오 #1: 연구자/학자</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #0d1117;
             color: #c9d1d9;
-            overflow: auto;
-        }
-        .font-mono {
-            font-family: 'Nanum Gothic Coding', monospace;
-        }
-        
-        /* Step Card Styling */
-        .step-card {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            position: relative;
             overflow: hidden;
         }
-        .step-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: #58a6ff;
-        }
-        
-        /* Connecting Arrow */
-        .arrow-connector {
-            position: absolute;
-            top: 50%;
-            right: -24px;
-            transform: translateY(-50%);
-            z-index: 10;
-            color: #30363d;
-            font-size: 1.5rem;
-        }
-        
-        /* Terminal Box */
-        .terminal-box {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 12px;
-            font-family: 'Nanum Gothic Coding', monospace;
-            font-size: 0.75rem;
-            color: #e6edf3;
+        .slide-container {
+            width: 1280px;
+            height: 720px;
             position: relative;
-        }
-        .terminal-box::before {
-            content: "$";
-            color: #3fb950;
-            margin-right: 8px;
-            font-weight: bold;
+            background-color: #0d1117;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 40px;
         }
         
-        /* Step Number Badge */
-        .step-badge {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
+        /* Role Banner */
+        .role-banner {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .role-icon-box {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(56, 139, 253, 0.1);
+            border: 1px solid rgba(56, 139, 253, 0.3);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-right: 10px;
+            font-size: 40px;
+            color: #58a6ff;
+            margin-right: 24px;
         }
-
-        .code-keyword { color: #ff7b72; font-weight: bold; }
-        .code-string { color: #a5d6ff; }
+        
+        /* Scenario Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            flex: 1;
+            min-height: 0; /* Fix flex overflow */
+        }
+        
+        .scenario-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .scenario-card:hover {
+            border-color: #8b949e;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        
+        /* Terminal Mini Style */
+        .terminal-mini {
+            background-color: #010409;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #e6edf3;
+            margin-top: auto;
+            position: relative;
+        }
+        .terminal-mini::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #30363d; /* Header bar simulation */
+        }
+        
+        .cmd-prompt { color: #238636; margin-right: 8px; font-weight: bold; user-select: none; }
+        .cmd-text { color: #d2a8ff; } /* Purple */
+        .cmd-arg { color: #a5d6ff; } /* Light Blue */
+        
+        /* Specific Colors */
+        .theme-blue .card-icon { background: rgba(56, 139, 253, 0.15); color: #58a6ff; border: 1px solid rgba(56, 139, 253, 0.3); }
+        .theme-green .card-icon { background: rgba(35, 134, 54, 0.15); color: #3fb950; border: 1px solid rgba(35, 134, 54, 0.3); }
+        .theme-purple .card-icon { background: rgba(163, 113, 247, 0.15); color: #d2a8ff; border: 1px solid rgba(163, 113, 247, 0.3); }
     </style>
 <style id="slide-selected-style">
   [data-slide-selected]::before
@@ -110,193 +152,101 @@
 
 
 </style></head>
-<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
-<!-- Header Area -->
-<div class="w-full max-w-7xl mb-8 flex justify-between items-end border-b border-gray-800 pb-4">
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center space-x-4">
+<div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+<i class="fas fa-user-graduate text-3xl text-blue-400"></i>
+</div>
 <div>
-<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
-<i class="fa-solid fa-rotate-right text-green-400 mr-3"></i>
-                실전 워크플로우: TDD 패턴
-            </h1>
-<p class="text-gray-400 text-lg">AI 에이전트와 함께하는 테스트 주도 개발(Test-Driven Development)의 강력한 루프</p>
-</div>
-<div class="flex items-center gap-2">
-<span class="px-3 py-1 rounded-full bg-green-900/30 text-green-400 border border-green-800/50 text-xs font-bold">
-<i class="fa-solid fa-check-double mr-1"></i> High Quality
-            </span>
+<h1 class="text-3xl font-bold text-white tracking-tight">실무 시나리오 #1: 연구자/학자</h1>
+<p class="text-gray-400 mt-1">논문 큐레이션부터 학술 발표 준비까지 연구 라이프사이클 자동화</p>
 </div>
 </div>
-<!-- Main Content: 4 Columns Flow -->
-<div class="w-full max-w-7xl flex-1 grid grid-cols-4 gap-6 min-h-0 relative">
-<!-- Step 1: Test Spec (Red) -->
-<div class="step-card flex flex-col h-full border-t-4 border-t-[#ff7b72]">
-<!-- Header -->
-<div class="p-5 pb-2">
-<div class="flex items-center mb-3">
-<div class="step-badge bg-red-900/50 text-red-400 border border-red-800">1</div>
-<h2 class="text-xl font-bold text-gray-100">Write Test</h2>
+<div class="bg-blue-900 bg-opacity-20 border border-blue-800 px-4 py-2 rounded-full">
+<span class="text-blue-400 text-sm font-bold">Research &amp; Academia</span>
 </div>
-<div class="text-xs text-red-400 font-bold uppercase tracking-wider mb-4">
-<i class="fa-solid fa-vial mr-1"></i> 테스트 작성 (Red)
-                </div>
-<p class="text-sm text-gray-400 leading-relaxed mb-4">
-                    요구사항을 코드가 아닌 <strong>테스트 케이스</strong>로 먼저 정의합니다. AI에게 구현체 없이 테스트만 작성하게 합니다.
+</div>
+<!-- Role Banner (Optional Context) -->
+<div class="role-banner">
+<div class="role-icon-box">
+<i class="fas fa-microscope"></i>
+</div>
+<div class="flex-1">
+<h2 class="text-xl font-bold text-white mb-2">지능형 연구 파트너 (AI Research Partner)</h2>
+<p class="text-gray-400 text-sm leading-relaxed">
+                    수백 편의 논문을 효율적으로 소화하고, 복잡하게 얽힌 연구 프로젝트의 진행 상황을 시각화하며, 
+                    학회 발표 자료 준비 시간을 획기적으로 단축합니다. 단순 정리는 AI에게 맡기고, 당신은 통찰과 발견에 집중하세요.
                 </p>
 </div>
-<!-- Content -->
-<div class="px-5 flex-1">
-<ul class="text-sm text-gray-300 space-y-2 mb-4">
-<li class="flex items-start">
-<i class="fa-solid fa-check text-red-500 mt-1 mr-2 text-xs"></i>
-<span>예상 입출력 및 예외 정의</span>
-</li>
-<li class="flex items-start">
-<i class="fa-solid fa-check text-red-500 mt-1 mr-2 text-xs"></i>
-<span>엣지 케이스 시나리오 포함</span>
-</li>
-</ul>
 </div>
-<!-- Footer: Prompt -->
-<div class="p-5 pt-0 mt-auto">
-<div class="text-xs text-gray-500 mb-2 font-mono">Prompt Example:</div>
-<div class="terminal-box">
-<p>User 로그아웃 기능에 대한 테스트를 작성해 줘.</p>
-<p class="mt-1 text-gray-500"># 아직 기능 코드는 구현하지 마.</p>
+<!-- Scenarios Grid -->
+<div class="cards-grid">
+<!-- Scenario 1 -->
+<div class="scenario-card theme-blue">
+<div class="card-icon">
+<i class="fas fa-book-reader"></i>
 </div>
-</div>
-<!-- Arrow -->
-<div class="arrow-connector">
-<i class="fa-solid fa-chevron-right text-gray-700"></i>
-</div>
-</div>
-<!-- Step 2: Verify Fail (Orange) -->
-<div class="step-card flex flex-col h-full border-t-4 border-t-[#d29922]">
-<!-- Header -->
-<div class="p-5 pb-2">
-<div class="flex items-center mb-3">
-<div class="step-badge bg-yellow-900/50 text-yellow-500 border border-yellow-800">2</div>
-<h2 class="text-xl font-bold text-gray-100">Run &amp; Fail</h2>
-</div>
-<div class="text-xs text-yellow-500 font-bold uppercase tracking-wider mb-4">
-<i class="fa-solid fa-circle-xmark mr-1"></i> 실패 확인
-                </div>
-<p class="text-sm text-gray-400 leading-relaxed mb-4">
-                    테스트가 의도대로 실패하는지 확인합니다. 이 단계는 테스트 코드가 올바르게 동작함을 보증합니다.
+<h3 class="text-lg font-bold text-white mb-3">논문 처리 완전 자동화</h3>
+<p class="text-gray-400 text-sm mb-6 flex-1">
+                    새로운 PDF 논문들의 초록, 방법론, 핵심 기여점을 자동으로 요약하고, 기존 연구 노트와의 인용 관계를 매핑하여 지식 그래프를 확장합니다.
                 </p>
-</div>
-<!-- Content -->
-<div class="px-5 flex-1">
-<ul class="text-sm text-gray-300 space-y-2 mb-4">
-<li class="flex items-start">
-<i class="fa-solid fa-check text-yellow-500 mt-1 mr-2 text-xs"></i>
-<span>테스트 실행 및 실패 로그 확인</span>
-</li>
-<li class="flex items-start">
-<i class="fa-solid fa-check text-yellow-500 mt-1 mr-2 text-xs"></i>
-<span>잘못된 테스트 여부 검증</span>
-</li>
-</ul>
-</div>
-<!-- Footer: Prompt -->
-<div class="p-5 pt-0 mt-auto">
-<div class="text-xs text-gray-500 mb-2 font-mono">Prompt Example:</div>
-<div class="terminal-box">
-<p>npm test 실행해 줘.</p>
-<p class="mt-1">모든 테스트가 <span class="code-keyword">실패</span>하는 것을 확인했어?</p>
+<div class="terminal-mini">
+<div class="flex">
+<span class="cmd-prompt">➜</span>
+<div class="flex-1">
+<span class="text-white">claude-code</span>
+<span class="cmd-arg">"Papers/ 폴더의 새 PDF들을 분석해서 초록, 기여점, 방법론을 요약하고 표준 템플릿으로 개별 노트를 생성해줘"</span>
 </div>
 </div>
-<!-- Arrow -->
-<div class="arrow-connector">
-<i class="fa-solid fa-chevron-right text-gray-700"></i>
 </div>
 </div>
-<!-- Step 3: Implement (Green) -->
-<div class="step-card flex flex-col h-full border-t-4 border-t-[#3fb950]">
-<!-- Header -->
-<div class="p-5 pb-2">
-<div class="flex items-center mb-3">
-<div class="step-badge bg-green-900/50 text-green-400 border border-green-800">3</div>
-<h2 class="text-xl font-bold text-gray-100">Make it Pass</h2>
+<!-- Scenario 2 -->
+<div class="scenario-card theme-green">
+<div class="card-icon">
+<i class="fas fa-chart-line"></i>
 </div>
-<div class="text-xs text-green-400 font-bold uppercase tracking-wider mb-4">
-<i class="fa-solid fa-code mr-1"></i> 구현 (Green)
-                </div>
-<p class="text-sm text-gray-400 leading-relaxed mb-4">
-                    테스트를 통과하기 위한 <strong>최소한의 코드</strong>를 작성합니다. 테스트 코드는 절대 수정하지 않습니다.
+<h3 class="text-lg font-bold text-white mb-3">연구 진행 종합 대시보드</h3>
+<p class="text-gray-400 text-sm mb-6 flex-1">
+                    산재된 연구 노트들을 분석하여 프로젝트별 진행률, 병목 지점, 주요 마일스톤 달성 여부를 한눈에 파악할 수 있는 대시보드를 생성합니다.
                 </p>
-</div>
-<!-- Content -->
-<div class="px-5 flex-1">
-<ul class="text-sm text-gray-300 space-y-2 mb-4">
-<li class="flex items-start">
-<i class="fa-solid fa-check text-green-500 mt-1 mr-2 text-xs"></i>
-<span>테스트 코드 수정 금지 (불변)</span>
-</li>
-<li class="flex items-start">
-<i class="fa-solid fa-check text-green-500 mt-1 mr-2 text-xs"></i>
-<span>모든 테스트 통과 목표</span>
-</li>
-<li class="flex items-start">
-<i class="fa-solid fa-check text-green-500 mt-1 mr-2 text-xs"></i>
-<span>코드 구현 -&gt; 테스트 반복 실행</span>
-</li>
-</ul>
-</div>
-<!-- Footer: Prompt -->
-<div class="p-5 pt-0 mt-auto">
-<div class="text-xs text-gray-500 mb-2 font-mono">Prompt Example:</div>
-<div class="terminal-box">
-<p>테스트 코드는 그대로 두고,</p>
-<p class="mt-1">모두 통과하도록 <span class="code-keyword">구현</span>만 수정해 줘.</p>
+<div class="terminal-mini">
+<div class="flex">
+<span class="cmd-prompt">➜</span>
+<div class="flex-1">
+<span class="text-white">claude-code</span>
+<span class="cmd-arg">"모든 연구 노트를 종합해서 프로젝트별 진행률, 병목점, 다음 단계를 포함한 'Research-Status-Dashboard'를 생성해줘"</span>
 </div>
 </div>
-<!-- Arrow -->
-<div class="arrow-connector">
-<i class="fa-solid fa-chevron-right text-gray-700"></i>
 </div>
 </div>
-<!-- Step 4: Refactor (Blue) -->
-<div class="step-card flex flex-col h-full border-t-4 border-t-[#58a6ff]">
-<!-- Header -->
-<div class="p-5 pb-2">
-<div class="flex items-center mb-3">
-<div class="step-badge bg-blue-900/50 text-blue-400 border border-blue-800">4</div>
-<h2 class="text-xl font-bold text-gray-100">Refactor</h2>
+<!-- Scenario 3 -->
+<div class="scenario-card theme-purple">
+<div class="card-icon">
+<i class="fas fa-chalkboard-teacher"></i>
 </div>
-<div class="text-xs text-blue-400 font-bold uppercase tracking-wider mb-4">
-<i class="fa-solid fa-broom mr-1"></i> 리팩터링
-                </div>
-<p class="text-sm text-gray-400 leading-relaxed mb-4">
-                    기능 변경 없이 코드의 구조와 가독성을 개선합니다. 안정적인 테스트가 있어 과감한 수정이 가능합니다.
+<h3 class="text-lg font-bold text-white mb-3">학회 발표 준비 가속화</h3>
+<p class="text-gray-400 text-sm mb-6 flex-1">
+                    연구 결과를 바탕으로 논리적인 스토리텔링 구조를 설계하고, 슬라이드 아웃라인과 예상 질문 답변 리스트를 자동으로 준비합니다.
                 </p>
-</div>
-<!-- Content -->
-<div class="px-5 flex-1">
-<ul class="text-sm text-gray-300 space-y-2 mb-4">
-<li class="flex items-start">
-<i class="fa-solid fa-check text-blue-500 mt-1 mr-2 text-xs"></i>
-<span>중복 제거 및 구조 개선</span>
-</li>
-<li class="flex items-start">
-<i class="fa-solid fa-check text-blue-500 mt-1 mr-2 text-xs"></i>
-<span>기능 동작 유지 확인</span>
-</li>
-<li class="flex items-start">
-<i class="fa-solid fa-check text-blue-500 mt-1 mr-2 text-xs"></i>
-<span>최종 커밋</span>
-</li>
-</ul>
-</div>
-<!-- Footer: Prompt -->
-<div class="p-5 pt-0 mt-auto">
-<div class="text-xs text-gray-500 mb-2 font-mono">Prompt Example:</div>
-<div class="terminal-box">
-<p>결과는 유지하면서 코드를 정리해 줘.</p>
-<p class="mt-1">변수명 개선하고 함수 분리해 줘.</p>
+<div class="terminal-mini">
+<div class="flex">
+<span class="cmd-prompt">➜</span>
+<div class="flex-1">
+<span class="text-white">claude-code</span>
+<span class="cmd-arg">"다음 주 학회 발표를 위해 연구 결과를 정리하고, 스토리텔링 구조와 슬라이드 아웃라인, 예상 Q&amp;A를 작성해줘"</span>
 </div>
 </div>
 </div>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b45edf3d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+</div>
+<!-- Footer -->
+<div class="absolute bottom-6 right-12 text-gray-600 text-xs font-mono">
+<span>SCENARIO: Researcher_Workflow_v2.0</span>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f7cca723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

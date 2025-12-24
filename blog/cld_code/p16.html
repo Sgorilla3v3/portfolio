@@ -1,0 +1,370 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>미래 확장: 멀티모달·음성 통합</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0d1117;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        /* Header Styles */
+        .header-badge {
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* Card Styles */
+        .future-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .future-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #30363d;
+            transition: background 0.3s;
+        }
+        .future-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* Multimodal specific */
+        .card-multimodal:hover { border-color: #38bdf8; }
+        .card-multimodal:hover::before { background: #38bdf8; }
+        .icon-multimodal { color: #38bdf8; background: rgba(56, 189, 248, 0.1); }
+        
+        /* Voice specific */
+        .card-voice:hover { border-color: #c084fc; }
+        .card-voice:hover::before { background: #c084fc; }
+        .icon-voice { color: #c084fc; background: rgba(192, 132, 252, 0.1); }
+
+        .feature-icon-box {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Visual Elements */
+        .flow-visual {
+            background-color: #010409;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+        .flow-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+        .flow-node-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .flow-arrow {
+            flex: 1;
+            height: 2px;
+            background: #30363d;
+            margin: 0 12px;
+            position: relative;
+            top: -14px;
+        }
+        .flow-arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -3px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid #30363d;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+
+        /* Terminal Style */
+        .terminal-box {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: auto;
+        }
+        .cmd-prompt { color: #3fb950; margin-right: 8px; }
+        .cmd-text { color: #e6edf3; }
+        .cmd-arg { color: #a5d6ff; }
+        .cmd-flag { color: #79c0ff; }
+
+        /* Feature List */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #8b949e;
+        }
+        .feature-item i {
+            margin-top: 4px;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        .card-multimodal .feature-item i { color: #38bdf8; }
+        .card-voice .feature-item i { color: #c084fc; }
+
+        /* Bottom Section */
+        .considerations-bar {
+            background-color: #161b22;
+            border-top: 1px solid #30363d;
+            padding: 20px 40px;
+            margin: 0 -40px -40px -40px; /* Stretch full width */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center space-x-4">
+<div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+<i class="fas fa-rocket text-3xl text-purple-400"></i>
+</div>
+<div>
+<h1 class="text-3xl font-bold text-white tracking-tight">미래 확장: 멀티모달·음성 통합</h1>
+<p class="text-gray-400 mt-1">텍스트를 넘어선 AI 상호작용의 새로운 지평</p>
+</div>
+</div>
+<div class="header-badge">
+<i class="fas fa-map-signs mr-2"></i>Future Roadmap 2025+
+            </div>
+</div>
+<!-- Main Content -->
+<div class="grid grid-cols-2 gap-8 flex-1 mb-8">
+<!-- Left Column: Multimodal -->
+<div class="future-card card-multimodal">
+<div class="flex justify-between items-start">
+<div class="feature-icon-box icon-multimodal">
+<i class="fas fa-eye"></i>
+</div>
+<span class="text-xs font-mono text-gray-500 border border-gray-700 rounded px-2 py-1">v2.1 Preview</span>
+</div>
+<h2 class="text-xl font-bold text-white mb-2">멀티모달 AI 워크플로우</h2>
+<p class="text-sm text-gray-400 mb-4">
+                    이미지, 다이어그램, 화이트보드 사진을 텍스트와 동일한 수준으로 분석하고 처리하여 지식 베이스에 통합합니다.
+                </p>
+<!-- Visual Flow -->
+<div class="flow-visual">
+<div class="flow-node">
+<div class="flow-node-icon text-blue-400"><i class="fas fa-image"></i></div>
+<span class="text-xs text-gray-500">Image</span>
+</div>
+<div class="flow-arrow"></div>
+<div class="flow-node">
+<div class="flow-node-icon text-white bg-blue-600 border-blue-500"><i class="fas fa-brain"></i></div>
+<span class="text-xs text-white font-bold">Analysis</span>
+</div>
+<div class="flow-arrow"></div>
+<div class="flow-node">
+<div class="flow-node-icon text-green-400"><i class="fas fa-file-alt"></i></div>
+<span class="text-xs text-gray-500">Structured Note</span>
+</div>
+</div>
+<ul class="feature-list">
+<li class="feature-item">
+<i class="fas fa-check"></i>
+<p>화이트보드 사진을 텍스트로 변환하고 구조화된 회의록 생성</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-check"></i>
+<p>스크린샷과 다이어그램이 포함된 노트의 시각적 인덱스 자동 생성</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-check"></i>
+<p>손글씨 메모를 디지털 텍스트로 변환 및 관련 프로젝트 연결</p>
+</li>
+</ul>
+<div class="terminal-box">
+<span class="cmd-prompt">➜</span>
+<span class="cmd-text">claude-code</span>
+<span class="cmd-flag">--multimodal</span>
+<span class="cmd-arg">"meeting_board.jpg를 분석해서 다이어그램을 Mermaid 코드로 변환하고 회의록 노트 생성"</span>
+</div>
+</div>
+<!-- Right Column: Voice -->
+<div class="future-card card-voice">
+<div class="flex justify-between items-start">
+<div class="feature-icon-box icon-voice">
+<i class="fas fa-microphone-lines"></i>
+</div>
+<span class="text-xs font-mono text-gray-500 border border-gray-700 rounded px-2 py-1">Research Preview</span>
+</div>
+<h2 class="text-xl font-bold text-white mb-2">음성 기반 통합 워크플로우</h2>
+<p class="text-sm text-gray-400 mb-4">
+                    자연어 음성 명령으로 시스템을 제어하고, 회의 녹음과 보이스 메모에서 핵심 인사이트를 자동으로 추출합니다.
+                </p>
+<!-- Visual Flow -->
+<div class="flow-visual">
+<div class="flow-node">
+<div class="flow-node-icon text-purple-400"><i class="fas fa-wave-square"></i></div>
+<span class="text-xs text-gray-500">Audio</span>
+</div>
+<div class="flow-arrow"></div>
+<div class="flow-node">
+<div class="flow-node-icon text-white bg-purple-600 border-purple-500"><i class="fas fa-cogs"></i></div>
+<span class="text-xs text-white font-bold">Processing</span>
+</div>
+<div class="flow-arrow"></div>
+<div class="flow-node">
+<div class="flow-node-icon text-yellow-400"><i class="fas fa-lightbulb"></i></div>
+<span class="text-xs text-gray-500">Action Items</span>
+</div>
+</div>
+<ul class="feature-list">
+<li class="feature-item">
+<i class="fas fa-check"></i>
+<p>회의 녹음을 자동 전사(STT)하고 요약하여 팀 노트 공유</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-check"></i>
+<p>이동 중 보이스 메모를 남기면 관련 프로젝트 노트에 자동 추가</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-check"></i>
+<p>"지난 주 회의 내용 찾아줘"와 같은 음성 기반 검색 및 실행</p>
+</li>
+</ul>
+<div class="terminal-box">
+<span class="cmd-prompt">➜</span>
+<span class="cmd-text">claude-code</span>
+<span class="cmd-flag">--voice-integration</span>
+<span class="cmd-arg">"weekly_sync.mp3를 전사하고, 결정사항과 액션 아이템을 추출해서 이슈 트래커에 등록해줘"</span>
+</div>
+</div>
+</div>
+<!-- Considerations Footer -->
+<div class="considerations-bar">
+<div class="flex items-center text-sm font-bold text-gray-400 uppercase tracking-wider">
+<i class="fas fa-shield-alt mr-3 text-green-500"></i>운영 고려사항
+            </div>
+<div class="flex space-x-12">
+<div class="flex items-center space-x-3">
+<div class="w-2 h-2 rounded-full bg-gray-500"></div>
+<div>
+<p class="text-xs text-gray-400 font-bold mb-0.5">Privacy First</p>
+<p class="text-xs text-gray-600">개인정보 마스킹 및 로컬 처리 우선</p>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-2 h-2 rounded-full bg-gray-500"></div>
+<div>
+<p class="text-xs text-gray-400 font-bold mb-0.5">Audit Logs</p>
+<p class="text-xs text-gray-600">모든 자동화 작업의 투명한 기록</p>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-2 h-2 rounded-full bg-gray-500"></div>
+<div>
+<p class="text-xs text-gray-400 font-bold mb-0.5">Latency Control</p>
+<p class="text-xs text-gray-600">실시간 처리를 위한 엣지 컴퓨팅</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f8cf9723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

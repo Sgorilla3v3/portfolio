@@ -1,0 +1,358 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>옵시디언 플러그인 추천 목록</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1a1b26;
+        overflow: hidden;
+    }
+    .slide-container {
+        width: 1280px;
+        height: 720px;
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        padding: 3rem 4rem;
+        box-sizing: border-box;
+    }
+
+    /* Background Decorations */
+    .bg-decoration {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.1;
+        z-index: 0;
+    }
+    .deco-1 {
+        width: 600px;
+        height: 600px;
+        background-color: #7d5df6; /* Obsidian Purple */
+        top: -200px;
+        right: -200px;
+    }
+    .deco-2 {
+        width: 500px;
+        height: 500px;
+        background-color: #89b4fa;
+        bottom: -150px;
+        left: -100px;
+    }
+
+    /* Header */
+    .header-section {
+        margin-bottom: 2rem;
+        z-index: 20;
+        position: relative;
+    }
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    .page-title i {
+        color: #cba6f7;
+        margin-right: 1rem;
+    }
+    .page-subtitle {
+        font-size: 1.1rem;
+        color: #bac2de;
+        font-weight: 300;
+        margin-left: 3.5rem;
+    }
+
+    /* Main Grid Layout */
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 1.5rem;
+        z-index: 10;
+        height: 100%;
+    }
+
+    /* Section Styles */
+    .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .section-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+    }
+    .section-badge {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        margin-left: 1rem;
+        font-weight: 600;
+    }
+    .badge-core { background-color: rgba(137, 180, 250, 0.2); color: #89b4fa; }
+    .badge-community { background-color: rgba(250, 179, 135, 0.2); color: #fab387; }
+
+    /* Grid Containers */
+    .core-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    .community-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    /* Card Styles */
+    .plugin-card {
+        background-color: rgba(49, 50, 68, 0.6);
+        border: 1px solid rgba(186, 194, 222, 0.1);
+        border-radius: 12px;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        transition: transform 0.2s, background-color 0.2s;
+        backdrop-filter: blur(5px);
+    }
+    .plugin-card:hover {
+        transform: translateY(-3px);
+        background-color: rgba(49, 50, 68, 0.9);
+        border-color: rgba(203, 166, 247, 0.4);
+    }
+
+    /* Icon Box */
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .core-icon { background-color: rgba(137, 180, 250, 0.15); color: #89b4fa; }
+    .community-icon { background-color: rgba(250, 179, 135, 0.15); color: #fab387; }
+
+    /* Text Content */
+    .card-content {
+        flex: 1;
+        overflow: hidden;
+    }
+    .card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 0.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .card-desc {
+        font-size: 0.8rem;
+        color: #a6adc8;
+        line-height: 1.3;
+    }
+
+    /* Checkbox decoration */
+    .check-mark {
+        color: #a6e3a1;
+        margin-left: auto;
+        font-size: 0.9rem;
+    }
+</style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-plug"></i>
+            추천 플러그인 활성화
+        </h1>
+<p class="page-subtitle">
+            옵시디언의 기능을 확장하고 MCP 연동 효율을 높이기 위한 필수 설정입니다.
+        </p>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Core Plugins Section -->
+<div class="plugin-section">
+<div class="section-header">
+<h2 class="section-title">
+<i class="fas fa-cube mr-2"></i>Core Plugins
+                </h2>
+<span class="section-badge badge-core">필수 활성화 (설정 ⚙️ → Core plugins)</span>
+</div>
+<div class="core-grid">
+<!-- Item 1 -->
+<div class="plugin-card">
+<div class="icon-box core-icon"><i class="fas fa-folder-open"></i></div>
+<div class="card-content">
+<div class="card-title">File explorer</div>
+<div class="card-desc">파일 탐색기 뷰</div>
+</div>
+<i class="fas fa-check check-mark"></i>
+</div>
+<!-- Item 2 -->
+<div class="plugin-card">
+<div class="icon-box core-icon"><i class="fas fa-search"></i></div>
+<div class="card-content">
+<div class="card-title">Search</div>
+<div class="card-desc">전체 노트 검색</div>
+</div>
+<i class="fas fa-check check-mark"></i>
+</div>
+<!-- Item 3 -->
+<div class="plugin-card">
+<div class="icon-box core-icon"><i class="fas fa-bolt"></i></div>
+<div class="card-content">
+<div class="card-title">Quick switcher</div>
+<div class="card-desc">빠른 파일 전환</div>
+</div>
+<i class="fas fa-check check-mark"></i>
+</div>
+<!-- Item 4 -->
+<div class="plugin-card">
+<div class="icon-box core-icon"><i class="fas fa-circle-nodes"></i></div>
+<div class="card-content">
+<div class="card-title">Graph view</div>
+<div class="card-desc">연결망 시각화</div>
+</div>
+<i class="fas fa-check check-mark"></i>
+</div>
+<!-- Item 5 -->
+<div class="plugin-card">
+<div class="icon-box core-icon"><i class="fas fa-link"></i></div>
+<div class="card-content">
+<div class="card-title">Backlinks</div>
+<div class="card-desc">역방향 링크 확인</div>
+</div>
+<i class="fas fa-check check-mark"></i>
+</div>
+<!-- Item 6 -->
+<div class="plugin-card">
+<div class="icon-box core-icon"><i class="fas fa-tags"></i></div>
+<div class="card-content">
+<div class="card-title">Tag pane</div>
+<div class="card-desc">태그 목록 관리</div>
+</div>
+<i class="fas fa-check check-mark"></i>
+</div>
+<!-- Item 7 -->
+<div class="plugin-card">
+<div class="icon-box core-icon"><i class="fas fa-file-lines"></i></div>
+<div class="card-content">
+<div class="card-title">Templates</div>
+<div class="card-desc">문서 서식 활용</div>
+</div>
+<i class="fas fa-check check-mark"></i>
+</div>
+<!-- Item 8 -->
+<div class="plugin-card">
+<div class="icon-box core-icon"><i class="fas fa-calendar-day"></i></div>
+<div class="card-content">
+<div class="card-title">Daily notes</div>
+<div class="card-desc">매일의 기록 생성</div>
+</div>
+<i class="fas fa-check check-mark"></i>
+</div>
+</div>
+</div>
+<!-- Community Plugins Section -->
+<div class="plugin-section">
+<div class="section-header" style="margin-top: 1.5rem;">
+<h2 class="section-title">
+<i class="fas fa-users mr-2"></i>Community Plugins
+                </h2>
+<span class="section-badge badge-community">선택 사항 (설정 ⚙️ → Community plugins)</span>
+</div>
+<div class="community-grid">
+<!-- Item 1 -->
+<div class="plugin-card">
+<div class="icon-box community-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+<div class="card-content">
+<div class="card-title">Templater</div>
+<div class="card-desc">JavaScript 기반의 강력한 템플릿 엔진</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="plugin-card">
+<div class="icon-box community-icon"><i class="fas fa-database"></i></div>
+<div class="card-content">
+<div class="card-title">Dataview</div>
+<div class="card-desc">노트를 데이터베이스처럼 쿼리 조회</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="plugin-card">
+<div class="icon-box community-icon"><i class="fas fa-calendar-alt"></i></div>
+<div class="card-content">
+<div class="card-title">Calendar</div>
+<div class="card-desc">데일리 노트를 달력 형태로 시각화</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067ca91a30bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

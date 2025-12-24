@@ -1,0 +1,454 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>기본 연결 테스트 프롬프트</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 4rem;
+            box-sizing: border-box;
+        }
+
+        /* Background Decorations */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 600px;
+            height: 600px;
+            background-color: #89b4fa; /* Blue */
+            top: -200px;
+            right: -200px;
+        }
+        .deco-2 {
+            width: 500px;
+            height: 500px;
+            background-color: #cba6f7; /* Mauve */
+            bottom: -150px;
+            left: -100px;
+        }
+
+        /* Header */
+        .header-section {
+            margin-bottom: 2rem;
+            z-index: 20;
+            position: relative;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .page-title i {
+            color: #89b4fa;
+            margin-right: 1rem;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-left: 3.5rem;
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            display: flex;
+            gap: 2.5rem;
+            flex: 1;
+            z-index: 10;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Chat Panel (Left) */
+        .chat-panel {
+            flex: 1.3;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-window {
+            background-color: #11111b;
+            border-radius: 16px;
+            border: 1px solid #45475a;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #181825;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #313244;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: #cdd6f4;
+        }
+        .claude-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #d2a679; /* Claude color approx */
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e1e2e;
+            font-weight: 900;
+            font-size: 0.9rem;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: #a6e3a1;
+            background-color: rgba(166, 227, 161, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        .status-dot { width: 8px; height: 8px; background-color: #a6e3a1; border-radius: 50%; }
+
+        .chat-body {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            background-color: #1e1e2e;
+        }
+
+        /* Messages */
+        .message {
+            display: flex;
+            gap: 1rem;
+            max-width: 90%;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+        .user .avatar { background-color: #45475a; color: #cdd6f4; }
+        .ai .avatar { background-color: #d2a679; color: #1e1e2e; }
+
+        .bubble {
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        
+        .user .bubble {
+            background-color: #3e4052; /* Slightly lighter than bg */
+            color: #ffffff;
+            border-bottom-right-radius: 2px;
+        }
+
+        .ai .bubble {
+            background-color: #11111b; /* Darker bubble */
+            color: #cdd6f4;
+            border: 1px solid #313244;
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Tool Use Indicator */
+        .tool-use {
+            margin-bottom: 0.8rem;
+            background-color: #181825;
+            border: 1px solid #313244;
+            border-radius: 8px;
+            padding: 0.6rem 0.8rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #9399b2;
+        }
+        .tool-icon { color: #89b4fa; }
+        .tool-name { color: #a6e3a1; font-weight: 600; }
+
+        .chat-input-area {
+            padding: 1rem 1.5rem;
+            background-color: #181825;
+            border-top: 1px solid #313244;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .fake-input {
+            flex: 1;
+            height: 40px;
+            background-color: #313244;
+            border-radius: 8px;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            color: #9399b2;
+            font-size: 0.9rem;
+        }
+        .send-btn {
+            width: 40px;
+            height: 40px;
+            background-color: #d2a679;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e1e2e;
+        }
+
+        /* Info Panel (Right) */
+        .info-panel {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .prompt-card {
+            background-color: rgba(49, 50, 68, 0.4);
+            border: 1px solid rgba(137, 180, 250, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s;
+        }
+        .prompt-card:hover {
+            transform: translateX(-5px);
+            background-color: rgba(49, 50, 68, 0.6);
+            border-color: rgba(137, 180, 250, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+            color: #89b4fa;
+            font-weight: 700;
+        }
+
+        .prompt-text {
+            font-size: 1rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .prompt-desc {
+            font-size: 0.85rem;
+            color: #a6adc8;
+            line-height: 1.4;
+        }
+
+        .highlight-keyword {
+            color: #fab387;
+            font-weight: 700;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<!-- Header -->
+<div class="header-section">
+<h1 class="page-title">
+<i class="fas fa-comments"></i>
+            기본 연결 테스트 프롬프트
+        </h1>
+<p class="page-subtitle">
+            Claude와 Obsidian이 정상적으로 연결되었는지 확인하는 실제 대화 예시입니다.
+        </p>
+</div>
+<!-- Content -->
+<div class="content-wrapper">
+<!-- Left: Chat UI -->
+<div class="chat-panel">
+<div class="chat-window">
+<!-- Header -->
+<div class="chat-header">
+<div class="chat-title">
+<div class="claude-avatar">Ai</div>
+<span>Claude</span>
+</div>
+<div class="connection-status">
+<div class="status-dot"></div>
+<span>MCP Connected</span>
+</div>
+</div>
+<!-- Body -->
+<div class="chat-body">
+<!-- User Message 1 -->
+<div class="message user">
+<div class="avatar"><i class="fas fa-user"></i></div>
+<div class="bubble">
+<p>옵시디언 볼트에 있는 <strong>파일들을 보여줘</strong>.</p>
+</div>
+</div>
+<!-- AI Message 1 -->
+<div class="message ai">
+<div class="avatar"><i class="fas fa-robot"></i></div>
+<div class="bubble">
+<div class="tool-use">
+<i class="fas fa-hammer tool-icon"></i>
+<span>Used tool:</span>
+<span class="tool-name">list_files</span>
+</div>
+<p>네, 볼트의 파일 목록을 확인했습니다. 현재 다음과 같은 파일들이 있습니다:</p>
+<ul style="margin-top: 0.5rem; margin-left: 1rem; list-style-type: disc; color: #a6adc8;">
+<li>Daily Notes/2024-01-01.md</li>
+<li>Projects/AI_Study.md</li>
+<li>Ideas/New_App.md</li>
+</ul>
+</div>
+</div>
+<!-- User Message 2 -->
+<div class="message user">
+<div class="avatar"><i class="fas fa-user"></i></div>
+<div class="bubble">
+<p><strong>"프로젝트"</strong>라는 키워드가 포함된 노트를 찾아줘.</p>
+</div>
+</div>
+<!-- AI Message 2 -->
+<div class="message ai">
+<div class="avatar"><i class="fas fa-robot"></i></div>
+<div class="bubble">
+<div class="tool-use">
+<i class="fas fa-hammer tool-icon"></i>
+<span>Used tool:</span>
+<span class="tool-name">search_files</span>
+</div>
+<p>검색 결과, "프로젝트" 키워드가 포함된 노트 2개를 찾았습니다.</p>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="chat-input-area">
+<div class="fake-input">Message Claude...</div>
+<div class="send-btn"><i class="fas fa-paper-plane"></i></div>
+</div>
+</div>
+</div>
+<!-- Right: Prompt Guide -->
+<div class="info-panel">
+<!-- Card 1 -->
+<div class="prompt-card">
+<div class="card-header">
+<i class="fas fa-check-circle"></i>
+<span>연결 확인 (필수)</span>
+</div>
+<p class="prompt-text">"내 볼트의 모든 파일을 나열해줘"</p>
+<p class="prompt-desc">가장 기본적인 명령어로, MCP 서버가 볼트 경로를 제대로 인식하고 있는지 확인하는 첫 번째 단계입니다.</p>
+</div>
+<!-- Card 2 -->
+<div class="prompt-card">
+<div class="card-header">
+<i class="fas fa-search"></i>
+<span>검색 기능 테스트</span>
+</div>
+<p class="prompt-text">"<span class="highlight-keyword">AI</span> 관련 노트를 찾아줘"</p>
+<p class="prompt-desc">단순 파일명뿐만 아니라 내용 검색이 가능한지 테스트합니다. 특정 키워드로 검색했을 때 결과가 나오는지 확인하세요.</p>
+</div>
+<!-- Card 3 -->
+<div class="prompt-card">
+<div class="card-header">
+<i class="fas fa-file-medical"></i>
+<span>쓰기 권한 테스트</span>
+</div>
+<p class="prompt-text">"새 노트 <span class="highlight-keyword">테스트.md</span>를 만들어줘"</p>
+<p class="prompt-desc">읽기뿐만 아니라 파일 생성(쓰기) 권한도 정상적으로 작동하는지 확인하는 중요한 테스트입니다.</p>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067cd95b30bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

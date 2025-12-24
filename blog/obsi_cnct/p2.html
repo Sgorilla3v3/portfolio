@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>학습 로드맵</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+    body { font-family: 'Noto Sans KR', sans-serif; margin: 0; padding: 0; background-color: #1a1b26; overflow: hidden; }
+    .slide-container { width: 1280px; height: 720px; background-color: #1e1e2e; color: #cdd6f4; display: flex; flex-direction: column; position: relative; overflow: hidden; padding: 3rem 4rem; box-sizing: border-box; }
+    
+    .bg-decoration { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.1; z-index: 0; }
+    .deco-1 { width: 600px; height: 600px; background-color: #a6e3a1; top: -200px; right: -200px; }
+    .deco-2 { width: 500px; height: 500px; background-color: #89b4fa; bottom: -150px; left: -100px; }
+
+    .header-section { margin-bottom: 2rem; z-index: 20; position: relative; }
+    .page-title { font-size: 2.5rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; }
+    .page-title i { color: #a6e3a1; margin-right: 1rem; }
+    .page-subtitle { font-size: 1.1rem; color: #a6adc8; font-weight: 300; margin-top: 0.5rem; }
+
+    .roadmap-wrapper {
+        flex: 1;
+        position: relative;
+        z-index: 10;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 1.5rem 2rem;
+        padding: 1rem 0;
+    }
+
+    /* Connecting Lines SVG */
+    .roadmap-lines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .path-line {
+        fill: none;
+        stroke: #45475a;
+        stroke-width: 4;
+        stroke-dasharray: 10, 10;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .step-card {
+        background-color: rgba(49, 50, 68, 0.95);
+        border-radius: 16px;
+        padding: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgba(186, 194, 222, 0.1);
+        position: relative;
+        z-index: 10;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        backdrop-filter: blur(5px);
+    }
+
+    .step-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+    .step-num { font-size: 2.5rem; font-weight: 900; color: rgba(255,255,255,0.07); line-height: 0.8; position: absolute; top: 1rem; right: 1rem; }
+    
+    .icon-box {
+        width: 42px; height: 42px; border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem; margin-bottom: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .step-title { font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 0.4rem; z-index: 1; }
+    .step-desc { font-size: 0.85rem; color: #bac2de; line-height: 1.4; z-index: 1; }
+
+    /* Grid Areas for Snake Layout */
+    .card-1 { grid-area: 1 / 1 / 2 / 2; }
+    .card-2 { grid-area: 1 / 2 / 2 / 3; }
+    .card-3 { grid-area: 1 / 3 / 2 / 4; }
+    
+    .card-4 { grid-area: 2 / 3 / 3 / 4; }
+    .card-5 { grid-area: 2 / 2 / 3 / 3; }
+    .card-6 { grid-area: 2 / 1 / 3 / 2; }
+    
+    .card-7 { grid-area: 3 / 1 / 4 / 2; }
+    .card-8 { grid-area: 3 / 2 / 4 / 3; }
+    .card-9 { grid-area: 3 / 3 / 4 / 4; }
+
+    /* Color Variants */
+    .theme-blue .icon-box { background: rgba(137, 180, 250, 0.2); color: #89b4fa; }
+    .theme-blue { border-top: 3px solid #89b4fa; }
+
+    .theme-purple .icon-box { background: rgba(203, 166, 247, 0.2); color: #cba6f7; }
+    .theme-purple { border-top: 3px solid #cba6f7; }
+
+    .theme-orange .icon-box { background: rgba(250, 179, 135, 0.2); color: #fab387; }
+    .theme-orange { border-top: 3px solid #fab387; }
+
+    .theme-green .icon-box { background: rgba(166, 227, 161, 0.2); color: #a6e3a1; }
+    .theme-green { border-top: 3px solid #a6e3a1; }
+
+    .theme-cyan .icon-box { background: rgba(148, 226, 213, 0.2); color: #94e2d5; }
+    .theme-cyan { border-top: 3px solid #94e2d5; }
+
+    .theme-red .icon-box { background: rgba(243, 139, 168, 0.2); color: #f38ba8; }
+    .theme-red { border-top: 3px solid #f38ba8; }
+
+    .theme-yellow .icon-box { background: rgba(249, 226, 175, 0.2); color: #f9e2af; }
+    .theme-yellow { border-top: 3px solid #f9e2af; }
+
+    .theme-pink .icon-box { background: rgba(245, 194, 231, 0.2); color: #f5c2e7; }
+    .theme-pink { border-top: 3px solid #f5c2e7; }
+
+    .theme-white .icon-box { background: rgba(205, 214, 244, 0.2); color: #cdd6f4; }
+    .theme-white { border-top: 3px solid #cdd6f4; }
+
+</style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<div class="header-section">
+<h1 class="page-title"><i class="fas fa-map-signs"></i>학습 로드맵</h1>
+<p class="page-subtitle">옵시디언과 Claude MCP 연동을 위한 9단계 마스터 플랜입니다.</p>
+</div>
+<div class="roadmap-wrapper">
+<!-- Connecting Path -->
+<svg class="roadmap-lines" preserveAspectRatio="none" viewBox="0 0 1200 500">
+<!-- Coordinates are approximate relative to grid centers -->
+<!-- Row 1: Left to Right -->
+<path class="path-line" d="M 200,80 L 1000,80"></path>
+<!-- Row 1 to 2: Down on Right -->
+<path class="path-line" d="M 1000,80 Q 1100,80 1100,160 Q 1100,240 1000,240"></path>
+<!-- Row 2: Right to Left -->
+<path class="path-line" d="M 1000,240 L 200,240"></path>
+<!-- Row 2 to 3: Down on Left -->
+<path class="path-line" d="M 200,240 Q 100,240 100,320 Q 100,400 200,400"></path>
+<!-- Row 3: Left to Right -->
+<path class="path-line" d="M 200,400 L 1000,400"></path>
+</svg>
+<!-- Step 1 -->
+<div class="step-card card-1 theme-blue">
+<span class="step-num">01</span>
+<div class="icon-box"><i class="fas fa-server"></i></div>
+<p class="step-title">기본 환경 구축</p>
+<p class="step-desc">Node.js 및 Git 설치<br>버전 확인 및 준비</p>
+</div>
+<!-- Step 2 -->
+<div class="step-card card-2 theme-purple">
+<span class="step-num">02</span>
+<div class="icon-box"><i class="fas fa-gem"></i></div>
+<p class="step-title">옵시디언 설치</p>
+<p class="step-desc">볼트 생성 및 초기화<br>필수 플러그인 활성화</p>
+</div>
+<!-- Step 3 -->
+<div class="step-card card-3 theme-orange">
+<span class="step-num">03</span>
+<div class="icon-box"><i class="fas fa-robot"></i></div>
+<p class="step-title">Claude Desktop</p>
+<p class="step-desc">앱 설치 및 계정 로그인<br>MCP 연동 준비</p>
+</div>
+<!-- Step 4 -->
+<div class="step-card card-4 theme-green">
+<span class="step-num">04</span>
+<div class="icon-box"><i class="fas fa-network-wired"></i></div>
+<p class="step-title">MCP Server 설치</p>
+<p class="step-desc">npm을 통한 패키지 설치<br>Obsidian 서버 구성</p>
+</div>
+<!-- Step 5 -->
+<div class="step-card card-5 theme-cyan">
+<span class="step-num">05</span>
+<div class="icon-box"><i class="fas fa-sliders-h"></i></div>
+<p class="step-title">Claude MCP 설정</p>
+<p class="step-desc">config.json 파일 작성<br>볼트 경로 매핑</p>
+</div>
+<!-- Step 6 -->
+<div class="step-card card-6 theme-red">
+<span class="step-num">06</span>
+<div class="icon-box"><i class="fas fa-vial"></i></div>
+<p class="step-title">연결 테스트</p>
+<p class="step-desc">MCP 연결 확인<br>파일 읽기/쓰기 검증</p>
+</div>
+<!-- Step 7 -->
+<div class="step-card card-7 theme-yellow">
+<span class="step-num">07</span>
+<div class="icon-box"><i class="fas fa-briefcase"></i></div>
+<p class="step-title">실무 활용</p>
+<p class="step-desc">태그, 템플릿 시스템<br>프로젝트 워크플로우</p>
+</div>
+<!-- Step 8 -->
+<div class="step-card card-8 theme-pink">
+<span class="step-num">08</span>
+<div class="icon-box"><i class="fas fa-wrench"></i></div>
+<p class="step-title">고급 설정 &amp; 문제해결</p>
+<p class="step-desc">트러블슈팅, 보안<br>백업 자동화</p>
+</div>
+<!-- Step 9 -->
+<div class="step-card card-9 theme-white">
+<span class="step-num">09</span>
+<div class="icon-box"><i class="fas fa-flag-checkered"></i></div>
+<p class="step-title">마무리</p>
+<p class="step-desc">최종 점검 체크리스트<br>추가 학습 방향</p>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067c98e630bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

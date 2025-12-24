@@ -1,82 +1,112 @@
 <!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>슬래시 커맨드 활용</title>
+<title>핵심 이점 #4: 대용량 데이터 처리</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #0d1117;
             color: #c9d1d9;
-            overflow: auto;
+            overflow: hidden;
         }
-        .font-mono {
-            font-family: 'Nanum Gothic Coding', monospace;
-        }
-        .editor-window {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0d1117;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-        .editor-header {
-            background-color: #0d1117;
-            border-bottom: 1px solid #30363d;
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .tab {
-            background-color: #161b22;
-            color: #c9d1d9;
-            padding: 4px 12px;
-            border-top: 2px solid #f78166;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-        }
-        .line-numbers {
-            color: #484f58;
-            text-align: right;
-            padding-right: 16px;
-            user-select: none;
-        }
-        .code-content {
-            color: #e6edf3;
-        }
-        /* Syntax Highlighting */
-        .syntax-comment { color: #8b949e; font-style: italic; }
-        .syntax-keyword { color: #ff7b72; } /* Red */
-        .syntax-string { color: #a5d6ff; } /* Light Blue */
-        .syntax-header { color: #79c0ff; font-weight: bold; } /* Blue */
-        .syntax-list { color: #d2a8ff; } /* Purple */
-        .syntax-cmd { color: #7ee787; } /* Green */
-        .syntax-var { color: #ffa657; font-weight: bold; } /* Orange */
         
-        .guide-card {
+        /* Insight Cards (Left Column) */
+        .insight-card {
             background-color: #161b22;
             border: 1px solid #30363d;
-            border-left: 4px solid #a371f7;
-            padding: 16px;
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 16px;
-            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
-        .key-badge {
-            display: inline-flex;
+        .insight-card:hover {
+            border-color: #58a6ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .insight-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
             align-items: center;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-family: 'Nanum Gothic Coding', monospace;
-            background-color: rgba(110, 118, 129, 0.4);
-            color: #c9d1d9;
-            border: 1px solid rgba(240, 246, 252, 0.1);
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Terminal (Right Top) */
+        .terminal-box {
+            background-color: #010409;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .terminal-header {
+            background-color: #161b22;
+            padding: 10px 16px;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+        }
+        .window-dots { display: flex; gap: 6px; margin-right: 12px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .terminal-content {
+            padding: 20px;
+            overflow-y: auto;
+            color: #e6edf3;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        /* Code Syntax */
+        .cmd-prompt { color: #238636; margin-right: 8px; font-weight: bold; }
+        .cmd-kwd { color: #d2a8ff; } /* purple */
+        .cmd-flag { color: #79c0ff; } /* blue */
+        .cmd-str { color: #a5d6ff; } /* light blue */
+        .cmd-comment { color: #8b949e; font-style: italic; }
+        
+        /* Chart Section (Right Bottom) */
+        .chart-wrapper {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 16px;
+            height: 100%;
+            position: relative;
+        }
+        
+        .stat-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(56, 139, 253, 0.15);
+            color: #58a6ff;
+            border: 1px solid rgba(56, 139, 253, 0.4);
+            margin-left: auto;
         }
     </style>
 <style id="slide-selected-style">
@@ -113,136 +143,193 @@
 
 
 </style></head>
-<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
+<body>
+<div class="slide-container p-10">
 <!-- Header -->
-<div class="w-full max-w-7xl mb-6 flex justify-between items-end border-b border-gray-800 pb-4">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center space-x-4">
+<div class="bg-indigo-900 bg-opacity-30 p-3 rounded-xl border border-indigo-800">
+<i class="fas fa-database text-3xl text-indigo-400"></i>
+</div>
 <div>
-<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
-<i class="fa-solid fa-terminal text-purple-400 mr-3"></i>
-                슬래시 커맨드 활용
-            </h1>
-<p class="text-gray-400">반복 작업을 자동화하는 사용자 정의 프롬프트 템플릿</p>
-</div>
-<div class="flex items-center gap-2 text-sm text-gray-500 bg-[#161b22] px-3 py-1 rounded border border-[#30363d]">
-<i class="fa-regular fa-folder-open"></i>
-<span class="font-mono">PROJECT_ROOT/.claude/commands/</span>
+<h1 class="text-3xl font-bold text-white tracking-tight">핵심 이점 #4: 대용량 데이터 처리</h1>
+<p class="text-gray-400 mt-1">빅데이터급 노트 분석 및 고성능 일괄 처리</p>
 </div>
 </div>
-<!-- Main Content: Split Layout -->
-<div class="w-full max-w-7xl flex-1 flex gap-8 overflow-hidden">
-<!-- Left Column: Guide & Explanations (35%) -->
-<div class="w-[35%] flex flex-col h-full justify-between">
-<div class="flex flex-col gap-4">
-<!-- Concept Definition -->
-<div class="guide-card border-l-purple-500">
-<h3 class="text-white font-bold mb-2 flex items-center">
-<i class="fa-solid fa-bolt text-purple-400 mr-2"></i> 개념 및 작동 원리
-                    </h3>
-<p class="text-sm text-gray-300 leading-relaxed mb-2">
-<span class="font-mono text-purple-300">.claude/commands/</span> 폴더 내의 마크다운 파일이 곧 사용자 정의 명령어가 됩니다.
+<div class="flex space-x-3">
+<div class="flex items-center px-3 py-1 bg-gray-800 rounded-lg border border-gray-700">
+<i class="fas fa-bolt text-yellow-400 mr-2"></i>
+<span class="text-xs text-gray-300">Parallel Processing</span>
+</div>
+<div class="flex items-center px-3 py-1 bg-gray-800 rounded-lg border border-gray-700">
+<i class="fas fa-water text-blue-400 mr-2"></i>
+<span class="text-xs text-gray-300">Stream Supported</span>
+</div>
+</div>
+</div>
+<!-- Main Layout -->
+<div class="flex flex-1 space-x-6 h-full overflow-hidden pb-4">
+<!-- Left Column: Key Features (3 Cards) -->
+<div class="w-1/3 flex flex-col space-y-4">
+<!-- Card 1 -->
+<div class="insight-card flex-1">
+<div class="flex items-start justify-between">
+<div class="insight-icon bg-blue-900 bg-opacity-20 text-blue-400">
+<i class="fas fa-search-dollar"></i>
+</div>
+<span class="stat-badge">Analytics</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">빅데이터급 분석</h3>
+<p class="text-gray-400 text-sm leading-relaxed">
+                        전체 볼트의 수천 개 노트를 대상으로 토픽 모델링을 수행하고, 주제별 클러스터와 지식 맵을 생성하여 숨겨진 연결고리를 발견합니다.
                     </p>
-<div class="bg-black/30 p-2 rounded text-xs font-mono text-gray-400 mt-2">
-                        파일명: <span class="text-white">review-pr.md</span><br>
-                        호출명: <span class="text-purple-300">/project:review-pr</span>
 </div>
+<!-- Card 2 -->
+<div class="insight-card flex-1">
+<div class="flex items-start justify-between">
+<div class="insight-icon bg-green-900 bg-opacity-20 text-green-400">
+<i class="fas fa-check-double"></i>
 </div>
-<!-- Rules & Syntax -->
-<div class="bg-[#161b22] border border-[#30363d] rounded-lg p-5">
-<h3 class="text-white font-bold mb-4 flex items-center border-b border-[#30363d] pb-2">
-<i class="fa-solid fa-code text-blue-400 mr-2"></i> 작성 규칙
-                    </h3>
-<div class="space-y-4">
-<div class="flex items-start">
-<i class="fa-solid fa-dollar-sign text-gray-500 mt-1 mr-3 w-4 text-center"></i>
-<div>
-<p class="text-sm font-bold text-gray-200">인수 전달 (Arguments)</p>
-<p class="text-xs text-gray-500 mt-1">
-<span class="key-badge">$ARGUMENTS</span> 키워드를 사용하면 명령어 뒤에 입력한 값을 템플릿 내부로 가져옵니다.
-                                </p>
+<span class="stat-badge">Quality</span>
 </div>
+<h3 class="text-lg font-bold text-white mb-2">품질 및 일관성 보증</h3>
+<p class="text-gray-400 text-sm leading-relaxed">
+                        중복된 내용 제거, 끊어진 링크 탐지, 메타데이터 누락 확인 등 대규모 데이터셋의 무결성을 자동으로 검사하고 수정합니다.
+                    </p>
 </div>
-<div class="flex items-start">
-<i class="fa-solid fa-file-lines text-gray-500 mt-1 mr-3 w-4 text-center"></i>
-<div>
-<p class="text-sm font-bold text-gray-200">마크다운 포맷</p>
-<p class="text-xs text-gray-500 mt-1">일반 프롬프트와 동일하게 작성하되, 에이전트의 역할과 절차를 명확히 구조화합니다.</p>
+<!-- Card 3 -->
+<div class="insight-card flex-1">
+<div class="flex items-start justify-between">
+<div class="insight-icon bg-purple-900 bg-opacity-20 text-purple-400">
+<i class="fas fa-tachometer-alt"></i>
 </div>
+<span class="stat-badge">Performance</span>
 </div>
-<div class="flex items-start">
-<i class="fa-solid fa-paper-plane text-gray-500 mt-1 mr-3 w-4 text-center"></i>
-<div>
-<p class="text-sm font-bold text-gray-200">사용 예시</p>
-<p class="text-xs text-green-400 font-mono mt-1 bg-gray-900 p-1 rounded inline-block">
-                                    /project:review-pr 1234
-                                </p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Tip Box -->
-<div class="bg-[#1c2128] p-4 rounded border border-blue-900/50 flex items-start">
-<i class="fa-solid fa-lightbulb text-blue-400 mt-1 mr-3 text-lg"></i>
-<div>
-<p class="text-sm text-blue-100 font-bold mb-1">운영 Tip</p>
-<p class="text-xs text-blue-200/70">
-                        팀 내에서 자주 쓰는 복잡한 작업(버그 리포트 분석, 테스트 케이스 생성 등)을 템플릿화하여 <span class="text-white font-bold">표준화</span>하세요.
+<h3 class="text-lg font-bold text-white mb-2">리소스 최적화</h3>
+<p class="text-gray-400 text-sm leading-relaxed">
+                        스트리밍(Streaming) 처리를 통해 메모리 사용량을 최소화하고, 병렬 워커(Parallel Worker)를 가동하여 처리 속도를 극대화합니다.
                     </p>
 </div>
 </div>
+<!-- Right Column: Terminal & Chart -->
+<div class="w-2/3 flex flex-col space-y-4">
+<!-- Top: Terminal Window -->
+<div class="terminal-box" style="height: 55%;">
+<div class="terminal-header">
+<div class="window-dots">
+<div class="dot bg-red-500"></div>
+<div class="dot bg-yellow-500"></div>
+<div class="dot bg-green-500"></div>
 </div>
-<!-- Right Column: Code Example (65%) -->
-<div class="w-[65%] h-full flex flex-col">
-<div class="editor-window flex-1">
-<!-- Editor Header -->
-<div class="editor-header">
-<div class="flex items-center">
-<div class="tab">
-<i class="fa-brands fa-markdown text-purple-400 mr-2"></i>
-                            review-pr.md
-                            <i class="fa-solid fa-xmark ml-2 text-gray-500 text-xs"></i>
+<span class="text-xs text-gray-500 ml-2">sysadmin@claude-code:~</span>
+</div>
+<div class="terminal-content">
+<!-- Command 1: Streaming Analysis -->
+<div class="mb-4">
+<div class="flex items-start">
+<span class="cmd-prompt">➜</span>
+<span class="text-gray-300">
+                                claude-code <span class="cmd-flag">--stream</span> <span class="cmd-flag">--batch-size</span> 50 <span class="cmd-str">"전체 볼트(5000+ 노트)를 분석하여 주제별 클러스터링을 수행하고 지식 맵 생성"</span>
+</span>
+</div>
+<div class="mt-2 pl-4 border-l-2 border-gray-700">
+<div class="text-blue-300 text-xs mb-1">ℹ️ Streaming mode enabled. Batch size: 50</div>
+<div class="text-gray-400 text-xs">Processing batch 1/100... [Topic: AI/ML]</div>
+<div class="text-gray-400 text-xs">Processing batch 2/100... [Topic: Web Dev]</div>
+<div class="text-gray-400 text-xs animate-pulse">Processing batch 3/100... </div>
 </div>
 </div>
-<div class="flex gap-2">
-<div class="w-3 h-3 rounded-full bg-gray-600"></div>
-<div class="w-3 h-3 rounded-full bg-gray-600"></div>
+<!-- Command 2: Parallel Performance -->
+<div class="mb-2">
+<div class="flex items-start">
+<span class="cmd-prompt">➜</span>
+<span class="text-gray-300">
+                                claude-code <span class="cmd-flag">--parallel</span> 4 <span class="cmd-flag">--worker-pool</span> 8 <span class="cmd-flag">--benchmark</span> <span class="cmd-str">"전체 인덱싱 및 링크 검사"</span>
+</span>
 </div>
-</div>
-<!-- Editor Content -->
-<div class="p-6 font-mono text-sm leading-7 overflow-y-auto flex bg-[#0d1117] flex-1">
-<div class="line-numbers text-gray-600 border-r border-gray-800 pr-4 mr-4 select-none">
-                        1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20
-                    </div>
-<div class="code-content w-full">
-<p><span class="syntax-header"># PR Review Automation Agent</span></p>
-<p class="mb-4"><span class="syntax-comment">&gt; GitHub PR을 분석하고 전문적인 리뷰 코멘트를 작성합니다.</span></p>
-<p><span class="syntax-comment">!-- Step 1: Capture User Input --</span></p>
-<p class="mb-2"><span class="syntax-keyword">PR_NUMBER</span> = <span class="syntax-var">$ARGUMENTS</span></p>
-<p class="mt-4"><span class="syntax-header">## 🤖 Instructions</span></p>
-<p class="mb-2">You are a Senior Tech Lead. Please review the PR following these steps:</p>
-<p><span class="syntax-list">1.</span> Fetch PR details: <span class="syntax-cmd">gh pr view $PR_NUMBER</span></p>
-<p><span class="syntax-list">2.</span> Analyze changes: <span class="syntax-cmd">gh pr diff $PR_NUMBER</span></p>
-<p><span class="syntax-list">3.</span> Check for:</p>
-<p class="pl-4"><span class="syntax-list">-</span> Security vulnerabilities</p>
-<p class="pl-4"><span class="syntax-list">-</span> Performance bottlenecks</p>
-<p class="pl-4"><span class="syntax-list">-</span> Code style consistency</p>
-<p class="mt-4"><span class="syntax-header">## 📝 Output Format</span></p>
-<p><span class="syntax-header">### 🔍 Summary</span></p>
-<p>(Briefly explain what this PR does)</p>
-<p class="mt-2"><span class="syntax-header">### ⚠️ Critical Issues</span></p>
-<p>(List critical bugs or security risks, if any)</p>
-<p class="mt-2"><span class="syntax-header">### 💡 Suggestions</span></p>
-<p>(Refactoring ideas using clean code principles)</p>
+<div class="mt-2 pl-4 border-l-2 border-gray-700">
+<div class="text-green-400 text-xs">🚀 Spawning 8 workers...</div>
+<div class="text-gray-400 text-xs">Workers active: [PID:102, PID:103, PID:104, PID:105...]</div>
 </div>
 </div>
 </div>
-<!-- Code Explanation Footer -->
-<div class="mt-3 flex justify-between text-xs text-gray-500 font-mono px-1">
-<span>Argument Injection</span>
-<span>Path: .claude/commands/review-pr.md</span>
+</div>
+<!-- Bottom: Chart -->
+<div class="chart-wrapper flex-1">
+<div class="flex justify-between items-center mb-2 px-2">
+<h4 class="text-sm font-bold text-gray-300">
+<i class="fas fa-chart-bar mr-2 text-blue-500"></i>처리 효율성 비교 (노트 1,000개 기준)
+                        </h4>
+<span class="text-xs text-gray-500 font-mono">단위: 분 (Lower is Better)</span>
+</div>
+<div id="performanceChart" style="width: 100%; height: 180px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);" _echarts_instance_="ec_1766534742836"><div style="position: relative; width: 750px; height: 180px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="750" height="180" style="position: absolute; left: 0px; top: 0px; width: 750px; height: 180px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div></div>
 </div>
 </div>
 </div>
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b44eca3d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+<!-- Footer -->
+<div class="absolute bottom-4 left-10 text-gray-600 text-xs font-mono">
+<span>MODE: High-Performance Computing (HPC)</span>
+</div>
+</div>
+<script>
+        // Initialize ECharts
+        document.addEventListener('DOMContentLoaded', function() {
+            var chartDom = document.getElementById('performanceChart');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+                backgroundColor: 'transparent',
+                grid: {
+                    top: '15%',
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    axisLabel: { color: '#8b949e' },
+                    splitLine: { show: true, lineStyle: { color: '#30363d', type: 'dashed' } }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['Manual (GUI)', 'Script (Single)', 'Claude Code (Parallel)'],
+                    axisLabel: { color: '#c9d1d9', fontWeight: 'bold' },
+                    axisLine: { show: false },
+                    axisTick: { show: false }
+                },
+                series: [
+                    {
+                        name: 'Time (Minutes)',
+                        type: 'bar',
+                        data: [
+                            { value: 300, itemStyle: { color: '#30363d' } },  // Manual
+                            { value: 45, itemStyle: { color: '#238636' } },   // Script
+                            { value: 5, itemStyle: { color: '#58a6ff' } }     // Claude Code
+                        ],
+                        label: {
+                            show: true,
+                            position: 'right',
+                            formatter: '{c} min',
+                            color: '#e6edf3'
+                        },
+                        barWidth: '50%',
+                        itemStyle: {
+                            borderRadius: [0, 4, 4, 0]
+                        }
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+            
+            // Resize handler
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+        });
+    </script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2bd93f7cbc723a&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
 
 <script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

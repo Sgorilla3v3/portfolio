@@ -1,0 +1,345 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>옵시디언-Claude MCP 연동 완전 가이드</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1b26;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Background Decorations using solid colors and blur, no gradients */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+        }
+        .deco-1 {
+            width: 700px;
+            height: 700px;
+            background-color: #7c3aed;
+            top: -300px;
+            right: -200px;
+        }
+        .deco-2 {
+            width: 600px;
+            height: 600px;
+            background-color: #d97706;
+            bottom: -300px;
+            left: -100px;
+        }
+        
+        .content {
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 6rem;
+        }
+
+        .tag-badge {
+            background-color: #313244;
+            color: #cba6f7;
+            border-left: 4px solid #cba6f7;
+            padding: 0.5rem 1.2rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        
+        .title-accent {
+            color: #cba6f7; /* Soft Purple */
+        }
+        
+        .subtitle {
+            font-size: 1.6rem;
+            color: #bac2de;
+            font-weight: 300;
+            margin-bottom: 4rem;
+            max-width: 900px;
+            line-height: 1.6;
+            border-left: 1px solid #45475a;
+            padding-left: 1.5rem;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: auto;
+        }
+
+        .info-card {
+            background-color: #313244;
+            border-radius: 1rem;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-accent-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .card-goals {
+            flex: 1.4;
+        }
+        .card-meta {
+            flex: 1;
+        }
+
+        .goal-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .goal-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            font-size: 1.15rem;
+            color: #cdd6f4;
+        }
+        
+        .goal-list li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .goal-list li i {
+            color: #a6e3a1; /* Green */
+            margin-right: 1rem;
+            margin-top: 0.35rem;
+            font-size: 1rem;
+        }
+
+        .meta-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta-icon-box {
+            width: 48px;
+            height: 48px;
+            background-color: #45475a;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.2rem;
+            font-size: 1.4rem;
+            color: #89b4fa;
+        }
+        
+        .meta-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            font-size: 0.85rem;
+            color: #9399b2;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.2rem;
+        }
+        
+        .meta-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        /* Progress visual for difficulty */
+        .difficulty-dots {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+        }
+        .dot {
+            width: 24px;
+            height: 6px;
+            background-color: #45475a;
+            border-radius: 3px;
+        }
+        .dot.active {
+            background-color: #fab387; /* Orange */
+        }
+
+        .footer-ver {
+            position: absolute;
+            bottom: 2rem;
+            right: 3rem;
+            font-size: 0.9rem;
+            color: #585b70;
+            font-family: monospace;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Decorations -->
+<div class="bg-decoration deco-1"></div>
+<div class="bg-decoration deco-2"></div>
+<div class="content">
+<!-- Header Tag -->
+<div>
+<p class="tag-badge">
+<i class="fas fa-robot mr-3"></i>AI 도구 활용 가이드 시리즈
+                </p>
+</div>
+<!-- Main Titles -->
+<h1 class="main-title">
+<span class="title-accent">옵시디언</span>-Claude MCP<br>연동 완전 가이드
+            </h1>
+<p class="subtitle">
+                개인 지식 관리(PKM) 시스템을 AI와 연결하여<br>
+                스마트한 노트 관리 및 자동화 워크플로우 구축하기
+            </p>
+<!-- Bottom Information Panels -->
+<div class="card-container">
+<!-- Learning Goals Card -->
+<div class="info-card card-goals">
+<div class="card-accent-bar" style="background-color: #cba6f7;"></div>
+<h3 class="text-xl font-bold mb-6 text-white flex items-center">
+<i class="fas fa-bullseye text-indigo-400 mr-3"></i>학습 목표
+                    </h3>
+<ul class="goal-list">
+<li>
+<i class="fas fa-check-circle"></i>
+<p>옵시디언과 Claude MCP 연동으로 AI 기반 시스템 구축</p>
+</li>
+<li>
+<i class="fas fa-check-circle"></i>
+<p>설치·설정부터 고급 활용 워크플로우까지 전 과정 마스터</p>
+</li>
+<li>
+<i class="fas fa-check-circle"></i>
+<p>자신만의 효율적인 지식 관리 파이프라인 설계</p>
+</li>
+</ul>
+</div>
+<!-- Meta Info Card -->
+<div class="info-card card-meta">
+<div class="card-accent-bar" style="background-color: #fab387;"></div>
+<div class="meta-grid">
+<div class="meta-item">
+<div class="meta-icon-box">
+<i class="fas fa-layer-group"></i>
+</div>
+<div class="meta-content">
+<span class="meta-label">난이도</span>
+<span class="meta-value">중급 (Intermediate)</span>
+<div class="difficulty-dots">
+<div class="dot active"></div>
+<div class="dot active"></div>
+<div class="dot"></div>
+</div>
+</div>
+</div>
+<div class="meta-item">
+<div class="meta-icon-box">
+<i class="fas fa-clock"></i>
+</div>
+<div class="meta-content">
+<span class="meta-label">예상 소요시간</span>
+<span class="meta-value">2-3시간</span>
+</div>
+</div>
+<div class="meta-item">
+<div class="meta-icon-box">
+<i class="fas fa-tools"></i>
+</div>
+<div class="meta-content">
+<span class="meta-label">사전 준비</span>
+<span class="meta-value" style="font-size: 1rem; font-weight: 500;">PC, 인터넷, 관리자 권한</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer-ver">
+            Rev 1.0 • 2024-12-23
+        </div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2c067c98e230bb&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>

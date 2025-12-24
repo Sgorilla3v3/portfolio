@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MCP 연동 설정</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: auto;
+        }
+        .font-mono {
+            font-family: 'Nanum Gothic Coding', monospace;
+        }
+        .step-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .step-number {
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            color: #8b949e;
+            font-family: 'Nanum Gothic Coding', monospace;
+        }
+        .active-step {
+            border-color: #77bdfb;
+            background-color: #11161d;
+            box-shadow: 0 0 0 1px #77bdfb;
+        }
+        .active-step .step-number {
+            background-color: #1f6feb;
+            color: white;
+            border-color: #1f6feb;
+        }
+        .active-step .step-title {
+            color: #58a6ff;
+        }
+        .terminal-window {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+        }
+        .json-key { color: #79c0ff; }
+        .json-string { color: #a5d6ff; }
+        .json-cmd { color: #7ee787; }
+        .checklist-item i {
+            width: 20px;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body class="w-[1280px] h-[720px] flex flex-col items-center justify-center p-10">
+<!-- Header -->
+<div class="w-full max-w-6xl mb-6 flex justify-between items-end border-b border-gray-800 pb-4">
+<div>
+<h1 class="text-3xl font-bold text-white mb-2 flex items-center">
+<i class="fa-solid fa-network-wired text-purple-400 mr-3"></i>
+                MCP 연동 설정
+            </h1>
+<p class="text-gray-400">외부 데이터와 도구를 연결하는 Model Context Protocol 설정 가이드</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-gray-800 rounded text-xs text-gray-400 border border-gray-700 font-mono">MCP Protocol</span>
+<span class="px-3 py-1 bg-gray-800 rounded text-xs text-gray-400 border border-gray-700 font-mono">Extensibility</span>
+</div>
+</div>
+<!-- Main Content -->
+<div class="w-full max-w-6xl flex-1 flex gap-8 h-full">
+<!-- Left Column: Steps (45%) -->
+<div class="w-[45%] flex flex-col gap-4 h-full">
+<!-- Step 1: Definition & Scope -->
+<div class="step-card p-5 flex gap-4">
+<div class="flex flex-col items-center">
+<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-2">01</div>
+<div class="w-0.5 flex-1 bg-gray-800"></div>
+</div>
+<div class="flex-1 pb-2">
+<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">기획 및 범위 결정</h3>
+<p class="text-sm text-gray-400 mb-3">연동할 도구를 식별하고 적용 범위를 설정합니다.</p>
+<ul class="text-sm space-y-2">
+<li class="flex items-center text-gray-300">
+<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">1</span>
+<span>필요 도구 정의 (GitHub, Obsidian, DB 등)</span>
+</li>
+<li class="flex items-center text-gray-300">
+<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">2</span>
+<span>범위 결정: 전역 vs 프로젝트 전용</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Step 2: Installation & Config -->
+<div class="step-card p-5 flex gap-4 active-step">
+<div class="flex flex-col items-center">
+<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-2">02</div>
+<div class="w-0.5 flex-1 bg-gray-800"></div>
+</div>
+<div class="flex-1 pb-2">
+<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">서버 설치 및 구성</h3>
+<p class="text-sm text-gray-400 mb-3">MCP 서버를 설치하고 설정 파일을 작성합니다.</p>
+<div class="bg-black p-2 rounded border border-gray-700 font-mono text-xs text-gray-300 mb-2">
+                        .claude/mcp-servers/claude_mcp_config.json
+                    </div>
+<ul class="text-sm space-y-2">
+<li class="flex items-center text-gray-300">
+<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">3</span>
+<span>MCP 서버 설치 (npm/pip)</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Step 3: Verification -->
+<div class="step-card p-5 flex gap-4">
+<div class="flex flex-col items-center">
+<div class="step-number w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">03</div>
+</div>
+<div class="flex-1">
+<h3 class="text-lg font-bold text-gray-200 mb-2 step-title">검증 및 문서화</h3>
+<p class="text-sm text-gray-400 mb-3">연결을 테스트하고 사용법을 기록합니다.</p>
+<ul class="text-sm space-y-2">
+<li class="flex items-center text-gray-300">
+<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">4</span>
+<span>CLAUDE.md에 도구 사용법 문서화</span>
+</li>
+<li class="flex items-center text-gray-300">
+<span class="w-6 h-6 rounded bg-[#21262d] flex items-center justify-center text-xs mr-2 border border-[#30363d] text-gray-500">5</span>
+<span>Claude 재시작 및 호출 테스트</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Right Column: Config & Tips (55%) -->
+<div class="w-[55%] flex flex-col gap-6 h-full">
+<!-- JSON Config Preview -->
+<div class="terminal-window flex-1 flex flex-col shadow-2xl overflow-hidden">
+<div class="bg-[#161b22] px-4 py-2 flex items-center justify-between border-b border-[#30363d]">
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+<div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+<div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+</div>
+<span class="text-xs text-gray-500 font-mono">config.json</span>
+</div>
+<div class="p-6 font-mono text-sm leading-relaxed overflow-y-auto custom-scrollbar bg-[#0d1117]">
+<div class="text-gray-300">
+<span class="text-yellow-300">{</span><br>
+<span class="pl-4 json-key">"mcpServers"</span>: <span class="text-yellow-300">{</span><br>
+<span class="pl-8 json-key">"github"</span>: <span class="text-yellow-300">{</span><br>
+<span class="pl-12 json-key">"command"</span>: <span class="json-string">"npx"</span>,<br>
+<span class="pl-12 json-key">"args"</span>: <span class="text-yellow-300">[</span><br>
+<span class="pl-16 json-string">"-y"</span>,<br>
+<span class="pl-16 json-string">"@modelcontextprotocol/server-github"</span><br>
+<span class="pl-12 text-yellow-300">]</span>,<br>
+<span class="pl-12 json-key">"env"</span>: <span class="text-yellow-300">{</span><br>
+<span class="pl-16 json-key">"GITHUB_TOKEN"</span>: <span class="json-string">"ghp_..."</span><br>
+<span class="pl-12 text-yellow-300">}</span><br>
+<span class="pl-8 text-yellow-300">}</span>,<br>
+<span class="pl-8 json-key">"obsidian"</span>: <span class="text-yellow-300">{</span><br>
+<span class="pl-12 json-key">"command"</span>: <span class="json-string">"node"</span>,<br>
+<span class="pl-12 json-key">"args"</span>: <span class="text-yellow-300">[</span><span class="json-string">"path/to/server.js"</span><span class="text-yellow-300">]</span><br>
+<span class="pl-8 text-yellow-300">}</span><br>
+<span class="pl-4 text-yellow-300">}</span><br>
+<span class="text-yellow-300">}</span>
+</div>
+</div>
+</div>
+<!-- Security & Operations Box -->
+<div class="bg-[#1c2128] border-l-4 border-purple-500 p-5 rounded-r-lg shadow-lg">
+<h4 class="text-purple-400 font-bold mb-3 flex items-center">
+<i class="fa-solid fa-lock mr-2"></i>보안 및 운영 팁
+                </h4>
+<ul class="space-y-2 text-sm text-gray-300">
+<li class="flex items-start checklist-item">
+<i class="fa-solid fa-key text-purple-500 mt-1"></i>
+<span><strong class="text-white">자격 증명 분리:</strong> API Key 등 민감 정보는 환경 변수(.env)로 관리하여 노출 방지</span>
+</li>
+<li class="flex items-start checklist-item">
+<i class="fa-solid fa-shield-cat text-purple-500 mt-1"></i>
+<span><strong class="text-white">최소 권한 원칙:</strong> 파일 시스템 접근 시 읽기 전용으로 먼저 설정하고 필요 시 확장</span>
+</li>
+<li class="flex items-start checklist-item">
+<i class="fa-solid fa-triangle-exclamation text-purple-500 mt-1"></i>
+<span><strong class="text-white">폴백(Fallback) 전략:</strong> MCP 서버 연결 실패 시 수동 처리 절차를 CLAUDE.md에 명시</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9b2572b44ec03d69&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>
