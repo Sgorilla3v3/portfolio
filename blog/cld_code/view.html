@@ -243,10 +243,6 @@
             opacity: 0; /* 초기에 숨김 */
             visibility: hidden; /* 완전 숨김 */
         }
-        .slide-frame.loaded {
-            opacity: 1; /* 로딩 완료 후 표시 */
-            visibility: visible;
-        }
 
         .slide-frame:hover {
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
@@ -256,6 +252,10 @@
         .edit-mode .slide-frame {
             border: 3px solid #D97706;
             box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
+        }
+        .slide-frame.loaded {
+            opacity: 1; /* 로딩 완료 후 표시 */
+            visibility: visible;
         }
 
         /* 로딩 상태 */
@@ -267,8 +267,8 @@
             background: rgba(255,255,255,0.9);
             padding: 20px;
             border-radius: 8px;
+            display: none;
             z-index: 10;
-            display: none !important; /* 로딩 메시지 숨김 */
         }
 
         .loading-overlay.visible {
@@ -389,7 +389,7 @@
                     <div class="spinner"></div>
                     <div>슬라이드 조정 중...</div>
                 </div>
-                <iframe>
+                <iframe 
                     class="slide-frame" 
                     id="slide-frame" 
                     src="p0.html"
