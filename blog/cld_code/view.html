@@ -3,30 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>프레젠테이션 뷰어</title>
+    <title>프레젠테이션 뷰어 - 동적 크기 조정</title>
     
     <!-- 파비콘 -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%232F5233'/%3E%3Cpath d='M20 35h60v8H20z' fill='%23FDFBF7'/%3E%3Cpath d='M25 45h50v15H25z' fill='%23FDFBF7'/%3E%3Ccircle cx='35' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='50' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='65' cy='50' r='2' fill='%232F5233'/%3E%3Cpath d='M30 65h40v3H30z' fill='%2397A97C'/%3E%3C/svg%3E">
     
-    <!-- 메타 정보 -->
-    <meta name="description" content="자동 로드 프레젠테이션 뷰어 - HTML 슬라이드 자동 감지 및 표시">
-    <meta name="author" content="Presentation Viewer">
-    <meta name="keywords" content="프레젠테이션, 뷰어, HTML, 슬라이드, 자동로드">
-    
-    <!-- Open Graph 메타 태그 -->
-    <meta property="og:title" content="프레젠테이션 뷰어">
-    <meta property="og:description" content="HTML 슬라이드 자동 감지 및 표시">
-    <meta property="og:type" content="website">
-    
-    <!-- 브라우저 테마 색상 -->
-    <meta name="theme-color" content="#2F5233">
-    <meta name="msapplication-navbutton-color" content="#2F5233">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    
-    <!-- PWA 지원 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="프레젠테이션">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%232F5233'/%3E%3Cpath d='M20 35h60v8H20z' fill='%23FDFBF7'/%3E%3Cpath d='M25 45h50v15H25z' fill='%23FDFBF7'/%3E%3Ccircle cx='35' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='50' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='65' cy='50' r='2' fill='%232F5233'/%3E%3Cpath d='M30 65h40v3H30z' fill='%2397A97C'/%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -66,19 +47,6 @@
             min-width: 0;
             box-shadow: none;
         }
-
-        .toggle-sidebar-btn {
-            background: #97A97C !important;
-            margin-right: 15px;
-            min-width: 90px;
-            justify-content: center;
-        }
-
-        .toggle-sidebar-btn.active {
-            background: #2F5233 !important;
-        }
-
-
 
         .sidebar-header {
             padding: 25px 20px;
@@ -149,49 +117,6 @@
             line-height: 1.4;
         }
 
-        /* 사이드바 단축키 스타일 */
-        .sidebar-shortcuts {
-            padding: 20px 25px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.1);
-        }
-
-        .shortcuts-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #97A97C;
-            margin-bottom: 15px;
-        }
-
-        .shortcut-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 11px;
-        }
-
-        .shortcut-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .shortcut-item .key {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            border: 1px solid rgba(255,255,255,0.1);
-            font-size: 10px;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        .shortcut-text {
-            color: rgba(255,255,255,0.8);
-            font-weight: 400;
-        }
-
         /* 메인 콘텐츠 영역 */
         .main-content {
             flex: 1;
@@ -215,97 +140,109 @@
         .page-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .page-counter {
-            background: linear-gradient(135deg, #2F5233, #97A97C);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 25px;
             font-weight: 600;
-            font-size: 14px;
+            color: #2F5233;
+            font-size: 16px;
         }
 
         .page-title {
-            font-size: 16px;
-            font-weight: 600;
             color: #1f2937;
+            font-size: 14px;
+            opacity: 0.8;
         }
 
         .nav-controls {
             display: flex;
+            gap: 15px;
             align-items: center;
-            gap: 10px;
         }
 
-        .nav-btn {
+        .control-btn {
             background: #2F5233;
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 13px;
+            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 500;
+            transition: all 0.3s ease;
+            min-height: 40px;
         }
 
-        .edit-btn {
-            background: #8B5A2B;
-        }
-
-        .edit-btn.active {
-            background: #D97706;
-        }
-
-        .save-btn {
-            background: #059669;
-        }
-
-        .nav-btn:hover {
-            background: #97A97C;
+        .control-btn:hover:not(:disabled) {
+            background: #1e3a21;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(47, 82, 51, 0.3);
         }
 
-        .nav-btn:disabled {
-            background: #d1d5db;
+        .control-btn:disabled {
+            background: #9ca3af;
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
         }
 
-        .nav-btn i {
+        .toggle-sidebar-btn {
+            background: #97A97C !important;
+            margin-right: 15px;
+            min-width: 90px;
+            justify-content: center;
+        }
+
+        .toggle-sidebar-btn.active {
+            background: #2F5233 !important;
+        }
+
+        /* 크기 조정 컨트롤 */
+        .size-controls {
+            display: flex;
+            gap: 8px;
+            margin-left: 15px;
+            padding-left: 15px;
+            border-left: 1px solid #e5e7eb;
+        }
+
+        .size-btn {
+            background: #6b7280;
+            padding: 8px 12px;
             font-size: 12px;
+            min-height: auto;
         }
 
-        /* iframe 컨테이너 */
+        .size-btn.active {
+            background: #2F5233;
+        }
+
+        /* iframe 컨테이너 - 동적 크기 조정을 위한 수정 */
         .iframe-container {
             flex: 1;
             padding: 20px;
-            overflow: auto;
-            height: calc(100vh - 80px); /* 네비게이션 헤더 높이 제외 */
+            overflow: hidden; /* auto에서 hidden으로 변경 */
+            height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
         .slide-frame {
-            width: 1280px;
-            height: 720px;
-            max-width: none;
-            max-height: none;
             border: none;
             border-radius: 8px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             background: white;
             transition: all 0.3s ease;
             display: block;
-            margin: 0 auto; /* 수평 중앙 정렬 */
+            transform-origin: center center; /* 스케일링 기준점 */
         }
 
         .slide-frame:hover {
-            transform: translateY(-5px);
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
         }
 
@@ -315,56 +252,31 @@
             box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
         }
 
-        .edit-toolbar {
+        /* 로딩 상태 */
+        .loading-overlay {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.8);
-            padding: 10px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
             border-radius: 8px;
             display: none;
-            z-index: 1000;
+            z-index: 10;
         }
 
-        .edit-mode .edit-toolbar {
+        .loading-overlay.visible {
             display: block;
         }
 
-        .toolbar-btn {
-            background: #374151;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            margin: 0 2px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .toolbar-btn:hover {
-            background: #4B5563;
-        }
-
-        /* 키보드 단축키 안내 - 사이드바로 이동됨 */
-        
-        /* 로딩 애니메이션 */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            font-size: 18px;
-            color: #6b7280;
-        }
-
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e5e7eb;
-            border-top: 4px solid #2F5233;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2F5233;
             border-radius: 50%;
+            width: 30px;
+            height: 30px;
             animation: spin 1s linear infinite;
-            margin-right: 15px;
+            margin: 0 auto 10px;
         }
 
         @keyframes spin {
@@ -373,15 +285,6 @@
         }
 
         /* 반응형 디자인 */
-        @media (max-width: 1400px) {
-            .slide-frame {
-                max-width: 95vw;
-            }
-            .iframe-container {
-                padding: 15px;
-            }
-        }
-
         @media (max-width: 1024px) {
             .container {
                 flex-direction: column;
@@ -390,255 +293,49 @@
             .sidebar {
                 width: 100%;
                 height: auto;
-                max-height: 180px;
-                overflow-y: auto;
-                order: -1;
-            }
-            
-            .sidebar-header {
-                padding: 15px 20px;
-            }
-            
-            .sidebar-title {
-                font-size: 16px;
-            }
-            
-            .toc-list {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                padding: 15px 20px;
-            }
-            
-            .toc-item {
-                flex: 0 0 auto;
-                padding: 8px 12px;
-                border-radius: 20px;
-                background: rgba(255,255,255,0.1);
-                border-left: none;
-                min-width: 120px;
-            }
-            
-            .toc-item.active {
-                background: rgba(151,169,124,0.8);
-            }
-            
-            .main-content {
-                flex: 1;
-            }
-            
-            .slide-frame {
-                max-width: 95vw;
-            }
-            
-            .sidebar-shortcuts {
-                display: none; /* 태블릿에서는 단축키 숨김 */
-            }
-            
-            .nav-header {
-                padding: 10px 20px;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            
-            .page-info {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
+                max-height: 200px;
             }
             
             .nav-controls {
-                gap: 8px;
+                flex-wrap: wrap;
+                gap: 10px;
             }
             
-            .nav-btn {
-                padding: 8px 12px;
-                font-size: 14px;
+            .size-controls {
+                margin-left: 0;
+                padding-left: 0;
+                border-left: none;
+                margin-top: 10px;
             }
         }
 
         @media (max-width: 768px) {
-            .sidebar {
-                height: 120px;
-                max-height: 120px;
-            }
-            
-            .toc-list {
+            .nav-header {
                 padding: 10px 15px;
-                gap: 8px;
-            }
-            
-            .toc-item {
-                min-width: 100px;
-                padding: 6px 10px;
-            }
-            
-            .toc-text {
-                font-size: 11px;
-            }
-            
-            .toc-number {
-                min-width: 18px;
-                height: 18px;
-                font-size: 10px;
-            }
-            
-            .slide-frame {
-                max-width: 98vw;
-                border-radius: 8px;
-            }
-            
-            .nav-header {
-                padding: 8px 15px;
-            }
-            
-            .page-counter {
-                font-size: 12px;
-                padding: 6px 12px;
-            }
-            
-            .page-title {
-                font-size: 14px;
-            }
-            
-            .nav-btn {
-                padding: 6px 10px;
-                font-size: 12px;
-            }
-            
-            .nav-btn span {
-                display: none; /* 모바일에서는 텍스트 숨기고 아이콘만 */
-            }
-            
-            .nav-btn i {
-                font-size: 12px;
-                margin: 0;
-            }
-            
-            .iframe-container {
-                padding: 10px;
-            }
-            
-            .edit-toolbar {
-                top: 5px;
-                right: 5px;
-                padding: 8px;
-            }
-            
-            .toolbar-btn {
-                padding: 4px 8px;
-                font-size: 11px;
-                margin: 0 1px;
-            }
-            
-            .sidebar-shortcuts {
-                padding: 15px 20px;
-            }
-            
-            .shortcuts-title {
-                font-size: 12px;
-            }
-            
-            .shortcut-item {
-                font-size: 10px;
-                gap: 6px;
-            }
-            
-            .shortcut-item .key {
-                font-size: 9px;
-                padding: 1px 4px;
-                min-width: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .sidebar {
-                height: 100px;
-                max-height: 100px;
-            }
-            
-            .toc-list {
-                padding: 8px 12px;
-            }
-            
-            .toc-item {
-                min-width: 80px;
-                padding: 4px 8px;
-            }
-            
-            .toc-text {
-                font-size: 10px;
-            }
-            
-            .nav-header {
                 flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-                padding: 8px 10px;
+                gap: 15px;
             }
             
             .page-info {
-                justify-content: center;
-                margin-bottom: 8px;
+                order: 2;
             }
             
             .nav-controls {
-                justify-content: center;
-            }
-            
-            .slide-frame {
-                max-width: 100vw;
-                border-radius: 0;
-            }
-            
-            .iframe-container {
-                padding: 5px;
+                order: 1;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 왼쪽 목차 -->
-        <div class="sidebar">
+        <!-- 왼쪽 사이드바 -->
+        <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-title">프레젠테이션 목차</div>
-                <div class="sidebar-subtitle" id="presentation-subtitle">자동 로드된 슬라이드</div>
+                <div class="sidebar-subtitle">슬라이드 네비게이션</div>
             </div>
-            <div class="toc-list">
-            </div>
-            
-            <!-- 키보드 단축키 안내 -->
-            <div class="sidebar-shortcuts">
-                <div class="shortcuts-title">단축키</div>
-                <div class="shortcut-item">
-                    <span class="key">←</span>
-                    <span class="key">→</span>
-                    <span class="shortcut-text">페이지 이동</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">Home</span>
-                    <span class="shortcut-text">첫 페이지</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">End</span>
-                    <span class="shortcut-text">마지막 페이지</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">Ctrl</span>
-                    <span class="key">E</span>
-                    <span class="shortcut-text">편집 모드</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">Ctrl</span>
-                    <span class="key">S</span>
-                    <span class="shortcut-text">저장</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">Ctrl</span>
-                    <span class="key">B</span>
-                    <span class="shortcut-text">목차 토글</span>
-                </div>
+            <div class="toc-list" id="toc-list">
+                <!-- 목차 항목들이 자동으로 생성됩니다 -->
             </div>
         </div>
 
@@ -647,97 +344,52 @@
             <!-- 상단 네비게이션 -->
             <div class="nav-header">
                 <div class="page-info">
-                    <button class="nav-btn toggle-sidebar-btn" id="toggle-sidebar-btn">
-                        <i class="fas fa-eye-slash"></i>
-                        <span>숨기기</span>
+                    <button class="control-btn toggle-sidebar-btn" id="toggle-sidebar">
+                        <i class="fas fa-bars"></i> 목차
                     </button>
                     <div class="page-counter">
-                        <span id="current-page">1</span> / <span id="total-pages">9</span>
+                        <span id="current-page">1</span> / <span id="total-pages">-</span>
                     </div>
-                    <div class="page-title" id="page-title">표지</div>
+                    <div class="page-title">
+                        페이지: <span id="page-title">로딩 중...</span>
+                    </div>
                 </div>
+                
                 <div class="nav-controls">
-                    <button class="nav-btn edit-btn" id="edit-btn">
-                        <i class="fas fa-edit"></i>
-                        <span>편집</span>
+                    <button class="control-btn" id="prev-btn" title="이전 페이지 (←)">
+                        <i class="fas fa-chevron-left"></i> 이전
                     </button>
-                    <button class="nav-btn save-btn" id="save-btn" style="display: none;">
-                        <i class="fas fa-save"></i>
-                        <span>저장</span>
+                    <button class="control-btn" id="next-btn" title="다음 페이지 (→)">
+                        <i class="fas fa-chevron-right"></i> 다음
                     </button>
-                    <button class="nav-btn" id="prev-btn" disabled>
-                        <i class="fas fa-chevron-left"></i>
-                        <span>이전</span>
-                    </button>
-                    <button class="nav-btn" id="next-btn">
-                        <span>다음</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+                    
+                    <div class="size-controls">
+                        <button class="control-btn size-btn active" id="fit-btn" title="화면에 맞춤">
+                            <i class="fas fa-expand-arrows-alt"></i> 자동
+                        </button>
+                        <button class="control-btn size-btn" id="original-btn" title="원본 크기">
+                            <i class="fas fa-search-plus"></i> 원본
+                        </button>
+                        <button class="control-btn size-btn" id="fullscreen-btn" title="새 창에서 보기">
+                            <i class="fas fa-external-link-alt"></i> 새창
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 슬라이드 표시 영역 -->
+            <!-- 슬라이드 영역 -->
             <div class="iframe-container">
-                <div class="edit-toolbar" id="edit-toolbar">
-                    <button class="toolbar-btn" onclick="execCommand('bold')">
-                        <i class="fas fa-bold"></i>
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('italic')">
-                        <i class="fas fa-italic"></i>
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('underline')">
-                        <i class="fas fa-underline"></i>
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('fontSize', '14px')">
-                        작게
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('fontSize', '18px')">
-                        크게
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('foreColor', '#2F5233')">
-                        <i class="fas fa-palette"></i>
-                    </button>
+                <div class="loading-overlay" id="loading-overlay">
+                    <div class="spinner"></div>
+                    <div>슬라이드 조정 중...</div>
                 </div>
                 <iframe 
                     class="slide-frame" 
                     id="slide-frame" 
                     src="p0.html"
                     title="프레젠테이션 슬라이드">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        슬라이드를 불러오는 중...
-                    </div>
                 </iframe>
             </div>
-        </div>
-    </div>
-
-    <!-- 키보드 단축키 안내 -->
-    <div class="keyboard-hints">
-        <div class="keyboard-hint">
-            <span class="key">←</span>
-            <span class="key">→</span>
-            <span>페이지 이동</span>
-        </div>
-        <div class="keyboard-hint">
-            <span class="key">Home</span>
-            <span>첫 페이지</span>
-        </div>
-        <div class="keyboard-hint">
-            <span class="key">End</span>
-            <span>마지막 페이지</span>
-        </div>
-        <div class="keyboard-hint">
-            <span class="key">Ctrl</span>
-            +
-            <span class="key">E</span>
-            <span>편집 모드</span>
-        </div>
-        <div class="keyboard-hint">
-            <span class="key">Ctrl</span>
-            +
-            <span class="key">S</span>
-            <span>저장</span>
         </div>
     </div>
 
@@ -745,28 +397,53 @@
         class PresentationViewer {
             constructor() {
                 this.currentPage = 0;
-                this.totalPages = 0; // 자동 감지
-                this.isEditMode = false;
+                this.totalPages = 0;
                 this.pageFiles = [];
                 this.pageTitles = [];
+                this.sizeMode = 'fit'; // fit, original, fullscreen
+                this.currentScale = 1;
+                this.originalWidth = 1280;
+                this.originalHeight = 720;
                 
                 this.init();
             }
             
             async init() {
                 this.initializeElements();
-                await this.detectPages(); // 페이지 자동 감지
-                await this.loadPageTitles(); // 제목 로드
-                this.createTableOfContents(); // 목차 생성
+                await this.detectPages();
+                await this.loadPageTitles();
+                this.createTableOfContents();
                 this.setupEventListeners();
                 this.updateUI();
+                
+                // 초기 슬라이드 로딩 후 크기 조정
+                setTimeout(() => {
+                    this.adjustSlideSize();
+                }, 500);
+            }
+
+            initializeElements() {
+                this.slideFrame = document.getElementById('slide-frame');
+                this.iframeContainer = document.querySelector('.iframe-container');
+                this.loadingOverlay = document.getElementById('loading-overlay');
+                this.currentPageSpan = document.getElementById('current-page');
+                this.totalPagesSpan = document.getElementById('total-pages');
+                this.pageTitleSpan = document.getElementById('page-title');
+                this.prevBtn = document.getElementById('prev-btn');
+                this.nextBtn = document.getElementById('next-btn');
+                this.toggleSidebarBtn = document.getElementById('toggle-sidebar');
+                this.sidebar = document.getElementById('sidebar');
+                this.tocList = document.getElementById('toc-list');
+                this.fitBtn = document.getElementById('fit-btn');
+                this.originalBtn = document.getElementById('original-btn');
+                this.fullscreenBtn = document.getElementById('fullscreen-btn');
             }
 
             // 페이지 수 자동 감지
             async detectPages() {
                 let pageIndex = 0;
                 let consecutiveFailures = 0;
-                const maxFailures = 3; // 연속 3번 실패하면 중단
+                const maxFailures = 3;
                 
                 console.log('페이지 감지 시작...');
                 
@@ -791,333 +468,243 @@
                 
                 this.totalPages = this.pageFiles.length;
                 console.log(`총 ${this.totalPages}개 페이지 감지 완료`);
-                
-                if (this.totalPages === 0) {
-                    console.error('페이지를 찾을 수 없습니다. p0.html부터 시작하는 파일이 있는지 확인하세요.');
-                }
             }
 
-            // 각 페이지에서 h1 태그로 제목 추출
             async loadPageTitles() {
+                this.pageTitles = [];
+                
                 for (let i = 0; i < this.totalPages; i++) {
                     try {
                         const response = await fetch(this.pageFiles[i]);
                         const html = await response.text();
-                        
-                        // HTML을 파싱하기 위한 임시 DOM 생성
                         const parser = new DOMParser();
                         const doc = parser.parseFromString(html, 'text/html');
                         
-                        // p0는 목차에 "표지"로 표시
-                        if (i === 0) {
-                            // p0의 title 태그를 문서 제목으로 설정
-                            const titleElement = doc.querySelector('title');
-                            if (titleElement && titleElement.textContent.trim()) {
-                                const p0Title = titleElement.textContent.trim();
-                                document.title = p0Title;
-                                
-                                // 사이드바 부제목에도 표시
-                                const subtitleElement = document.getElementById('presentation-subtitle');
-                                if (subtitleElement) {
-                                    subtitleElement.textContent = p0Title;
-                                }
-                                
-                                console.log('뷰어 제목 설정:', p0Title);
-                            }
-                            // 목차에는 "표지"로 표시
-                            this.pageTitles.push('표지');
-                        } else {
-                            // h1 태그에서 제목 추출
-                            const h1Element = doc.querySelector('h1');
-                            if (h1Element) {
-                                // 텍스트만 추출 (태그 제거)
-                                const title = h1Element.textContent.trim();
-                                this.pageTitles.push(title || `페이지 ${i + 1}`);
-                            } else {
-                                // h1이 없으면 title 태그 시도
-                                const titleElement = doc.querySelector('title');
-                                if (titleElement) {
-                                    this.pageTitles.push(titleElement.textContent.trim() || `페이지 ${i + 1}`);
-                                } else {
-                                    this.pageTitles.push(`페이지 ${i + 1}`);
-                                }
-                            }
-                        }
+                        const title = doc.querySelector('h1')?.textContent || 
+                                     doc.querySelector('title')?.textContent || 
+                                     doc.querySelector('h2')?.textContent || 
+                                     `슬라이드 ${i + 1}`;
+                        
+                        this.pageTitles.push(title.trim());
                     } catch (error) {
-                        console.warn(`${this.pageFiles[i]} 제목 로드 실패:`, error);
-                        this.pageTitles.push(i === 0 ? '표지' : `페이지 ${i + 1}`);
+                        console.error(`페이지 ${i + 1} 제목 로딩 실패:`, error);
+                        this.pageTitles.push(`슬라이드 ${i + 1}`);
                     }
                 }
-                console.log('로드된 페이지 제목:', this.pageTitles);
             }
 
-            // 목차 동적 생성
             createTableOfContents() {
-                const tocList = document.querySelector('.toc-list');
-                if (!tocList) return;
+                this.tocList.innerHTML = '';
                 
-                // 기존 목차 제거
-                tocList.innerHTML = '';
-                
-                // 새 목차 생성
-                for (let i = 0; i < this.totalPages; i++) {
+                this.pageFiles.forEach((file, index) => {
                     const tocItem = document.createElement('div');
                     tocItem.className = 'toc-item';
-                    tocItem.dataset.page = i;
-                    
                     tocItem.innerHTML = `
-                        <div class="toc-number">${i + 1}</div>
-                        <div class="toc-text">${this.pageTitles[i]}</div>
+                        <div class="toc-number">${index + 1}</div>
+                        <div class="toc-text">${this.pageTitles[index] || `슬라이드 ${index + 1}`}</div>
                     `;
                     
                     tocItem.addEventListener('click', () => {
-                        this.goToPage(i);
+                        this.goToPage(index);
                     });
                     
-                    tocList.appendChild(tocItem);
-                }
+                    this.tocList.appendChild(tocItem);
+                });
                 
-                // tocItems 업데이트
-                this.tocItems = document.querySelectorAll('.toc-item');
-            }
-            initializeElements() {
-                this.slideFrame = document.getElementById('slide-frame');
-                this.prevBtn = document.getElementById('prev-btn');
-                this.nextBtn = document.getElementById('next-btn');
-                this.editBtn = document.getElementById('edit-btn');
-                this.saveBtn = document.getElementById('save-btn');
-                this.toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
-                this.currentPageSpan = document.getElementById('current-page');
-                this.totalPagesSpan = document.getElementById('total-pages');
-                this.pageTitleSpan = document.getElementById('page-title');
-                this.tocItems = []; // createTableOfContents에서 채워짐
-                this.iframeContainer = document.querySelector('.iframe-container');
-                this.sidebar = document.querySelector('.sidebar');
-                this.mainContent = document.querySelector('.main-content');
-                this.sidebarVisible = true;
+                this.tocItems = this.tocList.querySelectorAll('.toc-item');
             }
 
             setupEventListeners() {
                 // 네비게이션 버튼
                 this.prevBtn.addEventListener('click', () => this.goToPreviousPage());
                 this.nextBtn.addEventListener('click', () => this.goToNextPage());
-                this.editBtn.addEventListener('click', () => this.toggleEditMode());
-                this.saveBtn.addEventListener('click', () => this.saveCurrentPage());
-                this.toggleSidebarBtn.addEventListener('click', () => this.toggleSidebar());
-
-
-                // 키보드 단축키
-                document.addEventListener('keydown', (e) => {
-                    // 편집 모드가 아닐 때만 네비게이션 키 작동
-                    if (!this.isEditMode) {
-                        switch(e.key) {
-                            case 'ArrowLeft':
-                                e.preventDefault();
-                                this.goToPreviousPage();
-                                break;
-                            case 'ArrowRight':
-                                e.preventDefault();
-                                this.goToNextPage();
-                                break;
-                            case 'Home':
-                                e.preventDefault();
-                                this.goToPage(0);
-                                break;
-                            case 'End':
-                                e.preventDefault();
-                                this.goToPage(this.totalPages - 1);
-                                break;
-                        }
-                    }
-                    
-                    // 편집 모드 토글 (Ctrl+E)
-                    if (e.ctrlKey && e.key === 'e') {
-                        e.preventDefault();
-                        this.toggleEditMode();
-                    }
-                    
-                    // 저장 (Ctrl+S)
-                    if (this.isEditMode && e.ctrlKey && e.key === 's') {
-                        e.preventDefault();
-                        this.saveCurrentPage();
-                    }
-                    
-                    // 목차 토글 (Ctrl+B)
-                    if (e.ctrlKey && e.key === 'b') {
-                        e.preventDefault();
-                        this.toggleSidebar();
-                    }
-                });
-
-                // iframe 로딩 완료 처리
-                this.slideFrame.addEventListener('load', () => {
-                    console.log(`페이지 ${this.currentPage + 1} 로딩 완료`);
-                    if (this.isEditMode) {
-                        this.enableEditing();
-                    }
-                });
-            }
-
-            toggleSidebar() {
-                this.sidebarVisible = !this.sidebarVisible;
                 
-                if (this.sidebarVisible) {
-                    this.sidebar.classList.remove('hidden');
-                    this.toggleSidebarBtn.classList.remove('active');
-                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-eye-slash"></i><span>숨기기</span>';
-                } else {
-                    this.sidebar.classList.add('hidden');
-                    this.toggleSidebarBtn.classList.add('active');
-                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-eye"></i><span>보이기</span>';
-                }
+                // 사이드바 토글
+                this.toggleSidebarBtn.addEventListener('click', () => this.toggleSidebar());
+                
+                // 크기 조정 버튼
+                this.fitBtn.addEventListener('click', () => this.setSizeMode('fit'));
+                this.originalBtn.addEventListener('click', () => this.setSizeMode('original'));
+                this.fullscreenBtn.addEventListener('click', () => this.setSizeMode('fullscreen'));
+                
+                // 키보드 단축키
+                document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+                
+                // 창 크기 변경 감지
+                window.addEventListener('resize', () => this.debounce(() => {
+                    if (this.sizeMode === 'fit') {
+                        this.adjustSlideSize();
+                    }
+                }, 300));
+                
+                // iframe 로드 완료 감지
+                this.slideFrame.addEventListener('load', () => {
+                    setTimeout(() => {
+                        this.adjustSlideSize();
+                    }, 100);
+                });
             }
 
-            toggleEditMode() {
-                // 편집 모드를 켜려고 할 때만 비밀번호 확인
-                if (!this.isEditMode) {
-                    const password = prompt('편집 모드 비밀번호를 입력하세요:');
-                    if (password !== '9090') {
-                        alert('비밀번호가 올바르지 않습니다.');
+            // 동적 크기 조정 핵심 기능
+            async adjustSlideSize() {
+                if (this.sizeMode !== 'fit') return;
+                
+                this.showLoading();
+                
+                try {
+                    // iframe 콘텐츠 접근 (동일 도메인이어야 함)
+                    const iframeDoc = this.slideFrame.contentDocument || this.slideFrame.contentWindow.document;
+                    
+                    if (!iframeDoc) {
+                        console.warn('iframe 내용에 접근할 수 없습니다');
+                        this.fallbackSizing();
                         return;
                     }
+                    
+                    // 슬라이드 실제 크기 측정
+                    const slideContainer = iframeDoc.querySelector('.slide-container') || iframeDoc.body;
+                    
+                    // 임시로 원본 크기 설정하여 실제 크기 측정
+                    const originalTransform = this.slideFrame.style.transform;
+                    this.slideFrame.style.transform = 'none';
+                    this.slideFrame.style.width = 'auto';
+                    this.slideFrame.style.height = 'auto';
+                    
+                    await this.waitForLayout();
+                    
+                    let actualWidth, actualHeight;
+                    
+                    if (slideContainer) {
+                        actualWidth = Math.max(slideContainer.scrollWidth, slideContainer.offsetWidth, this.originalWidth);
+                        actualHeight = Math.max(slideContainer.scrollHeight, slideContainer.offsetHeight, this.originalHeight);
+                    } else {
+                        actualWidth = this.originalWidth;
+                        actualHeight = this.originalHeight;
+                    }
+                    
+                    console.log(`측정된 슬라이드 크기: ${actualWidth} × ${actualHeight}`);
+                    
+                    // 컨테이너 크기 (여백 제외)
+                    const containerWidth = this.iframeContainer.clientWidth - 40;
+                    const containerHeight = this.iframeContainer.clientHeight - 40;
+                    
+                    // 스케일 계산
+                    const scaleX = containerWidth / actualWidth;
+                    const scaleY = containerHeight / actualHeight;
+                    const scale = Math.min(scaleX, scaleY, 1); // 최대 1배까지만
+                    
+                    this.currentScale = scale;
+                    
+                    console.log(`컨테이너 크기: ${containerWidth} × ${containerHeight}`);
+                    console.log(`계산된 스케일: ${scale.toFixed(3)}`);
+                    
+                    // iframe 크기와 스케일 적용
+                    this.slideFrame.style.width = actualWidth + 'px';
+                    this.slideFrame.style.height = actualHeight + 'px';
+                    this.slideFrame.style.transform = `scale(${scale})`;
+                    
+                } catch (error) {
+                    console.error('크기 조정 중 오류:', error);
+                    this.fallbackSizing();
+                } finally {
+                    this.hideLoading();
                 }
+            }
+            
+            // 폴백 크기 조정 (iframe 접근 불가 시)
+            fallbackSizing() {
+                const containerWidth = this.iframeContainer.clientWidth - 40;
+                const containerHeight = this.iframeContainer.clientHeight - 40;
                 
-                this.isEditMode = !this.isEditMode;
-                this.iframeContainer.classList.toggle('edit-mode', this.isEditMode);
+                const scaleX = containerWidth / this.originalWidth;
+                const scaleY = containerHeight / this.originalHeight;
+                const scale = Math.min(scaleX, scaleY, 1);
                 
-                if (this.isEditMode) {
-                    this.editBtn.classList.add('active');
-                    this.editBtn.innerHTML = '<i class="fas fa-edit"></i> 편집 중';
-                    this.saveBtn.style.display = 'flex';
-                    this.enableEditing();
-                } else {
-                    this.editBtn.classList.remove('active');
-                    this.editBtn.innerHTML = '<i class="fas fa-edit"></i> 편집';
-                    this.saveBtn.style.display = 'none';
-                    this.disableEditing();
+                this.currentScale = scale;
+                this.slideFrame.style.width = this.originalWidth + 'px';
+                this.slideFrame.style.height = this.originalHeight + 'px';
+                this.slideFrame.style.transform = `scale(${scale})`;
+                
+                console.log(`폴백 크기 조정 적용: 스케일 ${scale.toFixed(3)}`);
+            }
+            
+            // 레이아웃 완료 대기
+            waitForLayout() {
+                return new Promise(resolve => {
+                    requestAnimationFrame(() => {
+                        setTimeout(resolve, 50);
+                    });
+                });
+            }
+            
+            // 크기 모드 설정
+            setSizeMode(mode) {
+                this.sizeMode = mode;
+                
+                // 버튼 상태 업데이트
+                document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+                document.getElementById(`${mode}-btn`).classList.add('active');
+                
+                switch(mode) {
+                    case 'fit':
+                        this.adjustSlideSize();
+                        break;
+                    case 'original':
+                        this.setOriginalSize();
+                        break;
+                    case 'fullscreen':
+                        this.openInNewWindow();
+                        break;
                 }
             }
-
-            enableEditing() {
-                try {
-                    const iframeDoc = this.slideFrame.contentDocument || this.slideFrame.contentWindow.document;
-                    if (iframeDoc) {
-                        // 모든 텍스트 요소를 편집 가능하게 만들기
-                        const editableElements = iframeDoc.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, td, th, li');
-                        editableElements.forEach(element => {
-                            // 이미 편집 가능한 요소가 아닌 경우에만 설정
-                            if (!element.hasAttribute('contenteditable')) {
-                                element.setAttribute('contenteditable', 'true');
-                                element.style.outline = '1px dashed #D97706';
-                                element.style.padding = '2px';
-                                
-                                // 편집 시작 시 outline 변경
-                                element.addEventListener('focus', () => {
-                                    element.style.outline = '2px solid #D97706';
-                                    element.style.backgroundColor = 'rgba(217, 119, 6, 0.1)';
-                                });
-                                
-                                // 편집 종료 시 outline 복원
-                                element.addEventListener('blur', () => {
-                                    element.style.outline = '1px dashed #D97706';
-                                    element.style.backgroundColor = '';
-                                });
-                            }
-                        });
-                        
-                        // 편집 모드 스타일 추가
-                        if (!iframeDoc.getElementById('edit-mode-styles')) {
-                            const style = iframeDoc.createElement('style');
-                            style.id = 'edit-mode-styles';
-                            style.textContent = `
-                                [contenteditable="true"]:hover {
-                                    background-color: rgba(217, 119, 6, 0.05) !important;
-                                    cursor: text !important;
-                                }
-                                [contenteditable="true"]:focus {
-                                    background-color: rgba(217, 119, 6, 0.1) !important;
-                                    outline: 2px solid #D97706 !important;
-                                }
-                            `;
-                            iframeDoc.head.appendChild(style);
-                        }
-                    }
-                } catch (e) {
-                    console.error('편집 모드 활성화 중 오류:', e);
-                    alert('편집 모드를 활성화할 수 없습니다. 같은 도메인의 파일인지 확인해주세요.');
-                }
+            
+            // 원본 크기로 표시
+            setOriginalSize() {
+                this.slideFrame.style.width = this.originalWidth + 'px';
+                this.slideFrame.style.height = this.originalHeight + 'px';
+                this.slideFrame.style.transform = 'none';
+                this.currentScale = 1;
+                
+                // 컨테이너에 스크롤 추가
+                this.iframeContainer.style.overflow = 'auto';
+                this.iframeContainer.style.justifyContent = 'flex-start';
+                this.iframeContainer.style.alignItems = 'flex-start';
             }
-
-            disableEditing() {
-                try {
-                    const iframeDoc = this.slideFrame.contentDocument || this.slideFrame.contentWindow.document;
-                    if (iframeDoc) {
-                        // contenteditable 속성 제거
-                        const editableElements = iframeDoc.querySelectorAll('[contenteditable="true"]');
-                        editableElements.forEach(element => {
-                            element.removeAttribute('contenteditable');
-                            element.style.outline = '';
-                            element.style.padding = '';
-                            element.style.backgroundColor = '';
-                        });
-                        
-                        // 편집 모드 스타일 제거
-                        const editStyles = iframeDoc.getElementById('edit-mode-styles');
-                        if (editStyles) {
-                            editStyles.remove();
-                        }
-                    }
-                } catch (e) {
-                    console.error('편집 모드 비활성화 중 오류:', e);
-                }
-            }
-
-            saveCurrentPage() {
-                try {
-                    const iframeDoc = this.slideFrame.contentDocument || this.slideFrame.contentWindow.document;
-                    if (iframeDoc) {
-                        // 현재 페이지의 HTML 내용을 가져와서 저장
-                        const htmlContent = iframeDoc.documentElement.outerHTML;
-                        
-                        // Blob으로 파일 생성
-                        const blob = new Blob([htmlContent], { type: 'text/html' });
-                        const url = URL.createObjectURL(blob);
-                        
-                        // 다운로드 링크 생성
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = this.pageFiles[this.currentPage];
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                        
-                        alert(`${this.pageFiles[this.currentPage]} 파일이 다운로드됩니다.`);
-                    }
-                } catch (e) {
-                    console.error('저장 중 오류:', e);
-                    alert('저장할 수 없습니다. 브라우저 보안 정책으로 인한 제한일 수 있습니다.');
-                }
+            
+            // 새 창에서 열기
+            openInNewWindow() {
+                const slideUrl = this.pageFiles[this.currentPage];
+                const windowFeatures = `
+                    width=1320,
+                    height=760,
+                    left=${(screen.width - 1320) / 2},
+                    top=${(screen.height - 760) / 2},
+                    scrollbars=yes,
+                    resizable=yes,
+                    status=no,
+                    toolbar=no,
+                    menubar=no
+                `;
+                
+                window.open(slideUrl, `SlideViewer_${Date.now()}`, windowFeatures);
+                
+                // 원래 모드로 돌아가기
+                setTimeout(() => {
+                    this.setSizeMode('fit');
+                }, 100);
             }
 
             goToPage(pageIndex) {
                 if (pageIndex < 0 || pageIndex >= this.totalPages) return;
                 
-                // 편집 모드일 때 페이지 변경 시 경고
-                if (this.isEditMode) {
-                    const confirm = window.confirm('편집 중인 내용이 손실될 수 있습니다. 계속하시겠습니까?');
-                    if (!confirm) return;
-                }
-                
                 this.currentPage = pageIndex;
                 this.slideFrame.src = this.pageFiles[pageIndex];
                 this.updateUI();
                 
-                // 부드러운 전환 효과
-                this.slideFrame.style.opacity = '0.7';
-                setTimeout(() => {
-                    this.slideFrame.style.opacity = '1';
-                }, 100);
+                // 크기 조정 모드에 따라 처리
+                if (this.sizeMode === 'fit') {
+                    setTimeout(() => this.adjustSlideSize(), 200);
+                }
             }
 
             goToPreviousPage() {
@@ -1133,45 +720,80 @@
             }
 
             updateUI() {
-                // 페이지 카운터 업데이트
                 this.currentPageSpan.textContent = this.currentPage + 1;
                 this.totalPagesSpan.textContent = this.totalPages;
+                this.pageTitleSpan.textContent = this.pageTitles[this.currentPage] || '로딩 중...';
                 
-                // 페이지 제목 업데이트
-                this.pageTitleSpan.textContent = this.pageTitles[this.currentPage];
-                
-                
-                // 네비게이션 버튼 상태 업데이트
                 this.prevBtn.disabled = this.currentPage === 0;
                 this.nextBtn.disabled = this.currentPage === this.totalPages - 1;
                 
-                // 목차 활성 상태 업데이트
                 this.tocItems.forEach((item, index) => {
                     item.classList.toggle('active', index === this.currentPage);
                 });
             }
 
-            // 페이지 존재 여부 확인 (선택사항)
-            async checkPageExists(pageFile) {
-                try {
-                    const response = await fetch(pageFile, { method: 'HEAD' });
-                    return response.ok;
-                } catch {
-                    return false;
+            toggleSidebar() {
+                this.sidebar.classList.toggle('hidden');
+                this.toggleSidebarBtn.classList.toggle('active');
+                
+                // 사이드바 토글 후 크기 재조정
+                setTimeout(() => {
+                    if (this.sizeMode === 'fit') {
+                        this.adjustSlideSize();
+                    }
+                }, 300);
+            }
+
+            handleKeyboard(e) {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        this.goToPreviousPage();
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        this.goToNextPage();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        this.goToPage(0);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        this.goToPage(this.totalPages - 1);
+                        break;
+                    case '1':
+                        if (e.ctrlKey || e.metaKey) {
+                            e.preventDefault();
+                            this.setSizeMode('fit');
+                        }
+                        break;
+                    case '2':
+                        if (e.ctrlKey || e.metaKey) {
+                            e.preventDefault();
+                            this.setSizeMode('original');
+                        }
+                        break;
+                    case '3':
+                        if (e.ctrlKey || e.metaKey) {
+                            e.preventDefault();
+                            this.setSizeMode('fullscreen');
+                        }
+                        break;
                 }
             }
-        }
 
-        // 편집 툴바 명령어 실행
-        function execCommand(command, value = null) {
-            try {
-                const iframe = document.getElementById('slide-frame');
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                if (iframeDoc) {
-                    iframeDoc.execCommand(command, false, value);
-                }
-            } catch (e) {
-                console.error('명령어 실행 오류:', e);
+            showLoading() {
+                this.loadingOverlay.classList.add('visible');
+            }
+
+            hideLoading() {
+                this.loadingOverlay.classList.remove('visible');
+            }
+
+            debounce(func, wait) {
+                clearTimeout(this.debounceTimer);
+                this.debounceTimer = setTimeout(func, wait);
             }
         }
 
@@ -1179,13 +801,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             window.presentationViewer = new PresentationViewer();
         });
-
-        // 전역 함수로 외부에서 페이지 제어 가능
-        function goToSlide(pageIndex) {
-            if (window.presentationViewer) {
-                window.presentationViewer.goToPage(pageIndex);
-            }
-        }
     </script>
 </body>
 </html>
