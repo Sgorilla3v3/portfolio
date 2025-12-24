@@ -252,10 +252,7 @@
             border: 3px solid #D97706;
             box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
         }
-        .slide-frame.loaded {
-            opacity: 1; /* 로딩 완료 후 표시 */
-            visibility: visible;
-        }
+        
 
         /* 로딩 상태 */
         .loading-overlay {
@@ -283,7 +280,10 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 10px;
         }
-
+        .slide-frame.loaded {
+            opacity: 1; /* 로딩 완료 후 표시 */
+            visibility: visible;
+        }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
