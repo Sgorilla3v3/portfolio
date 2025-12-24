@@ -546,6 +546,8 @@
                 this.slideFrame.addEventListener('load', () => {
                     setTimeout(() => {
                         this.adjustSlideSize();
+                        // 크기 조정 완료 후 표시
+                        this.slideFrame.classList.add('loaded');
                     }, 100);
                 });
             }
@@ -702,14 +704,12 @@
             goToPage(pageIndex) {
                 if (pageIndex < 0 || pageIndex >= this.totalPages) return;
                 
+                // 페이지 전환 시 잠시 숨김
+                this.slideFrame.classList.remove('loaded');
+                
                 this.currentPage = pageIndex;
                 this.slideFrame.src = this.pageFiles[pageIndex];
                 this.updateUI();
-                
-                // 크기 조정 모드에 따라 처리
-                if (this.sizeMode === 'fit') {
-                    setTimeout(() => this.adjustSlideSize(), 200);
-                }
             }
 
             goToPreviousPage() {
