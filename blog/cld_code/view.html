@@ -248,10 +248,6 @@
             visibility: visible;
         }
 
-        .loading-overlay {
-            display: none !important; /* 로딩 메시지 숨김 */
-        }
-
         .slide-frame:hover {
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
         }
@@ -271,8 +267,8 @@
             background: rgba(255,255,255,0.9);
             padding: 20px;
             border-radius: 8px;
-            display: none;
             z-index: 10;
+            display: none !important; /* 로딩 메시지 숨김 */
         }
 
         .loading-overlay.visible {
