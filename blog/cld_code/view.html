@@ -224,14 +224,13 @@
         .iframe-container {
             flex: 1;
             padding: 20px;
-            overflow: hidden; /* auto에서 hidden으로 변경 */
+            overflow: visible; /* auto에서 hidden으로 변경 */
             height: calc(100vh - 80px);
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
         }
-
         .slide-frame {
             border: none;
             border-radius: 8px;
@@ -239,9 +238,12 @@
             background: white;
             transition: all 0.3s ease;
             display: block;
-            transform-origin: center center; /* 스케일링 기준점 */
-            opacity: 0; /* 초기에 숨김 */
+            transform-origin: center center;
+            opacity: 0; /* 초기 숨김 유지 */
+            width: 1280px; /* 초기 크기 미리 설정 */
+            height: 720px;
         }
+
 
         .slide-frame:hover {
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
@@ -541,14 +543,16 @@
                         this.adjustSlideSize();
                     }
                 }, 300));
-                
-                // iframe 로드 완료 감지
+
+                // iframe 로드 완료 감지를 이렇게 수정
                 this.slideFrame.addEventListener('load', () => {
+                    // 1. 먼저 크기 조정
+                    this.adjustSlideSize();
+                    
+                    // 2. 크기 조정 완료 후 표시
                     setTimeout(() => {
-                        this.adjustSlideSize();
-                        // 크기 조정 완료 후 표시
                         this.slideFrame.classList.add('loaded');
-                    }, 100);
+                    }, 200); // 충분한 시간 확보
                 });
             }
 
