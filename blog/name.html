@@ -439,7 +439,7 @@
 
     <script>
         // ⚠️ 여기에 실제 Apps Script 웹앱 URL을 입력하세요
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwGMhiJXN-W6A4zY6QL6SsLaEWhSzUSkwAkMOid-IIhRWdMJZMALQeV7Vn2HGSwB5Yvww/exec';
+        const API_URL = 'https://script.googleusercontent.com/macros/s/AKfycbwGMhiJXN-W6A4zY6QL6SsLaEWhSzUSkwAkMOid-IIhRWdMJZMALQeV7Vn2HGSwB5Yvww/exec';
         
         let currentStep = 1;
         const totalSteps = 3;
@@ -588,7 +588,7 @@
             }
             
             // API URL 체크
-            if (API_URL === 'https://script.google.com/macros/s/AKfycbwGMhiJXN-W6A4zY6QL6SsLaEWhSzUSkwAkMOid-IIhRWdMJZMALQeV7Vn2HGSwB5Yvww/exec') {
+            if (API_URL === 'insert your URL') {
                 console.error('API URL이 설정되지 않았습니다');
                 showModal(false, 'API URL을 설정해주세요', 
                     'HTML 파일의 API_URL 변수에 Apps Script 웹앱 URL을 입력해주세요.\n\n현재 값: ' + API_URL);
