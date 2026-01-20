@@ -462,7 +462,7 @@
 
     <script>
         // 전역 변수
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGMhiJXN-W6A4zY6QL6SsLaEWhSzUSkwAkMOid-IIhRWdMJZMALQeV7Vn2HGSwB5Yvww/exec'; // Apps Script URL을 여기에 입력
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8UJQyuXdUyhKprhnAqH5FUAeoRGrtkKOgMRjs-exunyMTvBtFf96kqHX2_juIaHUJlQ/exec'; // Apps Script URL을 여기에 입력
 
         // DOM 요소 참조
         const form = document.getElementById('registrationForm');
@@ -639,9 +639,23 @@
         }
 
         // 참여자 목록 보기 (추후 구현)
-        function showParticipants() {
-            alert('참여자 목록 기능은 추후 구현 예정입니다.');
+        async function showParticipants() {
+            try {
+                const response = await fetch(APPS_SCRIPT_URL);
+                const result = await response.json();
+
+                if (result.success) {
+                    console.log(result.participants); // 콘솔에 출력
+                    alert("참여자 수: " + result.participants.length);
+                    // 필요하다면 화면에 테이블로 표시 가능
+                } else {
+                    alert(result.message || "목록을 불러올 수 없습니다.");
+                }
+            } catch (error) {
+                alert("네트워크 오류: " + error);
+            }
         }
+
 
         // 이벤트 리스너
         form.addEventListener('submit', handleSubmit);
