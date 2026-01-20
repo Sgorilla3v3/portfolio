@@ -526,10 +526,15 @@
         function clearError(fieldId) {
             const errorElement = document.getElementById(`${fieldId}Error`);
             const inputElement = document.getElementById(fieldId);
-            
-            errorElement.style.display = 'none';
-            inputElement.style.borderColor = 'var(--border-color)';
+
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+            if (inputElement) {
+                inputElement.style.borderColor = 'var(--border-color)';
+            }
         }
+
 
         // 모든 에러 메시지 제거
         function clearErrors() {
@@ -615,7 +620,7 @@
         // 폼 제출
         async function handleSubmit(e) {
             e.preventDefault();
-            
+
             if (!validateForm()) {
                 return;
             }
@@ -625,36 +630,31 @@
 
             try {
                 const formData = new FormData(form);
-                const participantData = {
-                    action: 'addParticipant',
-                    participant: {
-                        name: formData.get('name').trim(),
-                        phone: formatPhone(formData.get('phone').trim()),
-                        email: formData.get('email').trim(),
-                        organization: formData.get('organization').trim(),
-                        category: formData.get('category'),
-                        memo: formData.get('memo').trim(),
-                        timestamp: new Date().toISOString(),
-                        program: formData.get('program')
-                    }
+
+                // 1️⃣ participant 객체 단일 생성
+                const participant = {
+                    name: formData.get('name').trim(),
+                    phone: formatPhone(formData.get('phone').trim()),
+                    email: formData.get('email').trim(),
+                    organization: formData.get('organization').trim(),
+                    category: formData.get('category'),
+                    program: formData.get('program'),
+                    memo: formData.get('memo').trim(),
+                    timestamp: new Date().toISOString()
                 };
 
-
+                // 2️⃣ fetch에서는 그대로 전송만 함
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     body: new URLSearchParams({
                         action: 'addParticipant',
-                        data: JSON.stringify({
-                        name: formData.get('name').trim(),
-                        phone: formatPhone(formData.get('phone').trim()),
-                        email: formData.get('email').trim(),
-                        organization: formData.get('organization').trim(),
-                        category: formData.get('category'),
-                        memo: formData.get('memo').trim(),
-                        program: formData.get('program')
-                        })
+                        data: JSON.stringify(participant)
                     })
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
 
                 const result = await response.json();
 
@@ -672,6 +672,7 @@
                 toggleLoading(false);
             }
         }
+
 
         // 참여자 목록 보기 (추후 구현)
         async function showParticipants() {
