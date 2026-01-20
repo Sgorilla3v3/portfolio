@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>참여자 리스트 관리</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .message { margin-top: 10px; padding: 10px; border-radius: 5px; }
+    .success { background: #e0ffe0; color: #0a0; }
+    .error { background: #ffe0e0; color: #a00; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    button { margin: 5px; padding: 6px 12px; }
+  </style>
+</head>
+<body>
+  <h1>참여자 리스트 관리</h1>
+
+  <!-- 등록 폼 -->
+  <form id="participantForm">
+    <input type="text" id="name" placeholder="이름" required>
+    <input type="tel" id="phone" placeholder="연락처" required>
+    <input type="email" id="email" placeholder="이메일">
+    <input type="text" id="organization" placeholder="소속">
+    <select id="category" required>
+      <option value="">참여구분 선택</option>
+      <option value="일반">일반</option>
+      <option value="VIP">VIP</option>
+      <option value="스태프">스태프</option>
+      <option value="발표자">발표자</option>
+      <option value="언론">언론</option>
+      <option value="기타">기타</option>
+    </select>
+    <textarea id="memo" placeholder="비고"></textarea>
+    <button type="submit">참여자 등록</button>
+  </form>
+
+  <!-- 제어 버튼 -->
+  <div>
+    <button onclick="loadParticipants()">참여자 목록 불러오기</button>
+    <button onclick="clearAllParticipants()">전체 삭제</button>
+  </div>
+
+  <!-- 메시지 영역 -->
+  <div id="message"></div>
+
+  <!-- 참여자 목록 테이블 -->
+  <table id="participantsTable">
+    <thead>
+      <tr>
+        <th>이름</th><th>연락처</th><th>이메일</th><th>소속</th><th>구분</th><th>비고</th><th>삭제</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqGcrBvLg6VAm44FXnfdaUvt4b0yiB8AbiIaTkEncaS7zUBTTPe3JXa_89r0Q_D-Ja/exec'; // 웹앱 URL 입력
+
+    const messageBox = document.getElementById('message');
+    const tableBody = document.querySelector('#participantsTable tbody');
+
+    function showMessage(text, type='success') {
+      messageBox.textContent = text;
+      messageBox.className = `message ${type}`;
+    }
+
+    // 참여자 등록
+    document.getElementById('participantForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const participant = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        organization: document.getElementById('organization').value,
+        category: document.getElementById('category').value,
+        memo: document.getElementById('memo').value,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'addParticipant', participant })
+        });
+        const result = await res.json();
+        if (result.success) {
+          showMessage('참여자 등록 완료!', 'success');
+          loadParticipants();
+          e.target.reset();
+        } else {
+          showMessage(result.message || '등록 실패', 'error');
+        }
+      } catch (err) {
+        showMessage('네트워크 오류: ' + err.message, 'error');
+      }
+    });
+
+    // 참여자 목록 조회
+    async function loadParticipants() {
+      try {
+        const res = await fetch(`${APPS_SCRIPT_URL}?action=getParticipants`);
+        const result = await res.json();
+        if (result.success) {
+          tableBody.innerHTML = '';
+          result.participants.forEach(p => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${p.name}</td>
+              <td>${p.phone}</td>
+              <td>${p.email}</td>
+              <td>${p.organization}</td>
+              <td>${p.category}</td>
+              <td>${p.memo}</td>
+              <td><button onclick="deleteParticipant('${p.id}')">삭제</button></td>
+            `;
+            tableBody.appendChild(row);
+          });
+        } else {
+          showMessage(result.message || '목록 불러오기 실패', 'error');
+        }
+      } catch (err) {
+        showMessage('네트워크 오류: ' + err.message, 'error');
+      }
+    }
+
+    // 특정 참여자 삭제
+    async function deleteParticipant(id) {
+      if (!confirm('삭제하시겠습니까?')) return;
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'deleteParticipant', participantId: id })
+        });
+        const result = await res.json();
+        if (result.success) {
+          showMessage('삭제 완료', 'success');
+          loadParticipants();
+        } else {
+          showMessage(result.message || '삭제 실패', 'error');
+        }
+      } catch (err) {
+        showMessage('네트워크 오류: ' + err.message, 'error');
+      }
+    }
+
+    // 전체 참여자 삭제
+    async function clearAllParticipants() {
+      if (!confirm('정말 전체 삭제하시겠습니까?')) return;
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'clearAllParticipants' })
+        });
+        const result = await res.json();
+        if (result.success) {
+          showMessage('전체 삭제 완료', 'success');
+          tableBody.innerHTML = '';
+        } else {
+          showMessage(result.message || '전체 삭제 실패', 'error');
+        }
+      } catch (err) {
+        showMessage('네트워크 오류: ' + err.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>
