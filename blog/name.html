@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>참여자 등록</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .form-container {
+            padding: 30px 20px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 4px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input.error, select.error, textarea.error {
+            border-color: #e74c3c;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 16px;
+        }
+
+        .modal-icon.success {
+            color: #27ae60;
+        }
+
+        .modal-icon.error {
+            color: #e74c3c;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .modal-message {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .modal-button {
+            width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border-radius: 0;
+                min-height: 100vh;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .form-container {
+                padding: 20px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>참여자 등록</h1>
+            <p>정보를 입력해주세요</p>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="form-container">
+            <form id="registrationForm">
+                <!-- Step 1: 기본 정보 -->
+                <div class="step active" data-step="1">
+                    <h2 class="step-title">기본 정보</h2>
+                    <p class="step-description">이름과 연락처를 입력해주세요</p>
+                    
+                    <div class="form-group">
+                        <label for="name">이름<span class="required">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="홍길동" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">연락처<span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
+                        <div class="error-message" id="phoneError"></div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="button" class="btn-primary" onclick="nextStep()">다음</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: 상세 정보 -->
+                <div class="step" data-step="2">
+                    <h2 class="step-title">상세 정보</h2>
+                    <p class="step-description">이메일과 소속을 입력해주세요</p>
+                    
+                    <div class="form-group">
+                        <label for="email">이메일</label>
+                        <input type="email" id="email" name="email" placeholder="example@email.com">
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="organization">소속</label>
+                        <input type="text" id="organization" name="organization" placeholder="회사명 또는 단체명">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="button" class="btn-secondary" onclick="prevStep()">이전</button>
+                        <button type="button" class="btn-primary" onclick="nextStep()">다음</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: 추가 정보 -->
+                <div class="step" data-step="3">
+                    <h2 class="step-title">추가 정보</h2>
+                    <p class="step-description">참여 유형과 특이사항을 입력해주세요</p>
+                    
+                    <div class="form-group">
+                        <label for="participantType">참여 유형</label>
+                        <select id="participantType" name="participantType">
+                            <option value="일반">일반 참여자</option>
+                            <option value="VIP">VIP</option>
+                            <option value="스태프">스태프</option>
+                            <option value="발표자">발표자</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="note">비고</label>
+                        <textarea id="note" name="note" placeholder="특이사항이 있으면 입력해주세요"></textarea>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="button" class="btn-secondary" onclick="prevStep()">이전</button>
+                        <button type="submit" class="btn-primary">등록하기</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 로딩 오버레이 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>등록 중입니다...</p>
+        </div>
+    </div>
+
+    <!-- 결과 모달 -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon"></div>
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <p class="modal-message" id="modalMessage"></p>
+            <button class="btn-primary modal-button" onclick="closeModal()">확인</button>
+        </div>
+    </div>
+
+    <script>
+        // ⚠️ 여기에 실제 Apps Script 웹앱 URL을 입력하세요
+        const API_URL = 'https://script.google.com/a/macros/gbcommons.org/s/AKfycbysPptZVIGD_KO2c6lNQlRfvCAL3dENv0Cq4N2VFYmuwQUAAQobhdgKwx2uhqLwk6Y/exec';
+        
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        // 진행 바 업데이트
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // 다음 단계
+        function nextStep() {
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            if (currentStep < totalSteps) {
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                currentStep++;
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // 이전 단계
+        function prevStep() {
+            if (currentStep > 1) {
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                currentStep--;
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // 현재 단계 검증
+        function validateCurrentStep() {
+            let isValid = true;
+            
+            if (currentStep === 1) {
+                isValid = validateName() && validatePhone();
+            } else if (currentStep === 2) {
+                const email = document.getElementById('email').value;
+                if (email) {
+                    isValid = validateEmail();
+                }
+            }
+            
+            return isValid;
+        }
+
+        // 이름 검증
+        function validateName() {
+            const name = document.getElementById('name');
+            const error = document.getElementById('nameError');
+            
+            if (!name.value.trim()) {
+                showError(name, error, '이름을 입력해주세요');
+                return false;
+            }
+            
+            if (name.value.trim().length < 2) {
+                showError(name, error, '이름은 2자 이상 입력해주세요');
+                return false;
+            }
+            
+            hideError(name, error);
+            return true;
+        }
+
+        // 전화번호 검증
+        function validatePhone() {
+            const phone = document.getElementById('phone');
+            const error = document.getElementById('phoneError');
+            const phoneRegex = /^01[0-9]-?\d{3,4}-?\d{4}$/;
+            
+            if (!phone.value.trim()) {
+                showError(phone, error, '연락처를 입력해주세요');
+                return false;
+            }
+            
+            const cleanPhone = phone.value.replace(/\s/g, '');
+            if (!phoneRegex.test(cleanPhone)) {
+                showError(phone, error, '올바른 전화번호 형식이 아닙니다 (예: 010-1234-5678)');
+                return false;
+            }
+            
+            hideError(phone, error);
+            return true;
+        }
+
+        // 이메일 검증
+        function validateEmail() {
+            const email = document.getElementById('email');
+            const error = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email.value && !emailRegex.test(email.value)) {
+                showError(email, error, '올바른 이메일 형식이 아닙니다');
+                return false;
+            }
+            
+            hideError(email, error);
+            return true;
+        }
+
+        // 에러 표시
+        function showError(input, errorElement, message) {
+            input.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+
+        // 에러 숨김
+        function hideError(input, errorElement) {
+            input.classList.remove('error');
+            errorElement.classList.remove('show');
+        }
+
+        // 실시간 검증
+        document.getElementById('name').addEventListener('blur', validateName);
+        document.getElementById('phone').addEventListener('blur', validatePhone);
+        document.getElementById('email').addEventListener('blur', validateEmail);
+
+        // 전화번호 자동 포맷팅
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value.length > 3 && value.length <= 7) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            } else if (value.length > 7) {
+                value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7, 11);
+            }
+            e.target.value = value;
+        });
+
+        // 폼 제출
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            // API URL 체크
+            if (API_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+                showModal(false, 'API URL을 설정해주세요', 'HTML 파일의 API_URL 변수에 Apps Script 웹앱 URL을 입력해주세요.');
+                return;
+            }
+            
+            // 폼 데이터 수집
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                organization: document.getElementById('organization').value.trim(),
+                participantType: document.getElementById('participantType').value,
+                note: document.getElementById('note').value.trim(),
+                timestamp: new Date().toISOString()
+            };
+            
+            // 로딩 표시
+            showLoading();
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                // no-cors 모드에서는 응답을 읽을 수 없으므로 성공으로 간주
+                hideLoading();
+                showModal(true, '등록 완료!', '참여자 등록이 완료되었습니다.');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                hideLoading();
+                showModal(false, '등록 실패', '등록 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            }
+        });
+
+        // 로딩 표시
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('show');
+        }
+
+        // 로딩 숨김
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+
+        // 모달 표시
+        function showModal(isSuccess, title, message) {
+            const modal = document.getElementById('resultModal');
+            const icon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            
+            icon.textContent = isSuccess ? '✓' : '✕';
+            icon.className = 'modal-icon ' + (isSuccess ? 'success' : 'error');
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            
+            modal.classList.add('show');
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            document.getElementById('resultModal').classList.remove('show');
+            
+            // 성공시 폼 초기화 및 처음으로
+            const icon = document.getElementById('modalIcon');
+            if (icon.classList.contains('success')) {
+                document.getElementById('registrationForm').reset();
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                currentStep = 1;
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        // 초기 진행 바 설정
+        updateProgress();
+    </script>
+</body>
+</html>
