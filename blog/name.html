@@ -614,6 +614,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(formData),
+                    redirect: 'follow'
                 });
 
                 const result = await response.json();
