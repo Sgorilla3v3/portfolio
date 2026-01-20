@@ -660,7 +660,10 @@
 
                 if (result.success) {
                     showMessage('참여자 등록이 완료되었습니다!', 'success');
-                    clearForm();
+                    // 1초 후 폼 초기화 (메시지는 유지)
+                    setTimeout(() => {
+                        clearForm();
+                    }, 1000);
                 } else {
                     showMessage(result.message || '등록 중 오류가 발생했습니다.', 'error');
                 }
