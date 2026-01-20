@@ -392,6 +392,23 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="program" class="required">참여 프로그램</label>
+                    <div class="input-wrapper">
+                        <select id="program" name="program" class="form-input" required>
+                        <option value="">프로그램을 선택해주세요</option>
+                        <option value="Program A">Program A</option>
+                        <option value="Program B">Program B</option>
+                        <option value="Program C">Program C</option>
+                        <option value="Program D">Program D</option>
+                        <option value="Program E">Program E</option>
+                        </select>
+                    </div>
+                    <div class="error-message" id="programError">
+                        참여 프로그램을 선택해주세요
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="email">이메일</label>
                     <div class="input-wrapper has-icon">
                         <input type="email" id="email" name="email" class="form-input" 
@@ -462,7 +479,7 @@
 
     <script>
         // 전역 변수
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2CVyVN8m5ebyaV1CsH4Rgu0AZxby9RDV2k_Ss2CI2D61ew6OvPrElCoe0Hin6Z6o7/exec'; // Apps Script URL을 여기에 입력
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyewpjSfEVBGLocVlZLSRotSx2vznZwNAcGGqvfHaWb3bLJAcvYvSfxmAuE1oycSZ1U/exec'; // Apps Script URL을 여기에 입력
 
         // DOM 요소 참조
         const form = document.getElementById('registrationForm');
@@ -573,6 +590,14 @@
                 isValid = false;
             }
 
+            // 프로그램 선택 검증
+            const program = document.getElementById('program').value;
+            if (!program) {
+            showError('program', '참여 프로그램을 선택해주세요');
+            isValid = false;
+            }
+
+
             return isValid;
         }
 
@@ -609,9 +634,11 @@
                         organization: formData.get('organization').trim(),
                         category: formData.get('category'),
                         memo: formData.get('memo').trim(),
-                        timestamp: new Date().toISOString()
+                        timestamp: new Date().toISOString(),
+                        program: formData.get('program')
                     }
                 };
+
 
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
@@ -623,7 +650,8 @@
                         email: formData.get('email').trim(),
                         organization: formData.get('organization').trim(),
                         category: formData.get('category'),
-                        memo: formData.get('memo').trim()
+                        memo: formData.get('memo').trim(),
+                        program: formData.get('program')
                         })
                     })
                 });
