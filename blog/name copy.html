@@ -255,8 +255,6 @@
             max-width: 400px;
             width: 100%;
             text-align: center;
-            max-height: 80vh;
-            overflow-y: auto;
         }
 
         .modal-icon {
@@ -284,31 +282,10 @@
             color: #666;
             margin-bottom: 24px;
             line-height: 1.5;
-            white-space: pre-line;
         }
 
         .modal-button {
             width: 100%;
-        }
-
-        .debug-info {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 16px;
-            text-align: left;
-            font-size: 12px;
-            font-family: monospace;
-            color: #495057;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .debug-info pre {
-            margin: 0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
         }
 
         @media (max-width: 480px) {
@@ -430,16 +407,13 @@
             <div class="modal-icon" id="modalIcon"></div>
             <h3 class="modal-title" id="modalTitle"></h3>
             <p class="modal-message" id="modalMessage"></p>
-            <div class="debug-info" id="debugInfo" style="display: none;">
-                <pre id="debugContent"></pre>
-            </div>
             <button class="btn-primary modal-button" onclick="closeModal()">확인</button>
         </div>
     </div>
 
     <script>
         // ⚠️ 여기에 실제 Apps Script 웹앱 URL을 입력하세요
-        const API_URL = 'https://script.google.com/macros/s/AKfycbx3F06kgTfy4ITGnMsQiXj8NqfSmTGTxHzXSHlQS61o0-5AfnnjNdOJ79tjX0FKmbs/exec';
+        const API_URL = 'https://script.google.com/a/macros/gbcommons.org/s/AKfycbysPptZVIGD_KO2c6lNQlRfvCAL3dENv0Cq4N2VFYmuwQUAAQobhdgKwx2uhqLwk6Y/exec';
         
         let currentStep = 1;
         const totalSteps = 3;
@@ -580,18 +554,13 @@
         document.getElementById('registrationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            console.log('=== 폼 제출 시작 ===');
-            
             if (!validateCurrentStep()) {
-                console.log('검증 실패');
                 return;
             }
             
             // API URL 체크
             if (API_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
-                console.error('API URL이 설정되지 않았습니다');
-                showModal(false, 'API URL을 설정해주세요', 
-                    'HTML 파일의 API_URL 변수에 Apps Script 웹앱 URL을 입력해주세요.\n\n현재 값: ' + API_URL);
+                showModal(false, 'API URL을 설정해주세요', 'HTML 파일의 API_URL 변수에 Apps Script 웹앱 URL을 입력해주세요.');
                 return;
             }
             
@@ -606,86 +575,33 @@
                 timestamp: new Date().toISOString()
             };
             
-            console.log('전송할 데이터:', formData);
-            console.log('API URL:', API_URL);
-            
             // 로딩 표시
             showLoading();
             
             try {
-                console.log('fetch 요청 시작...');
-                
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(formData),
-                    redirect: 'follow'
+                    redirect: 'follow'  // no-cors 제거
                 });
                 
-                console.log('응답 상태:', response.status);
-                console.log('응답 타입:', response.type);
-                console.log('응답 헤더:', [...response.headers.entries()]);
-                
-                // 응답 텍스트 먼저 확인
-                const responseText = await response.text();
-                console.log('응답 원본 텍스트:', responseText);
+                const result = await response.json();
                 
                 hideLoading();
                 
-                // JSON 파싱 시도
-                let result;
-                try {
-                    result = JSON.parse(responseText);
-                    console.log('파싱된 응답:', result);
-                } catch (parseError) {
-                    console.error('JSON 파싱 실패:', parseError);
-                    showModalWithDebug(false, 'JSON 파싱 오류', 
-                        '서버 응답을 해석할 수 없습니다.\n\nApps Script 코드를 확인해주세요.', 
-                        {
-                            status: response.status,
-                            responseText: responseText,
-                            parseError: parseError.message
-                        });
-                    return;
-                }
-                
-                // 응답 처리
                 if (result.success) {
-                    console.log('등록 성공!');
-                    showModal(true, '등록 완료!', result.message || '참여자 등록이 완료되었습니다.');
+                    showModal(true, '등록 완료!', result.message);
                 } else {
-                    console.error('등록 실패:', result);
-                    const errorMsg = result.errors ? result.errors.join('\n') : (result.message || '알 수 없는 오류');
-                    showModalWithDebug(false, '등록 실패', errorMsg, result);
+                    showModal(false, '등록 실패', result.message || result.errors?.join('\n'));
                 }
                 
             } catch (error) {
-                console.error('=== 오류 발생 ===');
-                console.error('오류 타입:', error.name);
-                console.error('오류 메시지:', error.message);
-                console.error('오류 스택:', error.stack);
-                
+                console.error('Error:', error);
                 hideLoading();
-                
-                let errorMessage = '등록 중 오류가 발생했습니다.\n\n';
-                
-                if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-                    errorMessage += '네트워크 오류: 서버에 연결할 수 없습니다.\n\n';
-                    errorMessage += '확인사항:\n';
-                    errorMessage += '1. 인터넷 연결 확인\n';
-                    errorMessage += '2. API URL이 올바른지 확인\n';
-                    errorMessage += '3. Apps Script가 배포되었는지 확인';
-                } else {
-                    errorMessage += error.message;
-                }
-                
-                showModalWithDebug(false, '네트워크 오류', errorMessage, {
-                    errorName: error.name,
-                    errorMessage: error.message,
-                    apiUrl: API_URL
-                });
+                showModal(false, '등록 실패', '등록 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             }
         });
 
@@ -699,43 +615,17 @@
             document.getElementById('loadingOverlay').classList.remove('show');
         }
 
-        // 모달 표시 (기본)
+        // 모달 표시
         function showModal(isSuccess, title, message) {
             const modal = document.getElementById('resultModal');
             const icon = document.getElementById('modalIcon');
             const modalTitle = document.getElementById('modalTitle');
             const modalMessage = document.getElementById('modalMessage');
-            const debugInfo = document.getElementById('debugInfo');
             
             icon.textContent = isSuccess ? '✓' : '✕';
             icon.className = 'modal-icon ' + (isSuccess ? 'success' : 'error');
             modalTitle.textContent = title;
             modalMessage.textContent = message;
-            debugInfo.style.display = 'none';
-            
-            modal.classList.add('show');
-        }
-
-        // 모달 표시 (디버그 정보 포함)
-        function showModalWithDebug(isSuccess, title, message, debugData) {
-            const modal = document.getElementById('resultModal');
-            const icon = document.getElementById('modalIcon');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalMessage = document.getElementById('modalMessage');
-            const debugInfo = document.getElementById('debugInfo');
-            const debugContent = document.getElementById('debugContent');
-            
-            icon.textContent = isSuccess ? '✓' : '✕';
-            icon.className = 'modal-icon ' + (isSuccess ? 'success' : 'error');
-            modalTitle.textContent = title;
-            modalMessage.textContent = message;
-            
-            if (debugData) {
-                debugContent.textContent = JSON.stringify(debugData, null, 2);
-                debugInfo.style.display = 'block';
-            } else {
-                debugInfo.style.display = 'none';
-            }
             
             modal.classList.add('show');
         }
@@ -757,16 +647,6 @@
 
         // 초기 진행 바 설정
         updateProgress();
-
-        // 페이지 로드 시 설정 확인
-        window.addEventListener('load', function() {
-            console.log('=== 페이지 로드 완료 ===');
-            console.log('API URL:', API_URL);
-            
-            if (API_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
-                console.warn('⚠️ API URL이 설정되지 않았습니다!');
-            }
-        });
     </script>
 </body>
 </html>
