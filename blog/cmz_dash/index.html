@@ -8,6 +8,7 @@
     <style>
         :root {
             --header-height: 140px;
+            --nav-height: 60px;
             --footer-height: 60px;
         }
         
@@ -46,66 +47,77 @@
             font-size: 16px;
         }
         
-        .dashboard-container {
-            height: calc(100vh - var(--header-height) - var(--footer-height));
-            overflow-y: auto;
-            padding: 20px;
-        }
-        
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        
-        .dashboard-card {
+        /* 네비게이션 메뉴 */
+        .navigation {
             background: white;
-            border: 1px solid #e1e4e8;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            border-bottom: 2px solid #e1e4e8;
+            height: var(--nav-height);
             display: flex;
-            flex-direction: column;
-        }
-        
-        .dashboard-card:hover {
-            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-            transform: translateY(-2px);
-        }
-        
-        .dashboard-card.full-width {
-            grid-column: 1 / -1;
-        }
-        
-        .dashboard-card h2 {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 18px 20px;
-            margin: 0;
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         
-        .dashboard-card h2::before {
-            content: '📊';
-            font-size: 20px;
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0;
         }
         
-        .dashboard-card iframe {
-            width: 100%;
-            height: 700px;
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-button {
+            padding: 18px 32px;
+            background: white;
             border: none;
-            flex: 1;
+            color: #4a5568;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-family: inherit;
         }
         
-        .dashboard-card.full-width iframe {
-            height: 800px;
+        .nav-button:hover {
+            background: #f7fafc;
+            color: #667eea;
+        }
+        
+        .nav-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: #f7fafc;
+        }
+        
+        /* 대시보드 컨테이너 */
+        .dashboard-container {
+            height: calc(100vh - var(--header-height) - var(--nav-height) - var(--footer-height));
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .dashboard-content {
+            max-width: 1800px;
+            margin: 0 auto;
+            height: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .dashboard-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none;
+        }
+        
+        .dashboard-frame.active {
+            display: block;
         }
         
         footer {
@@ -147,40 +159,58 @@
             50% { opacity: 0.5; }
         }
         
-        /* 스크롤바 스타일 */
-        .dashboard-container::-webkit-scrollbar {
-            width: 10px;
+        /* 로딩 인디케이터 */
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #667eea;
         }
         
-        .dashboard-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .loading.show {
+            display: block;
         }
         
-        .dashboard-container::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 5px;
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
         }
         
-        .dashboard-container::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         /* 반응형 */
-        @media (max-width: 1200px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 1024px) {
+            .nav-menu {
+                overflow-x: auto;
+                width: 100%;
+                justify-content: flex-start;
+                padding: 0 10px;
             }
             
-            .dashboard-card iframe {
-                height: 600px;
-            }
-            
-            .dashboard-card.full-width iframe {
-                height: 700px;
+            .nav-button {
+                padding: 18px 24px;
+                font-size: 14px;
+                white-space: nowrap;
             }
         }
         
         @media (max-width: 768px) {
+            :root {
+                --header-height: 120px;
+                --nav-height: 50px;
+            }
+            
             header h1 {
                 font-size: 24px;
             }
@@ -193,8 +223,15 @@
                 padding: 10px;
             }
             
-            .dashboard-card iframe {
-                height: 500px;
+            .nav-button {
+                padding: 15px 20px;
+                font-size: 13px;
+            }
+            
+            footer {
+                flex-direction: column;
+                gap: 10px;
+                font-size: 12px;
             }
         }
     </style>
@@ -205,37 +242,50 @@
         <p>실시간 데이터 기반 통합 분석 시스템</p>
     </header>
     
+    <!-- 네비게이션 메뉴 -->
+    <nav class="navigation">
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <button class="nav-button active" data-dashboard="overview">
+                    전체 개요
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-button" data-dashboard="program">
+                    프로그램 분석
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-button" data-dashboard="region">
+                    지역별 분석
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-button" data-dashboard="search">
+                    참여자 검색
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-button" data-dashboard="trend">
+                    트렌드 분석
+                </button>
+            </li>
+        </ul>
+    </nav>
+    
+    <!-- 대시보드 컨테이너 -->
     <div class="dashboard-container">
-        <div class="dashboard-grid">
-            <!-- 전체 개요 대시보드 -->
-            <div class="dashboard-card full-width">
-                <h2>전체 개요</h2>
-                <iframe src="dashboards/01_overview.html"></iframe>
+        <div class="dashboard-content">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>로딩 중...</p>
             </div>
             
-            <!-- 프로그램 분석 대시보드 -->
-            <div class="dashboard-card">
-                <h2>프로그램 분석</h2>
-                <iframe src="dashboards/02_program.html"></iframe>
-            </div>
-            
-            <!-- 지역별 분석 대시보드 -->
-            <div class="dashboard-card">
-                <h2>지역별 분석</h2>
-                <iframe src="dashboards/03_region.html"></iframe>
-            </div>
-            
-            <!-- 참여자 검색 대시보드 -->
-            <div class="dashboard-card">
-                <h2>참여자 검색</h2>
-                <iframe src="dashboards/04_search.html"></iframe>
-            </div>
-            
-            <!-- 트렌드 분석 대시보드 -->
-            <div class="dashboard-card">
-                <h2>트렌드 분석</h2>
-                <iframe src="dashboards/05_trend.html"></iframe>
-            </div>
+            <iframe id="overview" class="dashboard-frame active" src="dashboards/01_overview.html"></iframe>
+            <iframe id="program" class="dashboard-frame" data-src="dashboards/02_program.html"></iframe>
+            <iframe id="region" class="dashboard-frame" data-src="dashboards/03_region.html"></iframe>
+            <iframe id="search" class="dashboard-frame" data-src="dashboards/04_search.html"></iframe>
+            <iframe id="trend" class="dashboard-frame" data-src="dashboards/05_trend.html"></iframe>
         </div>
     </div>
     
@@ -268,6 +318,46 @@
         
         updateTime();
         setInterval(updateTime, 60000); // 1분마다 업데이트
+        
+        // 대시보드 전환 기능
+        const navButtons = document.querySelectorAll('.nav-button');
+        const dashboardFrames = document.querySelectorAll('.dashboard-frame');
+        const loading = document.getElementById('loading');
+        
+        navButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const dashboardId = this.getAttribute('data-dashboard');
+                
+                // 활성 버튼 변경
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 대시보드 전환
+                dashboardFrames.forEach(frame => {
+                    frame.classList.remove('active');
+                });
+                
+                const targetFrame = document.getElementById(dashboardId);
+                
+                // lazy loading: 아직 로드되지 않은 iframe의 경우 src 설정
+                if (targetFrame.getAttribute('data-src')) {
+                    loading.classList.add('show');
+                    targetFrame.src = targetFrame.getAttribute('data-src');
+                    targetFrame.removeAttribute('data-src');
+                    
+                    targetFrame.addEventListener('load', function() {
+                        loading.classList.remove('show');
+                    }, { once: true });
+                }
+                
+                targetFrame.classList.add('active');
+            });
+        });
+        
+        // 첫 번째 iframe 로드 완료 처리
+        document.getElementById('overview').addEventListener('load', function() {
+            loading.classList.remove('show');
+        }, { once: true });
     </script>
 </body>
 </html>
