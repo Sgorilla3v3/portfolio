@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전체 개요 | 청도혁신센터 대시보드</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- KPI 카드 섹션 -->
+        <div id="kpi-section">
+            <div class="loading">
+                <div class="spinner"></div>
+            </div>
+        </div>
+        
+        <!-- 차트 섹션 -->
+        <div class="chart-grid">
+            <!-- 프로그램별 참여자 도넛차트 -->
+            <div class="chart-container">
+                <div class="chart-title">프로그램별 참여자 (상위 5개)</div>
+                <div class="chart-wrapper">
+                    <canvas id="programChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- 성별/연령대 분포 막대차트 -->
+            <div class="chart-container">
+                <div class="chart-title">성별/연령대 분포</div>
+                <div class="chart-wrapper">
+                    <canvas id="ageGenderChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 지역별 막대차트 -->
+        <div class="chart-container">
+            <div class="chart-title">지역별 참여자 분포 (상위 10개)</div>
+            <div class="chart-wrapper">
+                <canvas id="regionChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- 마지막 업데이트 시간 -->
+        <div style="text-align: center; color: #666; margin-top: 20px; font-size: 14px;">
+            <p>마지막 업데이트: <span id="lastUpdate">-</span></p>
+        </div>
+    </div>
+    
+    <!-- 스크립트 -->
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/data-loader.js"></script>
+    <script>
+        // 차트 인스턴스 저장
+        let charts = {};
+        
+        /**
+         * 페이지 초기화
+         */
+        async function init() {
+            try {
+                utils.showLoading('#kpi-section');
+                
+                // 데이터 로드
+                const data = await dataLoader.load('getOverviewStats');
+                
+                // KPI 카드 렌더링
+                renderKPICards(data.kpi);
+                
+                // 차트 렌더링
+                renderProgramChart(data.topPrograms);
+                renderAgeGenderChart(data.ageGenderDistribution);
+                renderRegionChart(data.regionDistribution);
+                
+                // 마지막 업데이트 시간
+                document.getElementById('lastUpdate').textContent = 
+                    utils.formatDate(new Date());
+                
+            } catch (error) {
+                utils.showError('#kpi-section', error.message);
+                utils.log.error('Failed to load data:', error);
+            }
+        }
+        
+        /**
+         * KPI 카드 렌더링
+         */
+        function renderKPICards(kpi) {
+            const kpiSection = document.getElementById('kpi-section');
+            
+            kpiSection.innerHTML = `
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">총 참여자</div>
+                        <div class="kpi-value">
+                            ${utils.formatNumber(kpi.totalParticipants)}
+                            <span class="kpi-unit">명</span>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card success">
+                        <div class="kpi-label">활성 프로그램</div>
+                        <div class="kpi-value">
+                            ${utils.formatNumber(kpi.activePrograms)}
+                            <span class="kpi-unit">개</span>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card info">
+                        <div class="kpi-label">청도군 거주자</div>
+                        <div class="kpi-value">
+                            ${utils.formatNumber(kpi.cheongdoResidents)}
+                            <span class="kpi-unit">명 (${kpi.cheongdoRate}%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${kpi.cheongdoRate}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card warning">
+                        <div class="kpi-label">여성 참여율</div>
+                        <div class="kpi-value">
+                            ${kpi.femaleRate}
+                            <span class="kpi-unit">%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${kpi.femaleRate}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        /**
+         * 프로그램별 도넛차트 렌더링
+         */
+        function renderProgramChart(topPrograms) {
+            const ctx = document.getElementById('programChart');
+            
+            // 기존 차트 제거
+            if (charts.program) {
+                charts.program.destroy();
+            }
+            
+            charts.program = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: topPrograms.map(p => p.program),
+                    datasets: [{
+                        data: topPrograms.map(p => p.count),
+                        backgroundColor: utils.getChartColors(topPrograms.length),
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    ...CONFIG.CHART_DEFAULTS,
+                    plugins: {
+                        ...CONFIG.CHART_DEFAULTS.plugins,
+                        legend: {
+                            ...CONFIG.CHART_DEFAULTS.plugins.legend,
+                            position: 'right'
+                        },
+                        tooltip: {
+                            ...CONFIG.CHART_DEFAULTS.plugins.tooltip,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percent = ((value / total) * 100).toFixed(1);
+                                    return `${label}: ${utils.formatNumber(value)}명 (${percent}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        /**
+         * 성별/연령대 막대차트 렌더링
+         */
+        function renderAgeGenderChart(ageGenderDist) {
+            const ctx = document.getElementById('ageGenderChart');
+            
+            // 기존 차트 제거
+            if (charts.ageGender) {
+                charts.ageGender.destroy();
+            }
+            
+            const ageGroups = ['10대', '20대', '30대', '40대', '50대', '60대', '70대 이상'];
+            
+            charts.ageGender = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ageGroups,
+                    datasets: [
+                        {
+                            label: '남성',
+                            data: ageGroups.map(group => ageGenderDist.male[group] || 0),
+                            backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '여성',
+                            data: ageGroups.map(group => ageGenderDist.female[group] || 0),
+                            backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                            borderColor: 'rgba(231, 76, 60, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    ...CONFIG.CHART_DEFAULTS,
+                    scales: {
+                        x: {
+                            stacked: false,
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            stacked: false,
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 50
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...CONFIG.CHART_DEFAULTS.plugins,
+                        tooltip: {
+                            ...CONFIG.CHART_DEFAULTS.plugins.tooltip,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${utils.formatNumber(context.parsed.y)}명`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        /**
+         * 지역별 막대차트 렌더링
+         */
+        function renderRegionChart(regionDist) {
+            const ctx = document.getElementById('regionChart');
+            
+            // 기존 차트 제거
+            if (charts.region) {
+                charts.region.destroy();
+            }
+            
+            // 상위 10개만 표시
+            const top10 = regionDist.slice(0, 10);
+            
+            charts.region = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: top10.map(r => r.region),
+                    datasets: [{
+                        label: '참여자 수',
+                        data: top10.map(r => r.count),
+                        backgroundColor: utils.getChartColors(top10.length),
+                        borderWidth: 1,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    ...CONFIG.CHART_DEFAULTS,
+                    indexAxis: 'y', // 가로 막대
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 50
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...CONFIG.CHART_DEFAULTS.plugins,
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            ...CONFIG.CHART_DEFAULTS.plugins.tooltip,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${utils.formatNumber(context.parsed.x)}명`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 페이지 로드 시 초기화
+        utils.ready(init);
+        
+        // 새로고침 버튼 (개발용)
+        if (CONFIG.DEBUG) {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                    e.preventDefault();
+                    dataLoader.clearCache();
+                    init();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
