@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>청도혁신센터 대시보드</title>
+    <title>청도혁신센터 통합 대시보드</title>
     <style>
         * {
             margin: 0;
@@ -14,17 +14,426 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f7fa;
+            overflow: hidden;
         }
         
-        iframe {
-            width: 100%;
+        .container {
+            display: flex;
             height: 100vh;
+        }
+        
+        /* 사이드바 */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            transition: margin-left 0.3s;
+        }
+        
+        .sidebar.collapsed {
+            margin-left: -280px;
+        }
+        
+        /* 헤더 */
+        .sidebar-header {
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-subtitle {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+        
+        /* 네비게이션 */
+        .nav-section {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+        
+        .nav-section::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .nav-section::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .nav-section::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        
+        .nav-group {
+            margin-bottom: 20px;
+        }
+        
+        .nav-group-title {
+            padding: 10px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #8899aa;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            border-left-color: #667eea;
+        }
+        
+        .nav-item.active {
+            background: rgba(102, 126, 234, 0.2);
+            border-left-color: #667eea;
+            font-weight: 600;
+        }
+        
+        .nav-item-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .nav-item-text {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .nav-item-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        /* 푸터 */
+        .sidebar-footer {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+            color: #8899aa;
+        }
+        
+        .mode-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .mode-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #43e97b;
+            animation: pulse 2s infinite;
+        }
+        
+        .mode-dot.dev {
+            background: #f5a623;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* 메인 컨텐츠 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 상단 바 */
+        .top-bar {
+            background: white;
+            padding: 15px 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 50;
+        }
+        
+        .menu-toggle {
+            background: none;
             border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #2c3e50;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .menu-toggle:hover {
+            background: #f0f0f0;
+        }
+        
+        .breadcrumb {
+            flex: 1;
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .refresh-btn:hover {
+            background: #5568d3;
+        }
+        
+        /* 대시보드 컨테이너 */
+        .dashboard-frame-container {
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .dashboard-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none;
+        }
+        
+        .dashboard-frame.active {
+            display: block;
+        }
+        
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                margin-left: -280px;
+            }
+            
+            .sidebar.open {
+                margin-left: 0;
+            }
+            
+            .breadcrumb {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 메인 대시보드를 iframe으로 로드 -->
-    <iframe src="dashboard_1.html"></iframe>
+    <div class="container">
+        <!-- 사이드바 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">청도혁신센터</div>
+                <div class="sidebar-subtitle">통합 대시보드</div>
+            </div>
+            
+            <nav class="nav-section">
+                <div class="nav-group">
+                    <div class="nav-group-title">대시보드</div>
+                    <div class="nav-item active" onclick="showDashboard('overview')" data-page="overview">
+                        <span class="nav-item-icon">📊</span>
+                        <span class="nav-item-text">전체 현황</span>
+                    </div>
+                    <div class="nav-item" onclick="showDashboard('program')" data-page="program">
+                        <span class="nav-item-icon">📈</span>
+                        <span class="nav-item-text">프로그램별 분석</span>
+                    </div>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">추가 분석 (예정)</div>
+                    <div class="nav-item" style="opacity: 0.5; cursor: not-allowed;">
+                        <span class="nav-item-icon">📅</span>
+                        <span class="nav-item-text">연도별 추이</span>
+                        <span class="nav-item-badge">준비중</span>
+                    </div>
+                    <div class="nav-item" style="opacity: 0.5; cursor: not-allowed;">
+                        <span class="nav-item-icon">🗺️</span>
+                        <span class="nav-item-text">지역별 상세</span>
+                        <span class="nav-item-badge">준비중</span>
+                    </div>
+                    <div class="nav-item" style="opacity: 0.5; cursor: not-allowed;">
+                        <span class="nav-item-icon">👥</span>
+                        <span class="nav-item-text">참여자 상세</span>
+                        <span class="nav-item-badge">준비중</span>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="mode-indicator">
+                    <span class="mode-dot dev" id="modeDot"></span>
+                    <span id="modeText">개발 모드</span>
+                </div>
+                <div>v1.0.0 | 2025</div>
+            </div>
+        </aside>
+        
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="top-bar">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <div class="breadcrumb" id="breadcrumb">전체 현황</div>
+                <button class="refresh-btn" onclick="refreshCurrentDashboard()">
+                    <span>🔄</span>
+                    <span>새로고침</span>
+                </button>
+            </div>
+            
+            <div class="dashboard-frame-container">
+                <iframe id="overview-frame" class="dashboard-frame active" src="dashboard_main.html"></iframe>
+                <iframe id="program-frame" class="dashboard-frame" src="dashboard_program.html"></iframe>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentDashboard = 'overview';
+        
+        // 사이드바 토글
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+            
+            // 모바일에서 사이드바가 열려있을 때 배경 클릭 닫기
+            if (window.innerWidth <= 768) {
+                if (sidebar.classList.contains('open')) {
+                    setTimeout(() => {
+                        document.addEventListener('click', closeSidebarOnClickOutside);
+                    }, 100);
+                }
+            }
+        }
+        
+        function closeSidebarOnClickOutside(e) {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar.contains(e.target) && !e.target.classList.contains('menu-toggle')) {
+                sidebar.classList.remove('open');
+                document.removeEventListener('click', closeSidebarOnClickOutside);
+            }
+        }
+        
+        // 대시보드 전환
+        function showDashboard(type) {
+            currentDashboard = type;
+            
+            // 모든 네비게이션 아이템 비활성화
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 모든 iframe 숨기기
+            document.querySelectorAll('.dashboard-frame').forEach(frame => {
+                frame.classList.remove('active');
+            });
+            
+            // 선택된 네비게이션 활성화
+            const navItem = document.querySelector(`[data-page="${type}"]`);
+            if (navItem) {
+                navItem.classList.add('active');
+            }
+            
+            // 선택된 iframe 표시
+            if (type === 'overview') {
+                document.getElementById('overview-frame').classList.add('active');
+                document.getElementById('breadcrumb').textContent = '전체 현황';
+            } else if (type === 'program') {
+                document.getElementById('program-frame').classList.add('active');
+                document.getElementById('breadcrumb').textContent = '프로그램별 분석';
+            }
+            
+            // 모바일에서 대시보드 전환 시 사이드바 닫기
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+        
+        // 현재 대시보드 새로고침
+        function refreshCurrentDashboard() {
+            const frameId = currentDashboard + '-frame';
+            const frame = document.getElementById(frameId);
+            if (frame) {
+                frame.src = frame.src;
+            }
+        }
+        
+        // 개발/실시간 모드 감지
+        function detectMode() {
+            // localStorage에서 모드 확인 또는 URL 파라미터로 전달
+            const isDev = true; // dashboard_main.html의 DEV_MODE와 동기화 필요
+            
+            const modeDot = document.getElementById('modeDot');
+            const modeText = document.getElementById('modeText');
+            
+            if (isDev) {
+                modeDot.classList.add('dev');
+                modeText.textContent = '개발 모드 (샘플 데이터)';
+            } else {
+                modeDot.classList.remove('dev');
+                modeText.textContent = '실시간 모드';
+            }
+        }
+        
+        // 페이지 로드 시
+        window.addEventListener('DOMContentLoaded', () => {
+            detectMode();
+            
+            // 키보드 단축키
+            document.addEventListener('keydown', (e) => {
+                if (e.altKey) {
+                    if (e.key === '1') showDashboard('overview');
+                    else if (e.key === '2') showDashboard('program');
+                }
+            });
+        });
+        
+        // iframe 메시지 리스닝 (개발/실시간 모드 변경 감지)
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'modeChange') {
+                detectMode();
+            }
+        });
+    </script>
 </body>
 </html>
