@@ -4,7 +4,7 @@
 const CONFIG = {
     // Apps Script Web App URL
     // 배포 후 실제 URL로 변경 필요!
-    SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzvlSpidyaJXNZxNnTyTgpQneuvEsNGomo_gh8W7HD9IDAC02KXrTXcZgld2Fw8Sz_HVw/exec',
+    SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwNmUs1KPndzF8thScRkKsxOvN3tAViG5TVkNBmfsuPKh9vO6pfaQtnQZ1I09Pc5dWfJg/exec',
     
     // 캐시 유효 시간 (밀리초)
     CACHE_TTL: 5 * 60 * 1000, // 5분
