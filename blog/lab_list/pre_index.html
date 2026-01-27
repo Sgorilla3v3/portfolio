@@ -66,52 +66,6 @@
             padding: 28px 24px;
         }
 
-        /* 재방문자 배너 */
-        .returning-visitor-banner {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            color: white;
-            text-align: center;
-            display: none;
-        }
-
-        .returning-visitor-banner h3 {
-            margin-bottom: 8px;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .returning-visitor-banner p {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 4px;
-        }
-
-        .returning-visitor-banner .subtitle {
-            font-size: 13px;
-            margin-top: 8px;
-            opacity: 0.85;
-        }
-
-        .btn-edit-info {
-            margin-top: 12px;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .btn-edit-info:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
         .form-section {
             margin-bottom: 28px;
         }
@@ -181,13 +135,6 @@
         .form-input::placeholder {
             color: var(--text-secondary);
             font-weight: 400;
-        }
-
-        .form-input:disabled,
-        .form-input:read-only {
-            background-color: #f1f5f9;
-            cursor: not-allowed;
-            color: var(--text-secondary);
         }
 
         select.form-input {
@@ -378,16 +325,6 @@
         </div>
         
         <div class="form-container">
-            <!-- 재방문자 배너 -->
-            <div class="returning-visitor-banner" id="returningVisitorBanner">
-                <h3>다시 오신 것을 환영합니다!</h3>
-                <p id="returningVisitorName"></p>
-                <p class="subtitle">방문 일시만 선택하시면 바로 등록됩니다</p>
-                <button type="button" class="btn-edit-info" onclick="enableEditMode()">
-                    정보 수정하기
-                </button>
-            </div>
-
             <form id="visitorForm" novalidate>
                 <!-- 방문 정보 섹션 -->
                 <div class="form-section">
@@ -433,7 +370,7 @@
                 </div>
 
                 <!-- 방문자 정보 섹션 -->
-                <div class="form-section" id="visitorInfoSection">
+                <div class="form-section">
                     <div class="section-title">방문자 정보</div>
                     
                     <div class="form-group">
@@ -471,7 +408,7 @@
                 </div>
 
                 <!-- 거주지 정보 섹션 -->
-                <div class="form-section" id="residenceInfoSection">
+                <div class="form-section">
                     <div class="section-title">거주지 정보</div>
                     
                     <div class="form-group">
@@ -533,9 +470,6 @@
 
                 <div class="secondary-actions">
                     <button type="button" class="btn-secondary" onclick="clearForm()">초기화</button>
-                    <button type="button" class="btn-secondary" id="clearSavedBtn" onclick="clearAllData()" style="display: none;">
-                        저장된 정보 삭제
-                    </button>
                 </div>
             </form>
         </div>
@@ -557,126 +491,7 @@
             initializeTimeOptions();
             setupEventListeners();
             setCurrentDate();
-            
-            // 저장된 정보 확인 및 로드
-            checkAndLoadSavedInfo();
         });
-
-        // 저장된 정보 확인 및 로드
-        function checkAndLoadSavedInfo() {
-            const savedInfo = localStorage.getItem('visitorInfo');
-            
-            if (savedInfo) {
-                try {
-                    const visitorInfo = JSON.parse(savedInfo);
-                    
-                    // 정보 자동 채우기
-                    document.getElementById('name').value = visitorInfo.name || '';
-                    document.getElementById('gender').value = visitorInfo.gender || '';
-                    document.getElementById('birthYear').value = visitorInfo.birthYear || '';
-                    document.getElementById('phone').value = visitorInfo.phone || '';
-                    document.getElementById('residence').value = visitorInfo.residence || '';
-                    document.getElementById('residenceDetail').value = visitorInfo.residenceDetail || '';
-                    
-                    // 재방문자 모드 활성화
-                    enableReturningVisitorMode(visitorInfo.name);
-                    
-                } catch (e) {
-                    console.error('저장된 정보 로드 실패:', e);
-                }
-            }
-        }
-
-        // 재방문자 모드 활성화
-        function enableReturningVisitorMode(name) {
-            // 배너 표시
-            const banner = document.getElementById('returningVisitorBanner');
-            const nameDisplay = document.getElementById('returningVisitorName');
-            const clearBtn = document.getElementById('clearSavedBtn');
-            
-            if (banner && nameDisplay) {
-                nameDisplay.textContent = `${name}님의 정보가 저장되어 있습니다`;
-                banner.style.display = 'block';
-            }
-            
-            if (clearBtn) {
-                clearBtn.style.display = 'inline-block';
-            }
-            
-            // 개인정보 필드 비활성화
-            const fieldsToDisable = ['name', 'gender', 'birthYear', 'phone', 'residence', 'residenceDetail'];
-            fieldsToDisable.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                if (field && field.value) {
-                    field.readOnly = true;
-                    field.style.backgroundColor = '#f1f5f9';
-                    field.style.cursor = 'not-allowed';
-                }
-            });
-        }
-
-        // 수정 모드 활성화
-        function enableEditMode() {
-            if (confirm('저장된 정보를 수정하시겠습니까?\n수정 후 다시 등록하면 새로운 정보로 저장됩니다.')) {
-                const fieldsToEnable = ['name', 'gender', 'birthYear', 'phone', 'residence', 'residenceDetail'];
-                fieldsToEnable.forEach(fieldId => {
-                    const field = document.getElementById(fieldId);
-                    if (field) {
-                        field.readOnly = false;
-                        field.style.backgroundColor = '';
-                        field.style.cursor = '';
-                    }
-                });
-                
-                // 배너 숨기기
-                const banner = document.getElementById('returningVisitorBanner');
-                if (banner) {
-                    banner.style.display = 'none';
-                }
-                
-                showMessage('정보를 수정할 수 있습니다. 수정 후 등록하면 새로운 정보로 저장됩니다.', 'success');
-            }
-        }
-
-        // 저장된 정보 완전 삭제
-        function clearAllData() {
-            if (confirm('저장된 모든 정보를 삭제하시겠습니까?')) {
-                localStorage.removeItem('visitorInfo');
-                location.reload();
-            }
-        }
-
-        // 방문자 정보 저장
-        function saveVisitorInfo() {
-            const visitorInfo = {
-                name: document.getElementById('name').value.trim(),
-                gender: document.getElementById('gender').value,
-                birthYear: document.getElementById('birthYear').value,
-                phone: document.getElementById('phone').value.trim(),
-                residence: document.getElementById('residence').value.trim(),
-                residenceDetail: document.getElementById('residenceDetail').value.trim()
-            };
-            
-            localStorage.setItem('visitorInfo', JSON.stringify(visitorInfo));
-        }
-
-        // 시간 옵션 초기화 (10분 단위)
-        function initializeTimeOptions() {
-            const visitTime = document.getElementById('visitTime');
-            
-            for (let hour = 0; hour < 24; hour++) {
-                for (let minute = 0; minute < 60; minute += 30) {
-                    const hourStr = hour.toString().padStart(2, '0');
-                    const minuteStr = minute.toString().padStart(2, '0');
-                    const timeValue = `${hourStr}:${minuteStr}`;
-                    
-                    const option = document.createElement('option');
-                    option.value = timeValue;
-                    option.textContent = timeValue;
-                    visitTime.appendChild(option);
-                }
-            }
-        }
 
         // 날짜 선택 초기화
         function initializeDateSelectors() {
@@ -693,19 +508,10 @@
             const now = new Date();
             const month = now.getMonth() + 1;
             const day = now.getDate();
-            const hour = now.getHours();
-            const minute = now.getMinutes();
             
             document.getElementById('visitMonth').value = month;
             updateDayOptions(month);
             document.getElementById('visitDay').value = day;
-            
-            // 가장 가까운 10분 단위로 반올림
-            const roundedMinute = Math.round(minute / 10) * 10 % 60;
-            const adjustedHour = minute >= 55 ? (hour + 1) % 24 : hour;
-            
-            const timeValue = `${adjustedHour.toString().padStart(2, '0')}:${roundedMinute.toString().padStart(2, '0')}`;
-            document.getElementById('visitTime').value = timeValue;
         }
 
         // 일(day) 옵션 업데이트
@@ -753,7 +559,24 @@
                 clearError('privacyConsent');
             }
         }
-
+        
+        // 시간 옵션 초기화 (10분 단위)
+        function initializeTimeOptions() {
+            const visitTime = document.getElementById('visitTime');
+            
+            for (let hour = 0; hour < 24; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    const hourStr = hour.toString().padStart(2, '0');
+                    const minuteStr = minute.toString().padStart(2, '0');
+                    const timeValue = `${hourStr}:${minuteStr}`;
+                    
+                    const option = document.createElement('option');
+                    option.value = timeValue;
+                    option.textContent = timeValue;
+                    visitTime.appendChild(option);
+                }
+            }
+        }
         // 연락처 포맷팅
         function formatPhone(phone) {
             const numbers = phone.replace(/[^\d]/g, '');
@@ -787,7 +610,7 @@
             // 방문시간 검증
             const visitTime = document.getElementById('visitTime').value;
             if (!visitTime) {
-                showError('visitTime', '방문시간을 선택해주세요');
+                showError('visitTime', '방문시간을 입력해주세요');
                 isValid = false;
             }
 
@@ -916,8 +739,7 @@
                 loading.style.display = 'none';
             }
         }
-
-        // 폼 제출
+// 폼 제출 - URLSearchParams 방식 사용 (CORS 우회)
         async function handleSubmit(e) {
             e.preventDefault();
             
@@ -945,12 +767,14 @@
                     memo: formData.get('memo').trim()
                 };
 
+                // URLSearchParams를 사용하여 CORS 우회
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     body: new URLSearchParams({
                         action: 'addVisitor',
                         data: JSON.stringify(visitorData)
                     })
+                    // Content-Type 헤더를 설정하지 않으면 자동으로 application/x-www-form-urlencoded로 설정됨
                 });
 
                 if (!response.ok) {
@@ -960,20 +784,8 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // 방문자 정보 저장 (날짜/시간 제외)
-                    saveVisitorInfo();
-                    
                     showMessage('방문자 등록이 완료되었습니다!', 'success');
-                    
-                    // 날짜/시간/비고/동의만 초기화
-                    setCurrentDate();
-                    document.getElementById('memo').value = '';
-                    document.getElementById('privacyConsent').checked = false;
-                    
-                    // 페이지 새로고침하여 재방문자 모드로 전환
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
+                    clearForm();
                 } else {
                     showMessage(result.message || '등록 중 오류가 발생했습니다.', 'error');
                 }
@@ -986,13 +798,12 @@
             }
         }
 
-        // 폼 초기화 (현재 세션만)
+        // 폼 초기화
         function clearForm() {
-            setCurrentDate();
-            document.getElementById('memo').value = '';
-            document.getElementById('privacyConsent').checked = false;
+            form.reset();
             hideMessage();
             clearErrors();
+            setCurrentDate();
         }
 
         // 폼 제출 이벤트 리스너
