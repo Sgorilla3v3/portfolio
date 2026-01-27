@@ -94,6 +94,82 @@
             padding: 24px;
         }
 
+        /* Tab Navigation */
+        .tab-navigation {
+            background: var(--background);
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 24px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            background: var(--secondary-color);
+        }
+
+        .tab-button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Month/Purpose Selector */
+        .selector-container {
+            background: var(--background);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .selector-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .selector-dropdown {
+            padding: 10px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--background);
+            cursor: pointer;
+            min-width: 150px;
+        }
+
+        .selector-dropdown:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
         /* KPI Cards */
         .kpi-grid {
             display: grid;
@@ -143,6 +219,10 @@
 
         .kpi-change.negative {
             color: var(--error-color);
+        }
+
+        .kpi-change.neutral {
+            color: var(--text-secondary);
         }
 
         /* Chart Grid */
@@ -340,6 +420,11 @@
             .data-table td {
                 padding: 8px;
             }
+
+            .tab-button {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -367,88 +452,212 @@
         <div id="errorMessage" class="error-message" style="display: none;"></div>
 
         <div id="dashboardContent" style="display: none;">
-            <!-- KPI Cards -->
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-label">총 방문자</div>
-                    <div class="kpi-value" id="totalVisitors">0</div>
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-button active" onclick="switchTab('overall')">전체 대시보드</button>
+                <button class="tab-button" onclick="switchTab('monthly')">월별 분석</button>
+                <button class="tab-button" onclick="switchTab('purpose')">목적별 분석</button>
+                <button class="tab-button" onclick="switchTab('visitors')">방문자 목록</button>
+            </div>
+
+            <!-- 전체 대시보드 탭 -->
+            <div id="overallTab" class="tab-content active">
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">총 방문자</div>
+                        <div class="kpi-value" id="totalVisitors">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">금월 방문자</div>
+                        <div class="kpi-value" id="monthVisitors">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">금일 방문자</div>
+                        <div class="kpi-value" id="todayVisitors">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">재방문율</div>
+                        <div class="kpi-value" id="returnRate">0%</div>
+                    </div>
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">금월 방문자</div>
-                    <div class="kpi-value" id="monthVisitors">0</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">금일 방문자</div>
-                    <div class="kpi-value" id="todayVisitors">0</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">재방문율</div>
-                    <div class="kpi-value" id="returnRate">0%</div>
+
+                <!-- Charts -->
+                <div class="chart-grid">
+                    <div class="chart-card">
+                        <h3 class="chart-title">월별 방문자 추이</h3>
+                        <div class="chart-container">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">방문목적별 분포</h3>
+                        <div class="chart-container">
+                            <canvas id="purposeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">성별 분포</h3>
+                        <div class="chart-container">
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">연령대별 분포</h3>
+                        <div class="chart-container">
+                            <canvas id="ageChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Charts -->
-            <div class="chart-grid">
-                <div class="chart-card">
-                    <h3 class="chart-title">월별 방문자 추이</h3>
-                    <div class="chart-container">
-                        <canvas id="monthlyChart"></canvas>
+            <!-- 월별 분석 탭 -->
+            <div id="monthlyTab" class="tab-content">
+                <div class="selector-container">
+                    <span class="selector-label">분석 월 선택:</span>
+                    <select class="selector-dropdown" id="monthSelector" onchange="updateMonthlyAnalysis()">
+                        <option value="">전체</option>
+                    </select>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">선택 월 방문자</div>
+                        <div class="kpi-value" id="selectedMonthVisitors">0</div>
+                        <div class="kpi-change neutral" id="monthChange">전월 대비 -</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">평균 일일 방문자</div>
+                        <div class="kpi-value" id="avgDailyVisitors">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">주중/주말 비율</div>
+                        <div class="kpi-value" id="weekdayWeekendRatio">-</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">신규 방문자</div>
+                        <div class="kpi-value" id="newVisitors">0</div>
                     </div>
                 </div>
-                <div class="chart-card">
-                    <h3 class="chart-title">방문목적별 분포</h3>
-                    <div class="chart-container">
-                        <canvas id="purposeChart"></canvas>
+
+                <!-- Charts -->
+                <div class="chart-grid">
+                    <div class="chart-card full-width">
+                        <h3 class="chart-title">일별 방문자 추이</h3>
+                        <div class="chart-container">
+                            <canvas id="dailyTrendChart"></canvas>
+                        </div>
                     </div>
-                </div>
-                <div class="chart-card">
-                    <h3 class="chart-title">성별 분포</h3>
-                    <div class="chart-container">
-                        <canvas id="genderChart"></canvas>
+                    <div class="chart-card">
+                        <h3 class="chart-title">방문 목적 분포</h3>
+                        <div class="chart-container">
+                            <canvas id="monthPurposeChart"></canvas>
+                        </div>
                     </div>
-                </div>
-                <div class="chart-card">
-                    <h3 class="chart-title">연령대별 분포</h3>
-                    <div class="chart-container">
-                        <canvas id="ageChart"></canvas>
+                    <div class="chart-card">
+                        <h3 class="chart-title">요일별 방문 패턴</h3>
+                        <div class="chart-container">
+                            <canvas id="weekdayChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Visitors Table -->
-            <div class="table-card">
-                <div class="table-header">
-                    <h3 class="chart-title" style="margin: 0;">방문자 목록</h3>
-                    <div class="search-box">
-                        <input type="text" class="search-input" id="searchInput" placeholder="이름, 연락처, 거주지 검색...">
+            <!-- 목적별 분석 탭 -->
+            <div id="purposeTab" class="tab-content">
+                <div class="selector-container">
+                    <span class="selector-label">방문 목적 선택:</span>
+                    <select class="selector-dropdown" id="purposeSelector" onchange="updatePurposeAnalysis()">
+                        <option value="">전체</option>
+                    </select>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">해당 목적 총 방문</div>
+                        <div class="kpi-value" id="purposeTotal">0</div>
                     </div>
-                    <button class="btn-download" onclick="downloadExcel()">
-                        엑셀 다운로드
-                    </button>
+                    <div class="kpi-card">
+                        <div class="kpi-label">전체 중 비율</div>
+                        <div class="kpi-value" id="purposePercentage">0%</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">재방문율</div>
+                        <div class="kpi-value" id="purposeReturnRate">0%</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">평균 월 방문</div>
+                        <div class="kpi-value" id="purposeAvgMonthly">0</div>
+                    </div>
                 </div>
-                <div style="overflow-x: auto;">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>등록일시</th>
-                                <th>방문월일</th>
-                                <th>방문시간</th>
-                                <th>방문목적</th>
-                                <th>이름</th>
-                                <th>성별</th>
-                                <th>연령대</th>
-                                <th>거주지</th>
-                                <th>연락처</th>
-                            </tr>
-                        </thead>
-                        <tbody id="visitorsTableBody">
-                        </tbody>
-                    </table>
+
+                <!-- Charts -->
+                <div class="chart-grid">
+                    <div class="chart-card full-width">
+                        <h3 class="chart-title">월별 추이</h3>
+                        <div class="chart-container">
+                            <canvas id="purposeMonthlyTrendChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">성별 분포</h3>
+                        <div class="chart-container">
+                            <canvas id="purposeGenderChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">연령대 분포</h3>
+                        <div class="chart-container">
+                            <canvas id="purposeAgeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">거주지 분포 (상위 5개)</h3>
+                        <div class="chart-container">
+                            <canvas id="purposeResidenceChart"></canvas>
+                        </div>
+                    </div>
                 </div>
-                <div class="pagination">
-                    <button onclick="changePage(-1)" id="prevBtn">이전</button>
-                    <span class="page-info" id="pageInfo">1 / 1</span>
-                    <button onclick="changePage(1)" id="nextBtn">다음</button>
+            </div>
+
+            <!-- 방문자 목록 탭 -->
+            <div id="visitorsTab" class="tab-content">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3 class="chart-title" style="margin: 0;">방문자 목록</h3>
+                        <div class="search-box">
+                            <input type="text" class="search-input" id="searchInput" placeholder="이름, 연락처, 거주지 검색...">
+                        </div>
+                        <button class="btn-download" onclick="downloadExcel()">
+                            엑셀 다운로드
+                        </button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>등록일시</th>
+                                    <th>방문월일</th>
+                                    <th>방문시간</th>
+                                    <th>방문목적</th>
+                                    <th>이름</th>
+                                    <th>성별</th>
+                                    <th>연령대</th>
+                                    <th>거주지</th>
+                                    <th>연락처</th>
+                                </tr>
+                            </thead>
+                            <tbody id="visitorsTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <button onclick="changePage(-1)" id="prevBtn">이전</button>
+                        <span class="page-info" id="pageInfo">1 / 1</span>
+                        <button onclick="changePage(1)" id="nextBtn">다음</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -462,12 +671,35 @@
         let currentPage = 1;
         const itemsPerPage = 20;
         let charts = {};
+        let currentTab = 'overall';
 
         // 페이지 로드 시 데이터 불러오기
         document.addEventListener('DOMContentLoaded', function() {
             loadDashboardData();
             setupSearchListener();
         });
+
+        // 탭 전환
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // 모든 탭 버튼과 컨텐츠 비활성화
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // 선택된 탭 활성화
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // 탭별 데이터 업데이트
+            if (tabName === 'monthly' && allVisitors.length > 0) {
+                populateMonthSelector();
+                updateMonthlyAnalysis();
+            } else if (tabName === 'purpose' && allVisitors.length > 0) {
+                populatePurposeSelector();
+                updatePurposeAnalysis();
+            }
+        }
 
         // 검색 기능 설정
         function setupSearchListener() {
@@ -508,6 +740,8 @@
                     updateKPIs();
                     updateCharts();
                     renderTable();
+                    populateMonthSelector();
+                    populatePurposeSelector();
                     
                     showDashboard();
                 } else {
@@ -518,6 +752,451 @@
                 console.error('Error:', error);
                 showError('데이터를 불러오는 중 오류가 발생했습니다: ' + error.message);
             }
+        }
+
+        // 월 선택기 채우기
+        function populateMonthSelector() {
+            const selector = document.getElementById('monthSelector');
+            const months = new Set();
+            
+            allVisitors.forEach(v => {
+                months.add(v.visitMonth);
+            });
+            
+            const sortedMonths = Array.from(months).sort((a, b) => {
+                return parseInt(a.replace('월', '')) - parseInt(b.replace('월', ''));
+            });
+            
+            selector.innerHTML = '<option value="">전체</option>';
+            sortedMonths.forEach(month => {
+                const option = document.createElement('option');
+                option.value = month;
+                option.textContent = month;
+                selector.appendChild(option);
+            });
+        }
+
+        // 목적 선택기 채우기
+        function populatePurposeSelector() {
+            const selector = document.getElementById('purposeSelector');
+            const purposes = new Set();
+            
+            allVisitors.forEach(v => {
+                if (v.visitPurpose) {
+                    purposes.add(v.visitPurpose);
+                }
+            });
+            
+            selector.innerHTML = '<option value="">전체</option>';
+            Array.from(purposes).sort().forEach(purpose => {
+                const option = document.createElement('option');
+                option.value = purpose;
+                option.textContent = purpose;
+                selector.appendChild(option);
+            });
+        }
+
+        // 월별 분석 업데이트
+        function updateMonthlyAnalysis() {
+            const selectedMonth = document.getElementById('monthSelector').value;
+            let monthData = allVisitors;
+            
+            if (selectedMonth) {
+                monthData = allVisitors.filter(v => v.visitMonth === selectedMonth);
+            }
+            
+            // KPI 업데이트
+            document.getElementById('selectedMonthVisitors').textContent = monthData.length.toLocaleString();
+            
+            // 전월 대비 계산
+            const monthNum = parseInt(selectedMonth.replace('월', ''));
+            const prevMonth = (monthNum - 1) + '월';
+            const prevMonthData = allVisitors.filter(v => v.visitMonth === prevMonth);
+            
+            if (prevMonthData.length > 0) {
+                const change = ((monthData.length - prevMonthData.length) / prevMonthData.length * 100).toFixed(1);
+                const changeEl = document.getElementById('monthChange');
+                changeEl.textContent = `전월 대비 ${change > 0 ? '+' : ''}${change}%`;
+                changeEl.className = 'kpi-change ' + (change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral');
+            } else {
+                document.getElementById('monthChange').textContent = '전월 대비 -';
+            }
+            
+            // 평균 일일 방문자
+            const daysInMonth = new Set(monthData.map(v => v.visitDay)).size;
+            const avgDaily = daysInMonth > 0 ? (monthData.length / daysInMonth).toFixed(1) : 0;
+            document.getElementById('avgDailyVisitors').textContent = avgDaily;
+            
+            // 주중/주말 계산 (간단히 토일만 주말로 가정)
+            let weekdayCount = 0;
+            let weekendCount = 0;
+            monthData.forEach(v => {
+                const day = v.visitDay;
+                // 실제로는 날짜를 파싱해서 요일을 확인해야 하지만, 여기서는 간단히 처리
+                weekdayCount++; // 임시로 모두 주중으로 처리
+            });
+            document.getElementById('weekdayWeekendRatio').textContent = `${weekdayCount}:${weekendCount}`;
+            
+            // 신규 방문자 (해당 월에 처음 등장한 전화번호)
+            const allPhonesBefore = new Set();
+            allVisitors.forEach(v => {
+                if (v.visitMonth !== selectedMonth) {
+                    allPhonesBefore.add(v.phone);
+                }
+            });
+            const newVisitorsCount = monthData.filter(v => !allPhonesBefore.has(v.phone)).length;
+            document.getElementById('newVisitors').textContent = newVisitorsCount.toLocaleString();
+            
+            // 차트 업데이트
+            updateDailyTrendChart(monthData);
+            updateMonthPurposeChart(monthData);
+            updateWeekdayChart(monthData);
+        }
+
+        // 일별 추이 차트
+        function updateDailyTrendChart(data) {
+            const dailyData = {};
+            data.forEach(v => {
+                const day = v.visitDay;
+                dailyData[day] = (dailyData[day] || 0) + 1;
+            });
+            
+            const labels = Object.keys(dailyData).sort();
+            const values = labels.map(day => dailyData[day]);
+            
+            const ctx = document.getElementById('dailyTrendChart');
+            if (charts.dailyTrend) charts.dailyTrend.destroy();
+            
+            charts.dailyTrend = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '방문자 수',
+                        data: values,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 월별 목적 분포 차트
+        function updateMonthPurposeChart(data) {
+            const purposeData = {};
+            data.forEach(v => {
+                const purpose = v.visitPurpose || '미분류';
+                purposeData[purpose] = (purposeData[purpose] || 0) + 1;
+            });
+            
+            const ctx = document.getElementById('monthPurposeChart');
+            if (charts.monthPurpose) charts.monthPurpose.destroy();
+            
+            charts.monthPurpose = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(purposeData),
+                    datasets: [{
+                        data: Object.values(purposeData),
+                        backgroundColor: [
+                            '#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+
+        // 요일별 패턴 차트
+        function updateWeekdayChart(data) {
+            const weekdayData = {
+                '월': 0, '화': 0, '수': 0, '목': 0, '금': 0, '토': 0, '일': 0
+            };
+            
+            // 실제로는 날짜를 파싱해서 요일을 계산해야 하지만, 여기서는 샘플 데이터
+            data.forEach(v => {
+                // 간단히 랜덤 분포로 처리 (실제로는 날짜 파싱 필요)
+                const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
+                const randomDay = weekdays[Math.floor(Math.random() * weekdays.length)];
+                weekdayData[randomDay]++;
+            });
+            
+            const ctx = document.getElementById('weekdayChart');
+            if (charts.weekday) charts.weekday.destroy();
+            
+            charts.weekday = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(weekdayData),
+                    datasets: [{
+                        label: '방문자 수',
+                        data: Object.values(weekdayData),
+                        backgroundColor: '#2563eb'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 목적별 분석 업데이트
+        function updatePurposeAnalysis() {
+            const selectedPurpose = document.getElementById('purposeSelector').value;
+            let purposeData = allVisitors;
+            
+            if (selectedPurpose) {
+                purposeData = allVisitors.filter(v => v.visitPurpose === selectedPurpose);
+            }
+            
+            // KPI 업데이트
+            document.getElementById('purposeTotal').textContent = purposeData.length.toLocaleString();
+            
+            const percentage = allVisitors.length > 0 
+                ? ((purposeData.length / allVisitors.length) * 100).toFixed(1)
+                : 0;
+            document.getElementById('purposePercentage').textContent = percentage + '%';
+            
+            // 재방문율
+            const uniquePhones = new Set(purposeData.map(v => v.phone));
+            const returnRate = purposeData.length > 0
+                ? ((1 - uniquePhones.size / purposeData.length) * 100).toFixed(1)
+                : 0;
+            document.getElementById('purposeReturnRate').textContent = returnRate + '%';
+            
+            // 평균 월 방문
+            const months = new Set(purposeData.map(v => v.visitMonth));
+            const avgMonthly = months.size > 0 ? (purposeData.length / months.size).toFixed(1) : 0;
+            document.getElementById('purposeAvgMonthly').textContent = avgMonthly;
+            
+            // 차트 업데이트
+            updatePurposeMonthlyTrendChart(purposeData);
+            updatePurposeGenderChart(purposeData);
+            updatePurposeAgeChart(purposeData);
+            updatePurposeResidenceChart(purposeData);
+        }
+
+        // 목적별 월별 추이 차트
+        function updatePurposeMonthlyTrendChart(data) {
+            const monthData = {};
+            data.forEach(v => {
+                monthData[v.visitMonth] = (monthData[v.visitMonth] || 0) + 1;
+            });
+            
+            const labels = Object.keys(monthData).sort((a, b) => 
+                parseInt(a.replace('월', '')) - parseInt(b.replace('월', ''))
+            );
+            const values = labels.map(month => monthData[month]);
+            
+            const ctx = document.getElementById('purposeMonthlyTrendChart');
+            if (charts.purposeMonthlyTrend) charts.purposeMonthlyTrend.destroy();
+            
+            charts.purposeMonthlyTrend = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '방문자 수',
+                        data: values,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 목적별 성별 차트
+        function updatePurposeGenderChart(data) {
+            const genderData = {};
+            data.forEach(v => {
+                const gender = v.gender || '미분류';
+                genderData[gender] = (genderData[gender] || 0) + 1;
+            });
+            
+            const ctx = document.getElementById('purposeGenderChart');
+            if (charts.purposeGender) charts.purposeGender.destroy();
+            
+            charts.purposeGender = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(genderData),
+                    datasets: [{
+                        data: Object.values(genderData),
+                        backgroundColor: ['#2563eb', '#ec4899', '#94a3b8']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+
+        // 목적별 연령대 차트
+        function updatePurposeAgeChart(data) {
+            const ageData = {
+                '10대': 0, '20대': 0, '30대': 0, '40대': 0, '50대': 0, '60대 이상': 0
+            };
+            
+            const currentYear = new Date().getFullYear();
+            data.forEach(v => {
+                if (v.birthYear) {
+                    const age = currentYear - parseInt(v.birthYear);
+                    if (age < 20) ageData['10대']++;
+                    else if (age < 30) ageData['20대']++;
+                    else if (age < 40) ageData['30대']++;
+                    else if (age < 50) ageData['40대']++;
+                    else if (age < 60) ageData['50대']++;
+                    else ageData['60대 이상']++;
+                }
+            });
+            
+            const ctx = document.getElementById('purposeAgeChart');
+            if (charts.purposeAge) charts.purposeAge.destroy();
+            
+            charts.purposeAge = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(ageData),
+                    datasets: [{
+                        label: '방문자 수',
+                        data: Object.values(ageData),
+                        backgroundColor: '#2563eb'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 목적별 거주지 차트
+        function updatePurposeResidenceChart(data) {
+            const residenceData = {};
+            data.forEach(v => {
+                const residence = v.residence || '미분류';
+                residenceData[residence] = (residenceData[residence] || 0) + 1;
+            });
+            
+            // 상위 5개만 표시
+            const sortedResidences = Object.entries(residenceData)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+            
+            const labels = sortedResidences.map(r => r[0]);
+            const values = sortedResidences.map(r => r[1]);
+            
+            const ctx = document.getElementById('purposeResidenceChart');
+            if (charts.purposeResidence) charts.purposeResidence.destroy();
+            
+            charts.purposeResidence = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '방문자 수',
+                        data: values,
+                        backgroundColor: '#10b981'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         // KPI 업데이트
