@@ -382,7 +382,7 @@
             <div class="returning-visitor-banner" id="returningVisitorBanner">
                 <h3>다시 오신 것을 환영합니다!</h3>
                 <p id="returningVisitorName"></p>
-                <p class="subtitle">방문 일시만 선택하시면 바로 등록됩니다</p>
+                <p class="subtitle">방문 일시와 목적만 선택하시면 바로 등록됩니다</p>
                 <button type="button" class="btn-edit-info" onclick="enableEditMode()">
                     정보 수정하기
                 </button>
@@ -429,6 +429,20 @@
                             </select>
                             <div class="error-message" id="visitTimeError">필수 항목입니다</div>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="visitPurpose" class="required">방문목적</label>
+                        <select id="visitPurpose" name="visitPurpose" class="form-input" required>
+                            <option value="">선택해주세요</option>
+                            <option value="프로그램 참여">프로그램 참여 (교육, 행사, 멘토링 등)</option>
+                            <option value="행사운영 및 주최">행사운영 및 주최 (스탭, 강연자, 주최자)</option>
+                            <option value="장비 및 시설이용">장비 및 시설이용 (회의실, 코워킹, 촬영 등)</option>
+                            <option value="비즈니스 미팅">비즈니스 미팅 (상담, 투자, 협업 등)</option>
+                            <option value="네트워킹">네트워킹 (동호회, 소모임, 커뮤니티)</option>
+                            <option value="시설 견학">시설 견학 (투어, 벤치마킹)</option>
+                        </select>
+                        <div class="error-message" id="visitPurposeError">방문목적을 선택해주세요</div>
                     </div>
                 </div>
 
@@ -485,7 +499,7 @@
                         <label for="residenceDetail">거주지(읍면동)</label>
                         <input type="text" id="residenceDetail" name="residenceDetail" class="form-input" 
                                placeholder="청도군 거주자만 작성" maxlength="30">
-                        <div class="helper-text">청도군 거주자의 경우 읍면동을 입력해주세요</div>
+                        <div class="helper-text">청도군 거주자의 경우 꼭 읍면동을 입력해주세요</div>
                     </div>
                 </div>
 
@@ -494,7 +508,7 @@
                     <div class="section-title">추가 정보</div>
                     
                     <div class="form-group">
-                        <label for="memo">비고</label>
+                        <label for="memo">기타/문의사항</label>
                         <textarea id="memo" name="memo" class="form-input" 
                                   placeholder="특이사항이나 추가 정보를 입력해주세요" 
                                   maxlength="200"></textarea>
@@ -509,7 +523,7 @@
                         <label for="privacyConsent" class="checkbox-label">
                             <span class="highlight">[필수]</span> 개인정보 수집 및 이용에 동의합니다.<br>
                             <span style="font-size: 12px; color: var(--text-secondary);">
-                                수집항목: 이름, 성별, 출생년도, 연락처, 거주지<br>
+                                수집항목: 이름, 성별, 방문목적, 출생년도, 연락처, 거주지<br>
                                 이용목적: 랩 방문자 관리 및 통계<br>
                                 보유기간: 방문일로부터 3년
                             </span>
@@ -700,9 +714,9 @@
             updateDayOptions(month);
             document.getElementById('visitDay').value = day;
             
-            // 가장 가까운 10분 단위로 반올림
-            const roundedMinute = Math.round(minute / 10) * 10 % 60;
-            const adjustedHour = minute >= 55 ? (hour + 1) % 24 : hour;
+            // 가장 가까운 30분 단위로 반올림
+            const roundedMinute = Math.round(minute / 30) * 30 % 60;
+            const adjustedHour = minute >= 45 ? (hour + 1) % 24 : hour;
             
             const timeValue = `${adjustedHour.toString().padStart(2, '0')}:${roundedMinute.toString().padStart(2, '0')}`;
             document.getElementById('visitTime').value = timeValue;
@@ -788,6 +802,13 @@
             const visitTime = document.getElementById('visitTime').value;
             if (!visitTime) {
                 showError('visitTime', '방문시간을 선택해주세요');
+                isValid = false;
+            }
+
+            // 방문목적 검증
+            const visitPurpose = document.getElementById('visitPurpose').value;
+            if (!visitPurpose) {
+                showError('visitPurpose', '방문목적을 선택해주세요');
                 isValid = false;
             }
 
@@ -936,6 +957,7 @@
                     visitMonth: formData.get('visitMonth'),
                     visitDay: formData.get('visitDay'),
                     visitTime: formData.get('visitTime'),
+                    visitPurpose: formData.get('visitPurpose'),
                     name: formData.get('name').trim(),
                     gender: formData.get('gender'),
                     birthYear: formData.get('birthYear'),
@@ -960,13 +982,14 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // 방문자 정보 저장 (날짜/시간 제외)
+                    // 방문자 정보 저장 (날짜/시간/방문목적 제외)
                     saveVisitorInfo();
                     
                     showMessage('방문자 등록이 완료되었습니다!', 'success');
                     
-                    // 날짜/시간/비고/동의만 초기화
+                    // 날짜/시간/방문목적/비고/동의만 초기화
                     setCurrentDate();
+                    document.getElementById('visitPurpose').value = '';
                     document.getElementById('memo').value = '';
                     document.getElementById('privacyConsent').checked = false;
                     
@@ -989,6 +1012,7 @@
         // 폼 초기화 (현재 세션만)
         function clearForm() {
             setCurrentDate();
+            document.getElementById('visitPurpose').value = '';
             document.getElementById('memo').value = '';
             document.getElementById('privacyConsent').checked = false;
             hideMessage();
