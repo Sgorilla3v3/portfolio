@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>랩 방문자 등록</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary-color: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+            --background: #ffffff;
+            --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--secondary-color);
+            min-height: 100vh;
+            padding: 16px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--background);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary-color);
+            padding: 28px 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .form-container {
+            padding: 28px 24px;
+        }
+
+        .form-section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .required::after {
+            content: ' *';
+            color: var(--error-color);
+            font-weight: 500;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-primary);
+            background: var(--background);
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        select.form-input {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .checkbox-group {
+            background: var(--secondary-color);
+            padding: 16px;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+
+        .checkbox-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-label .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-light);
+        }
+
+        .submit-btn:active {
+            background: var(--primary-dark);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .secondary-actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .btn-secondary {
+            background: none;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 0 6px;
+        }
+
+        .btn-secondary:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .conditional-field {
+            display: none;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 360px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .form-input {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>랩 방문자 등록</h1>
+            <p>방문 정보를 입력해주세요</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="visitorForm" novalidate>
+                <!-- 방문 정보 섹션 -->
+                <div class="form-section">
+                    <div class="section-title">방문 정보</div>
+                    
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label for="visitMonth" class="required">방문월</label>
+                            <select id="visitMonth" name="visitMonth" class="form-input" required>
+                                <option value="">선택</option>
+                                <option value="1">1월</option>
+                                <option value="2">2월</option>
+                                <option value="3">3월</option>
+                                <option value="4">4월</option>
+                                <option value="5">5월</option>
+                                <option value="6">6월</option>
+                                <option value="7">7월</option>
+                                <option value="8">8월</option>
+                                <option value="9">9월</option>
+                                <option value="10">10월</option>
+                                <option value="11">11월</option>
+                                <option value="12">12월</option>
+                            </select>
+                            <div class="error-message" id="visitMonthError">필수 항목입니다</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visitDay" class="required">방문일</label>
+                            <select id="visitDay" name="visitDay" class="form-input" required>
+                                <option value="">선택</option>
+                            </select>
+                            <div class="error-message" id="visitDayError">필수 항목입니다</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visitTime" class="required">방문시간</label>
+                            <input type="time" id="visitTime" name="visitTime" class="form-input" required>
+                            <div class="error-message" id="visitTimeError">필수 항목입니다</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 방문자 정보 섹션 -->
+                <div class="form-section">
+                    <div class="section-title">방문자 정보</div>
+                    
+                    <div class="form-group">
+                        <label for="name" class="required">이름</label>
+                        <input type="text" id="name" name="name" class="form-input" 
+                               placeholder="홍길동" required maxlength="20">
+                        <div class="error-message" id="nameError">이름을 입력해주세요</div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="gender" class="required">성별</label>
+                            <select id="gender" name="gender" class="form-input" required>
+                                <option value="">선택</option>
+                                <option value="남">남</option>
+                                <option value="여">여</option>
+                            </select>
+                            <div class="error-message" id="genderError">필수 항목입니다</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birthYear" class="required">출생년도</label>
+                            <input type="number" id="birthYear" name="birthYear" class="form-input" 
+                                   placeholder="1990" required min="1900" max="2024">
+                            <div class="error-message" id="birthYearError">필수 항목입니다</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="required">연락처</label>
+                        <input type="tel" id="phone" name="phone" class="form-input" 
+                               placeholder="010-1234-5678" required>
+                        <div class="error-message" id="phoneError">올바른 연락처를 입력해주세요</div>
+                    </div>
+                </div>
+
+                <!-- 거주지 정보 섹션 -->
+                <div class="form-section">
+                    <div class="section-title">거주지 정보</div>
+                    
+                    <div class="form-group">
+                        <label for="residence" class="required">거주지(시군)</label>
+                        <input type="text" id="residence" name="residence" class="form-input" 
+                               placeholder="예: 청도군, 대구광역시" required maxlength="30">
+                        <div class="error-message" id="residenceError">거주지를 입력해주세요</div>
+                    </div>
+
+                    <div class="form-group" id="cheongdoGroup">
+                        <label for="residenceDetail">거주지(읍면동)</label>
+                        <input type="text" id="residenceDetail" name="residenceDetail" class="form-input" 
+                               placeholder="청도군 거주자만 작성" maxlength="30">
+                        <div class="helper-text">청도군 거주자의 경우 읍면동을 입력해주세요</div>
+                    </div>
+                </div>
+
+                <!-- 추가 정보 섹션 -->
+                <div class="form-section">
+                    <div class="section-title">추가 정보</div>
+                    
+                    <div class="form-group">
+                        <label for="memo">비고</label>
+                        <textarea id="memo" name="memo" class="form-input" 
+                                  placeholder="특이사항이나 추가 정보를 입력해주세요" 
+                                  maxlength="200"></textarea>
+                    </div>
+                </div>
+
+                <!-- 개인정보 이용동의 -->
+                <div class="checkbox-group">
+                    <div class="checkbox-wrapper" onclick="toggleCheckbox()">
+                        <input type="checkbox" id="privacyConsent" name="privacyConsent" 
+                               class="checkbox-input" required>
+                        <label for="privacyConsent" class="checkbox-label">
+                            <span class="highlight">[필수]</span> 개인정보 수집 및 이용에 동의합니다.<br>
+                            <span style="font-size: 12px; color: var(--text-secondary);">
+                                수집항목: 이름, 성별, 출생년도, 연락처, 거주지<br>
+                                이용목적: 랩 방문자 관리 및 통계<br>
+                                보유기간: 방문일로부터 1년
+                            </span>
+                        </label>
+                    </div>
+                    <div class="error-message" id="privacyConsentError" style="margin-top: 8px;">
+                        개인정보 이용에 동의해주세요
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    등록하기
+                </button>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div>등록 중...</div>
+                </div>
+
+                <div class="message" id="message"></div>
+
+                <div class="secondary-actions">
+                    <button type="button" class="btn-secondary" onclick="clearForm()">초기화</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수
+        const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+        // DOM 요소 참조
+        const form = document.getElementById('visitorForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+        const message = document.getElementById('message');
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDateSelectors();
+            setupEventListeners();
+            setCurrentDate();
+        });
+
+        // 날짜 선택 초기화
+        function initializeDateSelectors() {
+            const visitMonth = document.getElementById('visitMonth');
+            const visitDay = document.getElementById('visitDay');
+
+            visitMonth.addEventListener('change', function() {
+                updateDayOptions(this.value);
+            });
+        }
+
+        // 현재 날짜 설정
+        function setCurrentDate() {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            
+            document.getElementById('visitMonth').value = month;
+            updateDayOptions(month);
+            document.getElementById('visitDay').value = day;
+        }
+
+        // 일(day) 옵션 업데이트
+        function updateDayOptions(month) {
+            const visitDay = document.getElementById('visitDay');
+            const daysInMonth = new Date(2024, month, 0).getDate();
+            
+            visitDay.innerHTML = '<option value="">선택</option>';
+            
+            for (let i = 1; i <= daysInMonth; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i + '일';
+                visitDay.appendChild(option);
+            }
+        }
+
+        // 이벤트 리스너 설정
+        function setupEventListeners() {
+            // 연락처 자동 포맷팅
+            document.getElementById('phone').addEventListener('input', function(e) {
+                e.target.value = formatPhone(e.target.value);
+            });
+
+            // 입력 필드 포커스 시 에러 제거
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('focus', function() {
+                    clearError(this.id);
+                });
+            });
+
+            // 체크박스 에러 제거
+            document.getElementById('privacyConsent').addEventListener('change', function() {
+                if (this.checked) {
+                    clearError('privacyConsent');
+                }
+            });
+        }
+
+        // 체크박스 토글
+        function toggleCheckbox() {
+            const checkbox = document.getElementById('privacyConsent');
+            checkbox.checked = !checkbox.checked;
+            if (checkbox.checked) {
+                clearError('privacyConsent');
+            }
+        }
+
+        // 연락처 포맷팅
+        function formatPhone(phone) {
+            const numbers = phone.replace(/[^\d]/g, '');
+            if (numbers.length === 11) {
+                return numbers.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            } else if (numbers.length === 10) {
+                return numbers.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+            }
+            return numbers;
+        }
+
+        // 입력 검증
+        function validateForm() {
+            let isValid = true;
+            clearErrors();
+
+            // 방문월 검증
+            const visitMonth = document.getElementById('visitMonth').value;
+            if (!visitMonth) {
+                showError('visitMonth', '방문월을 선택해주세요');
+                isValid = false;
+            }
+
+            // 방문일 검증
+            const visitDay = document.getElementById('visitDay').value;
+            if (!visitDay) {
+                showError('visitDay', '방문일을 선택해주세요');
+                isValid = false;
+            }
+
+            // 방문시간 검증
+            const visitTime = document.getElementById('visitTime').value;
+            if (!visitTime) {
+                showError('visitTime', '방문시간을 입력해주세요');
+                isValid = false;
+            }
+
+            // 이름 검증
+            const name = document.getElementById('name').value.trim();
+            if (!name) {
+                showError('name', '이름을 입력해주세요');
+                isValid = false;
+            } else if (name.length < 2) {
+                showError('name', '이름은 2자 이상 입력해주세요');
+                isValid = false;
+            }
+
+            // 성별 검증
+            const gender = document.getElementById('gender').value;
+            if (!gender) {
+                showError('gender', '성별을 선택해주세요');
+                isValid = false;
+            }
+
+            // 출생년도 검증
+            const birthYear = document.getElementById('birthYear').value;
+            if (!birthYear) {
+                showError('birthYear', '출생년도를 입력해주세요');
+                isValid = false;
+            } else if (birthYear < 1900 || birthYear > 2024) {
+                showError('birthYear', '올바른 출생년도를 입력해주세요');
+                isValid = false;
+            }
+
+            // 연락처 검증
+            const phone = document.getElementById('phone').value.trim();
+            const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/;
+            if (!phone) {
+                showError('phone', '연락처를 입력해주세요');
+                isValid = false;
+            } else if (!phoneRegex.test(phone)) {
+                showError('phone', '올바른 연락처 형식이 아닙니다 (예: 010-1234-5678)');
+                isValid = false;
+            }
+
+            // 거주지 검증
+            const residence = document.getElementById('residence').value.trim();
+            if (!residence) {
+                showError('residence', '거주지를 입력해주세요');
+                isValid = false;
+            }
+
+            // 개인정보 동의 검증
+            const privacyConsent = document.getElementById('privacyConsent').checked;
+            if (!privacyConsent) {
+                showError('privacyConsent', '개인정보 이용에 동의해주세요');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // 에러 메시지 표시
+        function showError(fieldId, errorText) {
+            const errorElement = document.getElementById(`${fieldId}Error`);
+            const inputElement = document.getElementById(fieldId);
+            
+            if (errorElement) {
+                errorElement.textContent = errorText;
+                errorElement.style.display = 'block';
+            }
+            
+            if (inputElement && inputElement.classList.contains('form-input')) {
+                inputElement.style.borderColor = 'var(--error-color)';
+            }
+        }
+
+        // 에러 메시지 제거
+        function clearError(fieldId) {
+            const errorElement = document.getElementById(`${fieldId}Error`);
+            const inputElement = document.getElementById(fieldId);
+            
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+            
+            if (inputElement && inputElement.classList.contains('form-input')) {
+                inputElement.style.borderColor = 'var(--border-color)';
+            }
+        }
+
+        // 모든 에러 메시지 제거
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            const inputElements = document.querySelectorAll('.form-input');
+            
+            errorElements.forEach(el => el.style.display = 'none');
+            inputElements.forEach(el => {
+                if (el.classList.contains('form-input')) {
+                    el.style.borderColor = 'var(--border-color)';
+                }
+            });
+        }
+
+        // 메시지 표시
+        function showMessage(text, type = 'success') {
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    hideMessage();
+                }, 3000);
+            }
+        }
+
+        // 메시지 숨기기
+        function hideMessage() {
+            message.style.display = 'none';
+        }
+
+        // 로딩 상태 토글
+        function toggleLoading(show) {
+            if (show) {
+                submitBtn.style.display = 'none';
+                loading.style.display = 'block';
+            } else {
+                submitBtn.style.display = 'block';
+                loading.style.display = 'none';
+            }
+        }
+
+        // 폼 제출
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+
+            toggleLoading(true);
+            hideMessage();
+
+            try {
+                const formData = new FormData(form);
+                const visitorData = {
+                    action: 'addVisitor',
+                    visitor: {
+                        visitMonth: formData.get('visitMonth'),
+                        visitDay: formData.get('visitDay'),
+                        visitTime: formData.get('visitTime'),
+                        name: formData.get('name').trim(),
+                        gender: formData.get('gender'),
+                        birthYear: formData.get('birthYear'),
+                        residence: formData.get('residence').trim(),
+                        residenceDetail: formData.get('residenceDetail').trim(),
+                        phone: formData.get('phone').trim(),
+                        memo: formData.get('memo').trim(),
+                        timestamp: new Date().toISOString()
+                    }
+                };
+
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(visitorData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showMessage('방문자 등록이 완료되었습니다!', 'success');
+                    clearForm();
+                } else {
+                    showMessage(result.message || '등록 중 오류가 발생했습니다.', 'error');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('네트워크 오류가 발생했습니다. 다시 시도해주세요.', 'error');
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+        // 폼 초기화
+        function clearForm() {
+            form.reset();
+            hideMessage();
+            clearErrors();
+            setCurrentDate();
+        }
+
+        // 폼 제출 이벤트 리스너
+        form.addEventListener('submit', handleSubmit);
+    </script>
+</body>
+</html>
