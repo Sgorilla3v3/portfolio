@@ -361,7 +361,9 @@
 
                         <div class="form-group">
                             <label for="visitTime" class="required">방문시간</label>
-                            <input type="time" id="visitTime" name="visitTime" class="form-input" required>
+                            <select id="visitTime" name="visitTime" class="form-input" required>
+                                <option value="">선택</option>
+                            </select>
                             <div class="error-message" id="visitTimeError">필수 항목입니다</div>
                         </div>
                     </div>
@@ -446,7 +448,7 @@
                             <span style="font-size: 12px; color: var(--text-secondary);">
                                 수집항목: 이름, 성별, 출생년도, 연락처, 거주지<br>
                                 이용목적: 랩 방문자 관리 및 통계<br>
-                                보유기간: 방문일로부터 1년
+                                보유기간: 방문일로부터 3년
                             </span>
                         </label>
                     </div>
@@ -486,6 +488,7 @@
         // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', function() {
             initializeDateSelectors();
+            initializeTimeOptions();
             setupEventListeners();
             setCurrentDate();
         });
@@ -556,7 +559,24 @@
                 clearError('privacyConsent');
             }
         }
-
+        
+        // 시간 옵션 초기화 (10분 단위)
+        function initializeTimeOptions() {
+            const visitTime = document.getElementById('visitTime');
+            
+            for (let hour = 0; hour < 24; hour++) {
+                for (let minute = 0; minute < 60; minute += 10) {
+                    const hourStr = hour.toString().padStart(2, '0');
+                    const minuteStr = minute.toString().padStart(2, '0');
+                    const timeValue = `${hourStr}:${minuteStr}`;
+                    
+                    const option = document.createElement('option');
+                    option.value = timeValue;
+                    option.textContent = timeValue;
+                    visitTime.appendChild(option);
+                }
+            }
+        }
         // 연락처 포맷팅
         function formatPhone(phone) {
             const numbers = phone.replace(/[^\d]/g, '');
