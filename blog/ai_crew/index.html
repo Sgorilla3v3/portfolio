@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>AI 공부모임 신청</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary-color: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+            --background: #ffffff;
+            --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--secondary-color);
+            min-height: 100vh;
+            padding: 16px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--background);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary-color);
+            padding: 28px 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .form-container {
+            padding: 28px 24px;
+        }
+
+        .form-section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .required::after {
+            content: ' *';
+            color: var(--error-color);
+            font-weight: 500;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-primary);
+            background: var(--background);
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        select.form-input {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .checkbox-group {
+            background: var(--secondary-color);
+            padding: 16px;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .checkbox-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .consent-wrapper {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+
+        .consent-label {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .consent-label .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-light);
+        }
+
+        .submit-btn:active {
+            background: var(--primary-dark);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .secondary-actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .btn-secondary {
+            background: none;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        @media (max-width: 360px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .form-input {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI 공부모임 신청</h1>
+            <p>함께 성장할 멤버를 모집합니다</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="aiStudyForm" novalidate>
+                <!-- 기본 정보 섹션 -->
+                <div class="form-section">
+                    <div class="section-title">기본 정보</div>
+                    
+                    <div class="form-group">
+                        <label for="name" class="required">이름</label>
+                        <input type="text" id="name" name="name" class="form-input" 
+                               placeholder="홍길동" required maxlength="20">
+                        <div class="error-message" id="nameError">이름을 입력해주세요</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="required">연락처</label>
+                        <input type="tel" id="phone" name="phone" class="form-input" 
+                               placeholder="010-1234-5678" required>
+                        <div class="error-message" id="phoneError">올바른 연락처를 입력해주세요</div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="region" class="required">지역</label>
+                            <input type="text" id="region" name="region" class="form-input" 
+                                   placeholder="예: 서울, 경기" required maxlength="30">
+                            <div class="error-message" id="regionError">지역을 입력해주세요</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="affiliation" class="required">소속</label>
+                            <input type="text" id="affiliation" name="affiliation" class="form-input" 
+                                   placeholder="회사명 또는 학교명" required maxlength="50">
+                            <div class="error-message" id="affiliationError">소속을 입력해주세요</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI 경험 및 관심사 섹션 -->
+                <div class="form-section">
+                    <div class="section-title">AI 경험 및 관심사</div>
+                    
+                    <div class="form-group">
+                        <label for="aiExperience" class="required">AI/머신러닝 경험 수준</label>
+                        <select id="aiExperience" name="aiExperience" class="form-input" required>
+                            <option value="">선택해주세요</option>
+                            <option value="입문">입문 (처음 시작하는 단계)</option>
+                            <option value="초급">초급 (기본 개념 이해, 간단한 실습 경험)</option>
+                            <option value="중급">중급 (프로젝트 경험, 주요 프레임워크 사용 가능)</option>
+                            <option value="고급">고급 (실무 경험, 모델 개발 및 최적화 가능)</option>
+                        </select>
+                        <div class="error-message" id="aiExperienceError">경험 수준을 선택해주세요</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="interests">관심 분야 (복수 선택 가능)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item" onclick="toggleInterest('llm')">
+                                <input type="checkbox" id="interest_llm" name="interests" 
+                                       value="LLM/생성형AI" class="checkbox-input">
+                                <label for="interest_llm" class="checkbox-label">LLM/생성형 AI(GPT,Gemini,Claude 사용법 등)</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleInterest('cv')">
+                                <input type="checkbox" id="interest_cv" name="interests" 
+                                       value="Computer Vision" class="checkbox-input">
+                                <label for="interest_cv" class="checkbox-label">Computer Vision</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleInterest('nlp')">
+                                <input type="checkbox" id="interest_nlp" name="interests" 
+                                       value="자연어처리(NLP)" class="checkbox-input">
+                                <label for="interest_nlp" class="checkbox-label">자연어처리(NLP)</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleInterest('data')">
+                                <input type="checkbox" id="interest_data" name="interests" 
+                                       value="데이터분석/ML" class="checkbox-input">
+                                <label for="interest_data" class="checkbox-label">데이터 분석/ML</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleInterest('prompt')">
+                                <input type="checkbox" id="interest_prompt" name="interests" 
+                                       value="프롬프트엔지니어링" class="checkbox-input">
+                                <label for="interest_prompt" class="checkbox-label">프롬프트 엔지니어링</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleInterest('rl')">
+                                <input type="checkbox" id="interest_rl" name="interests" 
+                                       value="강화학습" class="checkbox-input">
+                                <label for="interest_rl" class="checkbox-label">머신러닝/강화학습</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleInterest('other')">
+                                <input type="checkbox" id="interest_other" name="interests" 
+                                       value="기타" class="checkbox-input">
+                                <label for="interest_other" class="checkbox-label">기타</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tools">사용해본 도구 (복수 선택 가능)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item" onclick="toggleTool('chatgpt')">
+                                <input type="checkbox" id="tool_chatgpt" name="tools" 
+                                    value="ChatGPT" class="checkbox-input">
+                                <label for="tool_chatgpt" class="checkbox-label">ChatGPT</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleTool('claude')">
+                                <input type="checkbox" id="tool_claude" name="tools" 
+                                    value="Claude" class="checkbox-input">
+                                <label for="tool_claude" class="checkbox-label">Claude</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleTool('gemini')">
+                                <input type="checkbox" id="tool_gemini" name="tools" 
+                                    value="Gemini" class="checkbox-input">
+                                <label for="tool_gemini" class="checkbox-label">Gemini</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleTool('perplexity')">
+                                <input type="checkbox" id="tool_perplexity" name="tools" 
+                                    value="Perplexity" class="checkbox-input">
+                                <label for="tool_perplexity" class="checkbox-label">Perplexity</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleTool('gemini_cli')">
+                                <input type="checkbox" id="tool_gemini_cli" name="tools" 
+                                    value="Gemini CLI" class="checkbox-input">
+                                <label for="tool_gemini_cli" class="checkbox-label">Gemini CLI</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleTool('claude_code')">
+                                <input type="checkbox" id="tool_claude_code" name="tools" 
+                                    value="Claude Code" class="checkbox-input">
+                                <label for="tool_claude_code" class="checkbox-label">Claude Code</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleTool('obsidian')">
+                                <input type="checkbox" id="tool_obsidian" name="tools" 
+                                    value="Obsidian" class="checkbox-input">
+                                <label for="tool_obsidian" class="checkbox-label">Obsidian</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleTool('none')">
+                                <input type="checkbox" id="tool_none" name="tools" 
+                                    value="사용 경험 없음" class="checkbox-input">
+                                <label for="tool_none" class="checkbox-label">사용 경험 없음</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 참여 정보 섹션 -->
+                <div class="form-section">
+                    <div class="section-title">참여 정보</div>
+                    
+                    <div class="form-group">
+                        <label for="purpose" class="required">공부모임 참여 목적</label>
+                        <select id="purpose" name="purpose" class="form-input" required>
+                            <option value="">선택해주세요</option>
+                            <option value="기초학습">기초부터 체계적으로 학습</option>
+                            <option value="실무적용">실무/프로젝트 적용</option>
+                            <option value="네트워킹">AI 활용 네트워킹</option>
+                            <option value="최신동향">최신 AI 트렌드 파악</option>
+                            <option value="포트폴리오">포트폴리오 구축</option>
+                            <option value="기타">기타</option>
+                        </select>
+                        <div class="error-message" id="purposeError">참여 목적을 선택해주세요</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="learningTopic">특별히 배우고 싶은 주제</label>
+                        <textarea id="learningTopic" name="learningTopic" class="form-input" 
+                                  placeholder="예: RAG 구현, 파인튜닝, 멀티모달 AI 등" 
+                                  maxlength="200"></textarea>
+                        <div class="helper-text">구체적으로 작성해주시면 모임 운영에 참고하겠습니다</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferredDay">선호하는 모임 요일 (복수 선택 가능)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item" onclick="toggleDay('mon')">
+                                <input type="checkbox" id="day_mon" name="preferredDay" 
+                                       value="월요일" class="checkbox-input">
+                                <label for="day_mon" class="checkbox-label">월요일</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleDay('tue')">
+                                <input type="checkbox" id="day_tue" name="preferredDay" 
+                                       value="화요일" class="checkbox-input">
+                                <label for="day_tue" class="checkbox-label">화요일</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleDay('wed')">
+                                <input type="checkbox" id="day_wed" name="preferredDay" 
+                                       value="수요일" class="checkbox-input">
+                                <label for="day_wed" class="checkbox-label">수요일</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleDay('thu')">
+                                <input type="checkbox" id="day_thu" name="preferredDay" 
+                                       value="목요일" class="checkbox-input">
+                                <label for="day_thu" class="checkbox-label">목요일</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleDay('fri')">
+                                <input type="checkbox" id="day_fri" name="preferredDay" 
+                                       value="금요일" class="checkbox-input">
+                                <label for="day_fri" class="checkbox-label">금요일</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleDay('sat')">
+                                <input type="checkbox" id="day_sat" name="preferredDay" 
+                                       value="토요일" class="checkbox-input">
+                                <label for="day_sat" class="checkbox-label">토요일</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleDay('sun')">
+                                <input type="checkbox" id="day_sun" name="preferredDay" 
+                                       value="일요일" class="checkbox-input">
+                                <label for="day_sun" class="checkbox-label">일요일</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="memo">비고</label>
+                        <textarea id="memo" name="memo" class="form-input" 
+                                  placeholder="문의사항이나 추가로 전달하고 싶은 내용을 입력해주세요" 
+                                  maxlength="300"></textarea>
+                    </div>
+                </div>
+
+                <!-- 개인정보 이용동의 -->
+                <div class="checkbox-group">
+                    <div class="consent-wrapper" onclick="toggleConsent()">
+                        <input type="checkbox" id="privacyConsent" name="privacyConsent" 
+                               class="checkbox-input" required>
+                        <label for="privacyConsent" class="consent-label">
+                            <span class="highlight">[필수]</span> 개인정보 수집 및 이용에 동의합니다.<br>
+                            <span style="font-size: 12px; color: var(--text-secondary);">
+                                수집항목: 이름, 연락처, 지역, 소속, AI 경험 수준, 관심 분야, 사용 도구, 참여 목적<br>
+                                이용목적: AI 공부모임 운영 및 참가자 관리<br>
+                                보유기간: 신청일로부터 1년
+                            </span>
+                        </label>
+                    </div>
+                    <div class="error-message" id="privacyConsentError" style="margin-top: 8px;">
+                        개인정보 이용에 동의해주세요
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    신청하기
+                </button>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div>신청 중...</div>
+                </div>
+
+                <div class="message" id="message"></div>
+
+                <div class="secondary-actions">
+                    <button type="button" class="btn-secondary" onclick="clearForm()">초기화</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수 - 실제 Apps Script URL로 변경 필요
+        const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+        // DOM 요소 참조
+        const form = document.getElementById('aiStudyForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+        const message = document.getElementById('message');
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+        });
+
+        // 이벤트 리스너 설정
+        function setupEventListeners() {
+            // 연락처 자동 포맷팅
+            document.getElementById('phone').addEventListener('input', function(e) {
+                e.target.value = formatPhone(e.target.value);
+            });
+
+            // 입력 필드 포커스 시 에러 제거
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('focus', function() {
+                    clearError(this.id);
+                });
+            });
+
+            // 체크박스 에러 제거
+            document.getElementById('privacyConsent').addEventListener('change', function() {
+                if (this.checked) {
+                    clearError('privacyConsent');
+                }
+            });
+        }
+
+        // 체크박스 토글 함수들
+        function toggleInterest(id) {
+            const checkbox = document.getElementById(`interest_${id}`);
+            checkbox.checked = !checkbox.checked;
+        }
+
+        function toggleTool(id) {
+            const checkbox = document.getElementById(`tool_${id}`);
+            checkbox.checked = !checkbox.checked;
+        }
+
+        function toggleDay(id) {
+            const checkbox = document.getElementById(`day_${id}`);
+            checkbox.checked = !checkbox.checked;
+        }
+
+        function toggleConsent() {
+            const checkbox = document.getElementById('privacyConsent');
+            checkbox.checked = !checkbox.checked;
+            if (checkbox.checked) {
+                clearError('privacyConsent');
+            }
+        }
+
+        // 연락처 포맷팅
+        function formatPhone(phone) {
+            const numbers = phone.replace(/[^\d]/g, '');
+            if (numbers.length === 11) {
+                return numbers.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            } else if (numbers.length === 10) {
+                return numbers.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+            }
+            return numbers;
+        }
+
+        // 체크박스 값 수집
+        function getCheckboxValues(name) {
+            const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+            return Array.from(checkboxes).map(cb => cb.value).join(', ');
+        }
+
+        // 입력 검증
+        function validateForm() {
+            let isValid = true;
+            clearErrors();
+
+            // 이름 검증
+            const name = document.getElementById('name').value.trim();
+            if (!name) {
+                showError('name', '이름을 입력해주세요');
+                isValid = false;
+            } else if (name.length < 2) {
+                showError('name', '이름은 2자 이상 입력해주세요');
+                isValid = false;
+            }
+
+            // 연락처 검증
+            const phone = document.getElementById('phone').value.trim();
+            const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/;
+            if (!phone) {
+                showError('phone', '연락처를 입력해주세요');
+                isValid = false;
+            } else if (!phoneRegex.test(phone)) {
+                showError('phone', '올바른 연락처 형식이 아닙니다 (예: 010-1234-5678)');
+                isValid = false;
+            }
+
+            // 지역 검증
+            const region = document.getElementById('region').value.trim();
+            if (!region) {
+                showError('region', '지역을 입력해주세요');
+                isValid = false;
+            }
+
+            // 소속 검증
+            const affiliation = document.getElementById('affiliation').value.trim();
+            if (!affiliation) {
+                showError('affiliation', '소속을 입력해주세요');
+                isValid = false;
+            }
+
+            // AI 경험 수준 검증
+            const aiExperience = document.getElementById('aiExperience').value;
+            if (!aiExperience) {
+                showError('aiExperience', 'AI 경험 수준을 선택해주세요');
+                isValid = false;
+            }
+
+            // 참여 목적 검증
+            const purpose = document.getElementById('purpose').value;
+            if (!purpose) {
+                showError('purpose', '참여 목적을 선택해주세요');
+                isValid = false;
+            }
+
+            // 개인정보 동의 검증
+            const privacyConsent = document.getElementById('privacyConsent').checked;
+            if (!privacyConsent) {
+                showError('privacyConsent', '개인정보 이용에 동의해주세요');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // 에러 메시지 표시
+        function showError(fieldId, errorText) {
+            const errorElement = document.getElementById(`${fieldId}Error`);
+            const inputElement = document.getElementById(fieldId);
+            
+            if (errorElement) {
+                errorElement.textContent = errorText;
+                errorElement.style.display = 'block';
+            }
+            
+            if (inputElement && inputElement.classList.contains('form-input')) {
+                inputElement.style.borderColor = 'var(--error-color)';
+            }
+        }
+
+        // 에러 메시지 제거
+        function clearError(fieldId) {
+            const errorElement = document.getElementById(`${fieldId}Error`);
+            const inputElement = document.getElementById(fieldId);
+            
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+            
+            if (inputElement && inputElement.classList.contains('form-input')) {
+                inputElement.style.borderColor = 'var(--border-color)';
+            }
+        }
+
+        // 모든 에러 메시지 제거
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            const inputElements = document.querySelectorAll('.form-input');
+            
+            errorElements.forEach(el => el.style.display = 'none');
+            inputElements.forEach(el => {
+                if (el.classList.contains('form-input')) {
+                    el.style.borderColor = 'var(--border-color)';
+                }
+            });
+        }
+
+        // 메시지 표시
+        function showMessage(text, type = 'success') {
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    hideMessage();
+                }, 3000);
+            }
+        }
+
+        // 메시지 숨기기
+        function hideMessage() {
+            message.style.display = 'none';
+        }
+
+        // 로딩 상태 토글
+        function toggleLoading(show) {
+            if (show) {
+                submitBtn.style.display = 'none';
+                loading.style.display = 'block';
+            } else {
+                submitBtn.style.display = 'block';
+                loading.style.display = 'none';
+            }
+        }
+
+        // 폼 제출
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+
+            toggleLoading(true);
+            hideMessage();
+
+            try {
+                const formData = new FormData(form);
+                
+                // 신청자 데이터 객체 생성
+                const applicationData = {
+                    name: formData.get('name').trim(),
+                    phone: formData.get('phone').trim(),
+                    region: formData.get('region').trim(),
+                    affiliation: formData.get('affiliation').trim(),
+                    aiExperience: formData.get('aiExperience'),
+                    interests: getCheckboxValues('interests'),
+                    tools: getCheckboxValues('tools'),
+                    purpose: formData.get('purpose'),
+                    learningTopic: formData.get('learningTopic').trim(),
+                    preferredDay: getCheckboxValues('preferredDay'),
+                    memo: formData.get('memo').trim(),
+                    timestamp: new Date().toISOString()
+                };
+
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        action: 'addApplication',
+                        data: JSON.stringify(applicationData)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showMessage('AI 공부모임 신청이 완료되었습니다! 곧 연락드리겠습니다.', 'success');
+                    
+                    setTimeout(() => {
+                        clearForm();
+                    }, 2000);
+                } else {
+                    showMessage(result.message || '신청 중 오류가 발생했습니다.', 'error');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('네트워크 오류가 발생했습니다. 다시 시도해주세요.', 'error');
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+        // 폼 초기화
+        function clearForm() {
+            form.reset();
+            hideMessage();
+            clearErrors();
+        }
+
+        // 폼 제출 이벤트 리스너
+        form.addEventListener('submit', handleSubmit);
+    </script>
+</body>
+</html>
