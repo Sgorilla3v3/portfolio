@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청도혁신센터 소통협력공간 - 2025년 성과</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #2E5C8A;
+            --color-primary-light: #4A7BA7;
+            --color-primary-dark: #1A3A5C;
+            --color-secondary-1: #5B9BD5;
+            --color-secondary-2: #3A87C7;
+            --color-accent: #1E88E5;
+            --color-accent-light: #42A5F5;
+            --color-background: #F5F8FB;
+            --color-text: #2C2C2C;
+            --color-text-light: #5A5A5A;
+            --color-border: #D6E4F0;
+            
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2.5rem;
+            --spacing-xl: 4rem;
+            --spacing-xxl: 5rem;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(46, 92, 138, 0.95), rgba(58, 135, 199, 0.85)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect fill="%232E5C8A" width="1920" height="1080"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+            padding: 2rem 1rem;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            padding: 2rem 1rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+        
+        .hero h1 {
+            font-size: clamp(1.75rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+        
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            stroke: white;
+            fill: none;
+            stroke-width: 2;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Section Styles */
+        section {
+            padding: var(--spacing-xxl) 0;
+        }
+        
+        .section-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            color: var(--color-primary-dark);
+        }
+        
+        /* Intro Section */
+        .intro {
+            background: white;
+            text-align: center;
+        }
+        
+        .intro-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: clamp(1rem, 2.5vw, 1.125rem);
+            line-height: 1.9;
+            color: var(--color-text-light);
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .timeline-item {
+            text-align: center;
+        }
+        
+        .timeline-year {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 900;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-label {
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            color: var(--color-text-light);
+        }
+        
+        .timeline-arrow {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--color-primary);
+        }
+        
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: white;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .stat-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2rem, 6vw, 3rem);
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .stat-description {
+            font-size: clamp(0.75rem, 1.8vw, 0.875rem);
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .stat-participants {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            font-weight: 600;
+            color: #FFD54F;
+        }
+        
+        /* Purpose Stories */
+        .purpose-stories {
+            background: white;
+        }
+        
+        .purpose-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .purpose-card {
+            background: var(--color-background);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid var(--color-border);
+        }
+        
+        .purpose-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(46, 92, 138, 0.2);
+        }
+        
+        .purpose-icon {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary-2));
+            color: white;
+            font-size: clamp(2.5rem, 5vw, 3rem);
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .purpose-content {
+            padding: 1.5rem;
+        }
+        
+        .purpose-title {
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-primary-dark);
+        }
+        
+        .purpose-description {
+            font-size: clamp(0.875rem, 2vw, 0.95rem);
+            line-height: 1.7;
+            color: var(--color-text-light);
+            margin-bottom: 1rem;
+        }
+        
+        .purpose-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+        
+        .purpose-stat {
+            font-size: clamp(0.75rem, 2vw, 0.875rem);
+            color: var(--color-text);
+        }
+        
+        .purpose-stat strong {
+            color: var(--color-accent);
+        }
+        
+        /* Projects Highlight */
+        .projects {
+            background: var(--color-background);
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid var(--color-border);
+            border-radius: 50px;
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--color-text);
+        }
+        
+        .tab-button:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+        
+        .tab-button.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .project-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 2rem;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(46, 92, 138, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(46, 92, 138, 0.2);
+        }
+        
+        .project-image {
+            height: 180px;
+            background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary-1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(2.5rem, 5vw, 3rem);
+            color: white;
+        }
+        
+        .project-body {
+            padding: 1.5rem;
+        }
+        
+        .project-title {
+            font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--color-primary-dark);
+        }
+        
+        .project-kpi {
+            font-size: clamp(0.75rem, 2vw, 0.875rem);
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .project-achievements {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+        
+        .project-achievements li {
+            font-size: clamp(0.75rem, 2vw, 0.875rem);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--color-text-light);
+        }
+        
+        .project-achievements li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-secondary-1);
+            font-weight: 700;
+        }
+        
+        .project-quote {
+            background: var(--color-background);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-accent);
+            font-style: italic;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            color: var(--color-text);
+        }
+        
+        /* People Stories */
+        .people-stories {
+            background: white;
+        }
+        
+        .stories-slider {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .story-card {
+            display: none;
+            background: var(--color-background);
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            min-height: 350px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .story-card.active {
+            display: block;
+        }
+        
+        .story-icon {
+            font-size: clamp(3rem, 8vw, 4rem);
+            margin-bottom: 1.5rem;
+        }
+        
+        .story-title {
+            font-size: clamp(1.25rem, 4vw, 1.75rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--color-primary-dark);
+        }
+        
+        .story-content {
+            font-size: clamp(0.95rem, 2.5vw, 1.125rem);
+            line-height: 1.9;
+            color: var(--color-text-light);
+            margin-bottom: 2rem;
+        }
+        
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .slider-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .slider-btn:hover {
+            background: var(--color-primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--color-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dot.active {
+            background: var(--color-primary);
+            width: 30px;
+            border-radius: 6px;
+        }
+        
+        /* Map Section */
+        .map-section {
+            background: var(--color-background);
+        }
+        
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .map-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(46, 92, 138, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .map-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(46, 92, 138, 0.15);
+            border: 2px solid var(--color-primary);
+        }
+        
+        .map-location {
+            font-size: clamp(1.125rem, 3vw, 1.25rem);
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .map-projects {
+            font-size: clamp(0.75rem, 2vw, 0.875rem);
+            color: var(--color-text-light);
+            list-style: none;
+        }
+        
+        .map-projects li {
+            margin-bottom: 0.3rem;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+        
+        .map-projects li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--color-secondary-1);
+        }
+        
+        /* Future Section */
+        .future {
+            background: linear-gradient(135deg, var(--color-secondary-2) 0%, var(--color-secondary-1) 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .future .section-title {
+            color: white;
+        }
+        
+        .future-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .future-timeline {
+            display: flex;
+            justify-content: space-around;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .future-phase {
+            flex: 1;
+            min-width: min(100%, 200px);
+        }
+        
+        .future-year {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        
+        .future-label {
+            font-size: clamp(1rem, 2.5vw, 1.125rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .future-items {
+            list-style: none;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            opacity: 0.95;
+        }
+        
+        .future-items li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .future-items li:before {
+            content: "✓";
+            margin-right: 0.5rem;
+        }
+        
+        .future-message {
+            font-size: clamp(1.125rem, 3vw, 1.5rem);
+            font-weight: 700;
+            margin-top: 3rem;
+            padding: 2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            line-height: 1.7;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--color-primary-dark);
+            color: white;
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+            margin-bottom: 1rem;
+        }
+        
+        .download-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 1.5rem;
+            background: var(--color-accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: var(--color-accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--color-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--color-background);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .contact-info {
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            line-height: 1.8;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: clamp(0.75rem, 2vw, 0.875rem);
+            opacity: 0.8;
+        }
+        
+        /* Mobile Specific Optimizations */
+        @media (max-width: 768px) {
+            section {
+                padding: var(--spacing-xl) 0;
+            }
+            
+            .hero {
+                min-height: 100svh;
+            }
+            
+            .scroll-indicator {
+                bottom: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .purpose-grid,
+            .project-cards,
+            .map-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .tab-button {
+                width: 100%;
+                padding: 0.875rem 1.5rem;
+            }
+            
+            .story-card {
+                min-height: auto;
+                padding: 2rem 1rem;
+            }
+            
+            .future-timeline {
+                flex-direction: column;
+            }
+            
+            .future-phase {
+                width: 100%;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .hero p {
+                font-size: 0.95rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .project-body,
+            .purpose-content {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>2025년, 청도에서는<br>1,500명의 주민이<br>새로운 변화를 만들었습니다</h1>
+            <p>마을에서 시작된 작은 변화,<br>청도의 내일을 만들다</p>
+        </div>
+        <div class="scroll-indicator" onclick="document.querySelector('.intro').scrollIntoView({behavior: 'smooth'})">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Intro Section -->
+    <section class="intro">
+        <div class="container">
+            <p class="intro-content">
+                2026년 상상마루 개소를 앞두고<br>
+                청도 9개 읍면 전역에서<br>
+                주민들이 직접 만든 변화의 이야기
+            </p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2025</div>
+                    <div class="timeline-label">실험의 해</div>
+                </div>
+                <div class="timeline-arrow">→</div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2026</div>
+                    <div class="timeline-label">상상마루 개소</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <h2 class="section-title">숫자로 보는 성과</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" data-count="93">0</span>
+                    <span class="stat-label">생활실험팀</span>
+                    <p class="stat-description">일상 소모임 32개 + 새참모임 61개</p>
+                    <p class="stat-participants">👥 참가자 1,348명</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" data-count="6">0</span>
+                    <span class="stat-label">정책 제안</span>
+                    <p class="stat-description">주민들이 직접 만든<br>N개의 공론장 정기토론회</p>
+                    <p class="stat-participants">👥 참가자 100여 명</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" data-count="19">0</span>
+                    <span class="stat-label">문화 기록</span>
+                    <p class="stat-description">9개 읍면 전역<br>600년 우물 이야기가 영상으로</p>
+                    <p class="stat-participants">👥 전체 주민 대상</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" data-count="14">0</span>
+                    <span class="stat-label">기업 지원</span>
+                    <p class="stat-description">교육 13회, 자문 11회, 미팅 3회<br>총 29회의 성장 지원</p>
+                    <p class="stat-participants">👥 14개 기업 참여</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Purpose Stories -->
+    <section class="purpose-stories">
+        <div class="container">
+            <h2 class="section-title">4대 목적별 스토리</h2>
+            <div class="purpose-grid">
+                <div class="purpose-card">
+                    <div class="purpose-icon">🔬</div>
+                    <div class="purpose-content">
+                        <h3 class="purpose-title">일상의 실험</h3>
+                        <p class="purpose-description">새참모임에서 나온 마을 쓰레기 수거 아이디어가 주민참여예산제로 연결되었습니다</p>
+                        <div class="purpose-stats">
+                            <div class="purpose-stat"><strong>일상 소모임</strong> 32개 호스트</div>
+                            <div class="purpose-stat"><strong>새참모임</strong> 61개 팀, 1,099명</div>
+                            <div class="purpose-stat"><strong>정기 공론장</strong> 6회</div>
+                            <div class="purpose-stat"><strong>정책 제안서</strong> 6건</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="purpose-card">
+                    <div class="purpose-icon">🤝</div>
+                    <div class="purpose-content">
+                        <h3 class="purpose-title">창조적 협력모델 연결</h3>
+                        <p class="purpose-description">전국 6개 지역 중간지원조직 네트워크를 통한 스테이 in 로컬과 지속가능캠프</p>
+                        <div class="purpose-stats">
+                            <div class="purpose-stat"><strong>전국 네트워크</strong> 6개 지역</div>
+                            <div class="purpose-stat"><strong>스테이 in 로컬</strong> 6회차, 90여 명</div>
+                            <div class="purpose-stat"><strong>㈜시그널케어</strong> ISO/ESG 컨설팅 연계</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="purpose-card">
+                    <div class="purpose-icon">🎬</div>
+                    <div class="purpose-content">
+                        <h3 class="purpose-title">로컬브랜딩 모델 공유</h3>
+                        <p class="purpose-description">9개 읍면 영상 19개 제작과 시민 취타대를 통한 세대 간 문화 전승</p>
+                        <div class="purpose-stats">
+                            <div class="purpose-stat"><strong>모두의 마을</strong> 19개 영상</div>
+                            <div class="purpose-stat"><strong>시민 취타대</strong> 10명 수료</div>
+                            <div class="purpose-stat"><strong>굿즈 제작</strong> 4종, 8개 기업 홍보물 지원</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="purpose-card">
+                    <div class="purpose-icon">💡</div>
+                    <div class="purpose-content">
+                        <h3 class="purpose-title">소셜비즈니스 모델 발굴</h3>
+                        <p class="purpose-description">청소년 창업팀 4개와 비영리 스타트업 5개 팀 양성</p>
+                        <div class="purpose-stats">
+                            <div class="purpose-stat"><strong>비영리 스타트업</strong> 5개 팀</div>
+                            <div class="purpose-stat"><strong>청소년 창업</strong> 4개 팀, 24명</div>
+                            <div class="purpose-stat"><strong>임팩트 빌더</strong> 10명 수료</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Highlight -->
+    <section class="projects">
+        <div class="container">
+            <h2 class="section-title">사업별 하이라이트</h2>
+            <div class="tabs">
+                <button class="tab-button active" onclick="showTab('space')">공간기획 및 운영</button>
+                <button class="tab-button" onclick="showTab('discover')">관찰/발굴</button>
+                <button class="tab-button" onclick="showTab('activity')">활동/실험</button>
+                <button class="tab-button" onclick="showTab('connect')">연결/협력</button>
+                <button class="tab-button" onclick="showTab('share')">공유확산</button>
+            </div>
+            
+            <div id="tab-space" class="tab-content active">
+                <div class="project-cards">
+                    <div class="project-card">
+                        <div class="project-image">🎭</div>
+                        <div class="project-body">
+                            <h3 class="project-title">로컬임팩트랩 운영</h3>
+                            <p class="project-kpi">👥 총 120명 참여 (8회 운영)</p>
+                            <ul class="project-achievements">
+                                <li>미드나잇 in 청도 8월 프로그램 참여자 38명, 만족도 89%</li>
+                                <li>제로웨이스트 수선 바느질 만족도 5.0점</li>
+                                <li>2030 여성 야간 문화 공간 수요 충족</li>
+                            </ul>
+                            <div class="project-quote">
+                                "청도에서 2030 여성이 밤에 갈 곳이 생겼어요"
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">🏢</div>
+                        <div class="project-body">
+                            <h3 class="project-title">소통협력공간 조성</h3>
+                            <p class="project-kpi">건축/인테리어 공사</p>
+                            <ul class="project-achievements">
+                                <li>안전진단 및 실시설계 완료</li>
+                                <li>2026년 1월 준공 목표</li>
+                                <li>청도군 일대 혁신 거점 공간 완성</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">📚</div>
+                        <div class="project-body">
+                            <h3 class="project-title">센터 아카이빙</h3>
+                            <p class="project-kpi">웹페이지 및 DB 구축</p>
+                            <ul class="project-achievements">
+                                <li>5년간 사업 성과 체계적 정리</li>
+                                <li>지역 혁신 사례 데이터베이스</li>
+                                <li>대외 홍보 및 연구 자료 활용</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-discover" class="tab-content">
+                <div class="project-cards">
+                    <div class="project-card">
+                        <div class="project-image">🌱</div>
+                        <div class="project-body">
+                            <h3 class="project-title">생활실험팀 공모</h3>
+                            <p class="project-kpi">👥 93개 팀, 1,348명 참여</p>
+                            <ul class="project-achievements">
+                                <li>일상 소모임 32개 호스트</li>
+                                <li>새참모임 61개 팀, 1,099명</li>
+                                <li>주민참여예산제 정책 제안 연계</li>
+                            </ul>
+                            <div class="project-quote">
+                                "우리 동네 쓰레기 문제를 스스로 해결했어요"
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">💬</div>
+                        <div class="project-body">
+                            <h3 class="project-title">N개의 공론장</h3>
+                            <p class="project-kpi">👥 6회, 100명 이상 참여</p>
+                            <ul class="project-achievements">
+                                <li>주민 주도 거버넌스 실험</li>
+                                <li>정책 제안서 6건 도출</li>
+                                <li>농구코트 설치 등 실제 반영</li>
+                            </ul>
+                            <div class="project-quote">
+                                "우리가 제안한 정책이 실제로 실행됐어요"
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">🎥</div>
+                        <div class="project-body">
+                            <h3 class="project-title">모두의 마을</h3>
+                            <p class="project-kpi">👥 19개 영상, 9개 읍면</p>
+                            <ul class="project-achievements">
+                                <li>600년 우물 이야기 영상화</li>
+                                <li>마을 문화유산 아카이빙</li>
+                                <li>세대 간 이야기 전승</li>
+                            </ul>
+                            <div class="project-quote">
+                                "할머니가 들려주신 우물 이야기가 영상으로 남았어요"
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">🎺</div>
+                        <div class="project-body">
+                            <h3 class="project-title">소통협력공간 브랜딩</h3>
+                            <p class="project-kpi">👥 정월대보름 900명 참여</p>
+                            <ul class="project-achievements">
+                                <li>정월대보름 행사 900명 참여</li>
+                                <li>212개 마을 방문 홍보</li>
+                                <li>지역 정체성 브랜드 구축</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-activity" class="tab-content">
+                <div class="project-cards">
+                    <div class="project-card">
+                        <div class="project-image">🎨</div>
+                        <div class="project-body">
+                            <h3 class="project-title">경북-청도 브랜딩</h3>
+                            <p class="project-kpi">👥 시민 취타대 10명 수료</p>
+                            <ul class="project-achievements">
+                                <li>60대 어르신 + 청소년 협업</li>
+                                <li>전통문화 현대적 재해석</li>
+                                <li>굿즈 4종 제작</li>
+                            </ul>
+                            <div class="project-quote">
+                                "할아버지와 손자가 함께 배우는 취타대"
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">📰</div>
+                        <div class="project-body">
+                            <h3 class="project-title">소통협력공간 주간</h3>
+                            <p class="project-kpi">👥 41개 기관, 183명 참여</p>
+                            <ul class="project-achievements">
+                                <li>41개 기관 참여 축제</li>
+                                <li>지역 네트워크 강화</li>
+                                <li>주민-기관-센터 연결</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-connect" class="tab-content">
+                <div class="project-cards">
+                    <div class="project-card">
+                        <div class="project-image">🏠</div>
+                        <div class="project-body">
+                            <h3 class="project-title">스테이 in 로컬</h3>
+                            <p class="project-kpi">👥 6회차, 90여 명 참여</p>
+                            <ul class="project-achievements">
+                                <li>전국 6개 지역 중간지원조직 네트워크</li>
+                                <li>㈜시그널케어 ISO/ESG 컨설팅 연계</li>
+                                <li>창조적 협력모델 실험</li>
+                            </ul>
+                            <div class="project-quote">
+                                "청도에서 전국을 만났습니다"
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">🌍</div>
+                        <div class="project-body">
+                            <h3 class="project-title">경북지속가능캠프</h3>
+                            <p class="project-kpi">👥 5회, 100명 이상 참여</p>
+                            <ul class="project-achievements">
+                                <li>5개 지역 우수사례 탐방</li>
+                                <li>지속가능성 모델 학습</li>
+                                <li>경북 네트워크 구축</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-share" class="tab-content">
+                <div class="project-cards">
+                    <div class="project-card">
+                        <div class="project-image">🚀</div>
+                        <div class="project-body">
+                            <h3 class="project-title">청소년 창업가 양성</h3>
+                            <p class="project-kpi">👥 4개 팀, 24명 참여</p>
+                            <ul class="project-achievements">
+                                <li>고등학생이 만든 감다살, 모모글앤 등 4개 브랜드</li>
+                                <li>지역 자원 활용 창업 아이템</li>
+                                <li>청소년 기업가정신 교육</li>
+                            </ul>
+                            <div class="project-quote">
+                                "우리가 만든 감다살 브랜드가 실제 상품이 됐어요"
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">💼</div>
+                        <div class="project-body">
+                            <h3 class="project-title">로컬 창업가 양성</h3>
+                            <p class="project-kpi">👥 14개 기업, 총 29회 지원</p>
+                            <ul class="project-achievements">
+                                <li>교육 13회, 자문 11회, 미팅 3회</li>
+                                <li>임팩트 빌더 10명 수료</li>
+                                <li>비영리 스타트업 5개 팀</li>
+                            </ul>
+                            <div class="project-quote">
+                                "29번의 만남이 우리 사업을 키웠습니다"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- People Stories -->
+    <section class="people-stories">
+        <div class="container">
+            <h2 class="section-title">사람 이야기</h2>
+            <div class="stories-slider">
+                <div class="story-card active">
+                    <div class="story-icon">👨‍🎓</div>
+                    <h3 class="story-title">감다살 브랜드를 만든 고등학생들</h3>
+                    <p class="story-content">
+                        24명의 청소년이 지역 자원으로<br>
+                        4개 가상 브랜드를 만들었습니다<br><br>
+                        "감다살, 모모글앤... 우리가 만든 브랜드가<br>
+                        실제 상품이 될 수 있다는 걸 배웠어요"
+                    </p>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-icon">🎺</div>
+                    <h3 class="story-title">시민 취타대, 세대를 잇다</h3>
+                    <p class="story-content">
+                        60대 어르신과 청소년이 함께<br>
+                        전통 취타 문화를 배웠습니다<br><br>
+                        "할아버지와 손자가 함께 배우니<br>
+                        전통이 더 특별하게 느껴져요"
+                    </p>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-icon">🏢</div>
+                    <h3 class="story-title">㈜시그널케어, 스테이에서 컨설팅까지</h3>
+                    <p class="story-content">
+                        스테이 in 로컬 참여 기업이<br>
+                        ISO/ESG 컨설팅으로 연결되었습니다<br><br>
+                        "청도에서 시작한 인연이<br>
+                        우리 기업의 성장으로 이어졌습니다"
+                    </p>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-icon">🌱</div>
+                    <h3 class="story-title">새참모임 호스트, 정책을 만들다</h3>
+                    <p class="story-content">
+                        마을 쓰레기 수거 아이디어가<br>
+                        주민참여예산제 정책 제안으로<br><br>
+                        "우리의 작은 모임이<br>
+                        마을을 바꿀 수 있다는 걸 알았어요"
+                    </p>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-icon">💬</div>
+                    <h3 class="story-title">N개의 공론장 퍼실리테이터</h3>
+                    <p class="story-content">
+                        주민 주도 거버넌스로<br>
+                        농구코트 설치를 이끌어냈습니다<br><br>
+                        "우리가 제안한 정책이<br>
+                        실제로 실행되는 걸 보며 뿌듯했어요"
+                    </p>
+                </div>
+                
+                <div class="slider-controls">
+                    <button class="slider-btn" onclick="prevStory()">←</button>
+                    <button class="slider-btn" onclick="nextStory()">→</button>
+                </div>
+                
+                <div class="slider-dots">
+                    <span class="dot active" onclick="goToStory(0)"></span>
+                    <span class="dot" onclick="goToStory(1)"></span>
+                    <span class="dot" onclick="goToStory(2)"></span>
+                    <span class="dot" onclick="goToStory(3)"></span>
+                    <span class="dot" onclick="goToStory(4)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <h2 class="section-title">지도로 보는 청도</h2>
+            <div class="map-grid">
+                <div class="map-item">
+                    <h3 class="map-location">화양읍</h3>
+                    <ul class="map-projects">
+                        <li>모두의 마을 영상</li>
+                        <li>새참모임 5개 팀</li>
+                        <li>600년 우물 이야기</li>
+                    </ul>
+                </div>
+                
+                <div class="map-item">
+                    <h3 class="map-location">청도읍</h3>
+                    <ul class="map-projects">
+                        <li>로컬임팩트랩 운영</li>
+                        <li>소통협력공간 조성</li>
+                        <li>새참모임 15개 팀</li>
+                    </ul>
+                </div>
+                
+                <div class="map-item">
+                    <h3 class="map-location">각북면</h3>
+                    <ul class="map-projects">
+                        <li>모두의 마을 영상</li>
+                        <li>새참모임 8개 팀</li>
+                    </ul>
+                </div>
+                
+                <div class="map-item">
+                    <h3 class="map-location">각남면</h3>
+                    <ul class="map-projects">
+                        <li>모두의 마을 영상</li>
+                        <li>새참모임 7개 팀</li>
+                    </ul>
+                </div>
+                
+                <div class="map-item">
+                    <h3 class="map-location">풍각면</h3>
+                    <ul class="map-projects">
+                        <li>모두의 마을 영상</li>
+                        <li>새참모임 10개 팀</li>
+                    </ul>
+                </div>
+                
+                <div class="map-item">
+                    <h3 class="map-location">금천면</h3>
+                    <ul class="map-projects">
+                        <li>모두의 마을 영상</li>
+                        <li>새참모임 6개 팀</li>
+                    </ul>
+                </div>
+                
+                <div class="map-item">
+                    <h3 class="map-location">운문면</h3>
+                    <ul class="map-projects">
+                        <li>모두의 마을 영상</li>
+                        <li>새참모임 4개 팀</li>
+                    </ul>
+                </div>
+                
+                <div class="map-item">
+                    <h3 class="map-location">매전면</h3>
+                    <ul class="map-projects">
+                        <li>모두의 마을 영상</li>
+                        <li>새참모임 5개 팀</li>
+                    </ul>
+                </div>
+                
+                <div class="map-item">
+                    <h3 class="map-location">이서면</h3>
+                    <ul class="map-projects">
+                        <li>모두의 마을 영상</li>
+                        <li>새참모임 4개 팀</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Section -->
+    <section class="future">
+        <div class="container">
+            <h2 class="section-title">2026년 상상마루를 향해</h2>
+            <div class="future-content">
+                <div class="future-timeline">
+                    <div class="future-phase">
+                        <div class="future-year">2025</div>
+                        <div class="future-label">실험</div>
+                        <ul class="future-items">
+                            <li>93개 팀 참여</li>
+                            <li>19개 영상 제작</li>
+                            <li>6건 정책 제안</li>
+                            <li>14개 기업 지원</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="future-phase">
+                        <div class="future-year">2026</div>
+                        <div class="future-label">개소</div>
+                        <ul class="future-items">
+                            <li>상상마루 오픈</li>
+                            <li>공간 운영 시작</li>
+                            <li>네트워크 확장</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="future-phase">
+                        <div class="future-year">미래</div>
+                        <div class="future-label">확산</div>
+                        <ul class="future-items">
+                            <li>지속가능한</li>
+                            <li>로컬 생태계</li>
+                            <li>청도 모델</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="future-message">
+                    "2025년의 모든 실험은<br>
+                    2026년 상상마루의 토대가 됩니다"<br><br>
+                    
+                    ✓ 공간 운영 모델 검증 완료<br>
+                    ✓ 주민 참여 문화 정착<br>
+                    ✓ 전국 네트워크 구축<br>
+                    ✓ 로컬 생태계 조성 시작
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>다운로드</h3>
+                    <div class="download-buttons">
+                        <a href="#" class="btn">전체 보고서 PDF</a>
+                        <a href="#" class="btn btn-secondary">사업별 데이터 엑셀</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>공유하기</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link">F</a>
+                        <a href="#" class="social-link">T</a>
+                        <a href="#" class="social-link">K</a>
+                        <a href="#" class="social-link">📋</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>문의처</h3>
+                    <div class="contact-info">
+                        청도혁신센터 지역협력실행팀<br>
+                        Tel: 054-xxx-xxxx<br>
+                        Email: info@cheongdo.center<br>
+                        주소: 경북 청도군 청도읍
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                © 2025 청도혁신센터. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Counter Animation
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-count'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+        
+        // Intersection Observer for Counter
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    animateCounter(entry.target);
+                    entry.target.classList.add('counted');
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        document.querySelectorAll('.stat-number').forEach(counter => {
+            counterObserver.observe(counter);
+        });
+        
+        // Tab Functionality
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            // Add active to clicked button
+            event.target.classList.add('active');
+        }
+        
+        // Story Slider
+        let currentStory = 0;
+        const stories = document.querySelectorAll('.story-card');
+        const dots = document.querySelectorAll('.dot');
+        
+        function showStory(index) {
+            stories.forEach(story => story.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            stories[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentStory = index;
+        }
+        
+        function nextStory() {
+            currentStory = (currentStory + 1) % stories.length;
+            showStory(currentStory);
+        }
+        
+        function prevStory() {
+            currentStory = (currentStory - 1 + stories.length) % stories.length;
+            showStory(currentStory);
+        }
+        
+        function goToStory(index) {
+            showStory(index);
+        }
+        
+        // Auto-play slider
+        setInterval(nextStory, 5000);
+        
+        // Smooth scroll for all internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
