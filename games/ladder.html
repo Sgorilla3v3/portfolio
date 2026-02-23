@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사다리 타기</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 40%, #24243e 100%);
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', -apple-system, sans-serif;
+    color: #e8e8f0;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 4px;
+    background: linear-gradient(135deg, #7c6ff7, #4ecdc4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .subtitle { text-align: center; color: #8888a8; font-size: 13px; margin-bottom: 20px; }
+  .controls {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; margin-bottom: 18px; flex-wrap: wrap;
+  }
+  .controls label { font-size: 13px; color: #aaa; }
+  .stepper {
+    display: flex; align-items: center; background: #2a2a4a;
+    border-radius: 8px; overflow: hidden;
+  }
+  .stepper button {
+    width: 36px; height: 36px; border: none; background: transparent;
+    color: #ccc; font-size: 18px; cursor: pointer;
+  }
+  .stepper button:hover { background: #3a3a5a; }
+  .stepper span { width: 32px; text-align: center; font-size: 16px; font-weight: 700; color: #7c6ff7; }
+  .btn {
+    padding: 8px 22px; border: none; border-radius: 8px;
+    font-weight: 700; font-size: 14px; cursor: pointer;
+    transition: all 0.2s ease; font-family: inherit;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: linear-gradient(135deg, #7c6ff7, #6355d8); color: #fff; }
+  .btn-primary:hover { box-shadow: 0 4px 20px rgba(124,111,247,0.4); }
+  .btn-accent { background: linear-gradient(135deg, #4ecdc4, #36b5ad); color: #fff; }
+  .btn-accent:hover { box-shadow: 0 4px 20px rgba(78,205,196,0.3); }
+  .btn-ghost { background: #3a3a5a; color: #ccc; font-size: 13px; padding: 8px 16px; }
+  .btn-ghost:hover { background: #4a4a6a; }
+  .btn-reset { background: linear-gradient(135deg, #f43f5e, #dc2651); color: #fff; }
+  .btn-reset:hover { box-shadow: 0 4px 20px rgba(244,63,94,0.35); }
+  .input-grid {
+    display: grid; gap: 10px; max-width: 720px; margin: 0 auto 14px;
+  }
+  .input-grid label { font-size: 11px; font-weight: 600; margin-bottom: 2px; }
+  .input-grid input {
+    padding: 8px 10px; background: #22223a; border: 1.5px solid #3a3a5a;
+    border-radius: 6px; color: #e8e8f0; font-size: 13px; font-weight: 500;
+    font-family: inherit; width: 100%;
+  }
+  .input-grid input:focus { outline: none; border-color: #7c6ff7; }
+  .input-grid input.result-input { color: #ffe066; text-align: center; }
+  .section-label { font-size: 12px; color: #888; text-align: center; margin-bottom: 8px; }
+  .ladder-area { max-width: 800px; margin: 0 auto; }
+  .player-row {
+    display: grid; gap: 6px; padding: 0 30px; margin-bottom: 6px;
+  }
+  .player-btn {
+    padding: 6px 2px; border-radius: 8px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s ease; font-family: inherit;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    background: #2a2a4a; border-width: 2px; border-style: solid;
+  }
+  .player-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+  .player-btn:disabled { cursor: default; opacity: 0.6; }
+  canvas {
+    width: 100%; max-width: 760px; height: auto; display: block;
+    margin: 0 auto; border-radius: 12px; background: #16162a;
+  }
+  .result-row { display: grid; gap: 6px; padding: 0 30px; margin-top: 6px; }
+  .result-slot {
+    padding: 8px 4px; border-radius: 8px; text-align: center;
+    font-weight: 700; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; border: 2px solid #2a2a4a;
+    background: #1e1e36; color: #555; font-size: 16px;
+  }
+  .result-slot .who { font-size: 10px; opacity: 0.7; margin-bottom: 2px; }
+  .summary {
+    margin-top: 20px; padding: 16px; background: #1e1e36;
+    border-radius: 12px; border: 1px solid #3a3a5a; text-align: center;
+  }
+  .summary h3 { color: #7c6ff7; font-size: 16px; font-weight: 800; margin-bottom: 12px; }
+  .summary-items { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .summary-item {
+    padding: 8px 14px; border-radius: 8px; display: flex;
+    align-items: center; gap: 8px; animation: fadeUp 0.4s ease forwards;
+    opacity: 0;
+  }
+  .summary-item .name { font-weight: 700; font-size: 14px; }
+  .summary-item .arrow { color: #666; font-size: 12px; }
+  .summary-item .val { font-weight: 700; color: #ffe066; font-size: 14px; }
+  .running-indicator { font-size: 13px; color: #7c6ff7; animation: pulse 1.5s infinite; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(124,111,247,0.4); } 50% { box-shadow: 0 0 0 8px rgba(124,111,247,0); } }
+</style>
+</head>
+<body>
+
+<h1>사다리 타기</h1>
+<p class="subtitle">이름을 클릭하면 한 명씩, 전체 시작 버튼으로 모두 한번에</p>
+
+<div class="controls" id="controls"></div>
+<div id="setup-area"></div>
+<div class="ladder-area" id="ladder-area" style="display:none"></div>
+
+<script>
+const COLORS = ["#FF6B6B","#4ECDC4","#FFE66D","#A78BFA","#F97316","#06B6D4","#EC4899","#84CC16","#F43F5E","#8B5CF6","#14B8A6","#EAB308"];
+
+let playerCount = 4;
+let names = ["참가자1","참가자2","참가자3","참가자4"];
+let results = ["당첨","꽝","벌칙","면제"];
+let gameState = "setup";
+let ladderData = null;
+let revealedPaths = [];
+let finalMapping = {};
+let animatingPlayer = -1;
+let animFrame = null;
+let canvasEl = null;
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function setPlayerCount(n) {
+  n = clamp(n, 2, 12);
+  playerCount = n;
+  while (names.length < n) names.push("참가자" + (names.length + 1));
+  names = names.slice(0, n);
+  while (results.length < n) results.push("결과" + (results.length + 1));
+  results = results.slice(0, n);
+  resetToSetup();
+}
+
+function resetToSetup() {
+  gameState = "setup";
+  ladderData = null;
+  revealedPaths = [];
+  finalMapping = {};
+  animatingPlayer = -1;
+  if (animFrame) cancelAnimationFrame(animFrame);
+  render();
+}
+
+function fullReset() {
+  names = [];
+  results = [];
+  for (let i = 0; i < playerCount; i++) {
+    names.push("참가자" + (i + 1));
+    results.push("결과" + (i + 1));
+  }
+  resetToSetup();
+}
+
+function generateLadder() {
+  const rows = 12 + Math.floor(Math.random() * 6);
+  const bridges = [];
+  for (let r = 0; r < rows; r++) {
+    const rb = [];
+    for (let c = 0; c < playerCount - 1; c++) {
+      if (rb.length > 0 && rb[rb.length - 1]) rb.push(false);
+      else rb.push(Math.random() < 0.4);
+    }
+    bridges.push(rb);
+  }
+  for (let c = 0; c < playerCount - 1; c++) {
+    if (!bridges.some(row => row[c])) {
+      const rr = Math.floor(Math.random() * rows);
+      bridges[rr][c] = true;
+      if (c > 0) bridges[rr][c - 1] = false;
+      if (c < playerCount - 2) bridges[rr][c + 1] = false;
+    }
+  }
+  return { rows, bridges };
+}
+
+function tracePath(startCol, ladder) {
+  const path = [];
+  let col = startCol;
+  path.push({ row: -1, col, type: "start" });
+  for (let r = 0; r < ladder.rows; r++) {
+    if (col > 0 && ladder.bridges[r][col - 1]) {
+      path.push({ row: r, col, type: "bridge-left" });
+      col--;
+      path.push({ row: r, col, type: "arrive" });
+    } else if (col < playerCount - 1 && ladder.bridges[r][col]) {
+      path.push({ row: r, col, type: "bridge-right" });
+      col++;
+      path.push({ row: r, col, type: "arrive" });
+    } else {
+      path.push({ row: r, col, type: "down" });
+    }
+  }
+  path.push({ row: ladder.rows, col, type: "end" });
+  return { path, endCol: col };
+}
+
+function getCoords(col, row, totalRows, W, H) {
+  const pad = 40, top = 20, bot = 20;
+  const uW = W - pad * 2, uH = H - top - bot;
+  return {
+    x: pad + (col / (playerCount - 1)) * uW,
+    y: top + ((row + 1) / (totalRows + 1)) * uH
+  };
+}
+
+function drawLadder(canvas, ladder, paths, anim) {
+  if (!canvas || !ladder) return;
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  for (let c = 0; c < playerCount; c++) {
+    const t = getCoords(c, -0.5, ladder.rows, W, H);
+    const b = getCoords(c, ladder.rows + 0.5, ladder.rows, W, H);
+    ctx.beginPath(); ctx.moveTo(t.x, t.y); ctx.lineTo(b.x, b.y);
+    ctx.strokeStyle = "#3a3a50"; ctx.lineWidth = 2.5; ctx.stroke();
+  }
+  for (let r = 0; r < ladder.rows; r++) {
+    for (let c = 0; c < playerCount - 1; c++) {
+      if (ladder.bridges[r][c]) {
+        const l = getCoords(c, r, ladder.rows, W, H);
+        const ri = getCoords(c + 1, r, ladder.rows, W, H);
+        ctx.beginPath(); ctx.moveTo(l.x, l.y); ctx.lineTo(ri.x, ri.y);
+        ctx.strokeStyle = "#555570"; ctx.lineWidth = 2.5; ctx.stroke();
+      }
+    }
+  }
+
+  paths.forEach(p => {
+    const color = COLORS[p.playerIdx % COLORS.length];
+    ctx.beginPath(); ctx.lineWidth = 4; ctx.strokeStyle = color;
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+    p.path.forEach((s, i) => {
+      let pt;
+      if (s.type === "start") { pt = getCoords(s.col, -0.3, ladder.rows, W, H); ctx.moveTo(pt.x, pt.y); }
+      else if (s.type === "end") { pt = getCoords(s.col, ladder.rows + 0.3, ladder.rows, W, H); ctx.lineTo(pt.x, pt.y); }
+      else { pt = getCoords(s.col, s.row, ladder.rows, W, H); ctx.lineTo(pt.x, pt.y); }
+    });
+    ctx.stroke();
+    const last = p.path[p.path.length - 1];
+    const ep = getCoords(last.col, last.type === "end" ? ladder.rows + 0.3 : last.row, ladder.rows, W, H);
+    ctx.beginPath(); ctx.arc(ep.x, ep.y, 8, 0, Math.PI * 2);
+    ctx.fillStyle = color; ctx.fill();
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
+  });
+
+  if (anim && anim.progress !== undefined) {
+    const color = COLORS[anim.playerIdx % COLORS.length];
+    const total = anim.path.length;
+    const cur = Math.min(Math.floor(anim.progress * total), total - 1);
+    ctx.beginPath(); ctx.lineWidth = 5; ctx.strokeStyle = color;
+    ctx.shadowColor = color; ctx.shadowBlur = 12;
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+    for (let i = 0; i <= cur; i++) {
+      const s = anim.path[i]; let pt;
+      if (s.type === "start") { pt = getCoords(s.col, -0.3, ladder.rows, W, H); ctx.moveTo(pt.x, pt.y); }
+      else if (s.type === "end") { pt = getCoords(s.col, ladder.rows + 0.3, ladder.rows, W, H); ctx.lineTo(pt.x, pt.y); }
+      else { pt = getCoords(s.col, s.row, ladder.rows, W, H); ctx.lineTo(pt.x, pt.y); }
+    }
+    ctx.stroke(); ctx.shadowBlur = 0;
+    const cs = anim.path[cur];
+    const bp = getCoords(cs.col, cs.type === "start" ? -0.3 : cs.type === "end" ? ladder.rows + 0.3 : cs.row, ladder.rows, W, H);
+    ctx.beginPath(); ctx.arc(bp.x, bp.y, 10, 0, Math.PI * 2);
+    ctx.fillStyle = color; ctx.fill();
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.beginPath(); ctx.arc(bp.x, bp.y, 16, 0, Math.PI * 2);
+    ctx.fillStyle = color + "30"; ctx.fill();
+  }
+}
+
+function buildLadder() {
+  ladderData = generateLadder();
+  gameState = "ready";
+  revealedPaths = [];
+  finalMapping = {};
+  animatingPlayer = -1;
+  render();
+  drawLadder(canvasEl, ladderData, [], null);
+}
+
+function singleRun(idx) {
+  if (animatingPlayer >= 0 || finalMapping[idx] !== undefined) return;
+  gameState = "running";
+  render();
+  const { path, endCol } = tracePath(idx, ladderData);
+  animatingPlayer = idx;
+  const dur = 1200, start = performance.now();
+  function step(now) {
+    const prog = Math.min((now - start) / dur, 1);
+    drawLadder(canvasEl, ladderData, revealedPaths, { path, playerIdx: idx, progress: prog });
+    if (prog < 1) { animFrame = requestAnimationFrame(step); }
+    else {
+      revealedPaths.push({ path, playerIdx: idx, endCol });
+      finalMapping[idx] = endCol;
+      animatingPlayer = -1;
+      if (Object.keys(finalMapping).length === playerCount) gameState = "done";
+      else gameState = "ready";
+      render();
+      drawLadder(canvasEl, ladderData, revealedPaths, null);
+    }
+  }
+  animFrame = requestAnimationFrame(step);
+}
+
+function runAll() {
+  gameState = "running";
+  revealedPaths = [];
+  finalMapping = {};
+  render();
+
+  const allPaths = [];
+  for (let i = 0; i < playerCount; i++) {
+    const { path, endCol } = tracePath(i, ladderData);
+    allPaths.push({ path, playerIdx: i, endCol });
+  }
+  let idx = 0;
+  function next() {
+    if (idx >= allPaths.length) { gameState = "done"; render(); drawLadder(canvasEl, ladderData, revealedPaths, null); return; }
+    const p = allPaths[idx];
+    animatingPlayer = p.playerIdx;
+    renderPlayerButtons();
+    const dur = 800, start = performance.now();
+    function step(now) {
+      const prog = Math.min((now - start) / dur, 1);
+      drawLadder(canvasEl, ladderData, allPaths.slice(0, idx), { path: p.path, playerIdx: p.playerIdx, progress: prog });
+      if (prog < 1) { animFrame = requestAnimationFrame(step); }
+      else {
+        revealedPaths = allPaths.slice(0, idx + 1);
+        finalMapping[p.playerIdx] = p.endCol;
+        animatingPlayer = -1;
+        idx++;
+        renderPlayerButtons();
+        renderResultSlots();
+        setTimeout(next, 300);
+      }
+    }
+    animFrame = requestAnimationFrame(step);
+  }
+  next();
+}
+
+// ──── Rendering ────
+
+function render() {
+  renderControls();
+  if (gameState === "setup") {
+    document.getElementById("setup-area").style.display = "";
+    document.getElementById("ladder-area").style.display = "none";
+    renderSetup();
+  } else {
+    document.getElementById("setup-area").style.display = "none";
+    document.getElementById("ladder-area").style.display = "";
+    renderLadderArea();
+  }
+}
+
+function renderControls() {
+  const c = document.getElementById("controls");
+  let html = `<label>인원수</label>
+    <div class="stepper">
+      <button onclick="setPlayerCount(playerCount-1)">−</button>
+      <span>${playerCount}</span>
+      <button onclick="setPlayerCount(playerCount+1)">+</button>
+    </div>`;
+
+  if (gameState === "setup") {
+    html += `<button class="btn btn-primary" onclick="buildLadder()">사다리 생성</button>`;
+  } else if (gameState === "ready" || gameState === "done") {
+    html += `<button class="btn btn-accent" onclick="runAll()">전체 시작</button>`;
+    html += `<button class="btn btn-ghost" onclick="buildLadder()">다시 섞기</button>`;
+    html += `<button class="btn btn-reset" onclick="resetToSetup()">리셋</button>`;
+  } else {
+    html += `<span class="running-indicator">진행 중...</span>`;
+  }
+  c.innerHTML = html;
+}
+
+function renderSetup() {
+  const area = document.getElementById("setup-area");
+  const cols = Math.min(playerCount, 6);
+  let html = `<div class="input-grid" style="grid-template-columns:repeat(${cols},1fr)">`;
+  for (let i = 0; i < playerCount; i++) {
+    html += `<div>
+      <label style="color:${COLORS[i % COLORS.length]}">참가자 ${i + 1}</label>
+      <input value="${esc(names[i])}" oninput="names[${i}]=this.value">
+    </div>`;
+  }
+  html += `</div><p class="section-label">결과 항목 (하단에 배치됩니다)</p>`;
+  html += `<div class="input-grid" style="grid-template-columns:repeat(${cols},1fr)">`;
+  for (let i = 0; i < playerCount; i++) {
+    html += `<div><input class="result-input" value="${esc(results[i])}" oninput="results[${i}]=this.value"></div>`;
+  }
+  html += `</div>`;
+  area.innerHTML = html;
+}
+
+function esc(s) { return s.replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
+
+function renderLadderArea() {
+  const la = document.getElementById("ladder-area");
+  const fs = Math.min(13, 120 / playerCount + 4);
+  const ch = Math.max(320, (ladderData ? ladderData.rows : 14) * 24 + 80);
+
+  let html = `<div class="player-row" id="player-btns" style="grid-template-columns:repeat(${playerCount},1fr)">`;
+  for (let i = 0; i < playerCount; i++) {
+    const rev = finalMapping[i] !== undefined;
+    const isA = animatingPlayer === i;
+    const col = COLORS[i % COLORS.length];
+    const bg = rev ? col + "30" : isA ? col : "#2a2a4a";
+    const fg = isA ? "#fff" : col;
+    html += `<button class="player-btn" style="border-color:${col};background:${bg};color:${fg};font-size:${fs}px;opacity:${rev ? 0.6 : 1}"
+      ${rev || animatingPlayer >= 0 ? "disabled" : ""} onclick="singleRun(${i})">${esc(names[i])}</button>`;
+  }
+  html += `</div>`;
+  html += `<canvas id="ladder-canvas" width="760" height="${ch}"></canvas>`;
+  html += `<div class="result-row" id="result-slots" style="grid-template-columns:repeat(${playerCount},1fr)">`;
+  for (let i = 0; i < playerCount; i++) {
+    const entry = Object.entries(finalMapping).find(([_, ec]) => ec === i);
+    if (entry) {
+      const pi = parseInt(entry[0]);
+      const col = COLORS[pi % COLORS.length];
+      html += `<div class="result-slot" style="border-color:${col};background:${col}25;color:${col};font-size:${fs}px">
+        <div class="who">${esc(names[pi])}</div>${esc(results[i])}</div>`;
+    } else {
+      html += `<div class="result-slot">?</div>`;
+    }
+  }
+  html += `</div>`;
+
+  if (gameState === "done" && Object.keys(finalMapping).length === playerCount) {
+    html += `<div class="summary"><h3>결과 발표</h3><div class="summary-items">`;
+    for (let i = 0; i < playerCount; i++) {
+      const ec = finalMapping[i];
+      const col = COLORS[i % COLORS.length];
+      html += `<div class="summary-item" style="background:${col}18;border:1.5px solid ${col}50;animation-delay:${i * 0.1}s">
+        <span class="name" style="color:${col}">${esc(names[i])}</span>
+        <span class="arrow">&rarr;</span>
+        <span class="val">${esc(results[ec])}</span>
+      </div>`;
+    }
+    html += `</div></div>`;
+  }
+
+  la.innerHTML = html;
+  canvasEl = document.getElementById("ladder-canvas");
+  if (canvasEl && ladderData) drawLadder(canvasEl, ladderData, revealedPaths, null);
+}
+
+function renderPlayerButtons() {
+  const el = document.getElementById("player-btns");
+  if (!el) return;
+  const fs = Math.min(13, 120 / playerCount + 4);
+  let html = "";
+  for (let i = 0; i < playerCount; i++) {
+    const rev = finalMapping[i] !== undefined;
+    const isA = animatingPlayer === i;
+    const col = COLORS[i % COLORS.length];
+    const bg = rev ? col + "30" : isA ? col : "#2a2a4a";
+    const fg = isA ? "#fff" : col;
+    html += `<button class="player-btn" style="border-color:${col};background:${bg};color:${fg};font-size:${fs}px;opacity:${rev ? 0.6 : 1}"
+      ${rev || animatingPlayer >= 0 ? "disabled" : ""} onclick="singleRun(${i})">${esc(names[i])}</button>`;
+  }
+  el.innerHTML = html;
+}
+
+function renderResultSlots() {
+  const el = document.getElementById("result-slots");
+  if (!el) return;
+  const fs = Math.min(13, 120 / playerCount + 4);
+  let html = "";
+  for (let i = 0; i < playerCount; i++) {
+    const entry = Object.entries(finalMapping).find(([_, ec]) => ec === i);
+    if (entry) {
+      const pi = parseInt(entry[0]);
+      const col = COLORS[pi % COLORS.length];
+      html += `<div class="result-slot" style="border-color:${col};background:${col}25;color:${col};font-size:${fs}px">
+        <div class="who">${esc(names[pi])}</div>${esc(results[i])}</div>`;
+    } else {
+      html += `<div class="result-slot">?</div>`;
+    }
+  }
+  el.innerHTML = html;
+}
+
+render();
+</script>
+</body>
+</html>

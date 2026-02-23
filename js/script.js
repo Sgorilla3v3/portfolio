@@ -487,13 +487,17 @@ function openGame(gameType) {
             // 테트리스 게임 열기
             window.open('/games/tetris.html', '_blank');
             break;
-        case 'memory':
+        case 'ladder':
             // 기억력 게임 열기
-            window.open('/games/memory.html', '_blank');
+            window.open('/games/ladder.html', '_blank');
             break;
         case 'pong':
             // 퐁 게임 열기
             window.open('/games/pong.html', '_blank');
+            break;
+        case 'snake':
+            // 스테이크 게임
+            window.open('/games/snake.html', '_blank');
             break;
         case 'snake':
             // 스테이크 게임
