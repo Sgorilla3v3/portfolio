@@ -559,7 +559,10 @@
 
     <script>
         // 전역 변수
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWLyYrBdag_VfZ7DSnC3DUbnEzvA_Mpp-EVGAy0fnbb6ILO1JsCwaGjzZMk6t9Uxk8ag/exec';
+        require('dotenv').config();
+
+        const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL;
+
 
         // DOM 요소 참조
         const form = document.getElementById('visitorForm');
