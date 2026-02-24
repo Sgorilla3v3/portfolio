@@ -559,8 +559,9 @@
 
     <script>
         // 전역 변수
+        require('dotenv').config();
 
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxtql9vji0gGxvOw1LgBe1RaVPo57FpvDOZ5qZVW46J9kNy357ImROPDTuAFABRGc-o/exec';
+        const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL;
 
 
         // DOM 요소 참조
