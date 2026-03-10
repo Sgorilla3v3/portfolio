@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프롬프트 엔지니어링 종합 가이드</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #f9f7f4;
+  --bg2:       #f3f0eb;
+  --bg3:       #ede9e2;
+  --surface:   #ffffff;
+  --border:    #e4dfd6;
+  --border2:   #d4cec4;
+  --text:      #2d2a26;
+  --text-sub:  #5a544a;
+  --text-muted:#8a8278;
+  --claude:    #d97757;
+  --claude-lt: #f5ede8;
+  --claude-dk: #b85e3e;
+  --teal:      #2a7d6f;
+  --teal-lt:   #e6f4f1;
+  --indigo:    #4a5fa8;
+  --indigo-lt: #eceffe;
+  --amber:     #b07d2a;
+  --amber-lt:  #fdf4e3;
+  --rose:      #b84f5a;
+  --rose-lt:   #fdedef;
+  --green:     #3a7a52;
+  --green-lt:  #eaf4ee;
+  --red:       #b84444;
+  --red-lt:    #fdeaea;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; overflow-x: hidden; }
+
+nav { position: sticky; top: 0; z-index: 100; background: rgba(249,247,244,0.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 54px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-size: 0.82rem; font-weight: 700; color: var(--claude); }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a { font-size: 0.78rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--claude); }
+
+.container { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
+
+#hero { padding: 5rem 2rem 4.5rem; text-align: center; background: linear-gradient(180deg, #fff 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); }
+.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--claude-lt); color: var(--claude-dk); border: 1px solid #e8c3b3; border-radius: 100px; padding: 0.3rem 1rem; font-size: 0.75rem; font-weight: 500; margin-bottom: 1.75rem; }
+h1 { font-size: clamp(2rem, 4.5vw, 3.4rem); font-weight: 700; line-height: 1.18; letter-spacing: -0.03em; color: var(--text); margin-bottom: 1.25rem; }
+h1 em { font-style: normal; color: var(--claude); }
+.hero-sub { font-size: 1rem; color: var(--text-sub); max-width: 520px; margin: 0 auto 3rem; line-height: 1.85; }
+.hero-stats { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat-num { font-size: 2rem; font-weight: 700; color: var(--claude); display: block; line-height: 1; margin-bottom: 0.3rem; }
+.stat-label { font-size: 0.72rem; color: var(--text-muted); }
+
+.section-header { text-align: center; margin-bottom: 3rem; }
+.section-tag { display: inline-block; font-size: 0.68rem; font-weight: 500; color: var(--claude); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.section-title { font-size: 1.65rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+.section-desc { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; }
+
+#flow { padding: 4.5rem 0; background: var(--surface); border-bottom: 1px solid var(--border); }
+.flow-wrap { overflow-x: auto; padding: 0.5rem 0 1.5rem; scrollbar-width: thin; }
+.flow-diagram { display: flex; align-items: center; min-width: 860px; justify-content: center; }
+.flow-node { flex: 0 0 130px; cursor: pointer; transition: transform 0.2s; }
+.flow-node:hover { transform: translateY(-4px); }
+.flow-card { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 12px; padding: 1.1rem 0.8rem; text-align: center; transition: all 0.2s; }
+.flow-node:hover .flow-card { border-color: var(--claude); background: var(--claude-lt); box-shadow: 0 4px 16px rgba(217,119,87,0.12); }
+.flow-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+.flow-icon { font-size: 1.4rem; display: block; margin-bottom: 0.4rem; }
+.flow-label { font-size: 0.72rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+.flow-sub { font-size: 0.62rem; color: var(--text-muted); margin-top: 0.3rem; }
+.flow-arrow { flex: 0 0 28px; text-align: center; color: var(--border2); font-size: 1.1rem; }
+
+#sessions { padding: 4.5rem 0; background: var(--bg); }
+.sessions-grid { display: grid; gap: 1.25rem; }
+.session-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color 0.2s; }
+.session-card:hover { border-color: var(--border2); }
+.session-header { display: flex; align-items: center; gap: 1rem; padding: 1.3rem 1.5rem; cursor: pointer; user-select: none; }
+.session-pip { width: 4px; height: 44px; border-radius: 3px; flex-shrink: 0; }
+.session-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--text-muted); flex-shrink: 0; width: 28px; }
+.session-meta { flex: 1; min-width: 0; }
+.session-q { font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+.session-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+.session-toggle { font-size: 0.85rem; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
+.session-card.open .session-toggle { transform: rotate(180deg); }
+.session-body { display: none; border-top: 1px solid var(--border); padding: 1.75rem 1.75rem 1.75rem 3.25rem; }
+.session-card.open .session-body { display: block; }
+
+.body-intro { font-size: 0.95rem; color: var(--text-sub); line-height: 1.85; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.body-intro strong { color: var(--text); font-weight: 600; }
+
+.content-section { margin-bottom: 1.75rem; }
+.content-section:last-child { margin-bottom: 0; }
+.content-section h4 { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+.content-section h4::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.explain-p { font-size: 0.9rem; color: var(--text-sub); line-height: 1.85; margin-bottom: 0.85rem; }
+.explain-p strong { color: var(--text); font-weight: 600; }
+.explain-p em { font-style: normal; color: var(--claude-dk); font-weight: 500; }
+
+.analogy-box { background: var(--amber-lt); border-left: 3px solid var(--amber); border-radius: 0 8px 8px 0; padding: 0.9rem 1.1rem; margin: 0.9rem 0; }
+.analogy-box .box-label { font-size: 0.62rem; font-weight: 600; color: var(--amber); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.35rem; }
+.analogy-box p { font-size: 0.87rem; color: var(--text-sub); line-height: 1.75; }
+
+.insight-box { background: var(--claude-lt); border-left: 3px solid var(--claude); border-radius: 0 8px 8px 0; padding: 0.9rem 1.1rem; margin-top: 1.25rem; }
+.insight-box .box-label { font-size: 0.62rem; font-weight: 600; color: var(--claude); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.35rem; }
+.insight-box p { font-size: 0.87rem; color: var(--text); line-height: 1.75; }
+
+.warn-box { background: var(--red-lt); border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; padding: 0.9rem 1.1rem; margin: 0.9rem 0; }
+.warn-box .box-label { font-size: 0.62rem; font-weight: 600; color: var(--red); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.35rem; }
+.warn-box p { font-size: 0.87rem; color: var(--text-sub); line-height: 1.75; }
+
+.flow-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; line-height: 2.1; color: var(--text); overflow-x: auto; margin: 0.9rem 0; }
+.flow-box .fs { color: var(--teal);   font-weight: 700; }
+.flow-box .fa { color: var(--border2); font-size: 0.78rem; }
+.flow-box .fn { color: #6b6560;        font-size: 0.74rem; font-weight: 400; }
+.flow-box .fh { color: var(--claude);  font-weight: 700; }
+.flow-box .fg { color: var(--green);   font-weight: 700; }
+.flow-box .fr { color: var(--red);     font-weight: 700; }
+
+.mini-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.75rem 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.mini-table th { background: var(--bg2); font-size: 0.68rem; font-weight: 600; color: var(--text-muted); text-align: left; padding: 0.6rem 0.9rem; letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.mini-table td { padding: 0.65rem 0.9rem; color: var(--text-sub); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+.mini-table tr:last-child td { border-bottom: none; }
+.mini-table td:first-child { font-weight: 500; color: var(--text); white-space: nowrap; }
+
+.compare-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 0.9rem 0; }
+.compare-box { border-radius: 10px; padding: 1rem 1.1rem; border: 1px solid var(--border); }
+.compare-box.bad  { background: #fdf5f5;   border-color: rgba(184,68,68,0.12); }
+.compare-box.good { background: #f4faf6; border-color: rgba(58,122,82,0.12); }
+.compare-label { font-family: 'Noto Sans KR', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: none; margin-bottom: 0.7rem; display: block; }
+.compare-box.bad  .compare-label { color: var(--red); }
+.compare-box.good .compare-label { color: var(--green); }
+.compare-body { font-family: 'IBM Plex Mono', monospace; font-size: 0.79rem; color: var(--text); white-space: pre-wrap; line-height: 1.85; font-weight: 400; }
+.compare-box.bad  .ch { color: var(--red);   font-weight: 700; }
+.compare-box.good .ch { color: var(--green); font-weight: 700; }
+.compare-body .cm { color: #8a8278; font-size: 0.73rem; }
+
+.pull-quote { font-size: 1.1rem; font-style: italic; color: var(--text-sub); line-height: 1.65; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 1.25rem 0; text-align: center; letter-spacing: -0.01em; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.75rem; }
+.tag { font-size: 0.72rem; padding: 0.25rem 0.7rem; border-radius: 100px; font-weight: 500; border: 1px solid; }
+.tag-claude { color: var(--claude-dk); background: var(--claude-lt); border-color: #e8c3b3; }
+.tag-teal   { color: var(--teal);      background: var(--teal-lt);   border-color: #b0d9d2; }
+.tag-indigo { color: var(--indigo);    background: var(--indigo-lt); border-color: #c0c9e8; }
+.tag-amber  { color: var(--amber);     background: var(--amber-lt);  border-color: #d8c090; }
+.tag-rose   { color: var(--rose);      background: var(--rose-lt);   border-color: #e0b0b8; }
+.tag-green  { color: var(--green);     background: var(--green-lt);  border-color: #a8d0b8; }
+
+.steps { display: grid; gap: 0.75rem; margin: 0.9rem 0; }
+.step-card { display: flex; gap: 1rem; align-items: flex-start; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.1rem; }
+.step-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; color: #fff; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 0.05rem; }
+.step-content h5 { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+.step-content p { font-size: 0.83rem; color: var(--text-sub); line-height: 1.7; }
+.step-content p strong { color: var(--text); }
+.step-example { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; background: var(--bg3); color: var(--text-sub); padding: 0.5rem 0.75rem; border-radius: 6px; margin-top: 0.5rem; line-height: 1.65; }
+
+#insights { padding: 4.5rem 0; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.insights-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.1rem; }
+.ic { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 12px; padding: 1.4rem; transition: transform 0.2s, border-color 0.2s; }
+.ic:hover { transform: translateY(-3px); border-color: var(--border2); }
+.ic-num { font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; display: inline-block; margin-bottom: 0.8rem; }
+.ic-title { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+.ic-desc { font-size: 0.83rem; color: var(--text-sub); line-height: 1.8; }
+
+#roadmap { padding: 4.5rem 0; background: var(--bg2); border-top: 1px solid var(--border); }
+.roadmap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.1rem; }
+.rc { background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; padding: 1.4rem; transition: transform 0.2s, border-color 0.2s; }
+.rc:hover { transform: translateY(-3px); border-color: var(--border2); }
+.rc-badge { font-size: 0.65rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 100px; display: inline-block; margin-bottom: 0.85rem; }
+.rc-badge.high   { background: var(--teal-lt);   color: var(--teal);   border: 1px solid #b0d9d2; }
+.rc-badge.mid    { background: var(--indigo-lt); color: var(--indigo); border: 1px solid #c0c9e8; }
+.rc-badge.ops    { background: var(--amber-lt);  color: var(--amber);  border: 1px solid #d8c090; }
+.rc-title { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+.rc-desc  { font-size: 0.83rem; color: var(--text-sub); line-height: 1.8; margin-bottom: 0.85rem; }
+.rc-topics { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.rc-topic { font-size: 0.65rem; padding: 0.15rem 0.5rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; color: var(--text-muted); font-weight: 500; }
+
+footer { padding: 2.5rem 2rem; text-align: center; border-top: 1px solid var(--border); background: var(--surface); }
+.footer-title { font-size: 0.8rem; font-weight: 600; color: var(--text-sub); margin-bottom: 0.3rem; }
+.footer-note  { font-size: 0.75rem; color: var(--text-muted); }
+
+@media (max-width: 700px) {
+  .nav-links { display: none; }
+  .session-body { padding: 1.25rem; }
+  .compare-pair { grid-template-columns: 1fr; }
+}
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+#hero .hero-badge { animation: fadeUp 0.5s 0.05s both; }
+#hero h1          { animation: fadeUp 0.5s 0.15s both; }
+#hero .hero-sub   { animation: fadeUp 0.5s 0.25s both; }
+#hero .hero-stats { animation: fadeUp 0.5s 0.35s both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Prompt Engineering Guide</span>
+  <ul class="nav-links">
+    <li><a href="#flow">학습 흐름</a></li>
+    <li><a href="#sessions">세션</a></li>
+    <li><a href="#insights">핵심 인사이트</a></li>
+    <li><a href="#roadmap">다음 단계</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge">Anthropic 공식 가이드라인 기반</div>
+  <h1>프롬프트 <em>엔지니어링</em><br>종합 가이드</h1>
+  <p class="hero-sub">AI에게 더 나은 결과를 얻기 위한 체계적 방법론. LLM의 작동 원리부터 실무 설계 원칙까지, 개발 지식 없이도 이해할 수 있는 5개 세션 완성 가이드.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">5</span>
+      <span class="stat-label">학습 세션</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">3</span>
+      <span class="stat-label">핵심 프롬프트 기법</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">6</span>
+      <span class="stat-label">설계 원칙</span>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- FLOW DIAGRAM -->
+<section id="flow">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Learning Flow</div>
+      <div class="section-title">전체 학습 흐름</div>
+      <div class="section-desc">노드를 클릭하면 해당 세션으로 이동합니다</div>
+    </div>
+    <div class="flow-wrap">
+      <div class="flow-diagram">
+
+        <div class="flow-node" onclick="openSession(1)">
+          <div class="flow-card">
+            <div class="flow-num">S01</div>
+            <span class="flow-icon">⚙️</span>
+            <div class="flow-label">LLM 처리<br>방식</div>
+            <div class="flow-sub">JSON · Token</div>
+          </div>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-node" onclick="openSession(2)">
+          <div class="flow-card">
+            <div class="flow-num">S02</div>
+            <span class="flow-icon">🧩</span>
+            <div class="flow-label">프롬프트<br>구성 요소</div>
+            <div class="flow-sub">Role · Format</div>
+          </div>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-node" onclick="openSession(3)">
+          <div class="flow-card">
+            <div class="flow-num">S03</div>
+            <span class="flow-icon">🔬</span>
+            <div class="flow-label">프롬프트<br>기법 이론</div>
+            <div class="flow-sub">CoT · Few-shot</div>
+          </div>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-node" onclick="openSession(4)">
+          <div class="flow-card">
+            <div class="flow-num">S04</div>
+            <span class="flow-icon">🧠</span>
+            <div class="flow-label">모델 추론<br>방식</div>
+            <div class="flow-sub">환각 · 편향</div>
+          </div>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-node" onclick="openSession(5)">
+          <div class="flow-card">
+            <div class="flow-num">S05</div>
+            <span class="flow-icon">🎯</span>
+            <div class="flow-label">설계 원칙<br>& 이터레이션</div>
+            <div class="flow-sub">6원칙 · 개선</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SESSIONS -->
+<section id="sessions">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Sessions</div>
+      <div class="section-title">세션별 학습 내용</div>
+      <div class="section-desc">각 카드를 클릭해 상세 내용을 확인하세요</div>
+    </div>
+    <div class="sessions-grid">
+
+      <!-- ============================
+           SESSION 1: LLM 처리 방식
+           ============================ -->
+      <div class="session-card" id="session-1">
+        <div class="session-header" onclick="toggleSession(1)">
+          <div class="session-num">S01</div>
+          <div class="session-pip" style="background:var(--claude)"></div>
+          <div class="session-meta">
+            <div class="session-q">핵심 질문 — AI는 내 메시지를 어떻게 받아들이는가?</div>
+            <div class="session-title">LLM이 텍스트를 처리하는 방식</div>
+          </div>
+          <div class="session-toggle">▾</div>
+        </div>
+        <div class="session-body">
+
+          <div class="body-intro">
+            AI와 효과적으로 소통하려면 먼저 AI가 <strong>메시지를 어떤 구조로 받아들이는지</strong> 이해해야 합니다. 우리가 입력하는 텍스트는 내부적으로 JSON 형식으로 구조화되고, 역할(Role)이 부여되며, 정해진 범위(컨텍스트 윈도우) 안에서 처리됩니다.
+          </div>
+
+          <!-- JSON 구조 -->
+          <div class="content-section">
+            <h4>AI에게 메시지가 전달되는 방식</h4>
+            <p class="explain-p">우리가 ChatGPT나 Claude에 메시지를 입력하면, 단순 텍스트가 아닌 <em>JSON 형식</em>으로 구조화되어 전달됩니다. 택배 송장처럼 내용물(메시지)과 발신자 정보(역할), 전달 규칙(설정)을 함께 담는 방식입니다.</p>
+            <div class="analogy-box">
+              <div class="box-label">Analogy</div>
+              <p>JSON은 택배 박스의 송장과 같습니다. 내용물(메시지)뿐 아니라 보내는 사람(역할), 받는 방식(설정)을 함께 담아 AI가 맥락을 이해하도록 돕습니다.</p>
+            </div>
+            <div class="flow-box">
+<span class="fh">{ "role": "user",</span><br>
+<span class="fa">  </span><span class="fs">"content": "오늘 날씨 어때?" }</span>  <span class="fn">← 사용자 메시지 구조</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fs">{ "role": "system", "content": "당신은 친절한 어시스턴트입니다." }</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fg">AI가 두 메시지를 함께 읽고 응답 생성</span>
+            </div>
+          </div>
+
+          <!-- Role 3종류 -->
+          <div class="content-section">
+            <h4>메시지의 세 가지 역할 (Role)</h4>
+            <table class="mini-table">
+              <thead>
+                <tr><th>역할</th><th>역할 설명</th><th>실무 활용</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>system</td>
+                  <td>AI의 전체 행동 규칙 설정. 사용자에게 보이지 않음</td>
+                  <td>"당신은 고객 서비스 담당자입니다. 항상 존댓말을 사용하세요."</td>
+                </tr>
+                <tr>
+                  <td>user</td>
+                  <td>실제 사용자가 입력하는 메시지</td>
+                  <td>"환불 정책이 어떻게 되나요?"</td>
+                </tr>
+                <tr>
+                  <td>assistant</td>
+                  <td>AI의 응답. 대화 기록이 누적되어 맥락 유지</td>
+                  <td>이전 AI 답변이 모두 기록되어 문맥 이어감</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">System 없이 사용</span>
+                <div class="compare-body">user: <span class="ch">"보고서 써줘"</span>
+
+<span class="cm">→ 일반적이고 범용적인 답변
+→ 어떤 형식인지, 누구를 위한
+   것인지 AI가 모름</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">System 설정 후 사용</span>
+                <div class="compare-body">system: <span class="ch">"임원 보고용 문서 전문 작가"</span>
+user: "보고서 써줘"
+
+<span class="cm">→ 임원 눈높이에 맞는 간결하고
+   전문적인 보고서 생성</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 컨텍스트 윈도우 -->
+          <div class="content-section">
+            <h4>컨텍스트 윈도우 — AI의 단기 기억</h4>
+            <p class="explain-p">AI는 사람처럼 기억하지 않습니다. <em>컨텍스트 윈도우</em>라는 범위 안에 있는 내용만 "볼 수" 있습니다. 책상 위에 펼쳐놓을 수 있는 종이의 양처럼, 꽉 차면 오래된 내용부터 밀려납니다.</p>
+            <div class="flow-box">
+<span class="fh">[시스템 설정]</span> + <span class="fs">[대화 1]</span> + <span class="fs">[대화 2]</span> + <span class="fn">...</span> + <span class="fg">[현재 질문]</span><br>
+<span class="fa">= 컨텍스트 윈도우에 담긴 전체 내용</span><br>
+<br>
+<span class="fr">대화가 길어지면 → 앞부분 내용이 점점 밀려남</span><br>
+<span class="fg">새 대화 시작 = 이전 내용 완전 초기화</span>
+            </div>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">긴 대화 후반부 문제</span>
+                <div class="compare-body">대화 초반: <span class="ch">"한국어로 답변해줘"</span>
+30번 대화 후 →
+AI가 영어로 답변 시작
+
+<span class="cm">초기 설정이 컨텍스트에서
+밀려났기 때문</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">실무 대응 방법</span>
+                <div class="compare-body"><span class="ch">system 메시지에 핵심 규칙 고정</span>
+→ 대화가 길어져도 밀려나지 않음
+
+또는 중요 조건을
+<span class="ch">매 대화에서 반복 언급</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 토큰 -->
+          <div class="content-section">
+            <h4>토큰 — AI가 텍스트를 읽는 최소 단위</h4>
+            <p class="explain-p">AI는 글자 단위가 아닌 <em>토큰</em> 단위로 텍스트를 처리합니다. 영어는 단어 하나가 보통 1토큰, 한국어는 같은 의미를 표현하는 데 더 많은 토큰이 필요합니다. 토큰 수는 컨텍스트 윈도우 한도와 API 비용에 직결됩니다.</p>
+            <table class="mini-table">
+              <thead>
+                <tr><th>텍스트</th><th>토큰 수</th><th>비고</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Hello</td><td>1토큰</td><td>영어 단어 = 대체로 1토큰</td></tr>
+                <tr><td>I am happy</td><td>3토큰</td><td>띄어쓰기로 분리</td></tr>
+                <tr><td>안녕하세요</td><td>3~5토큰</td><td>한글은 영어보다 토큰 소비 많음</td></tr>
+                <tr><td>긴 보고서 (A4 3장)</td><td>약 2,000토큰</td><td>비용 및 컨텍스트 한도 고려 필요</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 전체 흐름 요약 -->
+          <div class="content-section">
+            <h4>전체 처리 흐름 요약</h4>
+            <div class="flow-box">
+<span class="fh">사용자 입력</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fs">JSON 형태로 구조화</span>  <span class="fn">(role + content)</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fs">시스템 설정 + 대화 기록과 결합</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fs">컨텍스트 윈도우 안에서 토큰 처리</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fg">응답 생성 후 반환</span>
+            </div>
+          </div>
+
+          <div class="insight-box">
+            <div class="box-label">핵심 인사이트</div>
+            <p>AI는 단순히 텍스트를 읽는 것이 아니라, 역할(Role)이 부여된 구조화된 메시지를 처리합니다. 컨텍스트 윈도우라는 한계가 있고, 토큰이 비용과 직결됩니다. 이 구조를 이해하면 프롬프트를 왜 잘 설계해야 하는지 자연스럽게 납득됩니다.</p>
+          </div>
+          <div class="tag-row">
+            <span class="tag tag-claude">JSON</span>
+            <span class="tag tag-claude">Role</span>
+            <span class="tag tag-claude">컨텍스트 윈도우</span>
+            <span class="tag tag-claude">토큰</span>
+            <span class="tag tag-claude">system 메시지</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================
+           SESSION 2: 프롬프트 구성 요소
+           ============================ -->
+      <div class="session-card" id="session-2">
+        <div class="session-header" onclick="toggleSession(2)">
+          <div class="session-num">S02</div>
+          <div class="session-pip" style="background:var(--teal)"></div>
+          <div class="session-meta">
+            <div class="session-q">핵심 질문 — 좋은 프롬프트와 나쁜 프롬프트는 무엇이 다른가?</div>
+            <div class="session-title">프롬프트의 구성 요소</div>
+          </div>
+          <div class="session-toggle">▾</div>
+        </div>
+        <div class="session-body">
+
+          <div class="body-intro">
+            프롬프트는 단순한 질문이 아닙니다. <strong>역할, 지시, 맥락, 출력 형식</strong> 네 가지 요소가 갖춰질 때 AI는 실무에서 바로 쓸 수 있는 답변을 생성합니다. 이 구성 요소를 이해하는 것이 프롬프트 엔지니어링의 출발점입니다.
+          </div>
+
+          <p class="pull-quote">"좋은 프롬프트는 좋은 업무 지시서와 같다.<br>누가, 무엇을, 어떤 맥락에서, 어떤 형태로."</p>
+
+          <!-- 4가지 구성 요소 -->
+          <div class="content-section">
+            <h4>프롬프트의 4가지 핵심 구성 요소</h4>
+            <div class="steps">
+              <div class="step-card">
+                <div class="step-num" style="background:var(--teal)">1</div>
+                <div class="step-content">
+                  <h5>역할 (Role) — AI에게 전문가 정체성 부여</h5>
+                  <p>AI에게 어떤 전문가로 행동할지 지정합니다. 역할에 따라 답변의 톤, 전문성 수준, 관점이 달라집니다.</p>
+                  <div class="step-example">"당신은 10년 경력의 스타트업 마케팅 전문가입니다."</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--teal)">2</div>
+                <div class="step-content">
+                  <h5>지시 (Instruction) — 수행할 작업을 명확히</h5>
+                  <p>AI가 해야 할 일을 구체적으로 서술합니다. 모호한 지시는 예측 불가한 결과를 낳습니다.</p>
+                  <div class="step-example">"다음 제품 설명을 인스타그램 광고 문구 3개로 바꿔주세요."</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--teal)">3</div>
+                <div class="step-content">
+                  <h5>맥락 (Context) — 배경 정보로 정확도 향상</h5>
+                  <p>AI는 당신의 상황을 모릅니다. 타겟, 환경, 목적 등 필요한 배경 정보를 제공할수록 실제 상황에 맞는 답변이 나옵니다.</p>
+                  <div class="step-example">"고객은 30~40대 직장인, 예산은 월 100만원, 주요 채널은 인스타그램입니다."</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--teal)">4</div>
+                <div class="step-content">
+                  <h5>출력 형식 (Output Format) — 결과물 형태 지정</h5>
+                  <p>길이, 구조, 언어 등 원하는 결과물의 형태를 명시합니다. 지정하지 않으면 AI가 임의로 결정합니다.</p>
+                  <div class="step-example">"1. 핵심 전략 (3가지) 2. 채널별 실행 방안 3. 예산 배분 제안 형식으로 작성해주세요."</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 나쁜 vs 좋은 프롬프트 실무 비교 -->
+          <div class="content-section">
+            <h4>실무 비교 — 마케팅 전략 요청</h4>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">구성 요소 없는 프롬프트</span>
+                <div class="compare-body"><span class="ch">"마케팅 전략 알려줘"</span>
+
+<span class="cm">- 어떤 업종인지 모름
+- 어떤 목적인지 모름
+- 어떤 형식 원하는지 모름
+
+결과: 교과서 같은 일반론만
+실무에 바로 쓸 수 없음</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">구성 요소 갖춘 프롬프트</span>
+                <div class="compare-body"><span class="ch">[역할]</span> 스타트업 전문 마케팅 컨설턴트
+<span class="ch">[지시]</span> 초기 3개월 다운로드 수 증대 전략
+<span class="ch">[맥락]</span> 20대 타겟 독서습관 앱, 예산 100만원
+<span class="ch">[형식]</span> 핵심전략/채널별방안/예산배분
+
+<span class="cm">결과: 실제로 쓸 수 있는 맞춤 전략</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 실무 비교 2: 이메일 작성 -->
+          <div class="content-section">
+            <h4>실무 비교 — 이메일 작성 요청</h4>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">맥락 없는 요청</span>
+                <div class="compare-body"><span class="ch">"파트너사에 이메일 써줘"</span>
+
+<span class="cm">AI가 모르는 것들:
+  어떤 파트너사? / 무슨 목적?
+  어떤 관계? / 격식 수준?
+
+결과: 범용 템플릿 수준</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">맥락 채운 요청</span>
+                <div class="compare-body"><span class="ch">신규 파트너사</span> 담당자에게
+<span class="ch">첫 미팅 제안</span> 이메일.
+상대방은 <span class="ch">50대 임원, 격식체</span>
+<span class="ch">3문단 이내</span>로 작성
+
+<span class="cm">결과: 바로 발송 가능한 이메일</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 긍정 vs 부정 지시 -->
+          <div class="content-section">
+            <h4>긍정 지시 vs 부정 지시</h4>
+            <p class="explain-p">AI는 "하지 마세요"보다 "이렇게 해주세요" 방식에 더 정확하게 반응합니다. 부정 지시는 AI가 어떻게 행동해야 하는지 알려주지 않고, 무엇을 피해야 하는지만 전달하기 때문입니다.</p>
+            <table class="mini-table">
+              <thead>
+                <tr><th>부정 지시 (비추천)</th><th>긍정 지시 (추천)</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>"어렵게 설명하지 마세요"</td>
+                  <td>"초등학생도 이해할 수 있게 설명해주세요"</td>
+                </tr>
+                <tr>
+                  <td>"길게 쓰지 마세요"</td>
+                  <td>"3문장 이내로 요약해주세요"</td>
+                </tr>
+                <tr>
+                  <td>"전문 용어 쓰지 마세요"</td>
+                  <td>"일상적인 언어로 풀어서 설명해주세요"</td>
+                </tr>
+                <tr>
+                  <td>"딱딱하게 쓰지 마세요"</td>
+                  <td>"친근하고 대화하듯 가볍게 써주세요"</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 실무 비교 3: SNS 콘텐츠 -->
+          <div class="content-section">
+            <h4>실무 비교 — SNS 콘텐츠 제작</h4>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">형식 없는 요청</span>
+                <div class="compare-body"><span class="ch">"커피 머신 소개 글 써줘"</span>
+
+<span class="cm">AI가 만든 것:
+  긴 제품 설명문
+  전문 용어 가득
+  어떤 채널인지 모름
+
+실무에서 바로 못 씀</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">형식 명확한 요청</span>
+                <div class="compare-body"><span class="ch">30~40대 직장인 타겟</span>
+<span class="ch">인스타그램 캡션</span>
+<span class="ch">감성적 톤</span>, 이모지 1~2개
+<span class="ch">해시태그 5개</span>, <span class="ch">150자 이내</span>
+
+<span class="cm">결과: 바로 포스팅 가능</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 체크리스트 -->
+          <div class="content-section">
+            <h4>프롬프트 작성 전 체크리스트</h4>
+            <div class="flow-box">
+<span class="fh">[ ] 역할</span>  <span class="fn">AI에게 어떤 전문가 역할을 부여했는가?</span><br>
+<span class="fh">[ ] 지시</span>  <span class="fn">수행해야 할 작업이 명확하게 기술되었는가?</span><br>
+<span class="fh">[ ] 맥락</span>  <span class="fn">필요한 배경 정보가 충분히 포함되었는가?</span><br>
+<span class="fh">[ ] 형식</span>  <span class="fn">원하는 결과물의 길이·구조가 지정되었는가?</span><br>
+<span class="fa">──────────────────────────────────</span><br>
+<span class="fg">4가지 모두 체크 → 좋은 프롬프트</span>  <span class="fa">|</span>  <span class="fr">1개 이하 → 결과 불확실</span>
+            </div>
+          </div>
+
+          <div class="insight-box">
+            <div class="box-label">핵심 인사이트</div>
+            <p>같은 질문이라도 역할·지시·맥락·출력형식 4가지를 갖추면 결과물의 품질이 크게 달라집니다. 업무에서 AI를 활용하기 전, 이 4가지를 먼저 정리하는 습관만으로도 AI 활용 효율이 두 배 이상 향상됩니다.</p>
+          </div>
+          <div class="tag-row">
+            <span class="tag tag-teal">역할 (Role)</span>
+            <span class="tag tag-teal">지시 (Instruction)</span>
+            <span class="tag tag-teal">맥락 (Context)</span>
+            <span class="tag tag-teal">출력 형식 (Format)</span>
+            <span class="tag tag-teal">긍정 지시</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================
+           SESSION 3: 주요 프롬프트 기법
+           ============================ -->
+      <div class="session-card" id="session-3">
+        <div class="session-header" onclick="toggleSession(3)">
+          <div class="session-num">S03</div>
+          <div class="session-pip" style="background:var(--indigo)"></div>
+          <div class="session-meta">
+            <div class="session-q">핵심 질문 — 상황에 따라 어떤 방식으로 요청해야 더 나은 결과가 나오는가?</div>
+            <div class="session-title">주요 프롬프트 기법 이론</div>
+          </div>
+          <div class="session-toggle">▾</div>
+        </div>
+        <div class="session-body">
+
+          <div class="body-intro">
+            프롬프트 기법은 단순한 팁이 아닙니다. AI 연구자들이 실험으로 효과를 검증한 방법론입니다. <strong>Zero-shot, Few-shot, Chain-of-Thought</strong> 세 가지 기법을 이해하면 상황에 따라 어떤 방식으로 요청할지 판단할 수 있습니다.
+          </div>
+
+          <!-- Zero-shot -->
+          <div class="content-section">
+            <h4>Zero-shot — 예시 없이 바로 요청</h4>
+            <p class="explain-p">예시 없이 바로 작업을 요청하는 방식입니다. 대규모 언어 모델은 방대한 데이터로 학습되어 있어, <em>별도 예시 없이도</em> 많은 작업을 수행합니다.</p>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">적합하지 않은 상황</span>
+                <div class="compare-body"><span class="ch">"우리 회사 스타일로 공지 써줘"</span>
+
+<span class="cm">AI가 "우리 회사 스타일"을
+학습한 적이 없음
+
+→ Zero-shot으로는 한계
+→ Few-shot 필요</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">적합한 상황</span>
+                <div class="compare-body"><span class="ch">"다음 문장의 감정을
+긍정/부정/중립으로 분류해줘"</span>
+
+<span class="cm">명확하고 일반적인 작업
+→ Zero-shot으로 충분
+빠른 결과 필요 시 최적</span></div>
+              </div>
+            </div>
+            <div class="analogy-box">
+              <div class="box-label">적합한 상황</div>
+              <p>단순·명확한 작업 / AI가 충분히 학습된 일반 주제 / 빠른 결과가 필요할 때. 새로운 직원에게 매뉴얼 없이 "이메일 요약해줘"라고 하는 것과 같습니다. 기본기가 있으면 됩니다.</p>
+            </div>
+          </div>
+
+          <!-- Few-shot -->
+          <div class="content-section">
+            <h4>Few-shot — 예시를 보여주고 패턴 유도</h4>
+            <p class="explain-p">2~5개의 예시를 먼저 보여주고 같은 패턴으로 수행하도록 요청하는 방식입니다. 사람도 설명보다 예시를 보면 더 빨리 이해하듯, <em>AI도 예시를 통해 형식·톤·패턴을 학습</em>합니다.</p>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">설명만 있는 요청</span>
+                <div class="compare-body"><span class="ch">"감성적이고 간결한 태그라인
+작성해줘"</span>
+
+<span class="cm">감성적 / 간결 — 주관적 기준
+AI마다 해석이 다름
+원하는 스타일이 안 나올 수 있음</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">예시 제공 후 요청</span>
+                <div class="compare-body"><span class="ch">예시1) 무선 이어폰:
+"끊기지 않는 음악, 끊기지 않는 일상"
+예시2) 스마트 물병:
+"당신의 건강한 하루를 기억합니다"</span>
+
+이제 접이식 키보드 태그라인을:
+<span class="cm">→ 스타일이 명확히 전달됨</span></div>
+              </div>
+            </div>
+            <div class="insight-box" style="margin-top:0.75rem;">
+              <div class="box-label">실무 활용 팁</div>
+              <p>반복적으로 사용하는 문서 유형(보고서, 이메일, SNS 문구)이 있다면 잘 작성된 기존 예시 2~3개를 프롬프트에 포함하세요. 일관된 품질을 유지할 수 있습니다.</p>
+            </div>
+          </div>
+
+          <!-- CoT -->
+          <div class="content-section">
+            <h4>Chain-of-Thought (CoT) — 단계적 사고 유도</h4>
+            <p class="explain-p">AI가 최종 답변을 바로 내놓는 대신 <em>단계적으로 생각하는 과정</em>을 거치도록 유도하는 방식입니다. 2022년 Google 연구팀 논문에서 복잡한 추론 문제의 정확도를 크게 향상시킨다고 검증되었습니다.</p>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">단계 없이 한 번에 요청</span>
+                <div class="compare-body"><span class="ch">"이 마케팅 전략의 리스크
+분석해줘"</span>
+
+<span class="cm">AI가 표면적 답변만 생성
+복잡한 분석에서 오류 多
+중요한 관점 누락 가능</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">단계적 사고 유도</span>
+                <div class="compare-body"><span class="ch">"이 전략의 리스크를
+단계적으로 분석해줘.
+먼저 시장 리스크,
+그 다음 실행 리스크,
+마지막으로 재무 리스크 순서로"</span>
+
+<span class="cm">→ 정확도·깊이 모두 향상</span></div>
+              </div>
+            </div>
+            <div class="flow-box">
+<span class="fn">CoT 유도 표현들 — 그대로 사용 가능</span><br>
+<span class="fh">"단계적으로 생각해봐"</span>             <span class="fn">← 가장 간단한 CoT 트리거</span><br>
+<span class="fh">"먼저 A를 분석하고, 그 다음 B를 검토해줘"</span>  <span class="fn">← 순서 명시형</span><br>
+<span class="fh">"결론 전에 찬성·반대 근거를 각각 정리해줘"</span> <span class="fn">← 균형 분석형</span><br>
+<span class="fh">"각 단계의 이유를 설명하면서 풀어줘"</span>      <span class="fn">← 근거 공개형</span>
+            </div>
+          </div>
+
+          <!-- 기법 비교 -->
+          <div class="content-section">
+            <h4>기법 비교 및 조합 전략</h4>
+            <table class="mini-table">
+              <thead>
+                <tr><th>기법</th><th>예시 제공</th><th>사고 과정</th><th>주요 용도</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Zero-shot</td><td>없음</td><td>즉시 답변</td><td>단순·일반적 작업, 빠른 결과 필요</td></tr>
+                <tr><td>Few-shot</td><td>2~5개</td><td>즉시 답변</td><td>형식·스타일·톤 일관성 필요</td></tr>
+                <tr><td>Chain-of-Thought</td><td>선택적</td><td>단계 공개</td><td>복잡한 추론·분석, 오류 최소화</td></tr>
+              </tbody>
+            </table>
+            <div class="analogy-box">
+              <div class="box-label">기법 조합 예시</div>
+              <p>[역할 부여] + [Few-shot 예시] + [CoT 지시]를 함께 쓰면 각 기법의 장점이 합산됩니다. "당신은 재무 분석가입니다. 아래 두 예시처럼 분석하되, 단계적으로 사고 과정을 보여주세요."</p>
+            </div>
+          </div>
+
+          <div class="insight-box">
+            <div class="box-label">핵심 인사이트</div>
+            <p>세 기법은 배타적이 아닙니다. Zero-shot으로 시작하고, 결과가 원하는 스타일과 다르면 Few-shot을 추가하고, 복잡한 분석이 필요하면 CoT를 결합하는 순서로 단계적으로 적용하세요.</p>
+          </div>
+          <div class="tag-row">
+            <span class="tag tag-indigo">Zero-shot</span>
+            <span class="tag tag-indigo">Few-shot</span>
+            <span class="tag tag-indigo">Chain-of-Thought</span>
+            <span class="tag tag-indigo">기법 조합</span>
+            <span class="tag tag-indigo">CoT 트리거</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================
+           SESSION 4: 모델 추론 방식
+           ============================ -->
+      <div class="session-card" id="session-4">
+        <div class="session-header" onclick="toggleSession(4)">
+          <div class="session-num">S04</div>
+          <div class="session-pip" style="background:var(--amber)"></div>
+          <div class="session-meta">
+            <div class="session-q">핵심 질문 — AI는 왜 틀리는가, 그리고 어떻게 대응하는가?</div>
+            <div class="session-title">모델이 추론하는 방식</div>
+          </div>
+          <div class="session-toggle">▾</div>
+        </div>
+        <div class="session-body">
+
+          <div class="body-intro">
+            AI를 제대로 활용하려면 AI가 <strong>왜 틀리는지</strong>를 알아야 합니다. 환각과 편향은 AI의 결함이 아니라 구조적 특성입니다. 이 메커니즘을 이해하면 프롬프트로 오류를 줄이는 전략을 세울 수 있습니다.
+          </div>
+
+          <!-- 토큰 예측 메커니즘 -->
+          <div class="content-section">
+            <h4>AI는 어떻게 텍스트를 생성하는가</h4>
+            <p class="explain-p">AI는 "다음에 올 가장 적절한 토큰이 무엇인가"를 반복 예측하면서 텍스트를 생성합니다. 스마트폰 자동완성의 수천억 배 정교한 버전입니다.</p>
+            <div class="flow-box">
+<span class="fn">입력:</span> <span class="fh">"오늘 날씨가"</span><br>
+<span class="fa">  ↓  확률 계산</span><br>
+<span class="fg">"맑다" 70%</span>  <span class="fn">/</span>  <span class="fs">"흐리다" 20%</span>  <span class="fn">/</span>  <span class="fr">"춥다" 10%</span><br>
+<span class="fa">  ↓  최고 확률 선택</span><br>
+<span class="fh">"맑다"</span> 선택 → 다시 다음 토큰 예측 → 반복<br>
+<span class="fa">─────────────────────────────────</span><br>
+<span class="fr">AI는 "정답을 아는 것"이 아니라</span><br>
+<span class="fr">"통계적으로 그럴듯한 텍스트를 생성"한다</span>
+            </div>
+            <div class="analogy-box">
+              <div class="box-label">Analogy</div>
+              <p>AI는 백과사전이 아닙니다. 방대한 텍스트를 학습한 뒤 패턴을 통해 "그럴듯한 다음 말"을 이어가는 시스템입니다. 이 차이를 이해하는 것이 AI 활용의 핵심입니다.</p>
+            </div>
+          </div>
+
+          <!-- 환각 -->
+          <div class="content-section">
+            <h4>환각 (Hallucination) — 자신 있게 틀리는 이유</h4>
+            <p class="explain-p">AI가 사실이 아닌 내용을 마치 사실인 것처럼 자신 있게 말하는 현상입니다. <em>거짓말이 아닙니다</em>. 통계적으로 그럴듯한 텍스트를 생성하다 발생하는 구조적 문제입니다.</p>
+            <div class="warn-box">
+              <div class="box-label">환각이 자주 발생하는 상황</div>
+              <p>구체적인 수치·날짜·통계 인용 / 특정 인물의 발언 서술 / 존재하지 않는 논문·책 인용 / 최근 1~2년 이내 시사 정보 / 법률·의료·재무 전문 판단</p>
+            </div>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">환각 유발 가능 프롬프트</span>
+                <div class="compare-body"><span class="ch">"이 주제 관련 최신 논문
+인용해서 설명해줘"</span>
+
+<span class="cm">AI가 논문 제목·저자·연도를
+그럴듯하게 만들어냄
+실제 존재하지 않는 논문 생성
+가능성 높음</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">환각 억제 프롬프트</span>
+                <div class="compare-body"><span class="ch">"확실하지 않은 내용은
+'불확실하지만'이라고 표시해줘.
+출처가 없는 수치는
+'추정'이라고 명시해줘"</span>
+
+<span class="cm">→ 불확실성 인정 유도
+→ 검증 포인트 명확해짐</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 편향 -->
+          <div class="content-section">
+            <h4>편향 (Bias) — 프롬프트 표현이 답변을 기울인다</h4>
+            <p class="explain-p">AI가 학습한 데이터에 내재된 편향이 답변에 반영됩니다. 특히 <em>프롬프트의 표현 방식</em>이 AI의 답변 방향에 직접 영향을 줍니다.</p>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">편향 유발 프롬프트</span>
+                <div class="compare-body"><span class="ch">"이 전략이 왜 좋은지
+설명해줘"</span>
+
+<span class="cm">질문 자체가 "좋다"를 전제
+AI가 장점만 나열할 가능성
+단점·리스크 자동 생략</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">중립적 프롬프트</span>
+                <div class="compare-body"><span class="ch">"이 전략의 장단점을
+균형 있게 분석해줘.
+반론도 함께 제시해줘"</span>
+
+<span class="cm">→ 더 객관적인 분석 유도
+→ 의사결정에 실질적 도움</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 추론 품질 향상 전략 -->
+          <div class="content-section">
+            <h4>추론 품질을 높이는 4가지 프롬프트 전략</h4>
+            <div class="steps">
+              <div class="step-card">
+                <div class="step-num" style="background:var(--amber)">1</div>
+                <div class="step-content">
+                  <h5>명확한 제약 조건 제시</h5>
+                  <p>범위를 좁혀 AI가 추측하는 영역을 줄입니다.</p>
+                  <div class="step-example">"한국 시장 기준으로, 2024년 데이터를 바탕으로 분석해주세요."</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--amber)">2</div>
+                <div class="step-content">
+                  <h5>불확실성 인정 유도</h5>
+                  <p>AI가 모르는 것을 모른다고 말하도록 명시적으로 허용합니다.</p>
+                  <div class="step-example">"확실하지 않은 내용은 '불확실하지만'이라고 표시해주세요."</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--amber)">3</div>
+                <div class="step-content">
+                  <h5>반론 요청으로 편향 상쇄</h5>
+                  <p>AI가 한쪽으로 기울지 않도록 반대 관점도 함께 요청합니다.</p>
+                  <div class="step-example">"이 주장의 약점이나 반론도 함께 제시해주세요."</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--amber)">4</div>
+                <div class="step-content">
+                  <h5>CoT 결합으로 추론 과정 공개</h5>
+                  <p>단계를 보이게 하면 오류가 어디서 발생했는지 확인하고 수정할 수 있습니다.</p>
+                  <div class="step-example">"결론 내리기 전에 찬성 근거와 반대 근거를 각각 정리해주세요."</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI를 바라보는 시각 -->
+          <div class="content-section">
+            <h4>AI를 올바르게 바라보는 시각</h4>
+            <table class="mini-table">
+              <thead>
+                <tr><th>잘못된 시각</th><th>올바른 시각</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>AI는 모든 것을 안다</td><td>통계적으로 그럴듯한 답변을 생성한다</td></tr>
+                <tr><td>AI가 틀리면 AI가 나쁜 것</td><td>한계를 이해하고 검증이 필요한 부분을 파악한다</td></tr>
+                <tr><td>AI를 맹신한다</td><td>AI를 강력한 초안 작성 도구로 활용한다</td></tr>
+                <tr><td>프롬프트는 상관없다</td><td>좋은 프롬프트가 좋은 결과를 만든다</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="insight-box">
+            <div class="box-label">핵심 인사이트</div>
+            <p>AI의 환각과 편향은 없애기 어렵지만, 프롬프트 설계로 크게 줄일 수 있습니다. "모른다고 말해줘", "반론도 제시해줘", "단계별로 사고해줘" 세 문장을 프롬프트에 추가하는 것만으로도 답변의 신뢰도가 달라집니다.</p>
+          </div>
+          <div class="tag-row">
+            <span class="tag tag-amber">환각(Hallucination)</span>
+            <span class="tag tag-amber">편향(Bias)</span>
+            <span class="tag tag-amber">토큰 예측</span>
+            <span class="tag tag-amber">불확실성 인정</span>
+            <span class="tag tag-amber">반론 요청</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================
+           SESSION 5: 프롬프트 설계 원칙
+           ============================ -->
+      <div class="session-card" id="session-5">
+        <div class="session-header" onclick="toggleSession(5)">
+          <div class="session-num">S05</div>
+          <div class="session-pip" style="background:var(--rose)"></div>
+          <div class="session-meta">
+            <div class="session-q">핵심 질문 — 좋은 프롬프트를 어떻게 지속적으로 만들고 개선하는가?</div>
+            <div class="session-title">프롬프트 설계 원칙 & 이터레이션</div>
+          </div>
+          <div class="session-toggle">▾</div>
+        </div>
+        <div class="session-body">
+
+          <div class="body-intro">
+            Anthropic과 OpenAI가 공식 가이드라인에서 공통으로 검증한 <strong>6가지 설계 원칙</strong>과, 프롬프트를 지속적으로 개선하는 이터레이션 방법론을 정리합니다. 한 번에 완벽한 프롬프트를 만들기보다 반복적으로 개선하는 사이클이 핵심입니다.
+          </div>
+
+          <p class="pull-quote">"프롬프트 엔지니어링의 본질은<br>완벽한 질문이 아닌 반복적인 개선에 있다."</p>
+
+          <!-- 6가지 설계 원칙 -->
+          <div class="content-section">
+            <h4>6가지 핵심 설계 원칙</h4>
+            <div class="steps">
+              <div class="step-card">
+                <div class="step-num" style="background:var(--rose)">1</div>
+                <div class="step-content">
+                  <h5>명확하고 직접적으로 작성하라</h5>
+                  <p>AI는 행간을 읽지 못합니다. 원하는 것을 <strong>명확하게, 직접적으로</strong> 표현해야 합니다.</p>
+                  <div class="step-example">모호: "좀 더 좋게 고쳐줘"  →  명확: "문장을 더 간결하게, 수동태를 능동태로 바꿔주세요"</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--rose)">2</div>
+                <div class="step-content">
+                  <h5>충분한 맥락을 제공하라</h5>
+                  <p>AI는 당신의 상황을 모릅니다. <strong>당신이 제공한 정보가 전부</strong>입니다.</p>
+                  <div class="step-example">맥락 부족: "이메일 써줘"  →  맥락 충분: "50대 임원에게 첫 미팅 제안 이메일, 격식체, 3문단"</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--rose)">3</div>
+                <div class="step-content">
+                  <h5>예시를 활용하라 (Few-shot)</h5>
+                  <p>원하는 형식·톤이 있다면 <strong>설명보다 예시가 훨씬 효과적</strong>입니다.</p>
+                  <div class="step-example">설명: "친근하지만 전문적인 톤"  →  예시: "아래 예시와 같은 톤으로: [예시 텍스트]"</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--rose)">4</div>
+                <div class="step-content">
+                  <h5>단계적 사고를 유도하라 (CoT)</h5>
+                  <p>복잡한 작업일수록 <strong>AI가 한 번에 답하도록 두지 말고 단계를 나눠주세요</strong>.</p>
+                  <div class="step-example">"먼저 문제점을 파악하고, 그 다음 해결 방안, 마지막으로 우선순위를 정해주세요."</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--rose)">5</div>
+                <div class="step-content">
+                  <h5>출력 형식을 명시하라</h5>
+                  <p>결과물의 <strong>길이, 구조, 언어, 형태</strong>를 구체적으로 지정합니다.</p>
+                  <div class="step-example">"요약(3문장) → 주요 내용(번호 목록) → 결론(1문장) 형식으로 답변해주세요."</div>
+                </div>
+              </div>
+              <div class="step-card">
+                <div class="step-num" style="background:var(--rose)">6</div>
+                <div class="step-content">
+                  <h5>역할을 부여하라</h5>
+                  <p>전문성이 필요한 작업에는 <strong>적절한 역할을 부여</strong>하면 답변의 깊이가 달라집니다.</p>
+                  <div class="step-example">"당신은 15년 경력의 UX 디자이너입니다. 아래 앱의 사용성 문제점을 진단해주세요."</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 이터레이션 사이클 -->
+          <div class="content-section">
+            <h4>이터레이션 사이클 — 프롬프트를 개선하는 방법</h4>
+            <p class="explain-p">프롬프트 엔지니어링의 핵심은 한 번에 완벽한 프롬프트를 만드는 것이 아닙니다. <em>결과를 보고 개선하는 반복 과정</em>이 핵심입니다.</p>
+            <div class="flow-box">
+<span class="fh">① 초안 프롬프트 작성</span>  <span class="fn">← 4요소 체크리스트 기반</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fs">② 결과 확인</span>  <span class="fn">← 원하는 결과와 비교</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fs">③ 문제점 파악</span>  <span class="fn">← 너무 길다 / 형식 다름 / 방향 오류 등</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fs">④ 프롬프트 수정</span>  <span class="fn">← 아래 문제 유형별 수정 방향 참고</span><br>
+<span class="fa">  ↓</span><br>
+<span class="fg">⑤ 재시도 → 만족스러운 결과까지 반복</span>
+            </div>
+          </div>
+
+          <!-- 문제 유형별 수정 방향 -->
+          <div class="content-section">
+            <h4>문제 유형별 수정 방향</h4>
+            <table class="mini-table">
+              <thead>
+                <tr><th>문제 상황</th><th>수정 방향</th><th>예시 추가 문구</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>답변이 너무 길다</td><td>출력 길이 명시</td><td>"300자 이내로 요약해주세요"</td></tr>
+                <tr><td>형식이 맞지 않다</td><td>출력 형식 구체화 또는 예시 추가</td><td>"표 형태로 정리해주세요"</td></tr>
+                <tr><td>방향이 틀렸다</td><td>맥락 또는 역할 보강</td><td>"한국 B2B 시장 기준으로"</td></tr>
+                <tr><td>너무 일반적이다</td><td>제약 조건 추가</td><td>"우리 팀 상황: [구체적 맥락]"</td></tr>
+                <tr><td>환각이 의심된다</td><td>불확실성 인정 유도</td><td>"확실하지 않으면 모른다고 표시해줘"</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 하지 말아야 할 것들 -->
+          <div class="content-section">
+            <h4>공식 가이드라인이 경고하는 잘못된 습관</h4>
+            <div class="compare-pair">
+              <div class="compare-box bad">
+                <span class="compare-label">피해야 할 패턴</span>
+                <div class="compare-body"><span class="ch">"적당히", "보통", "좀 더"</span>
+<span class="cm">→ AI가 해석할 수 없는 모호한 표현</span>
+
+<span class="ch">불필요하게 긴 프롬프트</span>
+<span class="cm">→ 핵심이 희석, 중요 지시 무시됨</span>
+
+<span class="ch">한 번에 너무 많은 요청</span>
+<span class="cm">→ "요약하고 번역하고 표로도 만들어줘"
+→ 복잡할수록 단계 나눠서 요청</span></div>
+              </div>
+              <div class="compare-box good">
+                <span class="compare-label">권장 패턴</span>
+                <div class="compare-body"><span class="ch">구체적 기준 제시</span>
+<span class="cm">→ "3문장 이내", "표 형태로", "500자"</span>
+
+<span class="ch">필요한 정보만 포함</span>
+<span class="cm">→ 관련 있는 맥락만, 불필요한
+   설명은 제거</span>
+
+<span class="ch">작업을 단계별로 분리</span>
+<span class="cm">→ 요청 1 → 확인 → 요청 2
+→ 각 단계 품질 검증 가능</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-box">
+            <div class="box-label">핵심 인사이트</div>
+            <p>자주 사용하는 프롬프트는 버전을 기록해 두세요. "v1 → 문제점 → v2 → 개선된 점" 형태로 관리하면 같은 시행착오를 반복하지 않아도 됩니다. 팀에서 공유하면 집단 지성으로 더 빠르게 좋은 프롬프트를 만들 수 있습니다.</p>
+          </div>
+          <div class="tag-row">
+            <span class="tag tag-rose">6가지 설계 원칙</span>
+            <span class="tag tag-rose">이터레이션</span>
+            <span class="tag tag-rose">명확성</span>
+            <span class="tag tag-rose">출력 형식</span>
+            <span class="tag tag-rose">프롬프트 버전 관리</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sessions-grid -->
+  </div><!-- /container -->
+</section>
+
+<!-- INSIGHTS -->
+<section id="insights">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Key Insights</div>
+      <div class="section-title">핵심 인사이트</div>
+      <div class="section-desc">5개 세션을 관통하는 핵심 관점</div>
+    </div>
+    <div class="insights-grid">
+
+      <div class="ic">
+        <div class="ic-num" style="background:var(--claude-lt);color:var(--claude-dk);">01</div>
+        <div class="ic-title">AI는 정답을 아는 게 아니다</div>
+        <div class="ic-desc">AI는 "통계적으로 그럴듯한 다음 토큰"을 예측합니다. 백과사전이 아니라 패턴 생성 엔진입니다. 이 차이를 이해하는 것이 올바른 AI 활용의 출발점입니다.</div>
+      </div>
+
+      <div class="ic">
+        <div class="ic-num" style="background:var(--teal-lt);color:var(--teal);">02</div>
+        <div class="ic-title">구조화된 입력이 구조화된 출력을 만든다</div>
+        <div class="ic-desc">역할·지시·맥락·출력형식 4요소를 갖추는 것만으로 결과 품질이 크게 달라집니다. 좋은 프롬프트는 좋은 업무 지시서와 같습니다.</div>
+      </div>
+
+      <div class="ic">
+        <div class="ic-num" style="background:var(--indigo-lt);color:var(--indigo);">03</div>
+        <div class="ic-title">기법은 상황에 따라 선택하고 조합한다</div>
+        <div class="ic-desc">Zero-shot → Few-shot → CoT 순으로 단계적으로 시도하세요. 단순 작업엔 Zero-shot, 스타일 통일엔 Few-shot, 복잡한 분석엔 CoT. 세 기법은 함께 쓸수록 강합니다.</div>
+      </div>
+
+      <div class="ic">
+        <div class="ic-num" style="background:var(--amber-lt);color:var(--amber);">04</div>
+        <div class="ic-title">환각은 줄일 수 있다</div>
+        <div class="ic-desc">"확실하지 않으면 모른다고 표시해줘", "반론도 함께 제시해줘" 두 문장으로 환각과 편향을 크게 줄일 수 있습니다. 중요한 수치·출처는 항상 직접 검증하세요.</div>
+      </div>
+
+      <div class="ic">
+        <div class="ic-num" style="background:var(--rose-lt);color:var(--rose);">05</div>
+        <div class="ic-title">프롬프트는 반복으로 완성된다</div>
+        <div class="ic-desc">처음부터 완벽한 프롬프트를 만들려 하지 마세요. 초안 → 확인 → 문제 파악 → 수정의 이터레이션이 핵심입니다. 좋은 프롬프트는 발견하는 것이 아니라 만들어가는 것입니다.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Next Steps</div>
+      <div class="section-title">다음 학습 단계</div>
+      <div class="section-desc">이론을 익혔다면 이제 실전 적용과 심화 학습으로</div>
+    </div>
+    <div class="roadmap-grid">
+
+      <div class="rc">
+        <span class="rc-badge high">즉시 적용</span>
+        <div class="rc-title">실무 프롬프트 라이브러리 만들기</div>
+        <div class="rc-desc">업무에서 반복 사용하는 작업 유형(이메일, 보고서, 요약, 번역 등)별로 검증된 프롬프트를 버전 관리하며 축적하세요. 팀 공유 시 효과가 배가됩니다.</div>
+        <div class="rc-topics">
+          <span class="rc-topic">프롬프트 버전 관리</span>
+          <span class="rc-topic">팀 공유</span>
+          <span class="rc-topic">템플릿화</span>
+        </div>
+      </div>
+
+      <div class="rc">
+        <span class="rc-badge mid">심화 학습</span>
+        <div class="rc-title">LangChain & 에이전트 활용</div>
+        <div class="rc-desc">단일 프롬프트를 넘어 여러 AI 호출을 연결하는 파이프라인, 외부 도구를 사용하는 에이전트 구조를 이해하면 업무 자동화 수준이 크게 높아집니다.</div>
+        <div class="rc-topics">
+          <span class="rc-topic">LangChain</span>
+          <span class="rc-topic">AI 에이전트</span>
+          <span class="rc-topic">파이프라인</span>
+        </div>
+      </div>
+
+      <div class="rc">
+        <span class="rc-badge mid">심화 학습</span>
+        <div class="rc-title">멀티모달 프롬프팅</div>
+        <div class="rc-desc">텍스트뿐 아니라 이미지·문서·데이터를 함께 입력하는 멀티모달 활용법을 익히면 더 복잡한 실무 문제를 AI로 해결할 수 있습니다.</div>
+        <div class="rc-topics">
+          <span class="rc-topic">이미지 입력</span>
+          <span class="rc-topic">문서 분석</span>
+          <span class="rc-topic">멀티모달</span>
+        </div>
+      </div>
+
+      <div class="rc">
+        <span class="rc-badge ops">참고 자료</span>
+        <div class="rc-title">공식 가이드라인 직접 읽기</div>
+        <div class="rc-desc">Anthropic 공식 프롬프트 엔지니어링 가이드와 Learn Prompting을 직접 읽으며 최신 기법을 업데이트하세요. 모델이 바뀔 때마다 최적 방법도 조금씩 달라집니다.</div>
+        <div class="rc-topics">
+          <span class="rc-topic">docs.anthropic.com</span>
+          <span class="rc-topic">learnprompting.org</span>
+          <span class="rc-topic">CoT 논문</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-title">프롬프트 엔지니어링 종합 가이드</div>
+  <div class="footer-note">Anthropic & OpenAI 공식 가이드라인 기반 · 5개 세션 완성</div>
+</footer>
+
+<script>
+  function toggleSession(idx) {
+    document.getElementById('session-' + idx).classList.toggle('open');
+  }
+  function openSession(idx) {
+    const card = document.getElementById('session-' + idx);
+    if (!card) return;
+    card.classList.add('open');
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+</script>
+</body>
+</html>
