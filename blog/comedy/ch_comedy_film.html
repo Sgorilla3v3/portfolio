@@ -301,7 +301,7 @@ body {
 .identity-layers { display: flex; flex-direction: column; gap: 3px; }
 .identity-layer { background: var(--charcoal); border: 1px solid var(--warm-dark); overflow: hidden; cursor: pointer; transition: all .3s var(--ease); }
 .identity-layer.active { background: var(--film); border-color: var(--persimmon); }
-.identity-layer-header { display: flex; align-items: center; gap: 20px; padding: 24px 32px; }
+.identity-layer-header { display: flex; align-items: center; gap: 20px; padding: 24px 32px; justify-content: space-between; }
 .id-num { font-family: var(--font-display); font-size: 2.6rem; color: var(--warm-dark); min-width: 56px; line-height: 1; transition: color .3s; }
 .identity-layer.active .id-num { color: var(--persimmon); }
 .id-title h3 { font-family: var(--font-display); font-size: 1.35rem; color: var(--cream); margin-bottom: 3px; }
@@ -406,6 +406,17 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 .td-accent { color: var(--persimmon); font-weight: 700; }
 .td-muted { color: var(--muted); font-size: .78rem; }
 
+/* 토글 chevron */
+.toggle-chevron {
+  width: 20px; height: 20px; flex-shrink: 0;
+  color: var(--muted);
+  transition: transform 0.3s var(--ease), color 0.2s;
+}
+.step-card.open .toggle-chevron,
+.tl-row.open .toggle-chevron,
+.monthly-row.open .toggle-chevron,
+.identity-layer.active .toggle-chevron { transform: rotate(180deg); color: var(--persimmon); }
+
 /* 타임라인 행 */
 .timeline-rows { display: flex; flex-direction: column; gap: 2px; }
 .tl-row {
@@ -417,7 +428,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 .tl-row:hover { background: var(--warm-dark); }
 .tl-row-header {
   display: grid;
-  grid-template-columns: 96px 1fr auto;
+  grid-template-columns: 96px 1fr auto auto;
   align-items: center;
   padding: 16px 22px;
   gap: 20px;
@@ -467,7 +478,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 /* 단계 카드 */
 .step-cards { display: flex; flex-direction: column; gap: 2px; }
 .step-card { background: var(--charcoal); border: 1px solid var(--warm-dark); }
-.step-card-header { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 20px; padding: 20px 24px; cursor: pointer; }
+.step-card-header { display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 20px; padding: 20px 24px; cursor: pointer; }
 .step-card.open .step-card-header { border-bottom: 1px solid var(--warm-dark); }
 .step-n { font-family: var(--font-display); font-size: 2.2rem; color: var(--persimmon-deep); line-height: 1; }
 .step-meta { display: flex; align-items: baseline; gap: 12px; }
@@ -490,7 +501,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 .monthly-rows { display: flex; flex-direction: column; gap: 2px; }
 .monthly-row { background: var(--film); border: 1px solid var(--warm-dark); cursor: pointer; transition: background .2s; }
 .monthly-row:hover { background: var(--warm-dark); }
-.monthly-row-header { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 16px; padding: 16px 22px; }
+.monthly-row-header { display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 16px; padding: 16px 22px; }
 .monthly-month { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold); }
 .monthly-label { font-size: .88rem; font-weight: 500; color: var(--cream); }
 .monthly-body { max-height: 0; overflow: hidden; transition: max-height .3s var(--ease); }
@@ -1932,7 +1943,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
               </div>
               <div>
                 <blockquote class="quote-block" style="font-size:.88rem;padding:20px 24px;">
-                  "관내 중학교 교사가 3월에 혁신센터에 전화해서 <strong>올해 공모전 일정 언제 나와요?</strong>라고 묻는다. 지역 농협이 <strong>우리도 후원하겠다</strong>고 먼저 연락한다. 자연스러운 생태계의 완성 과정."
+                  "관내 중학교 교사가 3월에 혁신센터에 전화해서 <strong>올해 공모전 일정 언제 나와요?</strong>라고 묻는다. 지역 감 농협이 <strong>우리도 후원하겠다</strong>고 먼저 연락한다. 그것이 생태계다."
                 </blockquote>
               </div>
             </div>
@@ -2225,6 +2236,21 @@ if (goalsEl) counterObs.observe(goalsEl);
 /* ----------------------------------------------------------
    인터랙션
    ---------------------------------------------------------- */
+/* ----------------------------------------------------------
+   토글 chevron 자동 삽입
+   ---------------------------------------------------------- */
+(function injectChevrons() {
+  const SVG = `<svg class="toggle-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  // step-card-header
+  document.querySelectorAll('.step-card-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
+  // tl-row-header
+  document.querySelectorAll('.tl-row-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
+  // monthly-row-header
+  document.querySelectorAll('.monthly-row-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
+  // identity-layer-header
+  document.querySelectorAll('.identity-layer-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
+})();
+
 /* ----------------------------------------------------------
    사이드바 토글
    ---------------------------------------------------------- */
