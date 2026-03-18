@@ -1,1192 +1,2555 @@
+<!--
+  마케팅 실무 고도화를 위한 AI 활용 전략 브리핑
+  강사: 성강현 | 버전: v2 | 작성: 2026-03-18
+  슬라이드: 17장 | 방식: 단일 HTML 풀페이지 스크롤 스냅
+-->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>프레젠테이션 뷰어</title>
-    
-    <!-- 파비콘 -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%232F5233'/%3E%3Cpath d='M20 35h60v8H20z' fill='%23FDFBF7'/%3E%3Cpath d='M25 45h50v15H25z' fill='%23FDFBF7'/%3E%3Ccircle cx='35' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='50' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='65' cy='50' r='2' fill='%232F5233'/%3E%3Cpath d='M30 65h40v3H30z' fill='%2397A97C'/%3E%3C/svg%3E">
-    
-    <!-- 메타 정보 -->
-    <meta name="description" content="자동 로드 프레젠테이션 뷰어 - HTML 슬라이드 자동 감지 및 표시">
-    <meta name="author" content="Presentation Viewer">
-    <meta name="keywords" content="프레젠테이션, 뷰어, HTML, 슬라이드, 자동로드">
-    
-    <!-- Open Graph 메타 태그 -->
-    <meta property="og:title" content="프레젠테이션 뷰어">
-    <meta property="og:description" content="HTML 슬라이드 자동 감지 및 표시">
-    <meta property="og:type" content="website">
-    
-    <!-- 브라우저 테마 색상 -->
-    <meta name="theme-color" content="#2F5233">
-    <meta name="msapplication-navbutton-color" content="#2F5233">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    
-    <!-- PWA 지원 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="프레젠테이션">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%232F5233'/%3E%3Cpath d='M20 35h60v8H20z' fill='%23FDFBF7'/%3E%3Cpath d='M25 45h50v15H25z' fill='%23FDFBF7'/%3E%3Ccircle cx='35' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='50' cy='50' r='2' fill='%232F5233'/%3E%3Ccircle cx='65' cy='50' r='2' fill='%232F5233'/%3E%3Cpath d='M30 65h40v3H30z' fill='%2397A97C'/%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마케팅 실무 고도화를 위한 AI 활용 전략</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            overflow: auto;
-            height: 100vh;
-        }
+<style>
+/* =============================================
+   0. CSS 변수 & 리셋
+   ============================================= */
+:root {
+  --bg:            #0a0f1e;
+  --bg-slide:      #0d1424;
+  --bg-card:       rgba(255,255,255,0.04);
+  --bg-card-hover: rgba(255,255,255,0.07);
+  --accent:        #2dd4bf;
+  --accent-dim:    rgba(45,212,191,0.12);
+  --accent-border: rgba(45,212,191,0.28);
+  --accent-dark:   #0d9488;
+  --green:         #2F5233;
+  --green-light:   #97A97C;
+  --text:          #f1f5f9;
+  --text-muted:    rgba(241,245,249,0.55);
+  --text-dim:      rgba(241,245,249,0.28);
+  --border:        rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.14);
+  --shadow:        0 4px 32px rgba(0,0,0,0.5);
+  --transition:    0.22s cubic-bezier(0.4,0,0.2,1);
+  --radius:        12px;
+  --radius-lg:     20px;
+  --slide-px:      88px;
+  --slide-py:      64px;
+  --nav-h:         56px;
+  --ctrl-h:        52px;
+  --font:          'Noto Sans KR', sans-serif;
+  --font-mono:     'JetBrains Mono', monospace;
+}
 
-        .container {
-            display: flex;
-            height: 100vh;
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* 왼쪽 목차 패널 */
-        .sidebar {
-            width: 320px;
-            background: linear-gradient(180deg, #2F5233 0%, #1e3a21 100%);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-            z-index: 100;
-            transition: all 0.3s ease;
-            overflow: auto;
-        }
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  background: var(--bg);
+}
 
-        .sidebar.hidden {
-            width: 0;
-            min-width: 0;
-            box-shadow: none;
-        }
+body {
+  font-family: var(--font);
+  color: var(--text);
+  line-height: 1.6;
+  background: var(--bg);
+}
 
-        .toggle-sidebar-btn {
-            background: #97A97C !important;
-            margin-right: 15px;
-            min-width: 90px;
-            justify-content: center;
-        }
+/* =============================================
+   1. 상단 네비바
+   ============================================= */
+#top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: rgba(10,15,30,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 1000;
+  gap: 16px;
+}
 
-        .toggle-sidebar-btn.active {
-            background: #2F5233 !important;
-        }
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.nav-logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.nav-logo-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
 
+.nav-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-slide-counter {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+  min-width: 52px;
+  text-align: center;
+}
+.nav-progress-bar {
+  width: 160px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.nav-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 2px;
+  transition: width 0.4s var(--transition);
+  width: 5.88%;
+}
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-btn {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: var(--transition);
+}
+.nav-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.nav-btn.active {
+  background: var(--accent-dim);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
 
-        .sidebar-header {
-            padding: 25px 20px;
-            background: rgba(0,0,0,0.2);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
+/* =============================================
+   2. 목차 오버레이 (슬라이드 패널)
+   ============================================= */
+#toc-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 300px;
+  height: 100vh;
+  background: linear-gradient(180deg, #0f2316 0%, #0a1a0e 100%);
+  border-right: 1px solid rgba(151,169,124,0.2);
+  transform: translateX(-100%);
+  transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#toc-overlay.open {
+  transform: translateX(0);
+}
+.toc-header {
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid rgba(151,169,124,0.15);
+  flex-shrink: 0;
+  margin-top: var(--nav-h);
+}
+.toc-header-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--green-light);
+  margin-bottom: 6px;
+}
+.toc-header-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.4;
+}
+.toc-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 0;
+}
+.toc-list::-webkit-scrollbar { width: 4px; }
+.toc-list::-webkit-scrollbar-track { background: transparent; }
+.toc-list::-webkit-scrollbar-thumb { background: rgba(151,169,124,0.3); border-radius: 2px; }
 
-        .sidebar-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #97A97C;
-        }
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+  text-decoration: none;
+}
+.toc-item:hover {
+  background: rgba(151,169,124,0.08);
+  border-left-color: rgba(151,169,124,0.4);
+}
+.toc-item.active {
+  background: rgba(151,169,124,0.14);
+  border-left-color: var(--green-light);
+}
+.toc-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.5);
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+.toc-item.active .toc-num {
+  background: var(--green-light);
+  color: #0a1a0e;
+}
+.toc-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.35;
+  transition: var(--transition);
+}
+.toc-item:hover .toc-text,
+.toc-item.active .toc-text {
+  color: rgba(255,255,255,0.9);
+}
 
-        .sidebar-subtitle {
-            font-size: 12px;
-            opacity: 0.8;
-            font-weight: 300;
-        }
+/* 오버레이 닫기 배경 */
+#toc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.32s ease;
+}
+#toc-backdrop.open {
+  opacity: 1;
+  pointer-events: all;
+}
 
-        .toc-list {
-            flex: 1;
-            padding: 20px 0;
-            overflow-y: auto;
-        }
+/* =============================================
+   3. 슬라이드 기본 구조
+   ============================================= */
+.slide {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--nav-h) + var(--slide-py)) var(--slide-px) calc(var(--ctrl-h) + var(--slide-py));
+  position: relative;
+  background: var(--bg-slide);
+  scroll-snap-align: start;
+  overflow: hidden;
+}
 
-        .toc-item {
-            padding: 12px 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-left: 4px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+/* 내용 긴 슬라이드 — 스냅 예외 */
+.slide--long {
+  scroll-snap-align: none;
+  justify-content: flex-start;
+  padding-top: calc(var(--nav-h) + 48px);
+}
 
-        .toc-item:hover {
-            background: rgba(255,255,255,0.1);
-            border-left-color: #97A97C;
-        }
+/* 슬라이드 구분선 */
+.slide + .slide::before {
+  content: '';
+  position: absolute;
+  top: 0; left: var(--slide-px);
+  right: var(--slide-px);
+  height: 1px;
+  background: var(--border);
+}
 
-        .toc-item.active {
-            background: rgba(151,169,124,0.3);
-            border-left-color: #97A97C;
-            color: #97A97C;
-            font-weight: 600;
-        }
+/* 슬라이드 번호 워터마크 */
+.slide::after {
+  content: attr(data-num);
+  position: absolute;
+  bottom: calc(var(--ctrl-h) + 20px);
+  right: var(--slide-px);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
 
-        .toc-number {
-            min-width: 24px;
-            height: 24px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-        }
+/* 배경 변형 */
+.slide--cover {
+  background:
+    radial-gradient(ellipse 60% 80% at 75% 40%, rgba(45,212,191,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 70%, rgba(47,82,51,0.15) 0%, transparent 60%),
+    var(--bg-slide);
+}
+.slide--emphasis {
+  background:
+    radial-gradient(circle at 15% 85%, rgba(45,212,191,0.06) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(47,82,51,0.12) 0%, transparent 45%),
+    var(--bg-slide);
+}
+.slide--closing {
+  background: linear-gradient(160deg, #0a1a0e 0%, #0d1424 50%, #0a0f1e 100%);
+}
 
-        .toc-item.active .toc-number {
-            background: #97A97C;
-            color: #2F5233;
-        }
+/* =============================================
+   4. 타이포그래피
+   ============================================= */
+.t-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.t-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
 
-        .toc-text {
-            font-size: 14px;
-            line-height: 1.4;
-        }
+.t-title {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.t-title em {
+  font-style: normal;
+  color: var(--accent);
+}
 
-        /* 사이드바 단축키 스타일 */
-        .sidebar-shortcuts {
-            padding: 20px 25px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.1);
-            display: none;
-        }
+.t-subtitle {
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+}
 
-        .shortcuts-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #97A97C;
-            margin-bottom: 15px;
-        }
+.t-heading {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
 
-        .shortcut-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 11px;
-        }
+.t-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--text-muted);
+}
 
-        .shortcut-item:last-child {
-            margin-bottom: 0;
-        }
+.t-small {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
 
-        .shortcut-item .key {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            border: 1px solid rgba(255,255,255,0.1);
-            font-size: 10px;
-            min-width: 20px;
-            text-align: center;
-        }
+.t-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+}
 
-        .shortcut-text {
-            color: rgba(255,255,255,0.8);
-            font-weight: 400;
-        }
+.text-accent { color: var(--accent); }
+.text-muted  { color: var(--text-muted); }
+.text-green  { color: var(--green-light); }
 
-        /* 메인 콘텐츠 영역 */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: #f8fafc;
-            transition: margin-left 0.3s ease;
-        }
+/* =============================================
+   5. 슬라이드 헤더
+   ============================================= */
+.slide-header {
+  margin-bottom: 44px;
+}
+.slide-header .t-subtitle {
+  margin-top: 6px;
+}
 
-        /* 상단 네비게이션 */
-        .nav-header {
-            background: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 50;
-        }
+/* =============================================
+   6. 공통 컴포넌트
+   ============================================= */
 
-        .page-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+/* 강조 박스 */
+.callout {
+  background: var(--accent-dim);
+  border-left: 3px solid var(--accent);
+  padding: 20px 24px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 24px 0;
+}
+.callout p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text);
+}
+.callout strong { color: var(--accent); }
 
-        .page-counter {
-            background: linear-gradient(135deg, #2F5233, #97A97C);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 14px;
-        }
+/* 카드 */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: var(--transition);
+}
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-border);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
 
-        .page-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1f2937;
-        }
+/* 카드 그리드 */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 
-        .nav-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+/* 번호 뱃지 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--bg);
+  flex-shrink: 0;
+}
+.badge-lg {
+  width: 40px; height: 40px;
+  font-size: 15px;
+}
 
-        .nav-btn {
-            background: #2F5233;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-        }
+/* 태그 칩 */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+.chip-green {
+  background: rgba(47,82,51,0.3);
+  color: var(--green-light);
+  border-color: rgba(151,169,124,0.3);
+}
+.chip-warning {
+  background: rgba(251,146,60,0.1);
+  color: #fb923c;
+  border-color: rgba(251,146,60,0.3);
+}
 
-        .edit-btn {
-            background: #8B5A2B;
-        }
+/* 구분선 */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 32px 0;
+}
 
-        .edit-btn.active {
-            background: #D97706;
-        }
+/* 비교 테이블 */
+.table-wrap { overflow-x: auto; }
+table.compare {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+table.compare th {
+  background: var(--accent-dim);
+  color: var(--accent);
+  padding: 11px 16px;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid var(--accent-border);
+  white-space: nowrap;
+}
+table.compare td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  vertical-align: top;
+  line-height: 1.55;
+}
+table.compare tr:hover td {
+  background: var(--bg-card);
+  color: var(--text);
+}
+table.compare td:first-child {
+  font-weight: 600;
+  color: var(--text);
+}
 
-        .save-btn {
-            background: #059669;
-        }
+/* 가로 플로우 */
+.flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.flow-item {
+  flex: 1;
+  position: relative;
+  padding-right: 32px;
+}
+.flow-item::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0; height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 10px solid var(--accent-border);
+}
+.flow-item:last-child { padding-right: 0; }
+.flow-item:last-child::after { display: none; }
 
-        .nav-btn:hover {
-            background: #97A97C;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(47, 82, 51, 0.3);
-        }
+/* 세로 스텝 */
+.step-list { display: flex; flex-direction: column; gap: 0; }
+.step-item {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  position: relative;
+}
+.step-item + .step-item {
+  border-top: 1px solid var(--border);
+}
+.step-left { display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; }
+.step-line {
+  width: 2px;
+  flex: 1;
+  background: var(--border);
+  margin-top: 6px;
+  min-height: 16px;
+}
+.step-item:last-child .step-line { display: none; }
+.step-content { flex: 1; padding-top: 4px; }
 
-        .nav-btn:disabled {
-            background: #d1d5db;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
+/* 2분할 레이아웃 */
+.split-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.split-3-2 {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 48px;
+  align-items: start;
+}
 
-        .nav-btn i {
-            font-size: 12px;
-        }
+/* 이미지 */
+.slide-img {
+  width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
 
-        /* iframe 컨테이너 */
-        .iframe-container {
-            flex: 1;
-            padding: 20px;
-            overflow: auto;
-            height: calc(100vh - 80px); /* 네비게이션 헤더 높이 제외 */
-        }
+/* 코드 블록 */
+.code-block {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: #94a3b8;
+  overflow-x: auto;
+}
+.code-block .kw  { color: #c084fc; }
+.code-block .str { color: #86efac; }
+.code-block .num { color: var(--accent); }
+.code-block .cmt { color: #475569; }
 
-        .slide-frame {
-            width: 1280px;
-            height: 720px;
-            max-width: none;
-            max-height: none;
-            border: none;
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            background: white;
-            transition: all 0.3s ease;
-            display: block;
-            margin: 0 auto; /* 수평 중앙 정렬 */
-        }
+/* Key Takeaway 바 */
+.takeaway {
+  margin-top: 32px;
+  padding: 16px 24px;
+  background: rgba(47,82,51,0.2);
+  border: 1px solid rgba(151,169,124,0.2);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.takeaway-icon {
+  font-size: 18px;
+  color: var(--green-light);
+  flex-shrink: 0;
+}
+.takeaway p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
+}
+.takeaway strong { color: var(--green-light); }
 
-        .slide-frame:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
-        }
+/* =============================================
+   7. 하단 컨트롤바
+   ============================================= */
+#slide-ctrl {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--ctrl-h);
+  background: rgba(10,15,30,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  z-index: 1000;
+  padding: 0 40px;
+}
 
-        /* 편집 모드 스타일 */
-        .edit-mode .slide-frame {
-            border: 3px solid #D97706;
-            box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
-        }
+.ctrl-btn {
+  width: 34px; height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.ctrl-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.ctrl-btn.primary {
+  background: var(--accent-dim);
+  border-color: var(--accent-border);
+  color: var(--accent);
+  width: 40px;
+}
+.ctrl-btn.primary:hover {
+  background: rgba(45,212,191,0.2);
+}
 
-        .edit-toolbar {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.8);
-            padding: 10px;
-            border-radius: 8px;
-            display: none;
-            z-index: 1000;
-        }
+.ctrl-dots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 12px;
+  max-width: 300px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.ctrl-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.ctrl-dot:hover {
+  background: var(--text-muted);
+  transform: scale(1.3);
+}
+.ctrl-dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+  width: 18px;
+  border-radius: 3px;
+}
 
-        .edit-mode .edit-toolbar {
-            display: block;
-        }
+/* =============================================
+   8. 진입 애니메이션
+   ============================================= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
-        .toolbar-btn {
-            background: #374151;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            margin: 0 2px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
+.anim {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.slide.visible .anim {
+  animation: fadeUp 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+.slide.visible .anim:nth-child(1)  { animation-delay: 0.05s; }
+.slide.visible .anim:nth-child(2)  { animation-delay: 0.12s; }
+.slide.visible .anim:nth-child(3)  { animation-delay: 0.19s; }
+.slide.visible .anim:nth-child(4)  { animation-delay: 0.26s; }
+.slide.visible .anim:nth-child(5)  { animation-delay: 0.33s; }
+.slide.visible .anim:nth-child(6)  { animation-delay: 0.40s; }
+.slide.visible .anim:nth-child(7)  { animation-delay: 0.47s; }
+.slide.visible .anim:nth-child(8)  { animation-delay: 0.54s; }
 
-        .toolbar-btn:hover {
-            background: #4B5563;
-        }
+/* =============================================
+   9. 키보드 힌트 (우하단 고정)
+   ============================================= */
+#key-hint {
+  position: fixed;
+  bottom: calc(var(--ctrl-h) + 12px);
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 500;
+}
+#key-hint:hover { opacity: 0.7; }
+.key-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--bg-card);
+}
+#key-hint span { font-size: 10px; color: var(--text-dim); }
 
-        /* 키보드 단축키 안내 - 사이드바로 이동됨 */
-        
-        /* 로딩 애니메이션 */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            font-size: 18px;
-            color: #6b7280;
-        }
+/* =============================================
+   10. 반응형
+   ============================================= */
+@media (max-width: 1100px) {
+  :root { --slide-px: 56px; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  :root { --slide-px: 24px; --slide-py: 40px; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .split-2, .split-3-2 { grid-template-columns: 1fr; gap: 28px; }
+  .flow { flex-direction: column; }
+  .flow-item { padding-right: 0; }
+  .flow-item::after { display: none; }
+  #toc-overlay { width: 100%; }
+  .nav-logo-text { display: none; }
+  #key-hint { display: none; }
+}
 
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e5e7eb;
-            border-top: 4px solid #2F5233;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 15px;
-        }
+/* =============================================
+   SLIDE 01 — 커버
+   ============================================= */
+.cover-main {
+  max-width: 660px;
+}
+.cover-en {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+.cover-title {
+  font-size: clamp(34px, 4.5vw, 58px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-bottom: 24px;
+}
+.cover-desc {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  max-width: 520px;
+  margin-bottom: 36px;
+}
+.cover-quote {
+  padding: 18px 24px;
+  border-left: 3px solid var(--green-light);
+  background: rgba(47,82,51,0.15);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin-bottom: 48px;
+}
+.cover-quote p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+  font-style: italic;
+}
+.cover-quote cite {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--green-light);
+  font-style: normal;
+  font-weight: 700;
+}
+.cover-goals {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.cover-goal-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 14px;
+  text-align: center;
+  transition: var(--transition);
+}
+.cover-goal-item:hover {
+  border-color: var(--accent-border);
+  background: var(--bg-card-hover);
+}
+.cover-goal-icon {
+  font-size: 20px;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.cover-goal-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.cover-goal-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+/* =============================================
+   SLIDE 02 — 목차
+   ============================================= */
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.toc-slide-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+}
+.toc-slide-item:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-border);
+  transform: translateX(4px);
+}
+.toc-slide-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 24px;
+  opacity: 0.7;
+}
+.toc-slide-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.toc-slide-item:hover .toc-slide-title {
+  color: var(--text);
+}
 
-        /* 반응형 디자인 */
-        @media (max-width: 1400px) {
-            .slide-frame {
-                max-width: 95vw;
-            }
-            .iframe-container {
-                padding: 15px;
-            }
-        }
+/* =============================================
+   SLIDE 04 — 타임라인
+   ============================================= */
+.timeline-wrap {
+  position: relative;
+  padding: 20px 0;
+}
+.timeline-line {
+  position: absolute;
+  top: 50px;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-border) 10%, var(--accent-border) 90%, transparent);
+}
+.timeline-items {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0;
+  position: relative;
+}
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 0 4px;
+}
+.timeline-year {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+  text-align: center;
+}
+.timeline-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  flex-shrink: 0;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+}
+.timeline-dot.past { background: var(--text-dim); box-shadow: none; }
+.timeline-dot.highlight {
+  width: 16px; height: 16px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+}
+.timeline-events {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+.t-event {
+  font-size: 10.5px;
+  line-height: 1.4;
+  padding: 5px 8px;
+  border-radius: 6px;
+  text-align: center;
+}
+.t-event.openai  { background: rgba(96,165,250,0.1); color: #93c5fd; border: 1px solid rgba(96,165,250,0.2); }
+.t-event.google  { background: rgba(74,222,128,0.1); color: #86efac; border: 1px solid rgba(74,222,128,0.2); }
+.t-event.anthro  { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.t-event.others  { background: rgba(251,146,60,0.1); color: #fdba74; border: 1px solid rgba(251,146,60,0.2); }
 
-        @media (max-width: 1024px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                height: auto;
-                max-height: 180px;
-                overflow-y: auto;
-                order: -1;
-            }
-            
-            .sidebar-header {
-                padding: 15px 20px;
-            }
-            
-            .sidebar-title {
-                font-size: 16px;
-            }
-            
-            .toc-list {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                padding: 15px 20px;
-            }
-            
-            .toc-item {
-                flex: 0 0 auto;
-                padding: 8px 12px;
-                border-radius: 20px;
-                background: rgba(255,255,255,0.1);
-                border-left: none;
-                min-width: 120px;
-            }
-            
-            .toc-item.active {
-                background: rgba(151,169,124,0.8);
-            }
-            
-            .main-content {
-                flex: 1;
-            }
-            
-            .slide-frame {
-                max-width: 95vw;
-            }
-            
-            .sidebar-shortcuts {
-                display: none; /* 태블릿에서는 단축키 숨김 */
-            }
-            
-            .nav-header {
-                padding: 10px 20px;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            
-            .page-info {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-            
-            .nav-controls {
-                gap: 8px;
-            }
-            
-            .nav-btn {
-                padding: 8px 12px;
-                font-size: 14px;
-            }
-        }
+/* =============================================
+   SLIDE 09 — Self-Prompt 매트릭스
+   ============================================= */
+.matrix-wrap {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  grid-template-rows: auto 1fr 1fr;
+  gap: 12px;
+}
+.matrix-axis-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.matrix-axis-x {
+  grid-column: 2 / 4;
+  grid-row: 1;
+  flex-direction: column;
+  gap: 6px;
+}
+.matrix-axis-y {
+  grid-column: 1;
+  grid-row: 2 / 4;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+.matrix-cell {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: var(--transition);
+}
+.matrix-cell:hover {
+  border-color: var(--accent-border);
+  background: var(--bg-card-hover);
+}
+.matrix-cell-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.matrix-cell-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.matrix-cell-desc {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
 
-        @media (max-width: 768px) {
-            .sidebar {
-                height: 120px;
-                max-height: 120px;
-            }
-            
-            .toc-list {
-                padding: 10px 15px;
-                gap: 8px;
-            }
-            
-            .toc-item {
-                min-width: 100px;
-                padding: 6px 10px;
-            }
-            
-            .toc-text {
-                font-size: 11px;
-            }
-            
-            .toc-number {
-                min-width: 18px;
-                height: 18px;
-                font-size: 10px;
-            }
-            
-            .slide-frame {
-                max-width: 98vw;
-                border-radius: 8px;
-            }
-            
-            .nav-header {
-                padding: 8px 15px;
-            }
-            
-            .page-counter {
-                font-size: 12px;
-                padding: 6px 12px;
-            }
-            
-            .page-title {
-                font-size: 14px;
-            }
-            
-            .nav-btn {
-                padding: 6px 10px;
-                font-size: 12px;
-            }
-            
-            .nav-btn span {
-                display: none; /* 모바일에서는 텍스트 숨기고 아이콘만 */
-            }
-            
-            .nav-btn i {
-                font-size: 12px;
-                margin: 0;
-            }
-            
-            .iframe-container {
-                padding: 10px;
-            }
-            
-            .edit-toolbar {
-                top: 5px;
-                right: 5px;
-                padding: 8px;
-            }
-            
-            .toolbar-btn {
-                padding: 4px 8px;
-                font-size: 11px;
-                margin: 0 1px;
-            }
-            
-            .sidebar-shortcuts {
-                padding: 15px 20px;
-            }
-            
-            .shortcuts-title {
-                font-size: 12px;
-            }
-            
-            .shortcut-item {
-                font-size: 10px;
-                gap: 6px;
-            }
-            
-            .shortcut-item .key {
-                font-size: 9px;
-                padding: 1px 4px;
-                min-width: 16px;
-            }
-        }
+/* =============================================
+   SLIDE 12 — MCP M×N 다이어그램
+   ============================================= */
+.mcp-problem {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.mcp-diagram {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+}
+.mcp-nodes {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 12px;
+}
+.mcp-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.mcp-node-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.mcp-node-icon.ai   { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.mcp-node-icon.tool { background: rgba(251,146,60,0.1); color: #fb923c; border: 1px solid rgba(251,146,60,0.25); }
+.mcp-node-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+.mcp-connector {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.mcp-connector.problem {
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.3);
+}
+.mcp-connector.solution {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
 
-        @media (max-width: 480px) {
-            .sidebar {
-                height: 100px;
-                max-height: 100px;
-            }
-            
-            .toc-list {
-                padding: 8px 12px;
-            }
-            
-            .toc-item {
-                min-width: 80px;
-                padding: 4px 8px;
-            }
-            
-            .toc-text {
-                font-size: 10px;
-            }
-            
-            .nav-header {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-                padding: 8px 10px;
-            }
-            
-            .page-info {
-                justify-content: center;
-                margin-bottom: 8px;
-            }
-            
-            .nav-controls {
-                justify-content: center;
-            }
-            
-            .slide-frame {
-                max-width: 100vw;
-                border-radius: 0;
-            }
-            
-            .iframe-container {
-                padding: 5px;
-            }
-        }
-    </style>
+/* =============================================
+   SLIDE 13 — MCP 아키텍처 다이어그램
+   ============================================= */
+.arch-diagram {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  position: relative;
+}
+.arch-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.arch-box {
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  text-align: center;
+  min-width: 120px;
+}
+.arch-box.brain {
+  background: var(--accent-dim);
+  border: 2px solid var(--accent);
+}
+.arch-box.router {
+  background: rgba(47,82,51,0.3);
+  border: 1px solid rgba(151,169,124,0.4);
+}
+.arch-box.server {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+.arch-box.data {
+  background: rgba(251,146,60,0.08);
+  border: 1px solid rgba(251,146,60,0.2);
+  min-width: 90px;
+  padding: 8px 12px;
+}
+.arch-box-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+.arch-box-title {
+  font-size: 13px;
+  font-weight: 700;
+}
+.arch-arrow {
+  font-size: 18px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.arch-arrow-v {
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-dim);
+  margin: -4px 0;
+}
+
+/* =============================================
+   SLIDE 16 — 듀얼 브레인
+   ============================================= */
+.dual-brain {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 0;
+  align-items: center;
+}
+.brain-side {
+  padding: 28px;
+  border-radius: var(--radius-lg);
+}
+.brain-side.human {
+  background: rgba(47,82,51,0.15);
+  border: 1px solid rgba(151,169,124,0.2);
+}
+.brain-side.ai {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+}
+.brain-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.brain-center-icon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text-dim);
+}
+.brain-side-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.brain-side.human .brain-side-label { color: var(--green-light); }
+.brain-side.ai    .brain-side-label { color: var(--accent); }
+.brain-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.brain-list li {
+  font-size: 14px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brain-list li::before {
+  content: '→';
+  color: var(--accent);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* =============================================
+   SLIDE 17 — 7-Day Plan
+   ============================================= */
+.day-plan {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+.day-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 12px;
+  text-align: center;
+  transition: var(--transition);
+}
+.day-item:hover {
+  border-color: var(--accent-border);
+  background: var(--bg-card-hover);
+}
+.day-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+  letter-spacing: 0.1em;
+}
+.day-task {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.day-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- 왼쪽 목차 -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-title">프레젠테이션 목차</div>
-                <div class="sidebar-subtitle" id="presentation-subtitle">자동 로드된 슬라이드</div>
-            </div>
-            <div class="toc-list">
-            </div>
-            
-            <!-- 키보드 단축키 안내 -->
-            <div class="sidebar-shortcuts">
-                <div class="shortcuts-title">단축키</div>
-                <div class="shortcut-item">
-                    <span class="key">←</span>
-                    <span class="key">→</span>
-                    <span class="shortcut-text">페이지 이동</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">Home</span>
-                    <span class="shortcut-text">첫 페이지</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">End</span>
-                    <span class="shortcut-text">마지막 페이지</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">Ctrl</span>
-                    <span class="key">E</span>
-                    <span class="shortcut-text">편집 모드</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">Ctrl</span>
-                    <span class="key">S</span>
-                    <span class="shortcut-text">저장</span>
-                </div>
-                <div class="shortcut-item">
-                    <span class="key">Ctrl</span>
-                    <span class="key">B</span>
-                    <span class="shortcut-text">목차 토글</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- 메인 콘텐츠 -->
-        <div class="main-content">
-            <!-- 상단 네비게이션 -->
-            <div class="nav-header">
-                <div class="page-info">
-                    <button class="nav-btn toggle-sidebar-btn" id="toggle-sidebar-btn">
-                        <i class="fas fa-eye-slash"></i>
-                        <span>숨기기</span>
-                    </button>
-                    <div class="page-counter">
-                        <span id="current-page">1</span> / <span id="total-pages">9</span>
-                    </div>
-                    <div class="page-title" id="page-title">표지</div>
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn edit-btn" id="edit-btn">
-                        <i class="fas fa-edit"></i>
-                        <span>편집</span>
-                    </button>
-                    <button class="nav-btn save-btn" id="save-btn" style="display: none;">
-                        <i class="fas fa-save"></i>
-                        <span>저장</span>
-                    </button>
-                    <button class="nav-btn" id="prev-btn" disabled>
-                        <i class="fas fa-chevron-left"></i>
-                        <span>이전</span>
-                    </button>
-                    <button class="nav-btn" id="next-btn">
-                        <span>다음</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
+<!-- =============================================
+     상단 네비바
+     ============================================= -->
+<nav id="top-nav">
+  <div class="nav-logo">
+    <div class="nav-logo-dot"></div>
+    <span class="nav-logo-text">AI 활용 전략 브리핑</span>
+  </div>
 
-            <!-- 슬라이드 표시 영역 -->
-            <div class="iframe-container">
-                <div class="edit-toolbar" id="edit-toolbar">
-                    <button class="toolbar-btn" onclick="execCommand('bold')">
-                        <i class="fas fa-bold"></i>
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('italic')">
-                        <i class="fas fa-italic"></i>
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('underline')">
-                        <i class="fas fa-underline"></i>
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('fontSize', '14px')">
-                        작게
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('fontSize', '18px')">
-                        크게
-                    </button>
-                    <button class="toolbar-btn" onclick="execCommand('foreColor', '#2F5233')">
-                        <i class="fas fa-palette"></i>
-                    </button>
-                </div>
-                <iframe 
-                    class="slide-frame" 
-                    id="slide-frame" 
-                    src="p0.html"
-                    title="프레젠테이션 슬라이드">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        슬라이드를 불러오는 중...
-                    </div>
-                </iframe>
-            </div>
-        </div>
+  <div class="nav-center">
+    <span class="nav-slide-counter" id="nav-counter">01 / 17</span>
+    <div class="nav-progress-bar">
+      <div class="nav-progress-fill" id="nav-progress"></div>
     </div>
+  </div>
 
-    <!-- 키보드 단축키 안내 -->
-    <div class="keyboard-hints">
-        <div class="keyboard-hint">
-            <span class="key">←</span>
-            <span class="key">→</span>
-            <span>페이지 이동</span>
-        </div>
-        <div class="keyboard-hint">
-            <span class="key">Home</span>
-            <span>첫 페이지</span>
-        </div>
-        <div class="keyboard-hint">
-            <span class="key">End</span>
-            <span>마지막 페이지</span>
-        </div>
-        <div class="keyboard-hint">
-            <span class="key">Ctrl</span>
-            +
-            <span class="key">E</span>
-            <span>편집 모드</span>
-        </div>
-        <div class="keyboard-hint">
-            <span class="key">Ctrl</span>
-            +
-            <span class="key">S</span>
-            <span>저장</span>
-        </div>
+  <div class="nav-actions">
+    <button class="nav-btn" id="btn-prev" title="이전 슬라이드 (↑)">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+    <button class="nav-btn" id="btn-next" title="다음 슬라이드 (↓)">
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <button class="nav-btn" id="btn-toc" title="목차">
+      <i class="fas fa-bars"></i>
+    </button>
+    <button class="nav-btn" id="btn-fs" title="전체화면 (F)">
+      <i class="fas fa-expand"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- 목차 오버레이 배경 -->
+<div id="toc-backdrop"></div>
+
+<!-- 목차 오버레이 -->
+<div id="toc-overlay">
+  <div class="toc-header">
+    <div class="toc-header-label">Table of Contents</div>
+    <div class="toc-header-title">마케팅 실무 고도화를 위한<br>AI 활용 전략</div>
+  </div>
+  <nav class="toc-list" id="toc-list">
+    <!-- JS로 생성 -->
+  </nav>
+</div>
+
+<!-- =============================================
+     슬라이드 본문
+     ============================================= -->
+<main id="slides-main">
+
+<!-- ===== SLIDE 01: 커버 ===== -->
+<section class="slide slide--cover" id="slide-01" data-num="01 / 17" data-title="커버">
+  <div class="cover-main">
+    <p class="cover-en anim">Marketing & AI Integration Strategy</p>
+    <h1 class="cover-title anim">
+      마케팅 실무 고도화를<br>
+      위한 <em>AI 활용</em><br>
+      전략 브리핑
+    </h1>
+    <p class="cover-desc anim">
+      AI 듀얼 브레인으로 업무 생산성 <strong style="color:var(--accent)">10~50배</strong> 혁신하기
+    </p>
+    <div class="cover-quote anim">
+      <p>"AI의 본질을 알아야 AI를 효율적으로 사용 가능하고,<br>
+         AI로 대체 가능한 업무를 알아야 AI를 공부할 방향이 정해진다."</p>
+      <cite>— 성강현</cite>
     </div>
+    <div class="cover-goals anim">
+      <div class="cover-goal-item">
+        <div class="cover-goal-icon"><i class="fas fa-brain"></i></div>
+        <div class="cover-goal-title">AI 본질 이해</div>
+        <div class="cover-goal-desc">패턴 인식 도구로서의 원리</div>
+      </div>
+      <div class="cover-goal-item">
+        <div class="cover-goal-icon"><i class="fas fa-pen-nib"></i></div>
+        <div class="cover-goal-title">프롬프트 전략</div>
+        <div class="cover-goal-desc">CoT & Self-Prompt 마스터</div>
+      </div>
+      <div class="cover-goal-item">
+        <div class="cover-goal-icon"><i class="fas fa-database"></i></div>
+        <div class="cover-goal-title">데이터 파싱</div>
+        <div class="cover-goal-desc">정보의 해체와 창의적 재조합</div>
+      </div>
+      <div class="cover-goal-item">
+        <div class="cover-goal-icon"><i class="fas fa-plug"></i></div>
+        <div class="cover-goal-title">업무 자동화</div>
+        <div class="cover-goal-desc">MCP & 바이브 코딩 구축</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script>
-        class PresentationViewer {
-            constructor() {
-                this.currentPage = 0;
-                this.totalPages = 0; // 자동 감지
-                this.isEditMode = false;
-                this.pageFiles = [];
-                this.pageTitles = [];
-                
-                this.init();
-            }
-            
-            async init() {
-                this.initializeElements();
-                await this.detectPages(); // 페이지 자동 감지
-                await this.loadPageTitles(); // 제목 로드
-                this.createTableOfContents(); // 목차 생성
-                this.setupEventListeners();
-                this.updateUI();
-            }
+<!-- ===== SLIDE 02: 목차 ===== -->
+<section class="slide" id="slide-02" data-num="02 / 17" data-title="목차">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Agenda</p>
+    <h2 class="t-subtitle">전체 강의 구성 — 총 15개 챕터</h2>
+  </div>
+  <div class="toc-grid anim">
+    <a class="toc-slide-item" href="#slide-03"><span class="toc-slide-num">01</span><span class="toc-slide-title">AI의 본질: 패턴 인식 도구</span></a>
+    <a class="toc-slide-item" href="#slide-04"><span class="toc-slide-num">02</span><span class="toc-slide-title">AI 생태계 타임라인 (2017~2026)</span></a>
+    <a class="toc-slide-item" href="#slide-05"><span class="toc-slide-num">03</span><span class="toc-slide-title">AI 작동 원리: 5단계 프로세스</span></a>
+    <a class="toc-slide-item" href="#slide-06"><span class="toc-slide-num">04</span><span class="toc-slide-title">창발적 능력 (Emergent Ability)</span></a>
+    <a class="toc-slide-item" href="#slide-07"><span class="toc-slide-num">05</span><span class="toc-slide-title">프롬프트 설계 6대 요소</span></a>
+    <a class="toc-slide-item" href="#slide-08"><span class="toc-slide-num">06</span><span class="toc-slide-title">CoT: 생각의 연결 전략</span></a>
+    <a class="toc-slide-item" href="#slide-09"><span class="toc-slide-num">07</span><span class="toc-slide-title">Self-Prompt 전략 매트릭스</span></a>
+    <a class="toc-slide-item" href="#slide-10"><span class="toc-slide-num">08</span><span class="toc-slide-title">데이터 파싱: 해체와 조합</span></a>
+    <a class="toc-slide-item" href="#slide-11"><span class="toc-slide-num">09</span><span class="toc-slide-title">AI 도구 생태계 비교 (2026)</span></a>
+    <a class="toc-slide-item" href="#slide-12"><span class="toc-slide-num">10</span><span class="toc-slide-title">MCP 개념 및 등장 배경</span></a>
+    <a class="toc-slide-item" href="#slide-13"><span class="toc-slide-num">11</span><span class="toc-slide-title">MCP 아키텍처 & 실무 연결</span></a>
+    <a class="toc-slide-item" href="#slide-14"><span class="toc-slide-num">12</span><span class="toc-slide-title">바이브 코딩 실전 가이드</span></a>
+    <a class="toc-slide-item" href="#slide-15"><span class="toc-slide-num">13</span><span class="toc-slide-title">업무 자동화 워크플로우</span></a>
+    <a class="toc-slide-item" href="#slide-16"><span class="toc-slide-num">14</span><span class="toc-slide-title">AI 듀얼 브레인 종합 전략</span></a>
+    <a class="toc-slide-item" href="#slide-17"><span class="toc-slide-num">15</span><span class="toc-slide-title">마무리 및 7-Day Action Plan</span></a>
+  </div>
+</section>
 
-            // 페이지 수 자동 감지
-            async detectPages() {
-                let pageIndex = 0;
-                let consecutiveFailures = 0;
-                const maxFailures = 3; // 연속 3번 실패하면 중단
-                
-                console.log('페이지 감지 시작...');
-                
-                while (consecutiveFailures < maxFailures) {
-                    const filename = `p${pageIndex}.html`;
-                    try {
-                        const response = await fetch(filename, { method: 'HEAD' });
-                        if (response.ok) {
-                            this.pageFiles.push(filename);
-                            console.log(`✓ ${filename} 발견`);
-                            consecutiveFailures = 0;
-                            pageIndex++;
-                        } else {
-                            consecutiveFailures++;
-                            pageIndex++;
-                        }
-                    } catch (error) {
-                        consecutiveFailures++;
-                        pageIndex++;
-                    }
-                }
-                
-                this.totalPages = this.pageFiles.length;
-                console.log(`총 ${this.totalPages}개 페이지 감지 완료`);
-                
-                if (this.totalPages === 0) {
-                    console.error('페이지를 찾을 수 없습니다. p0.html부터 시작하는 파일이 있는지 확인하세요.');
-                }
-            }
+<!-- ===== SLIDE 03: AI의 본질 ===== -->
+<section class="slide slide--emphasis" id="slide-03" data-num="03 / 17" data-title="AI의 본질">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 01 — Fundamental Understanding</p>
+    <h2 class="t-subtitle">AI의 본질: 패턴 인식 도구</h2>
+  </div>
+  <div class="split-3-2 anim">
+    <div>
+      <div class="callout">
+        <p>방대한 데이터 속에서 <strong>숨겨진 규칙을 찾아</strong> 새로운 인사이트로 재조합하는 기술.<br>
+        AI는 마법이 아니라 <strong>수학적 확률 계산기</strong>입니다.</p>
+      </div>
+      <div style="margin-bottom:28px;">
+        <p class="t-eyebrow" style="margin-bottom:16px;">주요 패턴 발견 사례</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:flex-start;">
+            <i class="fas fa-dna" style="color:var(--accent);margin-top:2px;font-size:16px;flex-shrink:0;"></i>
+            <div><p class="t-heading" style="font-size:14px;margin-bottom:3px;">AlphaFold</p><p class="t-small">단백질 구조 패턴 예측 — 50년 난제를 AI가 해결</p></div>
+          </div>
+          <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:flex-start;">
+            <i class="fas fa-wave-square" style="color:var(--accent);margin-top:2px;font-size:16px;flex-shrink:0;"></i>
+            <div><p class="t-heading" style="font-size:14px;margin-bottom:3px;">동물 소통 해석</p><p class="t-small">돌고래·코끼리 음성 패턴을 AI가 분석·해석</p></div>
+          </div>
+          <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:flex-start;">
+            <i class="fas fa-newspaper" style="color:var(--accent);margin-top:2px;font-size:16px;flex-shrink:0;"></i>
+            <div><p class="t-heading" style="font-size:14px;margin-bottom:3px;">여론 신호 탐지</p><p class="t-small">기사·커뮤니티 내 잠재된 위기 징후 조기 포착</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <img src="./image/p2.png" alt="AI의 본질 — 패턴 인식 도구 다이어그램" class="slide-img" style="margin-bottom:20px;">
+      <p class="t-eyebrow" style="margin-bottom:14px;">마케팅 실무 적용</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;"><span class="chip">시장 분석</span><span class="t-small" style="margin-top:2px;">데이터 수집부터 인사이트 도출까지 전 과정 자동화</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;"><span class="chip">여론 탐지</span><span class="t-small" style="margin-top:2px;">잠재된 위기 징후 조기 포착 및 대응 논리 개발</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;"><span class="chip">콘텐츠</span><span class="t-small" style="margin-top:2px;">성공 패턴을 학습한 고품질 보도자료·기획안 작성</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            // 각 페이지에서 h1 태그로 제목 추출
-            async loadPageTitles() {
-                for (let i = 0; i < this.totalPages; i++) {
-                    try {
-                        const response = await fetch(this.pageFiles[i]);
-                        const html = await response.text();
-                        
-                        // HTML을 파싱하기 위한 임시 DOM 생성
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        
-                        // p0는 목차에 "표지"로 표시
-                        if (i === 0) {
-                            // p0의 title 태그를 문서 제목으로 설정
-                            const titleElement = doc.querySelector('title');
-                            if (titleElement && titleElement.textContent.trim()) {
-                                const p0Title = titleElement.textContent.trim();
-                                document.title = p0Title;
-                                
-                                // 사이드바 부제목에도 표시
-                                const subtitleElement = document.getElementById('presentation-subtitle');
-                                if (subtitleElement) {
-                                    subtitleElement.textContent = p0Title;
-                                }
-                                
-                                console.log('뷰어 제목 설정:', p0Title);
-                            }
-                            // 목차에는 "표지"로 표시
-                            this.pageTitles.push('표지');
-                        } else {
-                            // h1 태그에서 제목 추출
-                            const h1Element = doc.querySelector('h1');
-                            if (h1Element) {
-                                // 텍스트만 추출 (태그 제거)
-                                const title = h1Element.textContent.trim();
-                                this.pageTitles.push(title || `페이지 ${i + 1}`);
-                            } else {
-                                // h1이 없으면 title 태그 시도
-                                const titleElement = doc.querySelector('title');
-                                if (titleElement) {
-                                    this.pageTitles.push(titleElement.textContent.trim() || `페이지 ${i + 1}`);
-                                } else {
-                                    this.pageTitles.push(`페이지 ${i + 1}`);
-                                }
-                            }
-                        }
-                    } catch (error) {
-                        console.warn(`${this.pageFiles[i]} 제목 로드 실패:`, error);
-                        this.pageTitles.push(i === 0 ? '표지' : `페이지 ${i + 1}`);
-                    }
-                }
-                console.log('로드된 페이지 제목:', this.pageTitles);
-            }
+<!-- ===== SLIDE 04: AI 생태계 타임라인 ===== -->
+<section class="slide slide--long" id="slide-04" data-num="04 / 17" data-title="AI 생태계 타임라인">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 02 — Ecosystem</p>
+    <h2 class="t-subtitle">AI 생태계 타임라인 (2017 ~ 2026+)</h2>
+  </div>
 
-            // 목차 동적 생성
-            createTableOfContents() {
-                const tocList = document.querySelector('.toc-list');
-                if (!tocList) return;
-                
-                // 기존 목차 제거
-                tocList.innerHTML = '';
-                
-                // 새 목차 생성
-                for (let i = 0; i < this.totalPages; i++) {
-                    const tocItem = document.createElement('div');
-                    tocItem.className = 'toc-item';
-                    tocItem.dataset.page = i;
-                    
-                    tocItem.innerHTML = `
-                        <div class="toc-number">${i + 1}</div>
-                        <div class="toc-text">${this.pageTitles[i]}</div>
-                    `;
-                    
-                    tocItem.addEventListener('click', () => {
-                        this.goToPage(i);
-                    });
-                    
-                    tocList.appendChild(tocItem);
-                }
-                
-                // tocItems 업데이트
-                this.tocItems = document.querySelectorAll('.toc-item');
-            }
-            initializeElements() {
-                this.slideFrame = document.getElementById('slide-frame');
-                this.prevBtn = document.getElementById('prev-btn');
-                this.nextBtn = document.getElementById('next-btn');
-                this.editBtn = document.getElementById('edit-btn');
-                this.saveBtn = document.getElementById('save-btn');
-                this.toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
-                this.currentPageSpan = document.getElementById('current-page');
-                this.totalPagesSpan = document.getElementById('total-pages');
-                this.pageTitleSpan = document.getElementById('page-title');
-                this.tocItems = []; // createTableOfContents에서 채워짐
-                this.iframeContainer = document.querySelector('.iframe-container');
-                this.sidebar = document.querySelector('.sidebar');
-                this.mainContent = document.querySelector('.main-content');
-                this.sidebarVisible = true;
-            }
+  <div class="timeline-wrap anim" style="margin-bottom:36px;">
+    <div class="timeline-line"></div>
+    <div class="timeline-items">
+      <div class="timeline-item">
+        <div class="timeline-year">2017</div>
+        <div class="timeline-dot past"></div>
+        <div class="timeline-events">
+          <div class="t-event google">Transformer 논문</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2018–20</div>
+        <div class="timeline-dot past"></div>
+        <div class="timeline-events">
+          <div class="t-event openai">GPT-1 / GPT-3</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2022</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-events">
+          <div class="t-event openai">ChatGPT 혁명</div>
+          <div class="t-event anthro">Anthropic 설립</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2023</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-events">
+          <div class="t-event openai">GPT-4 멀티모달</div>
+          <div class="t-event google">Gemini 생태계</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2024</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-events">
+          <div class="t-event openai">o1 추론 모델</div>
+          <div class="t-event anthro">Claude 3 + MCP</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2025</div>
+        <div class="timeline-dot highlight"></div>
+        <div class="timeline-events">
+          <div class="t-event openai">GPT-5 / o3 ARC</div>
+          <div class="t-event google">Gemini 3 Pro</div>
+          <div class="t-event anthro">Claude 4.5 계열</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2026.Q1</div>
+        <div class="timeline-dot highlight"></div>
+        <div class="timeline-events">
+          <div class="t-event openai">GPT-5.3/5.4</div>
+          <div class="t-event google">Gemini 3.1 Pro</div>
+          <div class="t-event anthro">Claude 4.6 계열</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2026+</div>
+        <div class="timeline-dot highlight"></div>
+        <div class="timeline-events">
+          <div class="t-event others">MCP 5,800+ 서버</div>
+          <div class="t-event others">에이전트 협력 시대</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            setupEventListeners() {
-                // 네비게이션 버튼
-                this.prevBtn.addEventListener('click', () => this.goToPreviousPage());
-                this.nextBtn.addEventListener('click', () => this.goToNextPage());
-                this.editBtn.addEventListener('click', () => this.toggleEditMode());
-                this.saveBtn.addEventListener('click', () => this.saveCurrentPage());
-                this.toggleSidebarBtn.addEventListener('click', () => this.toggleSidebar());
+  <div class="grid-4 anim">
+    <div class="card" style="border-top:2px solid #60a5fa;">
+      <p class="t-heading" style="color:#93c5fd;margin-bottom:6px;">OpenAI</p>
+      <p class="t-small">모델 성능 혁신 + 가장 넓은 사용자 기반</p>
+    </div>
+    <div class="card" style="border-top:2px solid #4ade80;">
+      <p class="t-heading" style="color:#86efac;margin-bottom:6px;">Google</p>
+      <p class="t-small">아키텍처 원천 기술 + 멀티모달 생태계</p>
+    </div>
+    <div class="card" style="border-top:2px solid var(--accent);">
+      <p class="t-heading" style="color:var(--accent);margin-bottom:6px;">Anthropic</p>
+      <p class="t-small">안전성·확장성 + MCP 표준 주도</p>
+    </div>
+    <div class="card" style="border-top:2px solid #fb923c;">
+      <p class="t-heading" style="color:#fdba74;margin-bottom:6px;">Others</p>
+      <p class="t-small">검색·인프라·도메인 특화 서비스</p>
+    </div>
+  </div>
+</section>
 
+<!-- ===== SLIDE 05: AI 작동 원리 ===== -->
+<section class="slide slide--long" id="slide-05" data-num="05 / 17" data-title="AI 작동 원리">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 03 — AI Mechanism</p>
+    <h2 class="t-subtitle">AI 작동 원리: 5단계 프로세스</h2>
+  </div>
+  <div class="split-3-2 anim">
+    <div>
+      <p class="t-small" style="margin-bottom:28px;">입력된 데이터를 숫자로 변환하고, 확률적으로 다음 내용을 예측하여 생성하는 과정</p>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-left"><div class="badge">01</div><div class="step-line"></div></div>
+          <div class="step-content">
+            <p class="t-heading">토큰화 (Tokenization)</p>
+            <p class="t-small">문장을 AI가 이해할 수 있는 최소 단위(토큰)로 쪼개고 고유 번호를 부여해 숫자 데이터로 변환</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-left"><div class="badge">02</div><div class="step-line"></div></div>
+          <div class="step-content">
+            <p class="t-heading">임베딩 (Embedding)</p>
+            <p class="t-small">토큰을 다차원 벡터 공간에 배치. 의미가 유사한 단어끼리 (왕—여왕) 가까운 거리에 위치</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-left"><div class="badge">03</div><div class="step-line"></div></div>
+          <div class="step-content">
+            <p class="t-heading">어텐션 (Attention)</p>
+            <p class="t-small">문맥 파악의 핵심. 단어 간 관계 중요도를 계산해 "어떤 단어에 집중할지" 결정</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-left"><div class="badge">04</div><div class="step-line"></div></div>
+          <div class="step-content">
+            <p class="t-heading">예측 (Prediction)</p>
+            <p class="t-small">지금까지의 맥락을 바탕으로 다음에 올 가능성이 가장 높은 토큰의 확률 계산</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-left"><div class="badge">05</div><div class="step-line"></div></div>
+          <div class="step-content">
+            <p class="t-heading">생성 (Generation)</p>
+            <p class="t-small">예측된 토큰을 출력하고, 이를 다시 입력으로 사용해 다음 내용을 이어가는 반복 과정</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <img src="./image/p4.png" alt="AI 작동 원리 5단계 다이어그램" class="slide-img" style="margin-bottom:20px;">
+      <div class="callout">
+        <p>프롬프트는 AI가 방대한 벡터 공간에서 <strong>정확한 좌표를 찾아가도록 유도하는 나침반</strong>.<br>
+        모호한 지시 = 엉뚱한 결과.</p>
+      </div>
+      <div class="takeaway">
+        <i class="fas fa-quote-left takeaway-icon"></i>
+        <p><strong>"Garbage In, Garbage Out"</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
 
-                // 키보드 단축키
-                document.addEventListener('keydown', (e) => {
-                    // 편집 모드가 아닐 때만 네비게이션 키 작동
-                    if (!this.isEditMode) {
-                        switch(e.key) {
-                            case 'ArrowLeft':
-                                e.preventDefault();
-                                this.goToPreviousPage();
-                                break;
-                            case 'ArrowRight':
-                                e.preventDefault();
-                                this.goToNextPage();
-                                break;
-                            case 'Home':
-                                e.preventDefault();
-                                this.goToPage(0);
-                                break;
-                            case 'End':
-                                e.preventDefault();
-                                this.goToPage(this.totalPages - 1);
-                                break;
-                        }
-                    }
-                    
-                    // 편집 모드 토글 (Ctrl+E)
-                    if (e.ctrlKey && e.key === 'e') {
-                        e.preventDefault();
-                        this.toggleEditMode();
-                    }
-                    
-                    // 저장 (Ctrl+S)
-                    if (this.isEditMode && e.ctrlKey && e.key === 's') {
-                        e.preventDefault();
-                        this.saveCurrentPage();
-                    }
-                    
-                    // 목차 토글 (Ctrl+B)
-                    if (e.ctrlKey && e.key === 'b') {
-                        e.preventDefault();
-                        this.toggleSidebar();
-                    }
-                });
+<!-- ===== SLIDE 06: 창발적 능력 ===== -->
+<section class="slide slide--long" id="slide-06" data-num="06 / 17" data-title="창발적 능력">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 04 — Emergent Ability</p>
+    <h2 class="t-subtitle">창발적 능력 (Emergent Ability)</h2>
+  </div>
+  <div class="callout anim">
+    <p>단순한 양적 증가가 질적 변화를 일으키는 현상.<br>
+    <strong>"데이터와 연산량이 특정 임계점을 넘어서는 순간, AI는 가르치지 않은 능력을 갑자기 보여줍니다."</strong><br>
+    2025년~2026년, 모델 크기뿐 아니라 <strong>추론 시간(Test-Time Compute) 증가</strong>도 창발을 유발합니다.</p>
+  </div>
+  <div class="grid-3 anim" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="chip" style="margin-bottom:12px;">AlphaGo Zero (기존)</div>
+      <p class="t-heading" style="margin-bottom:6px;">셀프 대국으로 전략 창조</p>
+      <p class="t-small">인간 기보 없이 3일간 Self-Play만으로 이전 버전 압도. 임계점 초과 시 AI가 스스로 전략을 창조함을 최초 증명.</p>
+    </div>
+    <div class="card">
+      <div class="chip" style="margin-bottom:12px;">o3 ARC-AGI (2025)</div>
+      <p class="t-heading" style="margin-bottom:6px;">추론 시간 증가 = 창발</p>
+      <p class="t-small">인간 전문가 수준 달성, o1 대비 3배 정확도. 모델 크기가 아닌 추론 시간 증가만으로 질적 도약 유발.</p>
+    </div>
+    <div class="card">
+      <div class="chip" style="margin-bottom:12px;">Claude Opus 4.6 (2026)</div>
+      <p class="t-heading" style="margin-bottom:6px;">에이전트 협력 & 컴파일러</p>
+      <p class="t-small">16개 에이전트 동시 협력, C 컴파일러를 Rust로 작성해 Linux 커널 컴파일 가능 수준 달성.</p>
+    </div>
+  </div>
+  <div class="grid-3 anim">
+    <div class="card" style="border-color:rgba(74,222,128,0.2);">
+      <p class="t-heading" style="margin-bottom:6px;color:#86efac;">Gemini 3 Pro</p>
+      <p class="t-small">Humanity's Last Exam 23.4% SOTA — 기존 인간 전문가 수준 문제 세트 기준</p>
+    </div>
+    <div class="card" style="border-color:rgba(96,165,250,0.2);">
+      <p class="t-heading" style="margin-bottom:6px;color:#93c5fd;">AI 과학 발견</p>
+      <p class="t-small">항암 신약 분자 설계 → 임상 시험 진입. AI가 연구자 역할 수행</p>
+    </div>
+    <div class="card" style="border-color:rgba(251,146,60,0.2);">
+      <p class="t-heading" style="margin-bottom:6px;color:#fdba74;">의료 진단</p>
+      <p class="t-small">2년간 미진단 소아 희귀질환을 수초 내 진단. 슈퍼 개인 시대 본격화</p>
+    </div>
+  </div>
+  <div class="takeaway anim">
+    <i class="fas fa-rocket takeaway-icon"></i>
+    <p>창발의 새 패턴: <strong>"생각을 오래 할수록 더 잘한다"</strong> — Test-Time Compute 증가만으로도 질적 도약 가능</p>
+  </div>
+</section>
 
-                // iframe 로딩 완료 처리
-                this.slideFrame.addEventListener('load', () => {
-                    console.log(`페이지 ${this.currentPage + 1} 로딩 완료`);
-                    if (this.isEditMode) {
-                        this.enableEditing();
-                    }
-                });
-            }
+<!-- ===== SLIDE 07: 프롬프트 설계 6대 요소 ===== -->
+<section class="slide slide--long" id="slide-07" data-num="07 / 17" data-title="프롬프트 설계 6대 요소">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 05 — Prompt Engineering</p>
+    <h2 class="t-subtitle">프롬프트 설계 6대 요소</h2>
+  </div>
+  <div class="grid-3 anim" style="margin-bottom:28px;">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div class="badge">01</div>
+        <p class="t-heading" style="margin:0;">명령 (Command)</p>
+      </div>
+      <p class="t-small" style="margin-bottom:10px;">AI가 수행해야 할 행동을 명확한 동사로 지시</p>
+      <span class="chip">예: "분석해줘", "요약해줘"</span>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div class="badge">02</div>
+        <p class="t-heading" style="margin:0;">맥락 (Context)</p>
+      </div>
+      <p class="t-small" style="margin-bottom:10px;">배경 정보와 상황, 제약 조건 제공으로 범위 좁힘</p>
+      <span class="chip">예: "20대 타겟 스타트업 상황에서"</span>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div class="badge">03</div>
+        <p class="t-heading" style="margin:0;">페르소나 (Persona)</p>
+      </div>
+      <p class="t-small" style="margin-bottom:10px;">AI에게 특정 전문가의 역할과 관점 부여</p>
+      <span class="chip">예: "당신은 10년차 PR 전문가"</span>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div class="badge">04</div>
+        <p class="t-heading" style="margin:0;">예시 (Examples)</p>
+      </div>
+      <p class="t-small" style="margin-bottom:10px;">원하는 결과물의 샘플 제공 (Few-shot Learning)</p>
+      <span class="chip">예: "아래 보도자료 스타일로"</span>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div class="badge">05</div>
+        <p class="t-heading" style="margin:0;">구성 형태 (Format)</p>
+      </div>
+      <p class="t-small" style="margin-bottom:10px;">최종 산출물의 구조와 형식 지정</p>
+      <span class="chip">예: "표로 정리", "JSON"</span>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div class="badge">06</div>
+        <p class="t-heading" style="margin:0;">톤앤매너 (Tone)</p>
+      </div>
+      <p class="t-small" style="margin-bottom:10px;">문체의 분위기와 어조 설정</p>
+      <span class="chip">예: "전문적이되 친근하게"</span>
+    </div>
+  </div>
+  <div class="grid-2 anim">
+    <div class="card" style="border-color:rgba(239,68,68,0.25);">
+      <p class="t-heading" style="color:#f87171;margin-bottom:10px;"><i class="fas fa-times-circle" style="margin-right:6px;"></i>Bad Prompt</p>
+      <div class="code-block">"우리 회사 마케팅 기획안 좀 써줘."</div>
+    </div>
+    <div class="card" style="border-color:rgba(74,222,128,0.25);">
+      <p class="t-heading" style="color:#86efac;margin-bottom:10px;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Good Prompt (6요소 적용)</p>
+      <div class="code-block"><span class="cmt">// [페르소나]</span> 당신은 10년 경력의 PR 전략가.
+<span class="cmt">// [맥락]</span> 20대 타겟 패션 스타트업.
+<span class="cmt">// [구성]</span> 아래 [예시]와 같은 표 형태로,
+<span class="cmt">// [명령]</span> MZ세대 SNS 마케팅 방안 3가지 제안.
+<span class="cmt">// [톤]</span> 트렌디하고 활기차게.</div>
+    </div>
+  </div>
+</section>
 
-            toggleSidebar() {
-                this.sidebarVisible = !this.sidebarVisible;
-                
-                if (this.sidebarVisible) {
-                    this.sidebar.classList.remove('hidden');
-                    this.toggleSidebarBtn.classList.remove('active');
-                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-eye-slash"></i><span>숨기기</span>';
-                } else {
-                    this.sidebar.classList.add('hidden');
-                    this.toggleSidebarBtn.classList.add('active');
-                    this.toggleSidebarBtn.innerHTML = '<i class="fas fa-eye"></i><span>보이기</span>';
-                }
-            }
+<!-- ===== SLIDE 08: CoT ===== -->
+<section class="slide" id="slide-08" data-num="08 / 17" data-title="CoT 전략">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 06 — Chain of Thought</p>
+    <h2 class="t-subtitle">CoT: 생각의 연결 전략</h2>
+  </div>
+  <div class="split-3-2 anim">
+    <div>
+      <p class="t-small" style="margin-bottom:28px;">복잡한 문제를 한 번에 해결하려 하지 않고, 논리적 단계로 나누어 AI의 추론 능력을 극대화하는 기법</p>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-left"><div class="badge">01</div><div class="step-line"></div></div>
+          <div class="step-content">
+            <p class="t-heading">과업 분해 (Task Breakdown)</p>
+            <p class="t-small">복잡한 지시를 최소 단위로 쪼갭니다. 예: 마케팅 전략 → 시장분석 / 경쟁사 / 타깃 / SWOT / 실행안</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-left"><div class="badge">02</div><div class="step-line"></div></div>
+          <div class="step-content">
+            <p class="t-heading">질문 사슬 (CoQ — Chain of Question)</p>
+            <p class="t-small">명령하지 말고 AI가 나에게 질문하게 합니다.<br><em style="color:var(--accent);">"이 전략을 짜기 위해 나에게 필요한 질문 5가지를 해줘."</em></p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-left"><div class="badge">03</div><div class="step-line"></div></div>
+          <div class="step-content">
+            <p class="t-heading">점진적 정교화 (Refinement)</p>
+            <p class="t-small">한 번에 완성품 요구 금지. 각 단계 산출물을 검토·수정해 다음 단계 입력으로 활용</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-left"><div class="badge">04</div><div class="step-line"></div></div>
+          <div class="step-content">
+            <p class="t-heading">품질 관리 (Quality Control)</p>
+            <p class="t-small">중간 체크포인트를 설정해 논리적 비약이나 환각(Hallucination)이 없는지 검증</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <img src="./image/p7.png" alt="CoT 생각의 연결 전략 다이어그램" class="slide-img" style="margin-bottom:20px;">
+      <div class="grid-3" style="gap:10px;">
+        <div style="text-align:center;padding:14px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+          <p style="font-size:18px;color:var(--accent);margin-bottom:6px;"><i class="fas fa-filter"></i></p>
+          <p style="font-size:11px;font-weight:700;color:var(--text);">모호성 제거</p>
+          <p style="font-size:10px;color:var(--text-muted);">Ambiguity ↓</p>
+        </div>
+        <div style="text-align:center;padding:14px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+          <p style="font-size:18px;color:var(--accent);margin-bottom:6px;"><i class="fas fa-arrow-trend-up"></i></p>
+          <p style="font-size:11px;font-weight:700;color:var(--text);">추론 향상</p>
+          <p style="font-size:10px;color:var(--text-muted);">Reasoning ↑</p>
+        </div>
+        <div style="text-align:center;padding:14px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+          <p style="font-size:18px;color:var(--accent);margin-bottom:6px;"><i class="fas fa-rotate-left"></i></p>
+          <p style="font-size:11px;font-weight:700;color:var(--text);">재작업 감소</p>
+          <p style="font-size:10px;color:var(--text-muted);">Rework ↓</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            toggleEditMode() {
-                // 편집 모드를 켜려고 할 때만 비밀번호 확인
-                if (!this.isEditMode) {
-                    const password = prompt('편집 모드 비밀번호를 입력하세요:');
-                    if (password !== '9090') {
-                        alert('비밀번호가 올바르지 않습니다.');
-                        return;
-                    }
-                }
-                
-                this.isEditMode = !this.isEditMode;
-                this.iframeContainer.classList.toggle('edit-mode', this.isEditMode);
-                
-                if (this.isEditMode) {
-                    this.editBtn.classList.add('active');
-                    this.editBtn.innerHTML = '<i class="fas fa-edit"></i> 편집 중';
-                    this.saveBtn.style.display = 'flex';
-                    this.enableEditing();
-                } else {
-                    this.editBtn.classList.remove('active');
-                    this.editBtn.innerHTML = '<i class="fas fa-edit"></i> 편집';
-                    this.saveBtn.style.display = 'none';
-                    this.disableEditing();
-                }
-            }
+<!-- ===== SLIDE 09: Self-Prompt 매트릭스 ===== -->
+<section class="slide" id="slide-09" data-num="09 / 17" data-title="Self-Prompt 매트릭스">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 07 — Strategic Approach</p>
+    <h2 class="t-subtitle">Self-Prompt 전략 매트릭스</h2>
+  </div>
+  <div class="split-3-2 anim">
+    <div>
+      <p class="t-small" style="margin-bottom:24px;">나의 도메인 지식 수준과 과업의 복잡도에 따라 AI와의 소통 방식을 달리해야 합니다.</p>
+      <div style="display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:8px;margin-bottom:24px;">
+        <!-- 축 레이블 X -->
+        <div style="grid-column:2/4;grid-row:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;padding-bottom:4px;">
+          <p style="font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:.1em;">낮은 복잡도</p>
+          <p style="font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:.1em;">높은 복잡도</p>
+        </div>
+        <!-- 축 레이블 Y -->
+        <div style="grid-column:1;grid-row:2/4;display:flex;flex-direction:column;justify-content:space-around;padding-right:8px;">
+          <p style="font-size:11px;font-weight:700;color:var(--text-dim);writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.1em;text-align:center;">높은 지식</p>
+          <p style="font-size:11px;font-weight:700;color:var(--text-dim);writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.1em;text-align:center;">낮은 지식</p>
+        </div>
+        <!-- Q1 -->
+        <div class="matrix-cell" style="grid-column:2;grid-row:2;">
+          <div class="matrix-cell-tag">ROUTINE</div>
+          <div class="matrix-cell-title">User Prompt + Checklist</div>
+          <div class="matrix-cell-desc">명확한 지시 + 필수 포함 사항 체크리스트로 빠르게 결과물 획득</div>
+        </div>
+        <!-- Q2 -->
+        <div class="matrix-cell" style="grid-column:3;grid-row:2;border-color:var(--accent-border);">
+          <div class="matrix-cell-tag">MASTERY</div>
+          <div class="matrix-cell-title">CoT (Chain of Thought)</div>
+          <div class="matrix-cell-desc">단계별로 쪼개어 지시, 각 단계 결과물을 직접 검증하며 완성도 향상</div>
+        </div>
+        <!-- Q3 -->
+        <div class="matrix-cell" style="grid-column:2;grid-row:3;">
+          <div class="matrix-cell-tag">LEARNING</div>
+          <div class="matrix-cell-title">Few-shot (Sample)</div>
+          <div class="matrix-cell-desc">양질의 샘플 제공 → AI가 패턴을 모방하게 유도</div>
+        </div>
+        <!-- Q4 -->
+        <div class="matrix-cell" style="grid-column:3;grid-row:3;background:rgba(47,82,51,0.15);border-color:rgba(151,169,124,0.3);">
+          <div class="matrix-cell-tag" style="color:var(--green-light);">EXPLORATION</div>
+          <div class="matrix-cell-title">Self-Prompt + 반성형</div>
+          <div class="matrix-cell-desc">AI에게 위임 후 비판적 검토 요청 — 가장 복잡한 영역</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="t-eyebrow" style="margin-bottom:14px;">반성형 대화 예시</p>
+      <div class="card" style="margin-bottom:12px;">
+        <p style="font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:8px;">USER</p>
+        <p class="t-small">"기업 위기 대응 매뉴얼을 만들고 싶은데, 네가 전문가로서 필요한 <strong style="color:var(--accent);">목차와 질문을 먼저 설계</strong>해 줘."</p>
+      </div>
+      <div class="card" style="border-color:rgba(151,169,124,0.3);">
+        <p style="font-size:11px;font-weight:700;color:var(--green-light);margin-bottom:8px;">REFLEXION</p>
+        <p class="t-small">"작성된 초안에 대해 <strong style="color:var(--green-light);">가장 취약한 점 3가지를 찾아 비판</strong>하고, 이를 보완한 버전을 다시 제시해 줘."</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            enableEditing() {
-                try {
-                    const iframeDoc = this.slideFrame.contentDocument || this.slideFrame.contentWindow.document;
-                    if (iframeDoc) {
-                        // 모든 텍스트 요소를 편집 가능하게 만들기
-                        const editableElements = iframeDoc.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, td, th, li');
-                        editableElements.forEach(element => {
-                            // 이미 편집 가능한 요소가 아닌 경우에만 설정
-                            if (!element.hasAttribute('contenteditable')) {
-                                element.setAttribute('contenteditable', 'true');
-                                element.style.outline = '1px dashed #D97706';
-                                element.style.padding = '2px';
-                                
-                                // 편집 시작 시 outline 변경
-                                element.addEventListener('focus', () => {
-                                    element.style.outline = '2px solid #D97706';
-                                    element.style.backgroundColor = 'rgba(217, 119, 6, 0.1)';
-                                });
-                                
-                                // 편집 종료 시 outline 복원
-                                element.addEventListener('blur', () => {
-                                    element.style.outline = '1px dashed #D97706';
-                                    element.style.backgroundColor = '';
-                                });
-                            }
-                        });
-                        
-                        // 편집 모드 스타일 추가
-                        if (!iframeDoc.getElementById('edit-mode-styles')) {
-                            const style = iframeDoc.createElement('style');
-                            style.id = 'edit-mode-styles';
-                            style.textContent = `
-                                [contenteditable="true"]:hover {
-                                    background-color: rgba(217, 119, 6, 0.05) !important;
-                                    cursor: text !important;
-                                }
-                                [contenteditable="true"]:focus {
-                                    background-color: rgba(217, 119, 6, 0.1) !important;
-                                    outline: 2px solid #D97706 !important;
-                                }
-                            `;
-                            iframeDoc.head.appendChild(style);
-                        }
-                    }
-                } catch (e) {
-                    console.error('편집 모드 활성화 중 오류:', e);
-                    alert('편집 모드를 활성화할 수 없습니다. 같은 도메인의 파일인지 확인해주세요.');
-                }
-            }
+<!-- ===== SLIDE 10: 데이터 파싱 ===== -->
+<section class="slide" id="slide-10" data-num="10 / 17" data-title="데이터 파싱">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 08 — Data Parsing</p>
+    <h2 class="t-subtitle">데이터 파싱: 해체와 조합</h2>
+  </div>
+  <div class="split-3-2 anim">
+    <div>
+      <p class="t-small" style="margin-bottom:24px;">거대한 데이터 덩어리를 의미 단위로 쪼개고(Deconstruction), 새로운 관점으로 재조합(Reconstruction)</p>
+      <div class="flow" style="margin-bottom:28px;">
+        <div class="flow-item"><div class="card" style="padding:16px;text-align:center;"><div class="badge" style="margin:0 auto 8px;">01</div><p style="font-size:12px;font-weight:700;">수집</p><p style="font-size:11px;color:var(--text-muted);">Collection</p></div></div>
+        <div class="flow-item"><div class="card" style="padding:16px;text-align:center;"><div class="badge" style="margin:0 auto 8px;">02</div><p style="font-size:12px;font-weight:700;">파싱</p><p style="font-size:11px;color:var(--text-muted);">Parsing</p></div></div>
+        <div class="flow-item"><div class="card" style="padding:16px;text-align:center;"><div class="badge" style="margin:0 auto 8px;">03</div><p style="font-size:12px;font-weight:700;">레이블링</p><p style="font-size:11px;color:var(--text-muted);">Labeling</p></div></div>
+        <div class="flow-item"><div class="card" style="padding:16px;text-align:center;"><div class="badge" style="margin:0 auto 8px;">04</div><p style="font-size:12px;font-weight:700;">비교/대조</p><p style="font-size:11px;color:var(--text-muted);">Compare</p></div></div>
+        <div class="flow-item"><div class="card" style="padding:16px;text-align:center;"><div class="badge" style="margin:0 auto 8px;">05</div><p style="font-size:12px;font-weight:700;">재조합</p><p style="font-size:11px;color:var(--text-muted);">Recombine</p></div></div>
+        <div class="flow-item" style="padding-right:0;"><div class="card" style="padding:16px;text-align:center;border-color:var(--accent-border);"><div class="badge" style="margin:0 auto 8px;">06</div><p style="font-size:12px;font-weight:700;color:var(--accent);">인사이트</p><p style="font-size:11px;color:var(--text-muted);">Insight</p></div></div>
+      </div>
+      <p class="t-eyebrow" style="margin-bottom:14px;">실무 적용 사례</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <i class="fas fa-file-contract" style="color:var(--accent);margin-top:1px;flex-shrink:0;"></i>
+          <div><p style="font-size:13px;font-weight:700;margin-bottom:2px;">계약서 분석</p><p class="t-small">'을'의 관점 독소 조항 파싱 → 수정안 근거 재조합 → 검토 보고서</p></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <i class="fas fa-triangle-exclamation" style="color:var(--accent);margin-top:1px;flex-shrink:0;"></i>
+          <div><p style="font-size:13px;font-weight:700;margin-bottom:2px;">이슈/위기 분석</p><p class="t-small">사건 타임라인 해체 → 인물별 입장·대립 관계도 재조합 → 대응 논리</p></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <i class="fas fa-chart-bar" style="color:var(--accent);margin-top:1px;flex-shrink:0;"></i>
+          <div><p style="font-size:13px;font-weight:700;margin-bottom:2px;">경쟁사 분석</p><p class="t-small">보도자료·SNS 파싱 → 메시지 프레임 분류 → 차별화 전략 수립</p></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <img src="./image/p9.png" alt="데이터 파싱 해체와 조합 다이어그램" class="slide-img">
+    </div>
+  </div>
+</section>
 
-            disableEditing() {
-                try {
-                    const iframeDoc = this.slideFrame.contentDocument || this.slideFrame.contentWindow.document;
-                    if (iframeDoc) {
-                        // contenteditable 속성 제거
-                        const editableElements = iframeDoc.querySelectorAll('[contenteditable="true"]');
-                        editableElements.forEach(element => {
-                            element.removeAttribute('contenteditable');
-                            element.style.outline = '';
-                            element.style.padding = '';
-                            element.style.backgroundColor = '';
-                        });
-                        
-                        // 편집 모드 스타일 제거
-                        const editStyles = iframeDoc.getElementById('edit-mode-styles');
-                        if (editStyles) {
-                            editStyles.remove();
-                        }
-                    }
-                } catch (e) {
-                    console.error('편집 모드 비활성화 중 오류:', e);
-                }
-            }
+<!-- ===== SLIDE 11: AI 도구 생태계 비교 ===== -->
+<section class="slide slide--long" id="slide-11" data-num="11 / 17" data-title="AI 도구 비교">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 09 — Tool Ecosystem · 2026년 3월 기준</p>
+    <h2 class="t-subtitle">AI 도구 생태계 비교 및 추천</h2>
+  </div>
+  <div class="table-wrap anim" style="margin-bottom:28px;">
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>도구</th>
+          <th>최신 버전 (2026.03)</th>
+          <th>핵심 특징</th>
+          <th>추천 용도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="color:var(--accent);font-weight:700;">Claude</span><br><span style="font-size:11px;color:var(--text-dim);">Anthropic</span></td>
+          <td><span class="chip" style="font-size:10px;">Sonnet 4.6 / Opus 4.6</span></td>
+          <td>언어 능력·복잡 추론 최강, MCP 네이티브 생태계 중심, 1M 토큰</td>
+          <td>글쓰기, 복잡한 추론, 코딩, 에이전트 워크플로우</td>
+        </tr>
+        <tr>
+          <td><span style="color:#93c5fd;font-weight:700;">ChatGPT</span><br><span style="font-size:11px;color:var(--text-dim);">OpenAI</span></td>
+          <td><span class="chip chip-warning" style="font-size:10px;">GPT-5.3 / 5.4</span></td>
+          <td>시장 표준, Code Interpreter, 가장 넓은 생태계</td>
+          <td>범용 업무, 데이터 파일 분석, 이미지 생성 (DALL-E)</td>
+        </tr>
+        <tr>
+          <td><span style="color:#86efac;font-weight:700;">Gemini</span><br><span style="font-size:11px;color:var(--text-dim);">Google</span></td>
+          <td><span class="chip" style="font-size:10px;background:rgba(74,222,128,0.1);color:#86efac;border-color:rgba(74,222,128,0.25);">Gemini 3 Pro / 2.5 Pro</span></td>
+          <td>멀티모달, 구글 생태계 통합, 1M+ 토큰</td>
+          <td>유튜브 영상 분석, 이미지·텍스트 복합, 구글 워크스페이스</td>
+        </tr>
+        <tr>
+          <td><span style="color:#c084fc;font-weight:700;">Cursor AI</span><br><span style="font-size:11px;color:var(--text-dim);">Anysphere</span></td>
+          <td><span class="chip" style="font-size:10px;background:rgba(192,132,252,0.1);color:#c084fc;border-color:rgba(192,132,252,0.25);">Cursor 2.6</span></td>
+          <td>바이브 코딩, Composer, Plan Mode, Background Agents</td>
+          <td>비개발자 앱/웹 제작, 자동화 스크립트, 데이터 수집기</td>
+        </tr>
+        <tr>
+          <td><span style="color:#86efac;font-weight:700;">NotebookLM</span><br><span style="font-size:11px;color:var(--text-dim);">Google</span></td>
+          <td><span class="chip" style="font-size:10px;background:rgba(74,222,128,0.1);color:#86efac;border-color:rgba(74,222,128,0.25);">Gemini 3.1 Pro 기반</span></td>
+          <td>문서 기반 RAG, Video Overview, Slide Deck, Deep Research</td>
+          <td>논문·보고서 대량 학습, 멀티포맷 지식 변환, 팟캐스트 요약</td>
+        </tr>
+        <tr>
+          <td><span style="color:#86efac;font-weight:700;">Google AI Studio</span><br><span style="font-size:11px;color:var(--text-dim);">Google</span></td>
+          <td><span class="chip" style="font-size:10px;background:rgba(74,222,128,0.1);color:#86efac;border-color:rgba(74,222,128,0.25);">Gemini 2.5 / 3.x</span></td>
+          <td>대용량 토큰(1M+), 무료 API 제공</td>
+          <td>책 수십 권 동시 분석, 대규모 데이터 처리 테스트</td>
+        </tr>
+        <tr>
+          <td><span style="color:#fdba74;font-weight:700;">Genspark</span></td>
+          <td><span class="chip chip-warning" style="font-size:10px;">최신</span></td>
+          <td>리서치 & 시각화, Sparkpage</td>
+          <td>보고서/PPT 디자인, 복합 검색 결과 시각화</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="grid-3 anim">
+    <div class="card" style="border-color:var(--accent-border);">
+      <p class="t-heading" style="margin-bottom:8px;"><i class="fas fa-pen" style="color:var(--accent);margin-right:6px;"></i>Writing & Logic</p>
+      <p class="t-small">Claude Sonnet 4.6 / Gemini 3 Pro</p>
+    </div>
+    <div class="card" style="border-color:rgba(192,132,252,0.3);">
+      <p class="t-heading" style="margin-bottom:8px;"><i class="fas fa-code" style="color:#c084fc;margin-right:6px;"></i>Dev & Automation</p>
+      <p class="t-small">Cursor AI / Claude Code</p>
+    </div>
+    <div class="card" style="border-color:rgba(74,222,128,0.25);">
+      <p class="t-heading" style="margin-bottom:8px;"><i class="fas fa-magnifying-glass" style="color:#86efac;margin-right:6px;"></i>Visual & Research</p>
+      <p class="t-small">Genspark / NotebookLM / Google AI Studio</p>
+    </div>
+  </div>
+</section>
 
-            saveCurrentPage() {
-                try {
-                    const iframeDoc = this.slideFrame.contentDocument || this.slideFrame.contentWindow.document;
-                    if (iframeDoc) {
-                        // 현재 페이지의 HTML 내용을 가져와서 저장
-                        const htmlContent = iframeDoc.documentElement.outerHTML;
-                        
-                        // Blob으로 파일 생성
-                        const blob = new Blob([htmlContent], { type: 'text/html' });
-                        const url = URL.createObjectURL(blob);
-                        
-                        // 다운로드 링크 생성
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = this.pageFiles[this.currentPage];
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                        
-                        alert(`${this.pageFiles[this.currentPage]} 파일이 다운로드됩니다.`);
-                    }
-                } catch (e) {
-                    console.error('저장 중 오류:', e);
-                    alert('저장할 수 없습니다. 브라우저 보안 정책으로 인한 제한일 수 있습니다.');
-                }
-            }
+<!-- ===== SLIDE 12: MCP 개념 ===== -->
+<section class="slide" id="slide-12" data-num="12 / 17" data-title="MCP 개념">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 10 — Model Context Protocol</p>
+    <h2 class="t-subtitle">MCP 개념 및 등장 배경</h2>
+  </div>
+  <div class="split-2 anim">
+    <div>
+      <p class="t-eyebrow" style="margin-bottom:16px;">이전의 문제: M×N 복잡도</p>
+      <div class="mcp-diagram" style="margin-bottom:20px;">
+        <div class="mcp-nodes">
+          <div class="mcp-node"><div class="mcp-node-icon ai"><i class="fas fa-robot"></i></div><div class="mcp-node-label">Claude</div></div>
+          <div class="mcp-node"><div class="mcp-node-icon ai"><i class="fas fa-comment-dots"></i></div><div class="mcp-node-label">ChatGPT</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+            <span class="mcp-connector problem">M × N 연결</span>
+            <span style="font-size:11px;color:var(--text-dim);">각 쌍마다 별도 코드</span>
+          </div>
+          <div class="mcp-node"><div class="mcp-node-icon tool"><i class="fab fa-slack"></i></div><div class="mcp-node-label">Slack</div></div>
+          <div class="mcp-node"><div class="mcp-node-icon tool"><i class="fab fa-github"></i></div><div class="mcp-node-label">GitHub</div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:8px;">
+          <i class="fas fa-xmark" style="color:#f87171;margin-top:2px;flex-shrink:0;"></i>
+          <p class="t-small">M개 AI × N개 도구 = M×N개의 통합 코드 필요</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:8px;">
+          <i class="fas fa-xmark" style="color:#f87171;margin-top:2px;flex-shrink:0;"></i>
+          <p class="t-small">유지보수 비용 급증, 표준 없음, 보안 취약</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="t-eyebrow" style="margin-bottom:16px;">MCP의 해결: USB-C 비유</p>
+      <div class="callout" style="margin-top:0;margin-bottom:20px;">
+        <p><strong>"MCP는 AI 세계의 USB-C 표준입니다."</strong><br>
+        하나의 규격으로 모든 기기를 연결하듯, 단일 프로토콜로 모든 AI 모델과 도구를 연결합니다.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;">
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:8px;">
+          <i class="fas fa-check" style="color:var(--accent);margin-top:2px;flex-shrink:0;"></i>
+          <p class="t-small"><strong style="color:var(--accent);">M×N → M+N</strong>: 각 AI와 각 도구가 MCP 하나만 구현하면 자동 연결</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:8px;">
+          <i class="fas fa-check" style="color:var(--accent);margin-top:2px;flex-shrink:0;"></i>
+          <p class="t-small">Anthropic 2024년 발표 → Linux Foundation AAIF 이관, 중립적 거버넌스</p>
+        </div>
+      </div>
+      <p class="t-eyebrow" style="margin-bottom:12px;">생태계 현황 (2026.03)</p>
+      <div class="grid-3" style="gap:10px;">
+        <div style="text-align:center;padding:14px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+          <p style="font-size:22px;font-weight:900;color:var(--accent);font-family:var(--font-mono);">5,800+</p>
+          <p style="font-size:11px;color:var(--text-muted);">MCP 서버</p>
+        </div>
+        <div style="text-align:center;padding:14px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+          <p style="font-size:22px;font-weight:900;color:var(--accent);font-family:var(--font-mono);">300+</p>
+          <p style="font-size:11px;color:var(--text-muted);">클라이언트</p>
+        </div>
+        <div style="text-align:center;padding:14px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+          <p style="font-size:22px;font-weight:900;color:var(--accent);font-family:var(--font-mono);">97M+</p>
+          <p style="font-size:11px;color:var(--text-muted);">월간 SDK 다운</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            goToPage(pageIndex) {
-                if (pageIndex < 0 || pageIndex >= this.totalPages) return;
-                
-                // 편집 모드일 때 페이지 변경 시 경고
-                if (this.isEditMode) {
-                    const confirm = window.confirm('편집 중인 내용이 손실될 수 있습니다. 계속하시겠습니까?');
-                    if (!confirm) return;
-                }
-                
-                this.currentPage = pageIndex;
-                this.slideFrame.src = this.pageFiles[pageIndex];
-                this.updateUI();
-                
-                // 부드러운 전환 효과
-                this.slideFrame.style.opacity = '0.7';
-                setTimeout(() => {
-                    this.slideFrame.style.opacity = '1';
-                }, 100);
-            }
+<!-- ===== SLIDE 13: MCP 아키텍처 ===== -->
+<section class="slide" id="slide-13" data-num="13 / 17" data-title="MCP 아키텍처">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 11 — MCP Architecture</p>
+    <h2 class="t-subtitle">MCP 아키텍처 & 실무 연결</h2>
+  </div>
+  <div class="split-2 anim">
+    <div>
+      <div class="arch-diagram" style="margin-bottom:20px;">
+        <div class="arch-row">
+          <div class="arch-box brain">
+            <div class="arch-box-label" style="color:var(--accent);">BRAIN</div>
+            <div class="arch-box-title" style="color:var(--accent);">Claude Desktop / IDE</div>
+          </div>
+        </div>
+        <div class="arch-arrow-v"><i class="fas fa-arrows-up-down"></i></div>
+        <div class="arch-row" style="margin-bottom:0;">
+          <div class="arch-box router">
+            <div class="arch-box-label" style="color:var(--green-light);">ROUTER</div>
+            <div class="arch-box-title" style="color:var(--green-light);">MCP Protocol <span style="font-size:11px;font-family:var(--font-mono);opacity:.7;">(JSON-RPC)</span></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-around;align-items:flex-start;margin-top:12px;gap:8px;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+            <div style="width:2px;height:16px;background:var(--border);"></div>
+            <div class="arch-box server" style="width:100%;">
+              <div class="arch-box-label">Local Server</div>
+              <div class="arch-box-title" style="font-size:12px;">stdio 방식</div>
+            </div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;">
+              <div class="arch-box data"><div class="arch-box-title" style="font-size:11px;"><i class="fab fa-slack" style="color:#4ade80;"></i> Slack</div></div>
+              <div class="arch-box data"><div class="arch-box-title" style="font-size:11px;"><i class="fab fa-github" style="color:#e2e8f0;"></i> GitHub</div></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+            <div style="width:2px;height:16px;background:var(--border);"></div>
+            <div class="arch-box server" style="width:100%;">
+              <div class="arch-box-label">Remote Server</div>
+              <div class="arch-box-title" style="font-size:12px;">HTTP + SSE</div>
+            </div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;">
+              <div class="arch-box data"><div class="arch-box-title" style="font-size:11px;"><i class="fas fa-n" style="color:#e2e8f0;"></i> Notion</div></div>
+              <div class="arch-box data"><div class="arch-box-title" style="font-size:11px;"><i class="fas fa-database" style="color:#fb923c;"></i> DB</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="t-eyebrow" style="margin-bottom:14px;">MCP가 제공하는 3가지 기능</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+        <div class="card" style="padding:16px 18px;display:flex;gap:14px;align-items:flex-start;">
+          <span class="chip" style="flex-shrink:0;">Tools</span>
+          <p class="t-small">AI가 외부 시스템에 액션 수행 — GitHub에 이슈 생성, Slack 메시지 전송</p>
+        </div>
+        <div class="card" style="padding:16px 18px;display:flex;gap:14px;align-items:flex-start;">
+          <span class="chip" style="flex-shrink:0;">Resources</span>
+          <p class="t-small">외부 데이터를 AI에게 컨텍스트로 제공 — Notion 문서, DB 쿼리 결과 읽기</p>
+        </div>
+        <div class="card" style="padding:16px 18px;display:flex;gap:14px;align-items:flex-start;">
+          <span class="chip" style="flex-shrink:0;">Prompts</span>
+          <p class="t-small">재사용 가능한 프롬프트 템플릿 — 사내 표준 보고서 템플릿 자동 호출</p>
+        </div>
+      </div>
+      <p class="t-eyebrow" style="margin-bottom:12px;">PR 위기 대응 자동화 시나리오</p>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;gap:10px;align-items:center;font-size:12px;padding:8px 12px;background:var(--bg-card);border-radius:8px;border:1px solid var(--border);">
+          <span class="t-mono">01</span><span style="color:var(--text-muted);">Slack MCP → 새 이슈 알림 감지</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:12px;padding:8px 12px;background:var(--bg-card);border-radius:8px;border:1px solid var(--border);">
+          <span class="t-mono">02</span><span style="color:var(--text-muted);">Notion MCP → 과거 대응 사례 검색</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:12px;padding:8px 12px;background:var(--bg-card);border-radius:8px;border:1px solid var(--border);">
+          <span class="t-mono">03</span><span style="color:var(--text-muted);">Claude → 대응 전략 초안 생성</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:12px;padding:8px 12px;background:var(--accent-dim);border-radius:8px;border:1px solid var(--accent-border);">
+          <span class="t-mono">04</span><span style="color:var(--text);">Gmail MCP → 담당자에게 브리핑 자동 발송</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            goToPreviousPage() {
-                if (this.currentPage > 0) {
-                    this.goToPage(this.currentPage - 1);
-                }
-            }
+<!-- ===== SLIDE 14: 바이브 코딩 ===== -->
+<section class="slide" id="slide-14" data-num="14 / 17" data-title="바이브 코딩">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 12 — Vibe Coding</p>
+    <h2 class="t-subtitle">바이브 코딩 실전 가이드</h2>
+  </div>
+  <div class="split-2 anim">
+    <div>
+      <div class="callout" style="margin-top:0;">
+        <p>코드를 직접 작성하지 않고, <strong>자연어 지시만으로 AI가 코드를 생성</strong>하게 하는 개발 방식.<br>
+        비개발자도 필요한 자동화 도구를 직접 만들 수 있습니다.</p>
+      </div>
+      <p class="t-eyebrow" style="margin-bottom:14px;">Cursor AI 2026 주요 기능</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <span class="chip" style="flex-shrink:0;font-size:10px;">Composer</span>
+          <p class="t-small">자체 코딩 모델 — Sonnet 4.5 대비 약 2배 속도</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <span class="chip" style="flex-shrink:0;font-size:10px;">Plan Mode</span>
+          <p class="t-small">실행 전 단계별 계획 수립 후 승인 → 실행 (CoT 자동 적용)</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <span class="chip" style="flex-shrink:0;font-size:10px;">Agent Teams</span>
+          <p class="t-small">여러 에이전트가 동일 프로젝트에서 병렬 작업</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <span class="chip" style="flex-shrink:0;font-size:10px;">MCP Apps</span>
+          <p class="t-small">Figma, Amplitude 등 외부 서비스를 IDE 안에서 바로 조작</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="t-eyebrow" style="margin-bottom:14px;">4단계 파이프라인</p>
+      <div class="flow" style="margin-bottom:24px;flex-direction:column;gap:6px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <div class="badge" style="flex-shrink:0;">01</div>
+          <div><p style="font-size:13px;font-weight:700;margin-bottom:3px;">Pattern Recognition</p><p class="t-small">타겟 웹사이트 구조 및 데이터 패턴 학습</p></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <div class="badge" style="flex-shrink:0;">02</div>
+          <div><p style="font-size:13px;font-weight:700;margin-bottom:3px;">Scraper Generation</p><p class="t-small">"이 사이트 뉴스 긁어와줘" → Cursor가 코드 자동 생성</p></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <div class="badge" style="flex-shrink:0;">03</div>
+          <div><p style="font-size:13px;font-weight:700;margin-bottom:3px;">Data Extraction</p><p class="t-small">수집된 데이터를 CSV/JSON 구조화된 파일로 저장</p></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--accent-dim);border-radius:var(--radius);border:1px solid var(--accent-border);">
+          <div class="badge" style="flex-shrink:0;">04</div>
+          <div><p style="font-size:13px;font-weight:700;margin-bottom:3px;color:var(--accent);">Integration</p><p class="t-small">분석용 LLM 프롬프트 파이프라인으로 데이터 연결</p></div>
+        </div>
+      </div>
+      <div class="code-block" style="font-size:12px;">
+<span class="cmt">// 스크래퍼 제작 프롬프트 예시</span>
+<span class="str">"네이버 뉴스에서 '브랜드명' 키워드 기사를</span>
+<span class="str"> 매일 오전 9시에 자동 수집해서 CSV로 저장하는</span>
+<span class="str"> 파이썬 스크립트를 만들어줘. 셀레니엄 기반으로."</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-            goToNextPage() {
-                if (this.currentPage < this.totalPages - 1) {
-                    this.goToPage(this.currentPage + 1);
-                }
-            }
+<!-- ===== SLIDE 15: 업무 자동화 워크플로우 ===== -->
+<section class="slide slide--long" id="slide-15" data-num="15 / 17" data-title="업무 자동화">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 13 — Automated Workflow</p>
+    <h2 class="t-subtitle">업무 자동화 워크플로우 — 마케팅 실무 전반</h2>
+  </div>
+  <div class="split-2 anim">
+    <div>
+      <p class="t-small" style="margin-bottom:24px;">기존 PR 여론 분석에서 마케팅 업무 전반으로 확장한 5단계 자동화 파이프라인</p>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border);">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:0;width:40px;"><div class="badge badge-lg" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);">01</div><div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:12px;"></div></div>
+          <div style="padding-bottom:8px;"><p class="t-heading" style="margin-bottom:4px;">수집 (Collection)</p><p class="t-small">Cursor 웹 스크래핑: 뉴스 사이트, 커뮤니티, SNS 데이터 추출 → CSV 적재</p></div>
+        </div>
+        <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border);">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:0;width:40px;"><div class="badge badge-lg" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);">02</div><div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:12px;"></div></div>
+          <div style="padding-bottom:8px;"><p class="t-heading" style="margin-bottom:4px;">전처리 (Preprocessing)</p><p class="t-small">Python 데이터 정제 (중복 제거, 광고 필터링) + 메타데이터 태깅</p></div>
+        </div>
+        <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border);">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:0;width:40px;"><div class="badge badge-lg">03</div><div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:12px;"></div></div>
+          <div style="padding-bottom:8px;"><p class="t-heading" style="margin-bottom:4px;">분석 (Analysis)</p><p class="t-small">LLM 프레임 분석 (논조 파악) + 감성 분석 + 핵심 행위자 추출</p></div>
+        </div>
+        <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border);">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:0;width:40px;"><div class="badge badge-lg" style="background:linear-gradient(135deg,#34d399,#059669);">04</div><div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:12px;"></div></div>
+          <div style="padding-bottom:8px;"><p class="t-heading" style="margin-bottom:4px;">생성 (Generation)</p><p class="t-small">일일 동향 보고서(Daily Brief) 초안 자동 작성 + 시각화 대시보드</p></div>
+        </div>
+        <div style="display:flex;gap:16px;padding:16px 0;">
+          <div style="flex-shrink:0;width:40px;"><div class="badge badge-lg" style="background:linear-gradient(135deg,var(--green-light),var(--green));">05</div></div>
+          <div><p class="t-heading" style="margin-bottom:4px;">저장 (Storage)</p><p class="t-small">Obsidian Second Brain — 원본 출처(Source) 링크 유지로 환각 방지</p></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="t-eyebrow" style="margin-bottom:14px;">마케팅 업무별 자동화 적용</p>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead><tr><th>업무 영역</th><th>자동화 방식</th></tr></thead>
+          <tbody>
+            <tr><td>보도자료 모니터링</td><td>스크래퍼 → 감성 분석 → 일일 브리핑</td></tr>
+            <tr><td>SNS 트렌드 분석</td><td>크롤링 → 키워드 추출 → 캠페인 인사이트</td></tr>
+            <tr><td>경쟁사 동향</td><td>웹사이트·블로그 모니터링 → 전략 변화 감지</td></tr>
+            <tr><td>콘텐츠 기획</td><td>성과 데이터 파싱 → 고성과 패턴 → 소재 추천</td></tr>
+            <tr><td>위기 감지</td><td>실시간 스크래핑 → 이상 감지 → 즉시 알림</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid-2" style="margin-top:20px;gap:10px;">
+        <div style="text-align:center;padding:14px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <p style="font-size:22px;font-weight:900;color:var(--accent);font-family:var(--font-mono);">90%</p>
+          <p style="font-size:12px;color:var(--text-muted);">리드타임 단축</p>
+        </div>
+        <div style="text-align:center;padding:14px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);">
+          <p style="font-size:22px;font-weight:900;color:var(--accent);font-family:var(--font-mono);">24/7</p>
+          <p style="font-size:12px;color:var(--text-muted);">실시간 모니터링</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            updateUI() {
-                // 페이지 카운터 업데이트
-                this.currentPageSpan.textContent = this.currentPage + 1;
-                this.totalPagesSpan.textContent = this.totalPages;
-                
-                // 페이지 제목 업데이트
-                this.pageTitleSpan.textContent = this.pageTitles[this.currentPage];
-                
-                
-                // 네비게이션 버튼 상태 업데이트
-                this.prevBtn.disabled = this.currentPage === 0;
-                this.nextBtn.disabled = this.currentPage === this.totalPages - 1;
-                
-                // 목차 활성 상태 업데이트
-                this.tocItems.forEach((item, index) => {
-                    item.classList.toggle('active', index === this.currentPage);
-                });
-            }
+<!-- ===== SLIDE 16: AI 듀얼 브레인 ===== -->
+<section class="slide" id="slide-16" data-num="16 / 17" data-title="AI 듀얼 브레인">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 14 — Dual Brain Strategy</p>
+    <h2 class="t-subtitle">AI 듀얼 브레인 종합 전략</h2>
+  </div>
+  <div class="anim" style="margin-bottom:28px;">
+    <div class="dual-brain">
+      <div class="brain-side human">
+        <p class="brain-side-label">Human 인간</p>
+        <ul class="brain-list">
+          <li>문제 정의</li>
+          <li>윤리·판단</li>
+          <li>전략 방향</li>
+          <li>최종 의사결정</li>
+          <li>맥락(Context) 제공</li>
+        </ul>
+      </div>
+      <div class="brain-center">
+        <div class="brain-center-icon"><i class="fas fa-bolt"></i></div>
+        <div style="width:2px;height:20px;background:var(--border);"></div>
+        <div class="brain-center-icon"><i class="fas fa-handshake"></i></div>
+        <div style="width:2px;height:20px;background:var(--border);"></div>
+        <div class="brain-center-icon"><i class="fas fa-arrow-right-arrow-left"></i></div>
+      </div>
+      <div class="brain-side ai">
+        <p class="brain-side-label">AI Agent</p>
+        <ul class="brain-list">
+          <li>패턴 탐지</li>
+          <li>초안 생성</li>
+          <li>데이터 처리</li>
+          <li>반복 업무 자동화</li>
+          <li>대규모 정보 분석</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="grid-3 anim">
+    <div class="card">
+      <p class="t-heading" style="margin-bottom:6px;"><i class="fas fa-comments" style="color:var(--accent);margin-right:6px;"></i>프롬프트 시스템</p>
+      <p class="t-small">업무별 최적화된 프롬프트 템플릿 라이브러리 + CoT 설계 표준화</p>
+    </div>
+    <div class="card">
+      <p class="t-heading" style="margin-bottom:6px;"><i class="fas fa-puzzle-piece" style="color:var(--accent);margin-right:6px;"></i>데이터 파싱 프레임</p>
+      <p class="t-small">비정형 데이터(뉴스, 계약서)를 구조화된 데이터로 해체 및 재조합</p>
+    </div>
+    <div class="card">
+      <p class="t-heading" style="margin-bottom:6px;"><i class="fas fa-plug" style="color:var(--accent);margin-right:6px;"></i>MCP 통합</p>
+      <p class="t-small">사내 DB, Slack, Notion 등과 AI를 안전하게 연결하는 프로토콜</p>
+    </div>
+    <div class="card">
+      <p class="t-heading" style="margin-bottom:6px;"><i class="fas fa-code" style="color:var(--accent);margin-right:6px;"></i>바이브 코딩 툴킷</p>
+      <p class="t-small">실무자가 직접 스크래퍼 및 자동화 도구를 Cursor AI로 즉시 제작</p>
+    </div>
+    <div class="card">
+      <p class="t-heading" style="margin-bottom:6px;"><i class="fas fa-chart-line" style="color:var(--accent);margin-right:6px;"></i>품질 KPI</p>
+      <p class="t-small">리드타임 단축, 정확도, 커버리지 등 AI 협업 성과를 정량적으로 측정</p>
+    </div>
+    <div class="card">
+      <p class="t-heading" style="margin-bottom:6px;"><i class="fas fa-shield-halved" style="color:var(--accent);margin-right:6px;"></i>거버넌스</p>
+      <p class="t-small">환각 방지, 보안 가이드라인, 프롬프트 버전 관리 및 윤리 규정</p>
+    </div>
+  </div>
+  <div class="takeaway anim" style="margin-top:20px;">
+    <i class="fas fa-rocket takeaway-icon"></i>
+    <p>기대 성과: 생산성 <strong>10~50배</strong> 향상 · 일관된 품질 (Standardized) · 무한한 확장성 (Scalability)</p>
+  </div>
+</section>
 
-            // 페이지 존재 여부 확인 (선택사항)
-            async checkPageExists(pageFile) {
-                try {
-                    const response = await fetch(pageFile, { method: 'HEAD' });
-                    return response.ok;
-                } catch {
-                    return false;
-                }
-            }
-        }
+<!-- ===== SLIDE 17: 마무리 / 7-Day Plan ===== -->
+<section class="slide slide--closing slide--long" id="slide-17" data-num="17 / 17" data-title="마무리">
+  <div class="slide-header anim">
+    <p class="t-eyebrow">Chapter 15 — Conclusion & Next Steps</p>
+    <h2 class="t-subtitle">마무리 및 7-Day Action Plan</h2>
+  </div>
+  <div class="callout anim" style="margin-bottom:32px;">
+    <p><strong>"AI, 모르고 사용하면 호구당한다. AI를 알아야 내가 원하는 대로 세팅이 가능하다."</strong></p>
+    <p style="margin-top:6px;font-size:13px;color:var(--text-muted);">— 성강현</p>
+  </div>
+  <div class="day-plan anim" style="margin-bottom:32px;">
+    <div class="day-item"><div class="day-num">D-1</div><div class="day-task">프롬프트 템플릿 작성</div><div class="day-desc">주요 반복 업무 3가지 → 6대 요소 적용</div></div>
+    <div class="day-item"><div class="day-num">D-2</div><div class="day-task">CoT / CoQ 설계</div><div class="day-desc">복잡한 업무 1개 단계 분해 + 질문 목록</div></div>
+    <div class="day-item"><div class="day-num">D-3</div><div class="day-task">최적 도구 선택</div><div class="day-desc">업무 유형별 LLM 도구 매핑</div></div>
+    <div class="day-item" style="border-color:var(--accent-border);"><div class="day-num">D-4</div><div class="day-task" style="color:var(--accent);">스크래퍼 PoC</div><div class="day-desc">Cursor AI로 뉴스 수집 스크립트 1개 제작</div></div>
+    <div class="day-item"><div class="day-num">D-5</div><div class="day-task">리포트 자동화</div><div class="day-desc">수집 → 분석 → 보고서 파이프라인 테스트</div></div>
+    <div class="day-item"><div class="day-num">D-6</div><div class="day-task">QC 기준 수립</div><div class="day-desc">팩트체크 체크리스트 + 출처 명시 규칙</div></div>
+    <div class="day-item"><div class="day-num">D-7</div><div class="day-task">KPI 대시보드</div><div class="day-desc">리드타임·정확도 측정 기준 수립</div></div>
+  </div>
+  <div class="grid-4 anim">
+    <div class="card" style="padding:16px;">
+      <i class="fas fa-quote-left" style="color:#f87171;margin-bottom:8px;display:block;font-size:14px;"></i>
+      <p style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;">환각 방지</p>
+      <p class="t-small">원본 출처 명시 필수. 중요 사실은 반드시 검증</p>
+    </div>
+    <div class="card" style="padding:16px;">
+      <i class="fas fa-lock" style="color:#fb923c;margin-bottom:8px;display:block;font-size:14px;"></i>
+      <p style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;">보안</p>
+      <p class="t-small">민감 개인정보·기밀 AI 입력 금지</p>
+    </div>
+    <div class="card" style="padding:16px;">
+      <i class="fas fa-copyright" style="color:#a78bfa;margin-bottom:8px;display:block;font-size:14px;"></i>
+      <p style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;">저작권</p>
+      <p class="t-small">AI 생성물 권리 관계 확인 후 외부 공개</p>
+    </div>
+    <div class="card" style="padding:16px;">
+      <i class="fas fa-code-branch" style="color:var(--accent);margin-bottom:8px;display:block;font-size:14px;"></i>
+      <p style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;">버전 관리</p>
+      <p class="t-small">성공한 프롬프트 자산화(DB화) 및 팀 공유</p>
+    </div>
+  </div>
+</section>
 
-        // 편집 툴바 명령어 실행
-        function execCommand(command, value = null) {
-            try {
-                const iframe = document.getElementById('slide-frame');
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                if (iframeDoc) {
-                    iframeDoc.execCommand(command, false, value);
-                }
-            } catch (e) {
-                console.error('명령어 실행 오류:', e);
-            }
-        }
+</main><!-- /slides-main -->
 
-        // 페이지 로드 완료 후 초기화
-        document.addEventListener('DOMContentLoaded', () => {
-            window.presentationViewer = new PresentationViewer();
-        });
+<!-- =============================================
+     하단 컨트롤바
+     ============================================= -->
+<div id="slide-ctrl">
+  <button class="ctrl-btn primary" id="ctrl-prev" title="이전">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+  <div class="ctrl-dots" id="ctrl-dots">
+    <!-- JS로 생성 -->
+  </div>
+  <button class="ctrl-btn primary" id="ctrl-next" title="다음">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+</div>
 
-        // 전역 함수로 외부에서 페이지 제어 가능
-        function goToSlide(pageIndex) {
-            if (window.presentationViewer) {
-                window.presentationViewer.goToPage(pageIndex);
-            }
-        }
-    </script>
+<!-- 키보드 힌트 -->
+<div id="key-hint">
+  <span class="key-badge">↑↓</span>
+  <span>슬라이드 이동</span>
+  <span class="key-badge">Space</span>
+  <span>다음</span>
+  <span class="key-badge">F</span>
+  <span>전체화면</span>
+</div>
+
+<!-- =============================================
+     JavaScript
+     ============================================= -->
+<script>
+(function() {
+  'use strict';
+
+  /* ── 상수 & 상태 ── */
+  const SLIDES = Array.from(document.querySelectorAll('section.slide'));
+  const TOTAL  = SLIDES.length;
+  let   current = 0;   // 0-based
+
+  /* ── DOM 참조 ── */
+  const navCounter  = document.getElementById('nav-counter');
+  const navProgress = document.getElementById('nav-progress');
+  const tocOverlay  = document.getElementById('toc-overlay');
+  const tocBackdrop = document.getElementById('toc-backdrop');
+  const tocList     = document.getElementById('toc-list');
+  const ctrlDots    = document.getElementById('ctrl-dots');
+  const btnToc      = document.getElementById('btn-toc');
+  const btnFs       = document.getElementById('btn-fs');
+  const btnPrev     = document.getElementById('btn-prev');
+  const btnNext     = document.getElementById('btn-next');
+  const ctrlPrev    = document.getElementById('ctrl-prev');
+  const ctrlNext    = document.getElementById('ctrl-next');
+
+  /* ── TOC 목록 동적 생성 ── */
+  SLIDES.forEach((s, i) => {
+    const title = s.dataset.title || `슬라이드 ${i + 1}`;
+    const item  = document.createElement('a');
+    item.className = 'toc-item';
+    item.href      = '#' + s.id;
+    item.innerHTML = `<span class="toc-num">${String(i + 1).padStart(2, '0')}</span>
+                      <span class="toc-text">${title}</span>`;
+    item.addEventListener('click', () => { closeToc(); });
+    tocList.appendChild(item);
+  });
+
+  /* ── 컨트롤바 도트 생성 ── */
+  SLIDES.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'ctrl-dot';
+    dot.title = `슬라이드 ${i + 1}`;
+    dot.addEventListener('click', () => goTo(i));
+    ctrlDots.appendChild(dot);
+  });
+
+  /* ── 상태 업데이트 ── */
+  function updateUI(idx) {
+    current = idx;
+    const n = idx + 1;
+
+    // 네비바
+    navCounter.textContent = `${String(n).padStart(2, '0')} / ${TOTAL}`;
+    navProgress.style.width = `${(n / TOTAL) * 100}%`;
+
+    // 도트
+    document.querySelectorAll('.ctrl-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+
+    // TOC 활성
+    document.querySelectorAll('#toc-list .toc-item').forEach((item, i) => {
+      item.classList.toggle('active', i === idx);
+    });
+
+    // 버튼 비활성
+    btnPrev.disabled  = (idx === 0);
+    ctrlPrev.disabled = (idx === 0);
+    btnNext.disabled  = (idx === TOTAL - 1);
+    ctrlNext.disabled = (idx === TOTAL - 1);
+  }
+
+  /* ── 슬라이드 이동 ── */
+  function goTo(idx) {
+    if (idx < 0 || idx >= TOTAL) return;
+    SLIDES[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateUI(idx);
+  }
+
+  function goPrev() { if (current > 0) goTo(current - 1); }
+  function goNext() { if (current < TOTAL - 1) goTo(current + 1); }
+
+  /* ── IntersectionObserver — 현재 슬라이드 감지 & 진입 애니메이션 ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const idx = SLIDES.indexOf(entry.target);
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        if (entry.intersectionRatio > 0.35) updateUI(idx);
+      }
+    });
+  }, { threshold: [0.1, 0.35, 0.6] });
+
+  SLIDES.forEach(s => observer.observe(s));
+
+  /* ── 목차 토글 ── */
+  function openToc()  {
+    tocOverlay.classList.add('open');
+    tocBackdrop.classList.add('open');
+    btnToc.classList.add('active');
+  }
+  function closeToc() {
+    tocOverlay.classList.remove('open');
+    tocBackdrop.classList.remove('open');
+    btnToc.classList.remove('active');
+  }
+  btnToc.addEventListener('click', () => {
+    tocOverlay.classList.contains('open') ? closeToc() : openToc();
+  });
+  tocBackdrop.addEventListener('click', closeToc);
+
+  /* ── 전체화면 ── */
+  btnFs.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+      btnFs.innerHTML = '<i class="fas fa-compress"></i>';
+    } else {
+      document.exitFullscreen();
+      btnFs.innerHTML = '<i class="fas fa-expand"></i>';
+    }
+  });
+
+  /* ── 버튼 이벤트 ── */
+  btnPrev.addEventListener('click', goPrev);
+  btnNext.addEventListener('click', goNext);
+  ctrlPrev.addEventListener('click', goPrev);
+  ctrlNext.addEventListener('click', goNext);
+
+  /* ── 키보드 ── */
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    switch (e.key) {
+      case 'ArrowDown':
+      case 'ArrowRight':
+        e.preventDefault(); goNext(); break;
+      case 'ArrowUp':
+      case 'ArrowLeft':
+        e.preventDefault(); goPrev(); break;
+      case ' ':
+        e.preventDefault(); goNext(); break;
+      case 'f': case 'F':
+        btnFs.click(); break;
+      case 'Escape':
+        if (tocOverlay.classList.contains('open')) closeToc();
+        break;
+    }
+  });
+
+  /* ── 목차 앵커 링크 부드러운 이동 ── */
+  document.querySelectorAll('a[href^="#slide-"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        const idx = SLIDES.indexOf(target);
+        if (idx >= 0) goTo(idx);
+      }
+    });
+  });
+
+  /* ── 초기화 ── */
+  updateUI(0);
+  SLIDES[0].classList.add('visible');
+
+})();
+</script>
 </body>
 </html>
