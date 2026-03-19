@@ -47,8 +47,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
   overflow-y: scroll;
   background: var(--bg);
 }
@@ -271,7 +269,8 @@ body {
    3. 슬라이드 기본 구조
    ============================================= */
 .slide {
-  min-height: 100vh;
+  height: 100vh;           /* 고정 — padding 포함해서 정확히 100vh */
+  box-sizing: border-box;  /* padding이 height 안에 포함되도록 */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -279,15 +278,17 @@ body {
   padding: calc(var(--nav-h) + var(--slide-py)) var(--slide-px) calc(var(--ctrl-h) + var(--slide-py));
   position: relative;
   background: var(--bg-slide);
-  scroll-snap-align: start;
   overflow: hidden;
 }
 
-/* 내용 긴 슬라이드 — 스냅 예외 */
+/* 내용 긴 슬라이드 — 스크롤 허용, 상단 정렬 유지 */
 .slide--long {
-  scroll-snap-align: none;
+  height: auto;            /* 고정 높이 해제 — 내용만큼 늘어남 */
+  min-height: 100vh;       /* 최소 한 화면은 차지 */
+  box-sizing: border-box;
   justify-content: flex-start;
   padding-top: calc(var(--nav-h) + 48px);
+  overflow: visible;
 }
 
 /* 슬라이드 구분선 */
@@ -800,84 +801,181 @@ table.compare td:first-child {
 /* =============================================
    SLIDE 01 — 커버
    ============================================= */
-.cover-main {
-  max-width: 660px;
+
+/* 배경 글로우 장식 */
+.slide--cover::before,
+.slide--cover::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
 }
+.slide--cover::before {
+  width: 560px; height: 560px;
+  background: radial-gradient(circle, rgba(45,212,191,0.09) 0%, transparent 70%);
+  top: -120px; right: 5%;
+}
+.slide--cover::after {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(47,82,51,0.22) 0%, transparent 70%);
+  bottom: -80px; left: 30%;
+}
+
+/* 좌우 분할 래퍼 */
+.cover-split {
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  gap: 56px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+.cover-left  { display: flex; flex-direction: column; }
+.cover-right { display: flex; flex-direction: column; gap: 16px; }
+
+/* 영문 레이블 */
 .cover-en {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--text-dim);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+.cover-en::before {
+  content: '';
+  display: inline-block;
+  width: 28px; height: 1px;
+  background: var(--text-dim);
+}
+
+/* 메인 타이틀 — 그라디언트 텍스트 */
 .cover-title {
-  font-size: clamp(34px, 4.5vw, 58px);
+  font-size: clamp(32px, 3.8vw, 54px);
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1.12;
   letter-spacing: -0.025em;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+.cover-title .hl {
+  background: linear-gradient(120deg, var(--accent) 0%, #5eead4 60%, var(--green-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 인용구 */
+.cover-quote {
+  padding: 16px 20px;
+  border-left: 2px solid var(--green-light);
+  background: rgba(47,82,51,0.14);
+  border-radius: 0 var(--radius) var(--radius) 0;
   margin-bottom: 24px;
 }
-.cover-desc {
-  font-size: 16px;
-  color: var(--text-muted);
-  line-height: 1.75;
-  max-width: 520px;
-  margin-bottom: 36px;
-}
-.cover-quote {
-  padding: 18px 24px;
-  border-left: 3px solid var(--green-light);
-  background: rgba(47,82,51,0.15);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  margin-bottom: 48px;
-}
 .cover-quote p {
-  font-size: 14px;
-  color: rgba(255,255,255,0.75);
-  line-height: 1.7;
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.75;
   font-style: italic;
 }
 .cover-quote cite {
   display: block;
   margin-top: 8px;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--green-light);
   font-style: normal;
   font-weight: 700;
+  letter-spacing: 0.04em;
 }
-.cover-goals {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+
+/* 강사 메타 */
+.cover-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-dim);
 }
+.cover-meta-divider {
+  width: 1px; height: 14px;
+  background: var(--border-strong);
+}
+
+/* 우측 — 핵심 수치 카드 */
+.cover-stat {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cover-stat::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 30%, rgba(45,212,191,0.1) 0%, transparent 60%);
+}
+.cover-stat-num {
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 900;
+  font-family: var(--font-mono);
+  background: linear-gradient(135deg, var(--accent), #5eead4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 6px;
+  position: relative;
+}
+.cover-stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  position: relative;
+}
+
+/* 우측 — 학습 목표 세로 스택 */
 .cover-goal-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px 14px;
-  text-align: center;
+  border-radius: var(--radius);
+  padding: 14px 18px;
   transition: var(--transition);
 }
 .cover-goal-item:hover {
   border-color: var(--accent-border);
   background: var(--bg-card-hover);
+  transform: translateX(4px);
 }
 .cover-goal-icon {
-  font-size: 20px;
-  color: var(--accent);
-  margin-bottom: 8px;
+  font-size: 18px;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-dim);
+  border-radius: 8px;
+  flex-shrink: 0;
 }
+.cover-goal-text { flex: 1; }
 .cover-goal-title {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 .cover-goal-desc {
   font-size: 11px;
   color: var(--text-muted);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 /* =============================================
@@ -922,72 +1020,203 @@ table.compare td:first-child {
 }
 
 /* =============================================
-   SLIDE 04 — 타임라인
+   SLIDE 04 — 타임라인 (세로) + 역사 탭
    ============================================= */
-.timeline-wrap {
-  position: relative;
-  padding: 20px 0;
+
+/* 탭 바 */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+  width: fit-content;
 }
-.timeline-line {
-  position: absolute;
-  top: 50px;
-  left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent-border) 10%, var(--accent-border) 90%, transparent);
+.tab-btn {
+  padding: 8px 20px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  outline: none;
 }
-.timeline-items {
+.tab-btn:hover {
+  color: var(--text);
+  background: var(--bg-card-hover);
+}
+.tab-btn.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+
+/* 탭 패널 */
+.tab-panel {
+  display: none;
+}
+.tab-panel.active {
+  display: block;
+}
+
+/* 시대별 카드 그리드 */
+.era-grid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 0;
-  position: relative;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 0;
 }
-.timeline-item {
+.era-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.era-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.era-card.era-1::before { background: #475569; }
+.era-card.era-2::before { background: #60a5fa; }
+.era-card.era-3::before { background: #a78bfa; }
+.era-card.era-4::before { background: #86efac; }
+.era-card.era-5::before { background: var(--accent); }
+.era-card.era-6::before { background: linear-gradient(90deg, var(--accent), var(--green-light)); }
+.era-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+.era-period {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.era-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.era-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.era-milestone {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0;
-  padding: 0 4px;
+  gap: 5px;
 }
-.timeline-year {
+.era-milestone-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+.era-milestone-item::before {
+  content: '→';
+  color: var(--accent);
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* 전체 래퍼 — 3열 그리드 */
+.vtl-wrap {
+  display: grid;
+  grid-template-columns: 72px 2px 1fr;
+  gap: 0 0;
+  position: relative;
+}
+
+/* 연도 열 */
+.vtl-year {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 700;
   color: var(--accent);
-  margin-bottom: 10px;
-  text-align: center;
+  text-align: right;
+  padding: 14px 16px 14px 0;
+  line-height: 1.3;
+  white-space: nowrap;
 }
-.timeline-dot {
-  width: 12px; height: 12px;
+.vtl-year.past { color: var(--text-dim); }
+.vtl-year.now  { color: var(--accent); }
+
+/* 세로 라인 + 도트 열 */
+.vtl-spine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.vtl-dot {
+  width: 10px; height: 10px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
+  box-shadow: 0 0 6px var(--accent);
   flex-shrink: 0;
-  margin-bottom: 14px;
+  margin-top: 18px;
   position: relative;
   z-index: 1;
 }
-.timeline-dot.past { background: var(--text-dim); box-shadow: none; }
-.timeline-dot.highlight {
-  width: 16px; height: 16px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+.vtl-dot.past    { background: var(--text-dim); box-shadow: none; }
+.vtl-dot.now     { width: 14px; height: 14px; margin-top: 16px;
+                   background: linear-gradient(135deg, var(--accent), var(--accent-dark)); }
+.vtl-line {
+  width: 2px;
+  flex: 1;
+  background: var(--border);
+  min-height: 8px;
 }
-.timeline-events {
+.vtl-spine:last-of-type .vtl-line { display: none; }
+
+/* 이벤트 열 */
+.vtl-events {
+  padding: 10px 0 10px 20px;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 6px;
-  width: 100%;
+  align-content: flex-start;
+  align-items: flex-start;
 }
+
+/* 이벤트 태그 */
 .t-event {
-  font-size: 10.5px;
-  line-height: 1.4;
-  padding: 5px 8px;
-  border-radius: 6px;
-  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
 }
-.t-event.openai  { background: rgba(96,165,250,0.1); color: #93c5fd; border: 1px solid rgba(96,165,250,0.2); }
-.t-event.google  { background: rgba(74,222,128,0.1); color: #86efac; border: 1px solid rgba(74,222,128,0.2); }
-.t-event.anthro  { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
-.t-event.others  { background: rgba(251,146,60,0.1); color: #fdba74; border: 1px solid rgba(251,146,60,0.2); }
+.t-event.openai { background: rgba(96,165,250,0.1);  color: #93c5fd; border: 1px solid rgba(96,165,250,0.2); }
+.t-event.google { background: rgba(74,222,128,0.1);  color: #86efac; border: 1px solid rgba(74,222,128,0.2); }
+.t-event.anthro { background: var(--accent-dim);     color: var(--accent); border: 1px solid var(--accent-border); }
+.t-event.meta   { background: rgba(129,140,248,0.1); color: #a5b4fc; border: 1px solid rgba(129,140,248,0.25); }
+.t-event.others { background: rgba(251,146,60,0.1);  color: #fdba74; border: 1px solid rgba(251,146,60,0.2); }
 
 /* =============================================
    SLIDE 09 — Self-Prompt 매트릭스
@@ -1054,68 +1283,105 @@ table.compare td:first-child {
 }
 
 /* =============================================
-   SLIDE 12 — MCP M×N 다이어그램
+   SLIDE 12 — MCP Before/After 다이어그램
    ============================================= */
-.mcp-problem {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.mcp-compare {
+  display: grid;
+  grid-template-columns: 1fr 48px 1fr;
+  gap: 0;
+  align-items: center;
+  margin-bottom: 20px;
 }
-.mcp-diagram {
+.mcp-box {
   background: rgba(0,0,0,0.3);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
+  padding: 20px 16px;
+}
+.mcp-box-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.mcp-box-label.bad  { color: #f87171; }
+.mcp-box-label.good { color: var(--accent); }
+.mcp-box.bad  { border-color: rgba(239,68,68,0.25); }
+.mcp-box.good { border-color: var(--accent-border); }
+
+/* 노드 행 (AI 열 / 도구 열) */
+.mcp-node-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
   position: relative;
 }
-.mcp-nodes {
+.mcp-node-col {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
 }
 .mcp-node {
   display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.mcp-node.ai   { background: var(--accent-dim);          color: var(--accent); border: 1px solid var(--accent-border); }
+.mcp-node.tool { background: rgba(251,146,60,0.1);        color: #fb923c;       border: 1px solid rgba(251,146,60,0.25); }
+.mcp-node.hub  { background: rgba(151,169,124,0.15);      color: var(--green-light); border: 2px solid rgba(151,169,124,0.5);
+                 padding: 10px 14px; font-size: 13px; border-radius: var(--radius); }
+
+/* SVG 연결선 컨테이너 */
+.mcp-line-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* 화살표 전환 아이콘 */
+.mcp-arrow-col {
+  display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-}
-.mcp-node-icon {
-  width: 44px; height: 44px;
-  border-radius: var(--radius);
-  display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 18px;
+  gap: 4px;
 }
-.mcp-node-icon.ai   { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
-.mcp-node-icon.tool { background: rgba(251,146,60,0.1); color: #fb923c; border: 1px solid rgba(251,146,60,0.25); }
-.mcp-node-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-align: center;
+.mcp-arrow-icon {
+  font-size: 20px;
+  color: var(--text-dim);
 }
-.mcp-connector {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  font-size: 11px;
+.mcp-arrow-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  writing-mode: vertical-rl;
+}
+
+/* 연결 수 뱃지 */
+.mcp-count-badge {
+  display: inline-block;
+  margin: 10px auto 0;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 700;
   font-family: var(--font-mono);
-  padding: 4px 10px;
-  border-radius: 20px;
+  text-align: center;
 }
-.mcp-connector.problem {
-  background: rgba(239,68,68,0.15);
-  color: #f87171;
-  border: 1px solid rgba(239,68,68,0.3);
-}
-.mcp-connector.solution {
-  background: var(--accent-dim);
-  color: var(--accent);
-  border: 1px solid var(--accent-border);
-}
+.mcp-count-badge.bad  { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+.mcp-count-badge.good { background: var(--accent-dim);    color: var(--accent); border: 1px solid var(--accent-border); }
 
 /* =============================================
    SLIDE 13 — MCP 아키텍처 다이어그램
@@ -1348,43 +1614,66 @@ table.compare td:first-child {
 
 <!-- ===== SLIDE 01: 커버 ===== -->
 <section class="slide slide--cover" id="slide-01" data-num="01 / 17" data-title="커버">
-  <div class="cover-main">
-    <p class="cover-en anim">Marketing & AI Integration Strategy</p>
-    <h1 class="cover-title anim">
-      마케팅 실무 고도화를<br>
-      위한 <em>AI 활용</em><br>
-      전략 브리핑
-    </h1>
-    <p class="cover-desc anim">
-      AI 듀얼 브레인으로 업무 생산성 <strong style="color:var(--accent)">10~50배</strong> 혁신하기
-    </p>
-    <div class="cover-quote anim">
-      <p>"AI의 본질을 알아야 AI를 효율적으로 사용 가능하고,<br>
-         AI로 대체 가능한 업무를 알아야 AI를 공부할 방향이 정해진다."</p>
-      <cite>— 성강현</cite>
-    </div>
-    <div class="cover-goals anim">
-      <div class="cover-goal-item">
-        <div class="cover-goal-icon"><i class="fas fa-brain"></i></div>
-        <div class="cover-goal-title">AI 본질 이해</div>
-        <div class="cover-goal-desc">패턴 인식 도구로서의 원리</div>
+  <div class="cover-split">
+
+    <!-- 좌측: 타이틀 + 인용구 + 메타 -->
+    <div class="cover-left">
+      <p class="cover-en anim">Marketing & AI Integration Strategy</p>
+      <h1 class="cover-title anim">
+        마케팅 실무 고도화를<br>
+        위한 <span class="hl">AI 활용</span><br>
+        전략 브리핑
+      </h1>
+      <div class="cover-quote anim">
+        <p>"AI의 본질을 알아야 AI를 효율적으로 사용 가능하고,<br>
+           AI로 대체 가능한 업무를 알아야 AI를 공부할 방향이 정해진다."</p>
+        <cite>— 성강현</cite>
       </div>
-      <div class="cover-goal-item">
-        <div class="cover-goal-icon"><i class="fas fa-pen-nib"></i></div>
-        <div class="cover-goal-title">프롬프트 전략</div>
-        <div class="cover-goal-desc">CoT & Self-Prompt 마스터</div>
-      </div>
-      <div class="cover-goal-item">
-        <div class="cover-goal-icon"><i class="fas fa-database"></i></div>
-        <div class="cover-goal-title">데이터 파싱</div>
-        <div class="cover-goal-desc">정보의 해체와 창의적 재조합</div>
-      </div>
-      <div class="cover-goal-item">
-        <div class="cover-goal-icon"><i class="fas fa-plug"></i></div>
-        <div class="cover-goal-title">업무 자동화</div>
-        <div class="cover-goal-desc">MCP & 바이브 코딩 구축</div>
+      <div class="cover-meta anim">
+        <span>청도혁신센터</span>
+        <div class="cover-meta-divider"></div>
+        <span>2026. 03. 18</span>
+        <div class="cover-meta-divider"></div>
+        <span>총 15챕터</span>
       </div>
     </div>
+
+    <!-- 우측: 핵심 수치 + 학습 목표 -->
+    <div class="cover-right">
+      <div class="cover-stat anim">
+        <div class="cover-stat-num">10x — 50x</div>
+        <div class="cover-stat-label">AI 듀얼 브레인으로 업무 생산성 혁신</div>
+      </div>
+      <div class="cover-goal-item anim">
+        <div class="cover-goal-icon">🧠</div>
+        <div class="cover-goal-text">
+          <div class="cover-goal-title">AI 본질 이해</div>
+          <div class="cover-goal-desc">패턴 인식 도구로서의 원리</div>
+        </div>
+      </div>
+      <div class="cover-goal-item anim">
+        <div class="cover-goal-icon">✍️</div>
+        <div class="cover-goal-text">
+          <div class="cover-goal-title">프롬프트 전략</div>
+          <div class="cover-goal-desc">CoT & Self-Prompt 마스터</div>
+        </div>
+      </div>
+      <div class="cover-goal-item anim">
+        <div class="cover-goal-icon">🗄️</div>
+        <div class="cover-goal-text">
+          <div class="cover-goal-title">데이터 파싱</div>
+          <div class="cover-goal-desc">정보의 해체와 창의적 재조합</div>
+        </div>
+      </div>
+      <div class="cover-goal-item anim">
+        <div class="cover-goal-icon">⚡</div>
+        <div class="cover-goal-text">
+          <div class="cover-goal-title">업무 자동화</div>
+          <div class="cover-goal-desc">MCP & 바이브 코딩 구축</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1462,94 +1751,204 @@ table.compare td:first-child {
     <h2 class="t-subtitle">AI 생태계 타임라인 (2017 ~ 2026+)</h2>
   </div>
 
-  <div class="timeline-wrap anim" style="margin-bottom:36px;">
-    <div class="timeline-line"></div>
-    <div class="timeline-items">
-      <div class="timeline-item">
-        <div class="timeline-year">2017</div>
-        <div class="timeline-dot past"></div>
-        <div class="timeline-events">
-          <div class="t-event google">Transformer 논문</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2018–20</div>
-        <div class="timeline-dot past"></div>
-        <div class="timeline-events">
-          <div class="t-event openai">GPT-1 / GPT-3</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2022</div>
-        <div class="timeline-dot"></div>
-        <div class="timeline-events">
-          <div class="t-event openai">ChatGPT 혁명</div>
-          <div class="t-event anthro">Anthropic 설립</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2023</div>
-        <div class="timeline-dot"></div>
-        <div class="timeline-events">
-          <div class="t-event openai">GPT-4 멀티모달</div>
-          <div class="t-event google">Gemini 생태계</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2024</div>
-        <div class="timeline-dot"></div>
-        <div class="timeline-events">
-          <div class="t-event openai">o1 추론 모델</div>
-          <div class="t-event anthro">Claude 3 + MCP</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2025</div>
-        <div class="timeline-dot highlight"></div>
-        <div class="timeline-events">
-          <div class="t-event openai">GPT-5 / o3 ARC</div>
-          <div class="t-event google">Gemini 3 Pro</div>
-          <div class="t-event anthro">Claude 4.5 계열</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2026.Q1</div>
-        <div class="timeline-dot highlight"></div>
-        <div class="timeline-events">
-          <div class="t-event openai">GPT-5.3/5.4</div>
-          <div class="t-event google">Gemini 3.1 Pro</div>
-          <div class="t-event anthro">Claude 4.6 계열</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2026+</div>
-        <div class="timeline-dot highlight"></div>
-        <div class="timeline-events">
-          <div class="t-event others">MCP 5,800+ 서버</div>
-          <div class="t-event others">에이전트 협력 시대</div>
-        </div>
-      </div>
-    </div>
+  <!-- 탭 바 -->
+  <div class="tab-bar anim">
+    <button class="tab-btn active" data-tab="tab-timeline">📅 연도별 타임라인</button>
+    <button class="tab-btn" data-tab="tab-history">🏛 AI 역사의 전환점</button>
   </div>
 
-  <div class="grid-4 anim">
-    <div class="card" style="border-top:2px solid #60a5fa;">
-      <p class="t-heading" style="color:#93c5fd;margin-bottom:6px;">OpenAI</p>
-      <p class="t-small">모델 성능 혁신 + 가장 넓은 사용자 기반</p>
+  <!-- ── 탭 1: 타임라인 ── -->
+  <div class="tab-panel active" id="tab-timeline">
+
+    <!-- 범례 -->
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+      <span class="t-event openai">OpenAI</span>
+      <span class="t-event google">Google</span>
+      <span class="t-event anthro">Anthropic</span>
+      <span class="t-event meta">Meta</span>
+      <span class="t-event others">Others</span>
     </div>
-    <div class="card" style="border-top:2px solid #4ade80;">
-      <p class="t-heading" style="color:#86efac;margin-bottom:6px;">Google</p>
-      <p class="t-small">아키텍처 원천 기술 + 멀티모달 생태계</p>
+
+    <!-- 세로 타임라인 -->
+    <div class="vtl-wrap">
+      <div class="vtl-year past">2017</div>
+      <div class="vtl-spine"><div class="vtl-dot past"></div><div class="vtl-line"></div></div>
+      <div class="vtl-events">
+        <span class="t-event google">Transformer "Attention is All You Need" — 현대 LLM의 원형</span>
+      </div>
+
+      <div class="vtl-year past">2018–19</div>
+      <div class="vtl-spine"><div class="vtl-dot past"></div><div class="vtl-line"></div></div>
+      <div class="vtl-events">
+        <span class="t-event openai">GPT-1 · GPT-2 — LLM 가능성 첫 증명</span>
+        <span class="t-event google">BERT — 양방향 언어 이해, 검색 혁명</span>
+      </div>
+
+      <div class="vtl-year past">2020</div>
+      <div class="vtl-spine"><div class="vtl-dot past"></div><div class="vtl-line"></div></div>
+      <div class="vtl-events">
+        <span class="t-event openai">GPT-3 — 1,750억 파라미터, Few-shot 학습 등장</span>
+        <span class="t-event others">GitHub Copilot 베타 — AI 코딩 어시스턴트 시대</span>
+      </div>
+
+      <div class="vtl-year past">2021</div>
+      <div class="vtl-spine"><div class="vtl-dot past"></div><div class="vtl-line"></div></div>
+      <div class="vtl-events">
+        <span class="t-event openai">DALL-E — 텍스트→이미지 생성 AI 등장</span>
+        <span class="t-event google">LaMDA — 대화형 AI 모델</span>
+        <span class="t-event others">AlphaFold2 — 단백질 구조 50년 난제 해결</span>
+      </div>
+
+      <div class="vtl-year past">2022</div>
+      <div class="vtl-spine"><div class="vtl-dot"></div><div class="vtl-line"></div></div>
+      <div class="vtl-events">
+        <span class="t-event openai">ChatGPT — 5일 만에 100만 사용자, 생성형 AI 대중화</span>
+        <span class="t-event anthro">Anthropic 설립 — OpenAI 전 연구진, 안전성 중심</span>
+        <span class="t-event others">Stable Diffusion — 오픈소스 이미지 생성 AI</span>
+        <span class="t-event meta">Meta OPT — 오픈소스 LLM 공개 시작</span>
+      </div>
+
+      <div class="vtl-year past">2023</div>
+      <div class="vtl-spine"><div class="vtl-dot"></div><div class="vtl-line"></div></div>
+      <div class="vtl-events">
+        <span class="t-event openai">GPT-4 — 멀티모달, 변호사 시험 상위 10% 통과</span>
+        <span class="t-event google">Gemini 통합 생태계 · PaLM 2</span>
+        <span class="t-event anthro">Claude 1·2 — Constitutional AI 방법론</span>
+        <span class="t-event meta">LLaMA 1·2 — 오픈소스 LLM 생태계 폭발</span>
+        <span class="t-event others">Perplexity AI — AI 검색 엔진 등장</span>
+      </div>
+
+      <div class="vtl-year past">2024</div>
+      <div class="vtl-spine"><div class="vtl-dot"></div><div class="vtl-line"></div></div>
+      <div class="vtl-events">
+        <span class="t-event openai">GPT-4o — 실시간 음성·비전 통합</span>
+        <span class="t-event openai">o1 — 추론 모델, Test-Time Compute 패러다임 등장</span>
+        <span class="t-event google">Gemini 1.5 Pro — 1M 토큰 컨텍스트</span>
+        <span class="t-event anthro">Claude 3 계열 (Haiku·Sonnet·Opus)</span>
+        <span class="t-event anthro">MCP 발표 — AI-도구 표준 연결 프로토콜</span>
+        <span class="t-event meta">LLaMA 3 — 오픈소스 성능 급등</span>
+        <span class="t-event others">DeepSeek V2 — 중국발 고성능 오픈소스</span>
+      </div>
+
+      <div class="vtl-year now">2025</div>
+      <div class="vtl-spine"><div class="vtl-dot now"></div><div class="vtl-line"></div></div>
+      <div class="vtl-events">
+        <span class="t-event openai">o3 — ARC-AGI 인간 수준 돌파</span>
+        <span class="t-event openai">GPT-5 시리즈 출시</span>
+        <span class="t-event google">Gemini 3 Pro — HLE 23.4% SOTA</span>
+        <span class="t-event anthro">Claude 4.5 계열</span>
+        <span class="t-event others">DeepSeek R1 — RLVR 추론 혁명, 오픈소스 공개</span>
+        <span class="t-event others">MCP Linux Foundation 이관 — 중립 거버넌스 확립</span>
+      </div>
+
+      <div class="vtl-year now">2026 Q1</div>
+      <div class="vtl-spine"><div class="vtl-dot now"></div><div class="vtl-line"></div></div>
+      <div class="vtl-events">
+        <span class="t-event openai">GPT-5.3 Instant · 5.4 Thinking</span>
+        <span class="t-event google">Gemini 3.1 Pro</span>
+        <span class="t-event anthro">Claude Sonnet 4.6 · Opus 4.6 — 에이전트 팀, 14.5시간 작업</span>
+        <span class="t-event others">MCP 서버 5,800+ · 에이전트 협력 시대 본격화</span>
+      </div>
     </div>
-    <div class="card" style="border-top:2px solid var(--accent);">
-      <p class="t-heading" style="color:var(--accent);margin-bottom:6px;">Anthropic</p>
-      <p class="t-small">안전성·확장성 + MCP 표준 주도</p>
+
+    <!-- 플레이어 카드 -->
+    <div class="grid-4" style="margin-top:28px;">
+      <div class="card" style="border-top:2px solid #60a5fa;">
+        <p class="t-heading" style="color:#93c5fd;margin-bottom:6px;">OpenAI</p>
+        <p class="t-small">모델 성능 혁신 + 가장 넓은 사용자 기반</p>
+      </div>
+      <div class="card" style="border-top:2px solid #4ade80;">
+        <p class="t-heading" style="color:#86efac;margin-bottom:6px;">Google</p>
+        <p class="t-small">아키텍처 원천 기술 + 멀티모달 생태계</p>
+      </div>
+      <div class="card" style="border-top:2px solid var(--accent);">
+        <p class="t-heading" style="color:var(--accent);margin-bottom:6px;">Anthropic</p>
+        <p class="t-small">안전성·확장성 + MCP 표준 주도</p>
+      </div>
+      <div class="card" style="border-top:2px solid #fb923c;">
+        <p class="t-heading" style="color:#fdba74;margin-bottom:6px;">Meta · Others</p>
+        <p class="t-small">오픈소스 LLM + 검색·인프라·도메인 특화</p>
+      </div>
     </div>
-    <div class="card" style="border-top:2px solid #fb923c;">
-      <p class="t-heading" style="color:#fdba74;margin-bottom:6px;">Others</p>
-      <p class="t-small">검색·인프라·도메인 특화 서비스</p>
-    </div>
-  </div>
+
+  </div><!-- /tab-timeline -->
+
+  <!-- ── 탭 2: AI 역사의 전환점 ── -->
+  <div class="tab-panel" id="tab-history">
+    <p class="t-body" style="margin-bottom:24px;">
+      AI 70년 역사에서 <strong style="color:var(--accent);">패러다임을 바꾼 6번의 전환점</strong> —
+      각 시대가 어떻게 다음 시대를 만들었는지의 흐름입니다.
+    </p>
+    <div class="era-grid">
+
+      <div class="era-card era-1">
+        <div class="era-period">1950s – 1980s</div>
+        <div class="era-title">규칙 기반 AI 시대</div>
+        <div class="era-desc">인간이 규칙을 직접 코딩. "IF-THEN" 전문가 시스템. 체스·의료 진단에 활용됐지만 예외 처리에 한계.</div>
+        <div class="era-milestone">
+          <div class="era-milestone-item">1950 튜링 테스트 제안 — AI의 목표를 정의</div>
+          <div class="era-milestone-item">1956 다트머스 회의 — "AI" 용어 탄생</div>
+          <div class="era-milestone-item">1997 Deep Blue 체스 챔피언 격파</div>
+        </div>
+      </div>
+
+      <div class="era-card era-2">
+        <div class="era-period">1990s – 2000s</div>
+        <div class="era-title">머신러닝 시대</div>
+        <div class="era-desc">규칙 대신 데이터에서 패턴을 스스로 학습. SVM·결정트리 등장. 스팸 필터·추천 알고리즘에 실용화.</div>
+        <div class="era-milestone">
+          <div class="era-milestone-item">데이터가 많을수록 성능이 높아진다는 원리 확립</div>
+          <div class="era-milestone-item">ImageNet 데이터셋 구축 — 딥러닝 시대의 토대</div>
+        </div>
+      </div>
+
+      <div class="era-card era-3">
+        <div class="era-period">2012 – 2016</div>
+        <div class="era-title">딥러닝 혁명</div>
+        <div class="era-desc">GPU 병렬 연산 + 대규모 데이터 = 인간을 넘는 이미지 인식. AlphaGo가 셀프 플레이로 전략을 창조, 창발적 능력 첫 증명.</div>
+        <div class="era-milestone">
+          <div class="era-milestone-item">2012 AlexNet — 이미지 인식 오류율 26%→16% 급감</div>
+          <div class="era-milestone-item">2016 AlphaGo — 이세돌 4:1 격파, AI 임계점 목격</div>
+          <div class="era-milestone-item">GPU 클라우드 보편화 — 연구 장벽 해소</div>
+        </div>
+      </div>
+
+      <div class="era-card era-4">
+        <div class="era-period">2017 – 2022</div>
+        <div class="era-title">LLM · 생성형 AI 시대</div>
+        <div class="era-desc">Transformer 아키텍처가 모든 것을 바꿨다. 파라미터 규모가 곧 능력이 되는 스케일링 법칙 발견. ChatGPT가 AI를 대중화.</div>
+        <div class="era-milestone">
+          <div class="era-milestone-item">2017 Transformer — "Attention is All You Need"</div>
+          <div class="era-milestone-item">2020 GPT-3 — Few-shot 학습, 프롬프트 엔지니어링 시대</div>
+          <div class="era-milestone-item">2022 ChatGPT — 5일 만에 100만, AI 대중화 원년</div>
+        </div>
+      </div>
+
+      <div class="era-card era-5">
+        <div class="era-period">2023 – 2024</div>
+        <div class="era-title">추론 AI · 멀티모달 시대</div>
+        <div class="era-desc">크기만 키우는 것에서 "생각하는 능력"으로 전환. Test-Time Compute 개념 등장. 텍스트·이미지·음성 경계가 무너짐.</div>
+        <div class="era-milestone">
+          <div class="era-milestone-item">GPT-4 멀티모달 — 텍스트·이미지 동시 처리</div>
+          <div class="era-milestone-item">o1 추론 모델 — 오래 생각할수록 더 잘 풀린다</div>
+          <div class="era-milestone-item">1M 토큰 컨텍스트 — 책 수십 권 동시 분석</div>
+        </div>
+      </div>
+
+      <div class="era-card era-6">
+        <div class="era-period">2025 – 현재</div>
+        <div class="era-title">에이전트 협력 시대</div>
+        <div class="era-desc">AI가 혼자 생각하는 단계를 넘어 도구를 사용하고, 여러 AI가 협력하며, 수십 시간의 자율 작업을 수행. MCP가 표준 인프라로 확립.</div>
+        <div class="era-milestone">
+          <div class="era-milestone-item">o3 ARC-AGI 돌파 — 인간 전문가 수준 추론</div>
+          <div class="era-milestone-item">MCP — 모든 AI·도구를 단일 프로토콜로 연결</div>
+          <div class="era-milestone-item">Claude Opus 4.6 — 16개 에이전트 협력, 14.5시간 자율 작업</div>
+        </div>
+      </div>
+
+    </div><!-- /era-grid -->
+  </div><!-- /tab-history -->
+
 </section>
 
 <!-- ===== SLIDE 05: AI 작동 원리 ===== -->
@@ -1974,53 +2373,91 @@ table.compare td:first-child {
 </section>
 
 <!-- ===== SLIDE 12: MCP 개념 ===== -->
-<section class="slide" id="slide-12" data-num="12 / 17" data-title="MCP 개념">
+<section class="slide slide--long" id="slide-12" data-num="12 / 17" data-title="MCP 개념">
   <div class="slide-header anim">
     <p class="t-eyebrow">Chapter 10 — Model Context Protocol</p>
     <h2 class="t-subtitle">MCP 개념 및 등장 배경</h2>
   </div>
-  <div class="split-2 anim">
-    <div>
-      <p class="t-eyebrow" style="margin-bottom:16px;">이전의 문제: M×N 복잡도</p>
-      <div class="mcp-diagram" style="margin-bottom:20px;">
-        <div class="mcp-nodes">
-          <div class="mcp-node"><div class="mcp-node-icon ai"><i class="fas fa-robot"></i></div><div class="mcp-node-label">Claude</div></div>
-          <div class="mcp-node"><div class="mcp-node-icon ai"><i class="fas fa-comment-dots"></i></div><div class="mcp-node-label">ChatGPT</div></div>
-          <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
-            <span class="mcp-connector problem">M × N 연결</span>
-            <span style="font-size:11px;color:var(--text-dim);">각 쌍마다 별도 코드</span>
-          </div>
-          <div class="mcp-node"><div class="mcp-node-icon tool"><i class="fab fa-slack"></i></div><div class="mcp-node-label">Slack</div></div>
-          <div class="mcp-node"><div class="mcp-node-icon tool"><i class="fab fa-github"></i></div><div class="mcp-node-label">GitHub</div></div>
+
+  <!-- Before / After 비교 다이어그램 -->
+  <div class="mcp-compare anim">
+
+    <!-- ── BEFORE ── -->
+    <div class="mcp-box bad">
+      <p class="mcp-box-label bad">Before — M × N 문제</p>
+      <div class="mcp-node-row" id="mcp-before-row" style="min-height:140px;">
+        <!-- AI 노드 열 -->
+        <div class="mcp-node-col" id="mcp-ai-col">
+          <div class="mcp-node ai" id="bn-c">🤖 Claude</div>
+          <div class="mcp-node ai" id="bn-g">💬 ChatGPT</div>
+          <div class="mcp-node ai" id="bn-m">✦ Gemini</div>
+        </div>
+        <!-- SVG 연결선 (JS로 좌표 계산 후 그림) -->
+        <svg class="mcp-line-svg" id="before-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <!-- 도구 노드 열 -->
+        <div class="mcp-node-col" id="mcp-tool-col">
+          <div class="mcp-node tool" id="bn-s"># Slack</div>
+          <div class="mcp-node tool" id="bn-gh">⌥ GitHub</div>
+          <div class="mcp-node tool" id="bn-n">◻ Notion</div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:8px;">
-          <i class="fas fa-xmark" style="color:#f87171;margin-top:2px;flex-shrink:0;"></i>
-          <p class="t-small">M개 AI × N개 도구 = M×N개의 통합 코드 필요</p>
+      <div style="text-align:center;">
+        <span class="mcp-count-badge bad">3 AI × 3 도구 = 9개 연결 코드</span>
+      </div>
+    </div>
+
+    <!-- ── 화살표 ── -->
+    <div class="mcp-arrow-col">
+      <div class="mcp-arrow-icon">→</div>
+      <span class="mcp-arrow-label">MCP 도입</span>
+    </div>
+
+    <!-- ── AFTER ── -->
+    <div class="mcp-box good">
+      <p class="mcp-box-label good">After — M + N (MCP)</p>
+      <div class="mcp-node-row" id="mcp-after-row" style="min-height:140px;">
+        <!-- AI 노드 열 -->
+        <div class="mcp-node-col" id="mcp-ai-col-after">
+          <div class="mcp-node ai" id="an-c">🤖 Claude</div>
+          <div class="mcp-node ai" id="an-g">💬 ChatGPT</div>
+          <div class="mcp-node ai" id="an-m">✦ Gemini</div>
         </div>
-        <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:8px;">
-          <i class="fas fa-xmark" style="color:#f87171;margin-top:2px;flex-shrink:0;"></i>
-          <p class="t-small">유지보수 비용 급증, 표준 없음, 보안 취약</p>
+        <!-- SVG 연결선 (JS로 그림) -->
+        <svg class="mcp-line-svg" id="after-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <!-- 중앙 MCP 허브 -->
+        <div class="mcp-node hub" id="an-hub" style="align-self:center;">MCP<br><span style="font-size:10px;opacity:.7;">Protocol</span></div>
+        <!-- SVG 오른쪽 (허브→도구) -->
+        <svg class="mcp-line-svg" id="after-svg-r" xmlns="http://www.w3.org/2000/svg"></svg>
+        <!-- 도구 노드 열 -->
+        <div class="mcp-node-col" id="mcp-tool-col-after">
+          <div class="mcp-node tool" id="an-s"># Slack</div>
+          <div class="mcp-node tool" id="an-gh">⌥ GitHub</div>
+          <div class="mcp-node tool" id="an-n">◻ Notion</div>
         </div>
+      </div>
+      <div style="text-align:center;">
+        <span class="mcp-count-badge good">3 + 3 = 6개 — 각자 1개씩만 구현</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 하단: 문제점 + 생태계 수치 -->
+  <div class="split-2 anim" style="gap:24px;">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:8px;">
+        <span style="color:#f87171;flex-shrink:0;font-weight:700;">✕</span>
+        <p class="t-small">유지보수 비용 급증 — M×N개 커스텀 코드를 각각 관리해야 함</p>
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:8px;">
+        <span style="color:#f87171;flex-shrink:0;font-weight:700;">✕</span>
+        <p class="t-small">표준 없음 — AI가 바뀌면 모든 도구 연결을 처음부터 재작성</p>
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:8px;">
+        <span style="color:var(--accent);flex-shrink:0;font-weight:700;">✓</span>
+        <p class="t-small"><strong style="color:var(--accent);">MCP 도입 후</strong> — 각 AI와 각 도구가 MCP 하나만 구현하면 자동 연결. Anthropic 2024 발표 → Linux Foundation 중립 거버넌스 이관.</p>
       </div>
     </div>
     <div>
-      <p class="t-eyebrow" style="margin-bottom:16px;">MCP의 해결: USB-C 비유</p>
-      <div class="callout" style="margin-top:0;margin-bottom:20px;">
-        <p><strong>"MCP는 AI 세계의 USB-C 표준입니다."</strong><br>
-        하나의 규격으로 모든 기기를 연결하듯, 단일 프로토콜로 모든 AI 모델과 도구를 연결합니다.</p>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;">
-        <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:8px;">
-          <i class="fas fa-check" style="color:var(--accent);margin-top:2px;flex-shrink:0;"></i>
-          <p class="t-small"><strong style="color:var(--accent);">M×N → M+N</strong>: 각 AI와 각 도구가 MCP 하나만 구현하면 자동 연결</p>
-        </div>
-        <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:8px;">
-          <i class="fas fa-check" style="color:var(--accent);margin-top:2px;flex-shrink:0;"></i>
-          <p class="t-small">Anthropic 2024년 발표 → Linux Foundation AAIF 이관, 중립적 거버넌스</p>
-        </div>
-      </div>
       <p class="t-eyebrow" style="margin-bottom:12px;">생태계 현황 (2026.03)</p>
       <div class="grid-3" style="gap:10px;">
         <div style="text-align:center;padding:14px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
@@ -2458,10 +2895,20 @@ table.compare td:first-child {
   }
 
   /* ── 슬라이드 이동 ── */
+  let isScrolling = false;
+
   function goTo(idx) {
     if (idx < 0 || idx >= TOTAL) return;
-    SLIDES[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (isScrolling) return;
+
+    isScrolling = true;
+    const targetY = SLIDES[idx].getBoundingClientRect().top + window.scrollY;
+
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
     updateUI(idx);
+
+    // smooth scroll 완료 후 락 해제 (평균 400~600ms)
+    setTimeout(() => { isScrolling = false; }, 600);
   }
 
   function goPrev() { if (current > 0) goTo(current - 1); }
@@ -2473,10 +2920,15 @@ table.compare td:first-child {
       const idx = SLIDES.indexOf(entry.target);
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        if (entry.intersectionRatio > 0.35) updateUI(idx);
+        // long 슬라이드는 작은 비율에도 current로 인정 (0.15), 일반은 0.4
+        const isLong = entry.target.classList.contains('slide--long');
+        const triggerRatio = isLong ? 0.15 : 0.4;
+        if (entry.intersectionRatio >= triggerRatio && !isScrolling) {
+          updateUI(idx);
+        }
       }
     });
-  }, { threshold: [0.1, 0.35, 0.6] });
+  }, { threshold: [0.1, 0.15, 0.4, 0.6] });
 
   SLIDES.forEach(s => observer.observe(s));
 
@@ -2545,8 +2997,91 @@ table.compare td:first-child {
     });
   });
 
-  /* ── 초기화 ── */
-  updateUI(0);
+  /* ── MCP Before/After SVG 연결선 ── */
+  function drawMcpLines() {
+    // Before: AI 3개 → 도구 3개 (모든 쌍 연결, 9개 선)
+    const beforeSvg  = document.getElementById('before-svg');
+    const beforeRow  = document.getElementById('mcp-before-row');
+    const aiNodes    = ['bn-c','bn-g','bn-m'];
+    const toolNodes  = ['bn-s','bn-gh','bn-n'];
+
+    // After: AI 3개 → 허브, 허브 → 도구 3개
+    const afterSvgL  = document.getElementById('after-svg');
+    const afterSvgR  = document.getElementById('after-svg-r');
+    const afterRow   = document.getElementById('mcp-after-row');
+    const aiNodesA   = ['an-c','an-g','an-m'];
+    const hub        = document.getElementById('an-hub');
+    const toolNodesA = ['an-s','an-gh','an-n'];
+
+    if (!beforeSvg || !afterSvgL) return;
+
+    // side: 'right' → 노드 우측 중앙, 'left' → 노드 좌측 중앙
+    function getEdge(el, side, relativeTo) {
+      const er = el.getBoundingClientRect();
+      const rr = relativeTo.getBoundingClientRect();
+      return {
+        x: (side === 'right' ? er.right : er.left) - rr.left,
+        y: er.top + er.height / 2 - rr.top
+      };
+    }
+
+    // fromSide: from 노드에서 나오는 방향, toSide: to 노드로 들어가는 방향
+    function drawLines(svg, fromIds, toIds, container, color, opacity, fromSide, toSide) {
+      svg.innerHTML = '';
+      const rr = container.getBoundingClientRect();
+      svg.setAttribute('viewBox', `0 0 ${rr.width} ${rr.height}`);
+      svg.style.width  = rr.width  + 'px';
+      svg.style.height = rr.height + 'px';
+      fromIds.forEach(fid => {
+        const from = document.getElementById(fid);
+        if (!from) return;
+        const fc = getEdge(from, fromSide || 'right', container);
+        toIds.forEach(tid => {
+          const to = document.getElementById(tid);
+          if (!to) return;
+          const tc = getEdge(to, toSide || 'left', container);
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', fc.x); line.setAttribute('y1', fc.y);
+          line.setAttribute('x2', tc.x); line.setAttribute('y2', tc.y);
+          line.setAttribute('stroke', color);
+          line.setAttribute('stroke-width', '1.5');
+          line.setAttribute('stroke-opacity', opacity);
+          svg.appendChild(line);
+        });
+      });
+    }
+
+    // Before: 빨간 선 9개 — AI 우측 → 도구 좌측
+    drawLines(beforeSvg, aiNodes, toolNodes, beforeRow, '#f87171', '0.45', 'right', 'left');
+
+    // After 왼쪽: AI 우측 → 허브 좌측
+    if (hub) drawLines(afterSvgL, aiNodesA, ['an-hub'], afterRow, '#2dd4bf', '0.6', 'right', 'left');
+    // After 오른쪽: 허브 우측 → 도구 좌측
+    if (hub) drawLines(afterSvgR, ['an-hub'], toolNodesA, afterRow, '#2dd4bf', '0.6', 'right', 'left');
+  }
+
+  // 렌더링 완료 후 + 리사이즈 시 재계산
+  window.addEventListener('load',   drawMcpLines);
+  window.addEventListener('resize', drawMcpLines);
+  setTimeout(drawMcpLines, 300);
+
+  /* ── 슬라이드 04 탭 전환 ── */
+  function initTabs() {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(targetId).classList.add('active');
+        // 포커스 해제 — Space/Arrow 키보드 충돌 방지
+        btn.blur();
+      });
+    });
+  }
+  initTabs();
+
+
   SLIDES[0].classList.add('visible');
 
 })();
