@@ -522,11 +522,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
   .tl-col.floor-1, .tl-col.floor-3 { display: none; }
   .tl-cell:nth-child(2), .tl-cell:nth-child(4) { display: none; }
 }
-
-/* =========================================================
-   BUG1 FIX: .floor-block 선택자 누락 수정
-   ========================================================= */
-.floor-block { display: grid; grid-template-columns: 72px 1fr; gap: 20px; align-items: start; padding: 28px 0; border-bottom: 1px solid var(--warm-dark); }
+ display: grid; grid-template-columns: 72px 1fr; gap: 20px; align-items: start; padding: 28px 0; border-bottom: 1px solid var(--warm-dark); }
 .floor-block:last-child { border-bottom: none; }
 .floor-n { font-family: var(--font-display); font-size: 4rem; color: var(--persimmon-deep); line-height: 1; text-align: center; }
 .floor-tag { display: inline-block; padding: 3px 11px; background: var(--persimmon-deep); font-size: 0.8rem; letter-spacing: .08em; color: var(--cream); margin-bottom: 12px; }
@@ -745,7 +741,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
   flex: 1;
   min-width: 0;
   overflow-x: hidden;
-  padding-right: 236px;
+  padding-right: 236px; /* 사이드바 220px + 여유 16px */
   transition: padding-right 0.25s var(--ease);
 }
 .content-area.sidebar-hidden {
@@ -756,10 +752,12 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 .sidebar {
   width: 220px;
   flex-shrink: 0;
+  /* fixed로 스크롤과 무관하게 항상 뷰포트 우측 중앙 고정 */
   position: fixed;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  /* 최대 높이: 뷰포트의 70% (너무 길면 스크롤 가능) */
   max-height: 70vh;
   overflow-y: auto;
   background: var(--charcoal);
@@ -777,6 +775,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
   border-left: none;
   transform: translateY(-50%) translateX(100%);
 }
+/* 사이드바 토글 탭 — 사이드바 왼쪽에 붙어서 같이 이동 */
 .sidebar-toggle {
   position: fixed;
   right: 220px;
@@ -810,6 +809,10 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 }
 .sidebar-toggle.collapsed svg {
   transform: scaleX(-1);
+}
+/* content-area 사이드바 숨김 시 패딩 제거 */
+.content-area.sidebar-hidden {
+  padding-right: 0;
 }
 .sidebar::-webkit-scrollbar { width: 3px; }
 .sidebar::-webkit-scrollbar-thumb { background: var(--warm-dark); }
@@ -862,6 +865,20 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
   background: var(--persimmon);
 }
 
+/* main 페이지 전용 사이드바 아이템 */
+.sidebar-item.main-nav {
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 8px 18px;
+}
+
+/* ── 메인 콘텐츠 영역 ── */
+.content-area {
+  flex: 1;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
 /* ── 페이지 전환 ── */
 .tab-page { display: none; }
 .tab-page.active { display: block; }
@@ -900,6 +917,14 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 .page-inner { padding: 40px 60px 80px; }
 .page-inner .detail-section { padding: 52px 0; }
 
+/* ── 메인 페이지는 사이드바 없이 풀 레이아웃 ── */
+.main-full { width: 100%; }
+/* inner는 기존 스타일 그대로 */
+
+/* ── 사이드바 숨김 (메인) ── */
+.sidebar.hidden-sidebar { display: none; }
+.body-wrapper.no-sidebar .sidebar { display: none; }
+
 /* ── 반응형 ── */
 @media (max-width: 1100px) {
   .sidebar { width: 190px; }
@@ -918,6 +943,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 @media (max-width: 600px) {
   .topbar-logo { display: none; }
 }
+
 
 /* ── 하단 페이지 네비게이터 ── */
 .bottom-nav {
@@ -1332,6 +1358,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         </div>
       </div>
 
+
       <div class="floor-block">
         <div class="floor-n">2F</div>
         <div>
@@ -1377,6 +1404,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <p class="section-subtitle">3개 층이 동시에 진행되는 당일 전체 프로그램</p>
       </div>
 
+      <!-- 병렬 3트랙 헤더 -->
       <div class="tl-parallel-header">
         <div class="tl-col">시간</div>
         <div class="tl-col floor-1">1층 — 코미디 스케치관</div>
@@ -1511,6 +1539,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
     </div>
 
   </div>
+
       </div>
     </div>
 
@@ -1526,6 +1555,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="page-inner">
   <div class="inner">
 
+    <!-- 예산 상세 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="budget-detail" class="section-num">01 — 예산 상세</span>
@@ -1544,18 +1574,22 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           <tr><td style="font-weight:700;color:var(--gold)">합계</td><td style="font-weight:700;color:var(--gold)">1,500만원</td><td colspan="2"></td></tr>
         </tbody>
       </table>
+
       <div class="highlight-box" style="margin-top:28px;">
         <p><strong>장비 임차 절감 방안:</strong> 시군구 공동 장비 풀을 우선 확인한다. 빔프로젝터와 음향 장비의 경우 지자체 보유 장비를 협의해 활용하면 장비 예산 50%까지 절감 가능. 절감분은 게스트 초청 또는 홍보 예산으로 전용.</p>
       </div>
     </div>
 
+    <!-- 6개월 추진 플랜 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="budget-plan" class="section-num">02 — 추진 플랜</span>
         <h2 class="section-title">6개월 <em>월별 실행 계획</em></h2>
         <p class="section-subtitle">반시축제 개최월을 M월로 기준 설정 (통상 10~11월 · 착수 4~5월)</p>
       </div>
+
       <div class="monthly-rows">
+
         <div class="monthly-row" onclick="toggleMonthly(this)">
           <div class="monthly-row-header"><span class="monthly-month">M-6</span><span class="monthly-label">기반 구축 — 뼈대 확정, 준비 체계 가동</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
@@ -1570,6 +1604,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             </table>
           </div></div>
         </div>
+
         <div class="monthly-row" onclick="toggleMonthly(this)">
           <div class="monthly-row-header"><span class="monthly-month">M-5</span><span class="monthly-label">콘텐츠 기획 + 공모전 설계</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
@@ -1584,6 +1619,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             </table>
           </div></div>
         </div>
+
         <div class="monthly-row" onclick="toggleMonthly(this)">
           <div class="monthly-row-header"><span class="monthly-month">M-4</span><span class="monthly-label">섭외 확정 + 공모전 오픈 + 홍보물 착수</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
@@ -1598,6 +1634,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             </table>
           </div></div>
         </div>
+
         <div class="monthly-row" onclick="toggleMonthly(this)">
           <div class="monthly-row-header"><span class="monthly-month">M-3</span><span class="monthly-label">홍보 가동 + 예약 시스템 오픈</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
@@ -1613,6 +1650,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             </table>
           </div></div>
         </div>
+
         <div class="monthly-row" onclick="toggleMonthly(this)">
           <div class="monthly-row-header"><span class="monthly-month">M-1</span><span class="monthly-label">공모전 마감 + 최종 준비</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
@@ -1627,6 +1665,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             </table>
           </div></div>
         </div>
+
         <div class="monthly-row" onclick="toggleMonthly(this)">
           <div class="monthly-row-header"><span class="monthly-month">D-Day</span><span class="monthly-label">실행 + 사후 정리</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
@@ -1642,9 +1681,11 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             </table>
           </div></div>
         </div>
+
       </div>
     </div>
 
+    <!-- 핵심 과업 체크리스트 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="budget-tasks" class="section-num">03 — 핵심 과업</span>
@@ -1670,6 +1711,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
     </div>
 
   </div>
+
       </div>
     </div>
 
@@ -1682,10 +1724,12 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <h1>청소년 <em>공모전</em></h1>
         <p>지역 뿌리를 만드는 가장 강력한 장치 — 청소년이 만들고, 주민이 심사하고, 가족이 관람한다</p>
       </div>
-      <!-- BUG3 FIX: page-inner가 비어있던 문제 수정 — inner를 page-inner 안으로 이동 -->
       <div class="page-inner">
-      <div class="inner">
+  </div>
 
+  <div class="inner">
+
+    <!-- 왜 청소년 공모전인가 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="youth-why" class="section-num">01 — 존재 이유</span>
@@ -1711,6 +1755,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
     </div>
 
+    <!-- 공모전 개요 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="youth-overview" class="section-num">02 — 공모전 개요</span>
@@ -1732,6 +1777,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </table>
     </div>
 
+    <!-- 추진 프로세스 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="youth-process" class="section-num">03 — 추진 프로세스</span>
@@ -1744,11 +1790,13 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <div class="process-step"><div class="process-dot">04</div><div class="process-label">제작 지원</div><div class="process-sub">영상 제작비 10팀<br>중간 점검 피드백<br>M-3~M-1</div></div>
         <div class="process-step"><div class="process-dot">05</div><div class="process-label">심사·시상</div><div class="process-sub">운영위 심사<br>수상작 영화제 상영<br>D-Day</div></div>
       </div>
+
       <div class="highlight-box">
-        <p><strong>사전 교육의 핵심:</strong> 단순히 "영상 만들어서 제출"이 아니라, MOU를 맺은 학교와 함께 <strong>배짼다 쇼 단체 관람 → 코미디언 코미디 영상 제작 강의 → 확실히 참여하는 학생 대상 제작비 지원 10팀 선정</strong> 순서로 진행한다.</p>
+        <p><strong>사전 교육의 핵심:</strong> 단순히 "영상 만들어서 제출"이 아니라, MOU를 맺은 학교와 함께 <strong>배짼다 쇼 단체 관람 → 코미디언 코미디 영상 제작 강의 → 확실히 참여하는 학생 대상 제작비 지원 10팀 선정</strong> 순서로 진행한다. 관람과 강의를 거친 학생들이 훨씬 완성도 높은 작품을 만들고, 영화제에 대한 애착도 높아진다.</p>
       </div>
     </div>
 
+    <!-- 심사 기준 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="youth-judge" class="section-num">04 — 심사 기준</span>
@@ -1781,6 +1829,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
     </div>
 
+    <!-- 확장 가능성 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="youth-expand" class="section-num">05 — 확장 가능성</span>
@@ -1805,9 +1854,8 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
     </div>
 
-      </div><!-- /inner -->
-      </div><!-- /page-inner -->
-    </div><!-- /tab-youth -->
+  </div>
+</div><!-- /tab-youth -->
 
     <!-- ═══════════════════════════════════════════
          TAB 04 — 생태계 전략
@@ -1821,6 +1869,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="page-inner">
       <div class="inner">
 
+    <!-- 왜 생태계인가 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="eco-why" class="section-num">01 — 왜 생태계인가</span>
@@ -1840,6 +1889,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
     </div>
 
+    <!-- 성공·실패 사례 비교 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="eco-cases" class="section-num">02 — 사례 비교</span>
@@ -1893,6 +1943,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
     </div>
 
+    <!-- 3대 순환 고리 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="eco-cycles" class="section-num">03 — 3대 순환 고리</span>
@@ -1936,6 +1987,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
     </div>
 
+    <!-- 단계별 로드맵 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="eco-roadmap" class="section-num">04 — 단계별 로드맵</span>
@@ -1943,6 +1995,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <p class="section-subtitle">각 단계를 클릭하면 세부 목표와 지표가 펼쳐집니다</p>
       </div>
       <div class="step-cards">
+
         <div class="step-card open">
           <div class="step-card-header" onclick="toggleStep(this)">
             <div class="step-n">1</div>
@@ -2024,7 +2077,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
                 </table>
               </div>
               <div>
-                <p style="font-size:.84rem;color:var(--muted);line-height:1.8;">청소년 공모전을 <strong style="color:var(--ivory)">청년 창작자 제작 지원 프로그램</strong>으로 확장. 코미디 창작자 네트워킹 세션 신설.</p>
+                <p style="font-size:.84rem;color:var(--muted);line-height:1.8;">청소년 공모전을 <strong style="color:var(--ivory)">청년 창작자 제작 지원 프로그램</strong>으로 확장. 코미디 창작자 네트워킹 세션 신설. "청도 반시시시에 오면 사람이 연결된다"는 인식 형성.</p>
               </div>
             </div>
           </div></div>
@@ -2056,9 +2109,11 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             </div>
           </div></div>
         </div>
+
       </div>
     </div>
 
+    <!-- 재원 다각화 -->
     <div class="detail-section">
       <div class="section-header">
         <span id="eco-finance" class="section-num">05 — 재원 다각화</span>
@@ -2066,18 +2121,19 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <p class="section-subtitle">단일 지자체 의존도 50% 이하가 생존의 마지노선</p>
       </div>
       <div class="finance-grid">
-        <div class="finance-card"><div class="finance-card-type">1회차 · 기반</div><div class="finance-card-name">청도군청 문화관광과 보조금</div><div class="finance-card-desc">반시축제 연계 예산으로 포지셔닝.</div><div class="finance-tag go">1회차 주재원</div></div>
-        <div class="finance-card"><div class="finance-card-type">1회차 · 접촉</div><div class="finance-card-name">청도 감 농협 / 로컬 식음료</div><div class="finance-card-desc">반시 브랜드와 코미디 영화제의 자연스러운 연결.</div><div class="finance-tag go">1회차부터</div></div>
-        <div class="finance-card"><div class="finance-card-type">2회차 · 목표</div><div class="finance-card-name">영화진흥위원회 소규모 영화제</div><div class="finance-card-desc">1회차 결과보고서가 신청의 핵심.</div><div class="finance-tag">2회차</div></div>
-        <div class="finance-card"><div class="finance-card-type">2회차 · 목표</div><div class="finance-card-name">지방소멸대응기금 연계</div><div class="finance-card-desc">"인구 감소 지역 문화 활력" 키워드가 핵심.</div><div class="finance-tag">2회차</div></div>
-        <div class="finance-card"><div class="finance-card-type">3회차 · 시도</div><div class="finance-card-name">크라우드펀딩 (텀블벅/와디즈)</div><div class="finance-card-desc">소액 후원자도 영화제 지지자가 된다.</div><div class="finance-tag">3회차</div></div>
-        <div class="finance-card"><div class="finance-card-type">5회차+ · 안착</div><div class="finance-card-name">자체 수익 (굿즈·마켓 기능)</div><div class="finance-card-desc">완전한 자립 구조 목표.</div><div class="finance-tag">장기</div></div>
+        <div class="finance-card"><div class="finance-card-type">1회차 · 기반</div><div class="finance-card-name">청도군청 문화관광과 보조금</div><div class="finance-card-desc">반시축제 연계 예산으로 포지셔닝. 청도 세계코미디아트페스티벌과 연계 근거 제시.</div><div class="finance-tag go">1회차 주재원</div></div>
+        <div class="finance-card"><div class="finance-card-type">1회차 · 접촉</div><div class="finance-card-name">청도 감 농협 / 로컬 식음료</div><div class="finance-card-desc">반시 브랜드와 코미디 영화제의 자연스러운 연결. 소액 협찬도 "후원사" 명단에 올린다.</div><div class="finance-tag go">1회차부터</div></div>
+        <div class="finance-card"><div class="finance-card-type">2회차 · 목표</div><div class="finance-card-name">영화진흥위원회 소규모 영화제</div><div class="finance-card-desc">1회차 결과보고서(관객 수·언론 보도·경제효과)가 신청의 핵심. 사전 공고 일정 확인 필수.</div><div class="finance-tag">2회차</div></div>
+        <div class="finance-card"><div class="finance-card-type">2회차 · 목표</div><div class="finance-card-name">지방소멸대응기금 연계</div><div class="finance-card-desc">청도군 기금 연계 문화사업으로 포지셔닝. "인구 감소 지역 문화 활력" 키워드가 핵심.</div><div class="finance-tag">2회차</div></div>
+        <div class="finance-card"><div class="finance-card-type">3회차 · 시도</div><div class="finance-card-name">크라우드펀딩 (텀블벅/와디즈)</div><div class="finance-card-desc">"청도에서 웃음을 피워요" 캠페인. 소액 후원자도 영화제 지지자가 된다. 홍보 효과 병행.</div><div class="finance-tag">3회차</div></div>
+        <div class="finance-card"><div class="finance-card-type">5회차+ · 안착</div><div class="finance-card-name">자체 수익 (굿즈·마켓 기능)</div><div class="finance-card-desc">포스터·스티커 등 굿즈 판매. 코미디 영상 콘텐츠 마켓 기능 시도. 완전한 자립 구조 목표.</div><div class="finance-tag">장기</div></div>
       </div>
     </div>
 
-      </div><!-- /inner -->
-      </div><!-- /page-inner -->
-    </div><!-- /tab-eco -->
+      </div>
+    </div>
+
+    </div>
 
     <!-- ═══════════════════════════════════════════
          TAB 05 — 오픈마이크
@@ -2091,6 +2147,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="page-inner">
       <div class="inner">
 
+        <!-- 01 왜 오픈마이크인가 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="om-concept" class="section-num">01 — 왜 오픈마이크인가</span>
@@ -2099,33 +2156,47 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           <div class="two-col">
             <div>
               <blockquote class="quote-block">3층이 "보는 코미디"라면 2층은 "하는 코미디". 관객이 참여자로 전환되는 순간이 영화제를 지역의 것으로 만든다.</blockquote>
-              <p style="font-size:.88rem;color:var(--muted);line-height:1.8;">이번 오픈마이크 방향: <strong style="color:var(--ivory)">"즐기는 주민 코미디"</strong>, 청도를 소재로 뭔가 말하고 싶은 사람이면 누구나.</p>
+              <p style="font-size:.88rem;color:var(--muted);line-height:1.8;">전유성 코미디 학교 사례 — 전문 코미디언 양성에 집중하다 지역 뿌리 없이 소멸한 반면교사. 이번 오픈마이크 방향: <strong style="color:var(--ivory)">"즐기는 주민 코미디"</strong>, 청도를 소재로 뭔가 말하고 싶은 사람이면 누구나.</p>
             </div>
             <div class="three-col" style="grid-template-columns:1fr;gap:14px;">
-              <div class="card" style="border-top:3px solid var(--persimmon);"><span class="card-label">참여 전환</span><div class="card-title">관객 → 퍼포머</div><p class="card-body">한 번 무대에 선 사람은 영화제에 뿌리를 내린다.</p></div>
-              <div class="card" style="border-top:3px solid var(--persimmon);"><span class="card-label">지역 소재</span><div class="card-title">청도가 소재다</div><p class="card-body">반시, 소싸움, 이웃, 일상. 경험 불문 누구나.</p></div>
+              <div class="card" style="border-top:3px solid var(--persimmon);">
+                <span class="card-label">참여 전환</span>
+                <div class="card-title">관객 → 퍼포머</div>
+                <p class="card-body">한 번 무대에 선 사람은 영화제에 뿌리를 내린다. 구경꾼이 아닌 당사자가 된다.</p>
+              </div>
+              <div class="card" style="border-top:3px solid var(--persimmon);">
+                <span class="card-label">지역 소재</span>
+                <div class="card-title">청도가 소재다</div>
+                <p class="card-body">반시, 소싸움, 이웃, 일상. 청도를 소재로 뭔가 말하고 싶은 사람이면 경험 불문 누구나.</p>
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- 02 2층 공간 세팅 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="om-space" class="section-num">02 — 2층 공간 세팅</span>
             <h2 class="section-title">카페 공간을 <em>무대로</em></h2>
+            <p class="section-subtitle">별도 시설 없이 카페 테이블 재배치만으로 오픈마이크 무대 구성</p>
           </div>
           <table class="data-table">
             <thead><tr><th>항목</th><th>세부 내용</th><th>비용</th></tr></thead>
             <tbody>
               <tr><td class="td-accent">무대 구역</td><td>카페 테이블 재배치 (벽 한쪽 3m × 2m 구역)</td><td>없음</td></tr>
               <tr><td class="td-accent">마이크 스탠드</td><td>높이 조절 가능 1개</td><td>기존 장비 포함</td></tr>
-              <tr><td class="td-accent">PA 소형 스피커</td><td>15~30W 1세트</td><td>10~20만원 임차</td></tr>
-              <tr><td class="td-accent">관객석</td><td>카페 테이블 30~40석</td><td>없음</td></tr>
+              <tr><td class="td-accent">PA 소형 스피커</td><td>15~30W 1세트 (목소리 또렷하게 들리는 수준)</td><td>10~20만원 임차</td></tr>
+              <tr><td class="td-accent">관객석</td><td>카페 테이블 30~40석 (빈자리 많을수록 웃음이 줄어듦 → 좌석 수 조절 중요)</td><td>없음</td></tr>
               <tr><td class="td-accent">신청 접수 코너</td><td>테이블 1개 + 신청 용지 + 번호표</td><td>없음</td></tr>
               <tr><td class="td-accent">동아리 소개 부스</td><td>롤 배너 1개 + QR 스탠드 1개</td><td>5~10만원</td></tr>
             </tbody>
           </table>
+          <div class="highlight-box">
+            <p><strong>공간 배치 원칙:</strong> 관객석과 무대 거리 2~3m 이내, 무대 조명 없어도 카페 조명으로 충분, PA 볼륨은 카페 전체에 들리는 수준이면 적절.</p>
+          </div>
         </div>
 
+        <!-- 03 당일 타임테이블 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="om-timetable" class="section-num">03 — 당일 타임테이블</span>
@@ -2140,41 +2211,70 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
               <tr><td class="td-accent">잠시 중단</td><td>15:30</td><td>—</td><td>3층 개막 안내 → 이동 유도</td></tr>
               <tr><td class="td-accent">자유 시간</td><td>16:00~</td><td>—</td><td>카페 운영, 신규 신청자 접수 계속</td></tr>
               <tr><td class="td-accent">3라운드 (헤드라이너)</td><td>17:30~</td><td>약 35분</td><td>외부 코미디언 헤드라이너 + 동아리 앙코르</td></tr>
+              <tr><td class="td-accent">마무리</td><td>18:20~</td><td>—</td><td>단편 상영 안내, 2층 운영 정리</td></tr>
               <tr><td class="td-accent">운영 마감</td><td>19:30</td><td>—</td><td>2층 공식 종료</td></tr>
             </tbody>
           </table>
+          <div class="highlight-box">
+            <p><strong>라운드별 퍼포머 구성:</strong> 동아리 수료자가 앵커 역할, 현장 신청자로 생동감 확보. 3라운드 헤드라이너는 외부 코미디언(서울코미디클럽, 메타코미디 소속 타진).</p>
+          </div>
         </div>
 
+        <!-- 04 MC 역할 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="om-mc" class="section-num">04 — MC 역할</span>
             <h2 class="section-title">오픈마이크의 <em>분위기 설계자</em></h2>
           </div>
-          <table class="data-table">
-            <thead><tr><th>역할</th><th>내용</th></tr></thead>
-            <tbody>
-              <tr><td class="td-accent">워밍업</td><td>시작 후 10~15분간 관객과 라포 형성</td></tr>
-              <tr><td class="td-accent">소개</td><td>퍼포머 이름 + 입장 박수 유도</td></tr>
-              <tr><td class="td-accent">마무리</td><td>공연 종료 후 퍼포머 이름 재언급, 간단한 코멘트</td></tr>
-              <tr><td class="td-accent">관객 유도</td><td>신규 참가 독려 멘트, 신청 용지 안내</td></tr>
-              <tr><td class="td-accent">시간 관리</td><td>초과 퍼포머 정중한 마무리 신호</td></tr>
-            </tbody>
-          </table>
+          <div class="two-col">
+            <div>
+              <p style="font-size:.88rem;color:var(--muted);line-height:1.8;margin-bottom:20px;">초기 MC: 워크숍 강사 또는 외부 초청 코미디언. 이후 동아리 수료자 중 MC 지망자 단계적 육성.</p>
+              <table class="data-table">
+                <thead><tr><th>역할</th><th>내용</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-accent">워밍업</td><td>시작 후 10~15분간 관객과 라포 형성</td></tr>
+                  <tr><td class="td-accent">소개</td><td>퍼포머 이름 + 입장 박수 유도</td></tr>
+                  <tr><td class="td-accent">마무리</td><td>공연 종료 후 퍼포머 이름 재언급, 간단한 코멘트</td></tr>
+                  <tr><td class="td-accent">관객 유도</td><td>신규 참가 독려 멘트, 신청 용지 안내</td></tr>
+                  <tr><td class="td-accent">시간 관리</td><td>초과 퍼포머 정중한 마무리 신호</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <div class="highlight-box">
+                <p><strong>MC 육성 경로:</strong> 보조 MC → 단독 MC → 외부 오픈마이크 연결. 수료자 중 MC 지망자는 단계적으로 역할 확대.</p>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- 05 참가자 에티켓 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="om-etiquette" class="section-num">05 — 참가자 에티켓</span>
             <h2 class="section-title">MC가 오프닝에서 <em>전달하는 규칙</em></h2>
           </div>
           <div class="needs-grid" style="grid-template-columns:repeat(2,1fr);">
-            <div class="needs-card"><div class="needs-card-label">자리 지키기</div><p class="needs-card-desc">자신의 순서가 끝나도 끝까지 자리를 지키고 다른 퍼포머를 응원한다.</p></div>
-            <div class="needs-card"><div class="needs-card-label">잡담·야유 금지</div><p class="needs-card-desc">다른 퍼포머 공연 중 잡담이나 야유는 금지.</p></div>
-            <div class="needs-card"><div class="needs-card-label">오리지널 소재</div><p class="needs-card-desc">모든 소재는 오리지널 창작. 기존 개그 복사 금지.</p></div>
-            <div class="needs-card"><div class="needs-card-label">5분 엄수</div><p class="needs-card-desc">1인당 5분. MC의 마무리 신호를 존중한다.</p></div>
+            <div class="needs-card">
+              <div class="needs-card-label">자리 지키기</div>
+              <p class="needs-card-desc">자신의 순서가 끝나도 끝까지 자리를 지키고 다른 퍼포머를 응원한다.</p>
+            </div>
+            <div class="needs-card">
+              <div class="needs-card-label">잡담·야유 금지</div>
+              <p class="needs-card-desc">다른 퍼포머 공연 중 잡담이나 야유는 금지. 음료 한 잔이 이 공간을 유지하는 방법.</p>
+            </div>
+            <div class="needs-card">
+              <div class="needs-card-label">오리지널 소재</div>
+              <p class="needs-card-desc">모든 소재는 오리지널 창작. 기존 개그 복사 금지.</p>
+            </div>
+            <div class="needs-card">
+              <div class="needs-card-label">5분 엄수</div>
+              <p class="needs-card-desc">1인당 5분. MC의 마무리 신호를 존중한다. 준비가 많다면 다음 라운드 재신청.</p>
+            </div>
           </div>
         </div>
 
+        <!-- 06 영화제 이후 정기화 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="om-after" class="section-num">06 — 영화제 이후 정기화</span>
@@ -2189,6 +2289,9 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
               <tr><td class="td-accent">익년 4월</td><td>2기 입문 워크숍 개강</td></tr>
             </tbody>
           </table>
+          <div class="highlight-box">
+            <p><strong>정기화 조건:</strong> 월 1회 운영을 위한 최소 요건 — 공간(상상마루 2층 협조), MC 1인, 퍼포머 5~8명. 예산은 PA 임차비 정도. 동아리 수료자가 MC를 맡으면 사례비도 절감 가능.</p>
+          </div>
         </div>
 
       </div>
@@ -2202,19 +2305,38 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="page-hero">
         <span class="page-hero-tag">Detail 06 — Comedy Club</span>
         <h1>코미디 <em>동아리</em></h1>
-        <p>오픈마이크가 단발 이벤트로 끝나지 않으려면 무대에 올라올 로컬 퍼포머가 필요하다</p>
+        <p>오픈마이크가 단발 이벤트로 끝나지 않으려면 무대에 올라올 로컬 퍼포머가 필요하다 — 그 퍼포머를 키우는 구조가 동아리다</p>
       </div>
       <div class="page-inner">
       <div class="inner">
 
+        <!-- 01 왜 동아리인가 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="club-why" class="section-num">01 — 왜 동아리인가</span>
             <h2 class="section-title">오픈마이크를 <em>지속시키는 구조</em></h2>
           </div>
-          <blockquote class="quote-block">오픈마이크가 단발 이벤트로 끝나지 않으려면 무대에 올라올 로컬 퍼포머가 필요하다. 그 퍼포머를 키우는 구조가 동아리다.</blockquote>
+          <div class="two-col">
+            <div>
+              <blockquote class="quote-block">오픈마이크가 단발 이벤트로 끝나지 않으려면 무대에 올라올 로컬 퍼포머가 필요하다. 그 퍼포머를 키우는 구조가 동아리다.</blockquote>
+              <p style="font-size:.88rem;color:var(--muted);line-height:1.8;">전유성 코미디 학교 반면교사 — 전문 코미디언 양성에 집중하다 지역 뿌리 없이 소멸. 이번 동아리 방향: 전문성보다 <strong style="color:var(--ivory)">"청도를 소재로 즐기는 주민 코미디"</strong>.</p>
+            </div>
+            <div class="three-col" style="grid-template-columns:1fr;gap:14px;">
+              <div class="card" style="border-top:3px solid var(--persimmon);">
+                <span class="card-label">앵커 역할</span>
+                <div class="card-title">오픈마이크 퍼포머 공급</div>
+                <p class="card-body">수료자가 정기 오픈마이크의 앵커 퍼포머. 현장 신청자만으로는 질과 양 확보 어려움.</p>
+              </div>
+              <div class="card" style="border-top:3px solid var(--persimmon);">
+                <span class="card-label">영화제 연결</span>
+                <div class="card-title">영화제 당일 2층 무대</div>
+                <p class="card-body">동아리 수료자가 영화제 당일 2층 오픈마이크 퍼포머로 등장. 영화제가 이들의 공식 데뷔 무대.</p>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- 02 모집 대상 & 규모 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="club-target" class="section-num">02 — 모집 대상 &amp; 규모</span>
@@ -2231,34 +2353,42 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           </table>
         </div>
 
+        <!-- 03 6주 커리큘럼 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="club-curriculum" class="section-num">03 — 6주 커리큘럼</span>
             <h2 class="section-title">주 1회 2시간 <em>총 6회</em></h2>
+            <p class="section-subtitle">외부 강사 1~2회 초청 + 나머지 자체 진행</p>
           </div>
           <table class="data-table">
             <thead><tr><th>주차</th><th>주제</th><th>주요 내용</th><th>강사</th></tr></thead>
             <tbody>
-              <tr><td class="td-accent">1주</td><td>코미디란 무엇인가</td><td>관찰 코미디, 하이퍼 리얼리즘, 한국형 코미디 흐름</td><td>자체</td></tr>
-              <tr><td class="td-accent">2주</td><td>조크 구조 이론</td><td>셋업과 펀치라인, 규칙과 반전, 짧은 조크 써보기</td><td>자체</td></tr>
-              <tr><td class="td-accent">3주</td><td>소재 발굴</td><td>청도 일상·반시·소싸움 관찰 / 소재 3개 발표</td><td>외부 초청</td></tr>
-              <tr><td class="td-accent">4주</td><td>세트 개발 + 피드백</td><td>5분 세트 초안 작성, 소그룹 피드백</td><td>자체</td></tr>
-              <tr><td class="td-accent">5주</td><td>무대 기술</td><td>마이크 다루기, 타이밍, 눈 맞춤, 침묵 활용</td><td>외부 초청</td></tr>
-              <tr><td class="td-accent">6주</td><td>수료 쇼케이스</td><td>실제 관객 앞 5분 공연, 동아리 공식 데뷔</td><td>—</td></tr>
+              <tr><td class="td-accent">1주</td><td>코미디란 무엇인가</td><td>관찰 코미디, 하이퍼 리얼리즘, 한국형 코미디 흐름 / 좋아하는 코미디 소개</td><td>자체</td></tr>
+              <tr><td class="td-accent">2주</td><td>조크 구조 이론</td><td>셋업과 펀치라인, 규칙과 반전, 짧은 조크 써보기 실습</td><td>자체</td></tr>
+              <tr><td class="td-accent">3주</td><td>소재 발굴</td><td>청도 일상·반시·소싸움·지역 인물 관찰 / 각자 소재 3개 발표</td><td>외부 초청</td></tr>
+              <tr><td class="td-accent">4주</td><td>세트 개발 + 동료 피드백</td><td>5분 세트 초안 작성, 소그룹 피드백</td><td>자체</td></tr>
+              <tr><td class="td-accent">5주</td><td>무대 기술</td><td>마이크 다루기, 타이밍, 눈 맞춤, 침묵 활용, 미니 실전 연습</td><td>외부 초청</td></tr>
+              <tr><td class="td-accent">6주</td><td>수료 쇼케이스</td><td>실제 관객(가족·지인·관계자) 앞 5분 공연, 동아리 공식 데뷔</td><td>—</td></tr>
             </tbody>
           </table>
+          <div class="highlight-box">
+            <p><strong>외부 초청 강사 후보:</strong> 서울코미디클럽, 메타코미디 소속 코미디언 타진. 교통·숙박 포함 50~80만원 예산.</p>
+          </div>
         </div>
 
+        <!-- 04 수료 후 연결 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="club-after" class="section-num">04 — 수료 후 연결</span>
             <h2 class="section-title">수료가 끝이 아닌 <em>시작</em></h2>
           </div>
-          <div class="highlight-box">
-            <p style="font-family:var(--font-body);font-size:.88rem;line-height:2.2;font-style:normal;"><strong style="color:var(--persimmon-glow);">[수료 쇼케이스]</strong> → <strong style="color:var(--cream);">정기 오픈마이크 MC 역할 + 퍼포머</strong> → <strong style="color:var(--cream);">영화제 퍼포머 선발</strong> → <strong style="color:var(--cream);">영화제 당일 2층 무대</strong> → <strong style="color:var(--persimmon-glow);">다음 기수 멘토 역할</strong></p>
+          <div class="highlight-box" style="margin-bottom:28px;">
+            <p style="font-family:var(--font-body);font-size:.88rem;line-height:2.2;font-style:normal;"><strong style="color:var(--persimmon-glow);">[수료 쇼케이스]</strong> → <strong style="color:var(--cream);">정기 오픈마이크 MC 역할 + 퍼포머</strong> → <strong style="color:var(--cream);">영화제 퍼포머 선발 (2개월 전)</strong> → <strong style="color:var(--cream);">영화제 당일 2층 무대</strong> → <strong style="color:var(--persimmon-glow);">다음 기수 동아리 멘토 역할</strong></p>
           </div>
+          <p style="font-size:.88rem;color:var(--muted);line-height:1.8;">수료자 중 MC 지망자는 단계적 육성: 보조 MC → 단독 MC → 외부 오픈마이크 연결.</p>
         </div>
 
+        <!-- 05 수료 쇼케이스 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="club-showcase" class="section-num">05 — 수료 쇼케이스</span>
@@ -2276,23 +2406,33 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           </table>
         </div>
 
+        <!-- 06 설명자료 세션 -->
         <div class="detail-section">
           <div class="section-header">
-            <span id="club-desc" class="section-num">06 — 설명자료 세션</span>
+            <span id="club-desc" class="section-num">06 — 설명자료 세션 (영화제 당일)</span>
             <h2 class="section-title">2층 오픈마이크 중 <em>2기 모집</em> 세션</h2>
+            <p class="section-subtitle">14:30 — 1·2라운드 사이 휴식 타임 (약 20분)</p>
           </div>
           <table class="data-table">
             <thead><tr><th>항목</th><th>내용</th></tr></thead>
             <tbody>
               <tr><td class="td-accent">시간</td><td>14:30, 약 20분 (1·2라운드 휴식 타임)</td></tr>
               <tr><td class="td-accent">발표자</td><td>1기 수료자 1~2인 + 혁신센터 담당자</td></tr>
-              <tr><td>내용</td><td>동아리 소개 (3분) → 수료자 후기 (5분) → 오픈마이크 연결 구조 (3분) → 2기 모집 안내 (3분) → Q&A (6분)</td></tr>
+              <tr><td>내용 ①</td><td>동아리가 뭔지 (3분)</td></tr>
+              <tr><td>내용 ②</td><td>수료자 후기 (5분)</td></tr>
+              <tr><td>내용 ③</td><td>오픈마이크 연결 구조 (3분)</td></tr>
+              <tr><td>내용 ④</td><td>2기 모집 일정·신청 방법 (3분)</td></tr>
+              <tr><td>내용 ⑤</td><td>Q&A (6분)</td></tr>
               <tr><td class="td-accent">신청</td><td>현장 QR 코드 + 신청 용지 병행</td></tr>
               <tr><td class="td-accent">목표</td><td>현장 2기 신청 10명 이상</td></tr>
             </tbody>
           </table>
+          <div class="highlight-box">
+            <p><strong>핵심 메시지 5가지:</strong> 코미디 경험 불필요 / 주 1회 2시간, 6주 / 수료 후 월 1회 무대 / 다음 회차 영화제 무대 기회 / 전문가 양성이 아닌 "즐기는 주민 코미디"</p>
+          </div>
         </div>
 
+        <!-- 07 연간 흐름 -->
         <div class="detail-section">
           <div class="section-header">
             <span id="club-timeline" class="section-num">07 — 연간 흐름</span>
@@ -2301,27 +2441,78 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           <div class="monthly-rows">
             <div class="monthly-row" onclick="toggleMonthly(this)">
               <div class="monthly-row-header"><span class="monthly-month">3~4월</span><span class="monthly-label">동아리 모집 + 입문 워크숍 개강</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">SNS + 지역 커뮤니티 + 학교 공문으로 모집 공고. 오리엔테이션 후 1~2주차 이론 수업 시작.</p></div></div>
+              <div class="monthly-body"><div class="monthly-body-inner">
+                <table class="data-table">
+                  <thead><tr><th>활동</th><th>내용</th></tr></thead>
+                  <tbody>
+                    <tr><td>모집 공고</td><td>SNS + 지역 커뮤니티 + 학교 공문</td></tr>
+                    <tr><td>오리엔테이션</td><td>동아리 취지 설명, 수강생 자기소개</td></tr>
+                    <tr><td>1~2주차</td><td>코미디 이론 + 조크 구조</td></tr>
+                  </tbody>
+                </table>
+              </div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
               <div class="monthly-row-header"><span class="monthly-month">5월</span><span class="monthly-label">워크숍 수료 + 수료 쇼케이스</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">3~5주차 소재 발굴·세트 개발·무대 기술. 6주차 수료 쇼케이스 개최. SNS 영상 제작 후 다음 기수 모집 콘텐츠 활용.</p></div></div>
+              <div class="monthly-body"><div class="monthly-body-inner">
+                <table class="data-table">
+                  <thead><tr><th>활동</th><th>내용</th></tr></thead>
+                  <tbody>
+                    <tr><td>3~5주차</td><td>소재 발굴, 세트 개발, 무대 기술</td></tr>
+                    <tr><td>6주차 수료 쇼케이스</td><td>가족·지인 앞 5분 공연 데뷔</td></tr>
+                    <tr><td>SNS 영상</td><td>촬영 후 다음 기수 모집 콘텐츠 활용</td></tr>
+                  </tbody>
+                </table>
+              </div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
               <div class="monthly-row-header"><span class="monthly-month">6~8월</span><span class="monthly-label">정기 오픈마이크 (월 1회)</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">수료자 앵커 + 신규 신청자로 월 1회 정기 오픈마이크 운영. 참가자 피드백 수렴.</p></div></div>
+              <div class="monthly-body"><div class="monthly-body-inner">
+                <table class="data-table">
+                  <thead><tr><th>활동</th><th>내용</th></tr></thead>
+                  <tbody>
+                    <tr><td>월 1회 정기 오픈마이크</td><td>수료자 앵커 + 신규 신청자</td></tr>
+                    <tr><td>참가자 피드백</td><td>프로그램 개선 반영</td></tr>
+                  </tbody>
+                </table>
+              </div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">8~9월</span><span class="monthly-label">영화제 퍼포머 선발 + 멘토링</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">영화제 D-2개월 수료자 참가 의향 확인 후 선발. 집중 멘토링 세션 및 외부 코미디언 특별 피드백 1회.</p></div></div>
+              <div class="monthly-row-header"><span class="monthly-month">8월</span><span class="monthly-label">영화제 퍼포머 선발</span></div>
+              <div class="monthly-body"><div class="monthly-body-inner">
+                <table class="data-table">
+                  <thead><tr><th>활동</th><th>내용</th></tr></thead>
+                  <tbody>
+                    <tr><td>영화제 D-2개월</td><td>수료자 중 영화제 참가 의향 확인</td></tr>
+                    <tr><td>멘토링 세션</td><td>선발자 대상 1:1 피드백</td></tr>
+                  </tbody>
+                </table>
+              </div></div>
+            </div>
+            <div class="monthly-row" onclick="toggleMonthly(this)">
+              <div class="monthly-row-header"><span class="monthly-month">9월</span><span class="monthly-label">선발자 멘토링 세션</span></div>
+              <div class="monthly-body"><div class="monthly-body-inner">
+                <p style="font-size:.84rem;color:var(--muted);padding:12px 0;">선발된 퍼포머 대상 집중 멘토링. 영화제 당일 세트 완성도 높이기. 외부 코미디언 특별 피드백 세션 1회.</p>
+              </div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
               <div class="monthly-row-header"><span class="monthly-month">10월</span><span class="monthly-label">영화제 D-Day — 2층 오픈마이크 무대</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">동아리 수료자가 영화제 당일 2층 오픈마이크 1·2·3라운드 퍼포머로 참가. 설명자료 세션(14:30)에서 1기 수료자가 2기 모집 발표.</p></div></div>
+              <div class="monthly-body"><div class="monthly-body-inner">
+                <p style="font-size:.84rem;color:var(--muted);padding:12px 0;">동아리 수료자가 영화제 당일 2층 오픈마이크 1·2·3라운드에 퍼포머로 참가. 설명자료 세션(14:30)에서 1기 수료자가 2기 모집 발표.</p>
+              </div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">11월~</span><span class="monthly-label">정기 오픈마이크 재개 + 2기 모집</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">영화제 이후 월 1회 정기 오픈마이크 재개. 익년 3월 2기 모집 시작, 4월 개강.</p></div></div>
+              <div class="monthly-row-header"><span class="monthly-month">11월~</span><span class="monthly-label">영화제 이후 정기 오픈마이크 재개 + 2기 모집</span></div>
+              <div class="monthly-body"><div class="monthly-body-inner">
+                <table class="data-table">
+                  <thead><tr><th>활동</th><th>내용</th></tr></thead>
+                  <tbody>
+                    <tr><td>월 1회 재개</td><td>영화제 이후 정기 오픈마이크 계속</td></tr>
+                    <tr><td>익년 3월</td><td>2기 동아리 모집 시작</td></tr>
+                    <tr><td>익년 4월</td><td>2기 입문 워크숍 개강</td></tr>
+                  </tbody>
+                </table>
+              </div></div>
             </div>
           </div>
         </div>
@@ -2330,9 +2521,8 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
     </div>
 
-  </main>
-</div>
-
+  </main><!-- /content-area -->
+</div><!-- /body-wrapper -->
 <!-- 하단 페이지 네비게이터 -->
 <div class="bottom-nav" id="bottomNav">
   <button class="bottom-nav-btn" id="btnPrev" onclick="navStep(-1)">
@@ -2355,6 +2545,13 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
   <div class="footer-credit">주관: 청도혁신센터 · 후원·협력: 청도군청 문화관광과 / 청도반시축제 집행위원회</div>
 </footer>
 
+<!-- =========================================================
+     JavaScript
+     ========================================================= -->
+
+
+
+
 <script>
 
 /* ----------------------------------------------------------
@@ -2370,6 +2567,7 @@ const TABS = [
   { id: 'tab-club',     label: '코미디 동아리',    num: '06' },
 ];
 
+/* 각 탭별 사이드바 목차 */
 const SIDEBAR_ITEMS = {
   'tab-main': [
     { anchor: 'main-needs',   label: '01 — 왜 지금 청도인가' },
@@ -2386,12 +2584,12 @@ const SIDEBAR_ITEMS = {
     { anchor: 'ops-staff',      label: '04 — 추진 체계' },
   ],
   'tab-openmic': [
-    { anchor: 'om-concept',   label: '01 — 왜 오픈마이크인가' },
-    { anchor: 'om-space',     label: '02 — 2층 공간 세팅' },
-    { anchor: 'om-timetable', label: '03 — 당일 타임테이블' },
-    { anchor: 'om-mc',        label: '04 — MC 역할' },
-    { anchor: 'om-etiquette', label: '05 — 참가자 에티켓' },
-    { anchor: 'om-after',     label: '06 — 영화제 이후 정기화' },
+    { anchor: 'om-concept',      label: '01 — 왜 오픈마이크인가' },
+    { anchor: 'om-space',        label: '02 — 2층 공간 세팅' },
+    { anchor: 'om-timetable',    label: '03 — 당일 타임테이블' },
+    { anchor: 'om-mc',           label: '04 — MC 역할' },
+    { anchor: 'om-etiquette',    label: '05 — 참가자 에티켓' },
+    { anchor: 'om-after',        label: '06 — 영화제 이후 정기화' },
   ],
   'tab-club': [
     { anchor: 'club-why',        label: '01 — 왜 동아리인가' },
@@ -2403,9 +2601,9 @@ const SIDEBAR_ITEMS = {
     { anchor: 'club-timeline',   label: '07 — 연간 흐름' },
   ],
   'tab-budget': [
-    { anchor: 'budget-detail', label: '01 — 예산 상세' },
-    { anchor: 'budget-plan',   label: '02 — 월별 추진 플랜' },
-    { anchor: 'budget-tasks',  label: '03 — 핵심 과업' },
+    { anchor: 'budget-detail',  label: '01 — 예산 상세' },
+    { anchor: 'budget-plan',    label: '02 — 월별 추진 플랜' },
+    { anchor: 'budget-tasks',   label: '03 — 핵심 과업' },
   ],
   'tab-youth': [
     { anchor: 'youth-why',      label: '01 — 존재 이유' },
@@ -2415,36 +2613,40 @@ const SIDEBAR_ITEMS = {
     { anchor: 'youth-expand',   label: '05 — 확장 가능성' },
   ],
   'tab-eco': [
-    { anchor: 'eco-why',     label: '01 — 왜 생태계인가' },
-    { anchor: 'eco-cases',   label: '02 — 사례 비교' },
-    { anchor: 'eco-cycles',  label: '03 — 3대 순환 고리' },
-    { anchor: 'eco-roadmap', label: '04 — 단계별 로드맵' },
-    { anchor: 'eco-finance', label: '05 — 재원 다각화' },
+    { anchor: 'eco-why',        label: '01 — 왜 생태계인가' },
+    { anchor: 'eco-cases',      label: '02 — 사례 비교' },
+    { anchor: 'eco-cycles',     label: '03 — 3대 순환 고리' },
+    { anchor: 'eco-roadmap',    label: '04 — 단계별 로드맵' },
+    { anchor: 'eco-finance',    label: '05 — 재원 다각화' },
   ],
 };
 
 /* ----------------------------------------------------------
    탭 전환
-   BUG2 FIX: 기존 함수 재할당 패턴 제거 → renderBottomNav를 함수 내부에 직접 통합
    ---------------------------------------------------------- */
 let currentTab = 'tab-main';
 
 function switchTab(tabId) {
   currentTab = tabId;
 
+  // 탭 버튼 active 상태
   document.querySelectorAll('.topbar-tab').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.tab === tabId);
   });
 
+  // 페이지 표시
   document.querySelectorAll('.tab-page').forEach(p => {
     p.classList.toggle('active', p.id === tabId);
   });
 
+  // 사이드바 렌더
   renderSidebar(tabId);
 
+  // 스크롤 상단
   document.querySelector('.content-area').scrollTo({ top: 0 });
   window.scrollTo({ top: 0 });
 
+  // reveal 재실행
   setTimeout(() => {
     document.querySelectorAll('.tab-page.active .reveal').forEach(el => {
       el.classList.remove('visible');
@@ -2456,9 +2658,6 @@ function switchTab(tabId) {
       setupBudgetObserver();
     }
   }, 50);
-
-  // 하단 네비게이터 업데이트 (BUG2 FIX: 래퍼 패턴 대신 직접 호출)
-  renderBottomNav(tabId);
 }
 
 /* ----------------------------------------------------------
@@ -2505,11 +2704,12 @@ function scrollToAnchor(anchorId, evt) {
   if (evt) evt.preventDefault();
   const el = document.getElementById(anchorId);
   if (!el) return;
-  const offset = 52 + 24;
+  const offset = 52 + 24; // topbar height + margin
   const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
   window.scrollTo({ top, behavior: 'smooth' });
 }
 
+// 스크롤 위치에 따라 사이드바 하이라이트
 function updateSidebarActive() {
   const items = SIDEBAR_ITEMS[currentTab] || [];
   if (!items.length) return;
@@ -2601,13 +2801,20 @@ const goalsEl = document.querySelector('.goals-grid');
 if (goalsEl) counterObs.observe(goalsEl);
 
 /* ----------------------------------------------------------
+   인터랙션
+   ---------------------------------------------------------- */
+/* ----------------------------------------------------------
    토글 chevron 자동 삽입
    ---------------------------------------------------------- */
 (function injectChevrons() {
   const SVG = `<svg class="toggle-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  // step-card-header
   document.querySelectorAll('.step-card-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
+  // tl-row-header
   document.querySelectorAll('.tl-row-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
+  // monthly-row-header
   document.querySelectorAll('.monthly-row-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
+  // identity-layer-header
   document.querySelectorAll('.identity-layer-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
 })();
 
@@ -2645,6 +2852,7 @@ function toggleStep(header) {
   if (!isOpen) card.classList.add('open');
 }
 
+
 /* ----------------------------------------------------------
    하단 페이지 네비게이터
    ---------------------------------------------------------- */
@@ -2661,12 +2869,13 @@ const TAB_LABELS = {
 
 function renderBottomNav(tabId) {
   const idx = TAB_ORDER.indexOf(tabId);
-
+  
+  // 이전/다음 버튼
   const btnPrev = document.getElementById('btnPrev');
   const btnNext = document.getElementById('btnNext');
   const prevLabel = document.getElementById('prevLabel');
   const nextLabel = document.getElementById('nextLabel');
-
+  
   if (idx === 0) {
     btnPrev.classList.add('disabled');
     prevLabel.textContent = '';
@@ -2674,7 +2883,7 @@ function renderBottomNav(tabId) {
     btnPrev.classList.remove('disabled');
     prevLabel.textContent = TAB_LABELS[TAB_ORDER[idx - 1]];
   }
-
+  
   if (idx === TAB_ORDER.length - 1) {
     btnNext.classList.add('disabled');
     nextLabel.textContent = '';
@@ -2682,7 +2891,8 @@ function renderBottomNav(tabId) {
     btnNext.classList.remove('disabled');
     nextLabel.textContent = TAB_LABELS[TAB_ORDER[idx + 1]];
   }
-
+  
+  // 도트
   const dotsEl = document.getElementById('navDots');
   dotsEl.innerHTML = TAB_ORDER.map((t, i) => `
     <button class="bottom-nav-dot ${i === idx ? 'active' : ''}"
@@ -2698,6 +2908,13 @@ function navStep(dir) {
     switchTab(TAB_ORDER[next]);
   }
 }
+
+// switchTab 이후 하단 네비도 업데이트하도록 기존 함수 확장
+const _origSwitchTab = switchTab;
+switchTab = function(tabId) {
+  _origSwitchTab(tabId);
+  renderBottomNav(tabId);
+};
 
 // 초기 렌더
 renderBottomNav('tab-main');
