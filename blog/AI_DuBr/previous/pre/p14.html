@@ -1,0 +1,353 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>마무리 및 다음 행동</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: auto;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0f172a;
+            overflow: auto;
+            padding: 40px 60px;
+        }
+        .accent-text {
+            color: #2dd4bf; /* Teal 400 */
+        }
+        
+        /* Hero Message Box */
+        .message-box {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(45, 212, 191, 0.3);
+            border-left: 6px solid #2dd4bf;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        .quote-icon {
+            font-size: 2rem;
+            color: rgba(45, 212, 191, 0.2);
+            position: absolute;
+            top: 15px;
+            left: 20px;
+        }
+        
+        /* 7-Day Checklist Timeline */
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+            padding: 10px 0;
+        }
+        /* Connecting Line */
+        .timeline-line {
+            position: absolute;
+            top: 40px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+        }
+        
+        .day-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            margin: 0 6px;
+        }
+        
+        .day-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #1e293b;
+            border: 2px solid #475569;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+            margin-top: 22px; /* Center on line */
+            transition: all 0.3s ease;
+        }
+        
+        .day-card:hover .day-badge {
+            border-color: #2dd4bf;
+            color: #2dd4bf;
+            background-color: rgba(45, 212, 191, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .task-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 12px 8px;
+            width: 100%;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .day-card:hover .task-box {
+            background-color: rgba(45, 212, 191, 0.05);
+            border-color: rgba(45, 212, 191, 0.2);
+            transform: translateY(5px);
+        }
+        
+        .task-icon {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+        }
+        .day-card:hover .task-icon {
+            color: #2dd4bf;
+        }
+        
+        .task-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            line-height: 1.3;
+        }
+
+        /* Risk Management Footer */
+        .risk-section {
+            background-color: rgba(15, 23, 42, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-top: auto;
+        }
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .risk-item {
+            display: flex;
+            align-items: center;
+        }
+        .risk-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-right: 12px;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="mb-6">
+<div class="flex items-center mb-2">
+<span class="px-3 py-1 rounded-full border border-teal-500 text-teal-400 text-xs font-bold tracking-widest uppercase mr-3">
+                    Conclusion &amp; Next Steps
+                </span>
+<span class="text-gray-400 text-sm">PR 실무 고도화를 위한 마지막 제언</span>
+</div>
+<h1 class="text-3xl font-black leading-tight">
+                마무리 및 <span class="accent-text">실행 가이드</span>
+</h1>
+</div>
+<!-- Core Message -->
+<div class="message-box">
+<i class="fas fa-quote-left quote-icon"></i>
+<div class="flex flex-col items-center">
+<p class="text-2xl font-bold text-white leading-relaxed">
+                    "AI, 모르고 사용하면 호구당한다.<br>
+<span class="text-teal-400 text-3xl">AI를 알아야 </span>내가 원하는 대로 세팅이 가능하다."
+                </p>
+<p class="text-gray-400 mt-3 text-sm font-light tracking-wider uppercase">
+                    - 성강현 올림 -
+                </p>
+</div>
+</div>
+<!-- 7-Day Checklist -->
+<div class="mb-4">
+<h3 class="text-lg font-bold text-white mb-4 pl-2 border-l-4 border-teal-500">
+                7-Day Action Plan <span class="text-sm font-normal text-gray-400 ml-2">일주일 완성 로드맵</span>
+</h3>
+<div class="timeline-container">
+<!-- Line -->
+<div class="timeline-line"></div>
+<!-- Day 1 -->
+<div class="day-card">
+<div class="day-badge">D1</div>
+<div class="task-box">
+<i class="fas fa-pencil-ruler task-icon"></i>
+<span class="task-title">프롬프트<br>템플릿 작성</span>
+</div>
+</div>
+<!-- Day 2 -->
+<div class="day-card">
+<div class="day-badge">D2</div>
+<div class="task-box">
+<i class="fas fa-project-diagram task-icon"></i>
+<span class="task-title">CoT / CoQ<br>질문 설계</span>
+</div>
+</div>
+<!-- Day 3 -->
+<div class="day-card">
+<div class="day-badge">D3</div>
+<div class="task-box">
+<i class="fas fa-tools task-icon"></i>
+<span class="task-title">최적 도구<br>선택 (LLM)</span>
+</div>
+</div>
+<!-- Day 4 -->
+<div class="day-card">
+<div class="day-badge">D4</div>
+<div class="task-box">
+<i class="fas fa-spider task-icon"></i>
+<span class="task-title">스크래퍼<br>PoC (Cursor)</span>
+</div>
+</div>
+<!-- Day 5 -->
+<div class="day-card">
+<div class="day-badge">D5</div>
+<div class="task-box">
+<i class="fas fa-file-alt task-icon"></i>
+<span class="task-title">리포트<br>자동화 테스트</span>
+</div>
+</div>
+<!-- Day 6 -->
+<div class="day-card">
+<div class="day-badge">D6</div>
+<div class="task-box">
+<i class="fas fa-check-double task-icon"></i>
+<span class="task-title">품질 기준<br>(QC) 수립</span>
+</div>
+</div>
+<!-- Day 7 -->
+<div class="day-card">
+<div class="day-badge">D7</div>
+<div class="task-box">
+<i class="fas fa-chart-line task-icon"></i>
+<span class="task-title">KPI 대시보드<br>세팅</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Risk Management Footer -->
+<div class="risk-section">
+<div class="flex items-center mb-3">
+<i class="fas fa-shield-alt text-gray-400 mr-2"></i>
+<h4 class="text-sm font-bold text-gray-300">Risk Management &amp; Governance</h4>
+</div>
+<div class="risk-grid">
+<!-- Risk 1 -->
+<div class="risk-item">
+<div class="risk-icon-box">
+<i class="fas fa-eye-slash"></i>
+</div>
+<div>
+<h5 class="text-sm font-bold text-white">환각 방지</h5>
+<p class="text-xs text-gray-400">원본 출처(Reference) 명시 필수</p>
+</div>
+</div>
+<!-- Risk 2 -->
+<div class="risk-item">
+<div class="risk-icon-box">
+<i class="fas fa-user-secret"></i>
+</div>
+<div>
+<h5 class="text-sm font-bold text-white">보안(Security)</h5>
+<p class="text-xs text-gray-400">민감 개인정보 입력 금지</p>
+</div>
+</div>
+<!-- Risk 3 -->
+<div class="risk-item">
+<div class="risk-icon-box">
+<i class="fas fa-copyright"></i>
+</div>
+<div>
+<h5 class="text-sm font-bold text-white">저작권(Copyright)</h5>
+<p class="text-xs text-gray-400">AI 생성물 권리 관계 확인</p>
+</div>
+</div>
+<!-- Risk 4 -->
+<div class="risk-item">
+<div class="risk-icon-box">
+<i class="fas fa-code-branch"></i>
+</div>
+<div>
+<h5 class="text-sm font-bold text-white">버전 관리</h5>
+<p class="text-xs text-gray-400">성공한 프롬프트 자산화(DB)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9aeb4840fda1ea28&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+<script src="https://www.genspark.ai/slide-inner.js?_v=1"></script></body></html>
