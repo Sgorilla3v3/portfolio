@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>다로리인 방문자 등록</title>
+    <link rel="icon" type="image/png" href="daroi_logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-main: #3A9A2A;
+            --green-dark: #2A7A1E;
+            --green-light: #EEF7EC;
+            --green-mid: #C5E4BF;
+            --green-muted: #7AC36D;
+            --text-primary: #1A2E17;
+            --text-secondary: #4A6644;
+            --text-hint: #8AAE84;
+            --border: #C5DFC0;
+            --border-focus: #3A9A2A;
+            --bg: #FAFDF9;
+            --bg-card: #FFFFFF;
+            --error: #C0392B;
+            --success: #2A7A1E;
+            --shadow-sm: 0 1px 4px rgba(58,154,42,0.08);
+            --shadow-md: 0 4px 20px rgba(58,154,42,0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 20px 16px 40px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* 배경 패턴 */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(58,154,42,0.04) 39px,
+                    rgba(58,154,42,0.04) 40px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(58,154,42,0.04) 39px,
+                    rgba(58,154,42,0.04) 40px
+                );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 헤더 */
+        .header {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: 16px 16px 0 0;
+            padding: 28px 24px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--green-main);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .logo-img {
+            height: 48px;
+            width: auto;
+        }
+
+        .logo-divider {
+            width: 1px;
+            height: 36px;
+            background: var(--border);
+        }
+
+        .logo-text {
+            text-align: left;
+        }
+
+        .logo-text .org {
+            
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--green-main);
+            letter-spacing: -0.3px;
+            line-height: 1.2;
+        }
+
+        .logo-text .sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            margin-top: 2px;
+        }
+
+        .header-title {
+            
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* 재방문자 배너 */
+        .returning-banner {
+            display: none;
+            background: var(--green-light);
+            border: 1.5px solid var(--green-mid);
+            border-top: none;
+            padding: 18px 20px;
+            text-align: center;
+        }
+
+        .returning-banner h3 {
+            
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--green-dark);
+            margin-bottom: 4px;
+        }
+
+        .returning-banner p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .returning-banner .hint {
+            font-size: 12px;
+            color: var(--green-muted);
+            margin-top: 6px;
+        }
+
+        .btn-edit {
+            margin-top: 10px;
+            background: none;
+            border: 1.5px solid var(--green-main);
+            color: var(--green-dark);
+            padding: 7px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Noto Sans KR', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-edit:hover { background: var(--green-main); color: #fff; }
+
+        /* 폼 영역 */
+        .form-body {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 16px 16px;
+            padding: 28px 24px 32px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--green-dark);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .section-label .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green-main);
+            flex-shrink: 0;
+        }
+
+        /* 폼 그룹 */
+        .form-group { margin-bottom: 18px; }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 7px;
+            letter-spacing: 0.1px;
+        }
+
+        .required::after {
+            content: ' *';
+            color: var(--error);
+            font-weight: 400;
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+        /* 인풋 */
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-primary);
+            background: #FDFFFE;
+            transition: all 0.18s ease;
+            -webkit-appearance: none;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--green-main);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(58,154,42,0.10);
+        }
+
+        .form-input::placeholder { color: var(--text-hint); }
+
+        .form-input:disabled,
+        .form-input[readonly] {
+            background: var(--green-light);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        select.form-input {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%233A9A2A' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 10px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 36px;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.6;
+        }
+
+        .error-msg {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .helper {
+            font-size: 12px;
+            color: var(--text-hint);
+            margin-top: 4px;
+        }
+
+        /* 개인정보 동의 */
+        .consent-box {
+            background: var(--green-light);
+            border: 1.5px solid var(--green-mid);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 24px;
+        }
+
+        .consent-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .consent-row input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--green-main);
+        }
+
+        .consent-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .consent-text .hl { color: var(--green-dark); font-weight: 500; }
+
+        /* 제출 버튼 */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--green-main);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Noto Sans KR', sans-serif;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0);
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(58,154,42,0.25); }
+        .submit-btn:active { transform: translateY(0); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .loading { display: none; text-align: center; padding: 18px; }
+
+        .spinner {
+            border: 2.5px solid var(--border);
+            border-top: 2.5px solid var(--green-main);
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            animation: spin 0.9s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .message {
+            margin-top: 16px;
+            padding: 13px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(42,122,30,0.08);
+            color: var(--success);
+            border: 1px solid rgba(42,122,30,0.2);
+        }
+
+        .message.error {
+            background: rgba(192,57,43,0.07);
+            color: var(--error);
+            border: 1px solid rgba(192,57,43,0.15);
+        }
+
+        /* 하단 버튼 */
+        .action-row {
+            margin-top: 14px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-ghost {
+            background: none;
+            border: 1.5px solid var(--border);
+            color: var(--text-hint);
+            padding: 8px 16px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-family: 'Noto Sans KR', sans-serif;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .btn-ghost:hover { border-color: var(--green-muted); color: var(--text-secondary); }
+
+        /* 하단 장식 */
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--text-hint);
+            letter-spacing: 0.2px;
+        }
+
+        @media (max-width: 360px) {
+            .form-row, .form-row-3 { grid-template-columns: 1fr; }
+            .logo-wrap { flex-direction: column; gap: 10px; }
+            .logo-divider { width: 40px; height: 1px; }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .form-input { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- 헤더 -->
+    <div class="header">
+        <div class="logo-wrap">
+            <img src="daroi_logo.png" alt="다로리인 로고" class="logo-img">
+            <div class="logo-divider"></div>
+            <div class="logo-text">
+                <div class="org">다로리인</div>
+                <div class="sub">도서관 방문자 등록</div>
+            </div>
+        </div>
+        <div class="header-title">방문해 주셔서 감사합니다</div>
+    </div>
+
+    <!-- 재방문자 배너 -->
+    <div class="returning-banner" id="returningBanner">
+        <h3>다시 찾아주셨군요!</h3>
+        <p id="returningName"></p>
+        <p class="hint">방문 일시와 목적만 선택하시면 바로 등록됩니다</p>
+        <button type="button" class="btn-edit" onclick="enableEditMode()">정보 수정</button>
+    </div>
+
+    <!-- 폼 -->
+    <div class="form-body">
+        <form id="visitorForm" novalidate>
+
+            <!-- 방문 정보 -->
+            <div class="section">
+                <div class="section-label">
+                    <span class="dot"></span>방문 정보
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="visitMonth" class="required">방문월</label>
+                        <select id="visitMonth" name="visitMonth" class="form-input" required>
+                            <option value="">월</option>
+                            <option value="1">1월</option><option value="2">2월</option>
+                            <option value="3">3월</option><option value="4">4월</option>
+                            <option value="5">5월</option><option value="6">6월</option>
+                            <option value="7">7월</option><option value="8">8월</option>
+                            <option value="9">9월</option><option value="10">10월</option>
+                            <option value="11">11월</option><option value="12">12월</option>
+                        </select>
+                        <div class="error-msg" id="visitMonthError">선택해주세요</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="visitDay" class="required">방문일</label>
+                        <select id="visitDay" name="visitDay" class="form-input" required>
+                            <option value="">일</option>
+                        </select>
+                        <div class="error-msg" id="visitDayError">선택해주세요</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="visitTime" class="required">방문시간</label>
+                        <select id="visitTime" name="visitTime" class="form-input" required>
+                            <option value="">시간</option>
+                        </select>
+                        <div class="error-msg" id="visitTimeError">선택해주세요</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="visitPurpose" class="required">방문 목적</label>
+                    <select id="visitPurpose" name="visitPurpose" class="form-input" required>
+                        <option value="">선택해주세요</option>
+                        <option value="자료 열람 및 대출">자료 열람 및 대출 (도서, 잡지, 자료 검색)</option>
+                        <option value="독서 프로그램 참여">독서 프로그램 참여 (북클럽, 독서모임, 강좌)</option>
+                        <option value="문화·교육 행사">문화·교육 행사 (전시, 공연, 특강, 워크숍)</option>
+                        <option value="공간 이용">공간 이용 (스터디룸, 열람실, 북카페)</option>
+                        <option value="어린이·청소년 프로그램">어린이·청소년 프로그램 (그림책, 동화, 방과후)</option>
+                        <option value="행사 운영 및 자원봉사">행사 운영 및 자원봉사 (스탭, 강사, 봉사자)</option>
+                        <option value="견학 및 방문">견학 및 방문 (시설 투어, 벤치마킹)</option>
+                    </select>
+                    <div class="error-msg" id="visitPurposeError">방문 목적을 선택해주세요</div>
+                </div>
+            </div>
+
+            <!-- 방문자 정보 -->
+            <div class="section" id="visitorInfoSection">
+                <div class="section-label">
+                    <span class="dot"></span>방문자 정보
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name" class="required">이름</label>
+                        <input type="text" id="name" name="name" class="form-input"
+                               placeholder="홍길동" required maxlength="20">
+                        <div class="error-msg" id="nameError">이름을 입력해주세요</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender" class="required">성별</label>
+                        <select id="gender" name="gender" class="form-input" required>
+                            <option value="">선택</option>
+                            <option value="남성">남성</option>
+                            <option value="여성">여성</option>
+                        </select>
+                        <div class="error-msg" id="genderError">선택해주세요</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthYear" class="required">출생년도</label>
+                        <input type="number" id="birthYear" name="birthYear" class="form-input"
+                               placeholder="1990" min="1900" max="2026" required>
+                        <div class="error-msg" id="birthYearError">올바른 연도를 입력해주세요</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="required">연락처</label>
+                        <input type="tel" id="phone" name="phone" class="form-input"
+                               placeholder="010-0000-0000" required maxlength="13">
+                        <div class="error-msg" id="phoneError">올바른 형식으로 입력해주세요</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="residence" class="required">거주지(시군)</label>
+                        <input type="text" id="residence" name="residence" class="form-input"
+                               placeholder="청도군" required maxlength="30">
+                        <div class="error-msg" id="residenceError">거주지를 입력해주세요</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="residenceDetail">거주지(읍면동)</label>
+                        <input type="text" id="residenceDetail" name="residenceDetail" class="form-input"
+                               placeholder="화양읍" maxlength="30">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="memo">남기실 말씀</label>
+                    <textarea id="memo" name="memo" class="form-input"
+                              placeholder="도서관 이용 소감이나 건의사항을 남겨주세요 (선택)" maxlength="200"></textarea>
+                    <div class="helper">최대 200자</div>
+                </div>
+            </div>
+
+            <!-- 개인정보 동의 -->
+            <div class="consent-box">
+                <label class="consent-row">
+                    <input type="checkbox" id="privacyConsent" name="privacyConsent">
+                    <span class="consent-text">
+                        <span class="hl">[필수]</span> 수집된 개인정보(이름, 연락처, 거주지)는
+                        <span class="hl">도서관 방문 통계 및 운영 목적</span>으로만 사용되며,
+                        수집일로부터 <span class="hl">1년간 보관</span> 후 파기됩니다. 이에 동의합니다.
+                    </span>
+                </label>
+                <div class="error-msg" id="privacyConsentError" style="margin-top:8px;">개인정보 수집·이용에 동의해주세요</div>
+            </div>
+
+            <!-- 제출 -->
+            <button type="submit" class="submit-btn" id="submitBtn">방문 등록하기</button>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div style="font-size:14px;color:var(--text-secondary);">등록 중입니다...</div>
+            </div>
+
+            <div class="message" id="message"></div>
+
+            <div class="action-row">
+                <button type="button" class="btn-ghost" onclick="clearForm()">다시 작성</button>
+                <button type="button" class="btn-ghost" id="clearSavedBtn"
+                        style="display:none;" onclick="clearAllData()">저장 정보 삭제</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="footer-note">다로리인 · 방문자 등록 시스템</div>
+
+</div>
+
+<script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVeJfJ14_RiSDTocLQg4i2f45NVR5fuDN8CUUiRfmjhkvMMZm7_W0pkebFMXFt3qJe_A/exec';
+
+    const form = document.getElementById('visitorForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const loading = document.getElementById('loading');
+    const message = document.getElementById('message');
+
+    // 초기화
+    document.addEventListener('DOMContentLoaded', () => {
+        initDateSelectors();
+        initTimeOptions();
+        setupListeners();
+        setCurrentDate();
+        loadSavedInfo();
+    });
+
+    // 저장 정보 로드
+    function loadSavedInfo() {
+        const saved = localStorage.getItem('darolin_visitorInfo');
+        if (!saved) return;
+        try {
+            const info = JSON.parse(saved);
+            document.getElementById('name').value = info.name || '';
+            document.getElementById('gender').value = info.gender || '';
+            document.getElementById('birthYear').value = info.birthYear || '';
+            document.getElementById('phone').value = info.phone || '';
+            document.getElementById('residence').value = info.residence || '';
+            document.getElementById('residenceDetail').value = info.residenceDetail || '';
+            enableReturningMode(info.name);
+        } catch(e) { console.error(e); }
+    }
+
+    function enableReturningMode(name) {
+        const banner = document.getElementById('returningBanner');
+        const nameEl = document.getElementById('returningName');
+        const clearBtn = document.getElementById('clearSavedBtn');
+        if (banner && nameEl) {
+            nameEl.textContent = name + '님의 정보가 저장되어 있습니다';
+            banner.style.display = 'block';
+        }
+        if (clearBtn) clearBtn.style.display = 'inline-block';
+
+        const fields = ['name','gender','birthYear','phone','residence','residenceDetail'];
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.value) {
+                el.readOnly = true;
+                el.style.background = 'var(--green-light)';
+                el.style.cursor = 'not-allowed';
+            }
+        });
+    }
+
+    function enableEditMode() {
+        if (!confirm('저장된 정보를 수정하시겠습니까?')) return;
+        const fields = ['name','gender','birthYear','phone','residence','residenceDetail'];
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.readOnly = false;
+                el.style.background = '';
+                el.style.cursor = '';
+            }
+        });
+        document.getElementById('returningBanner').style.display = 'none';
+        showMessage('정보를 수정한 후 다시 등록해주세요.', 'success');
+    }
+
+    function clearAllData() {
+        if (!confirm('저장된 정보를 삭제하시겠습니까?')) return;
+        localStorage.removeItem('darolin_visitorInfo');
+        location.reload();
+    }
+
+    function saveVisitorInfo() {
+        const info = {
+            name: document.getElementById('name').value.trim(),
+            gender: document.getElementById('gender').value,
+            birthYear: document.getElementById('birthYear').value,
+            phone: document.getElementById('phone').value.trim(),
+            residence: document.getElementById('residence').value.trim(),
+            residenceDetail: document.getElementById('residenceDetail').value.trim()
+        };
+        localStorage.setItem('darolin_visitorInfo', JSON.stringify(info));
+    }
+
+    // 날짜
+    function initDateSelectors() {
+        document.getElementById('visitMonth').addEventListener('change', function() {
+            updateDays(this.value);
+        });
+    }
+
+    function setCurrentDate() {
+        const now = new Date();
+        const m = now.getMonth() + 1;
+        const d = now.getDate();
+        document.getElementById('visitMonth').value = m;
+        updateDays(m);
+        document.getElementById('visitDay').value = d;
+        const min = now.getMinutes();
+        const rMin = Math.round(min / 30) * 30 % 60;
+        const rHour = min >= 45 ? (now.getHours() + 1) % 24 : now.getHours();
+        document.getElementById('visitTime').value =
+            `${String(rHour).padStart(2,'0')}:${String(rMin).padStart(2,'0')}`;
+    }
+
+    function updateDays(month) {
+        const sel = document.getElementById('visitDay');
+        const days = new Date(new Date().getFullYear(), month, 0).getDate();
+        sel.innerHTML = '<option value="">일</option>';
+        for (let i = 1; i <= days; i++) {
+            const o = document.createElement('option');
+            o.value = i; o.textContent = i + '일';
+            sel.appendChild(o);
+        }
+    }
+
+    function initTimeOptions() {
+        const sel = document.getElementById('visitTime');
+        for (let h = 0; h < 24; h++) {
+            for (let m = 0; m < 60; m += 30) {
+                const v = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+                const o = document.createElement('option');
+                o.value = v; o.textContent = v;
+                sel.appendChild(o);
+            }
+        }
+    }
+
+    // 이벤트 리스너
+    function setupListeners() {
+        document.getElementById('phone').addEventListener('input', function(e) {
+            e.target.value = formatPhone(e.target.value);
+        });
+        document.querySelectorAll('.form-input').forEach(el => {
+            el.addEventListener('focus', () => clearFieldError(el.id));
+        });
+        document.getElementById('privacyConsent').addEventListener('change', function() {
+            if (this.checked) clearFieldError('privacyConsent');
+        });
+    }
+
+    function formatPhone(v) {
+        const n = v.replace(/\D/g,'');
+        if (n.length === 11) return n.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+        if (n.length === 10) return n.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        return n;
+    }
+
+    // 유효성
+    function validateForm() {
+        let ok = true;
+        clearAllErrors();
+
+        const checks = [
+            ['visitMonth', !document.getElementById('visitMonth').value, '방문월을 선택해주세요'],
+            ['visitDay', !document.getElementById('visitDay').value, '방문일을 선택해주세요'],
+            ['visitTime', !document.getElementById('visitTime').value, '방문시간을 선택해주세요'],
+            ['visitPurpose', !document.getElementById('visitPurpose').value, '방문 목적을 선택해주세요'],
+            ['gender', !document.getElementById('gender').value, '성별을 선택해주세요'],
+        ];
+
+        checks.forEach(([id, cond, msg]) => { if (cond) { showFieldError(id, msg); ok = false; } });
+
+        const name = document.getElementById('name').value.trim();
+        if (!name) { showFieldError('name','이름을 입력해주세요'); ok = false; }
+        else if (name.length < 2) { showFieldError('name','이름은 2자 이상 입력해주세요'); ok = false; }
+
+        const by = document.getElementById('birthYear').value;
+        if (!by) { showFieldError('birthYear','출생년도를 입력해주세요'); ok = false; }
+        else if (by < 1900 || by > 2026) { showFieldError('birthYear','올바른 출생년도를 입력해주세요'); ok = false; }
+
+        const phone = document.getElementById('phone').value.trim();
+        if (!phone) { showFieldError('phone','연락처를 입력해주세요'); ok = false; }
+        else if (!/^01[0-9]-\d{3,4}-\d{4}$/.test(phone)) { showFieldError('phone','형식이 맞지 않습니다 (예: 010-1234-5678)'); ok = false; }
+
+        if (!document.getElementById('residence').value.trim()) {
+            showFieldError('residence','거주지를 입력해주세요'); ok = false;
+        }
+        if (!document.getElementById('privacyConsent').checked) {
+            showFieldError('privacyConsent','개인정보 수집·이용에 동의해주세요'); ok = false;
+        }
+
+        return ok;
+    }
+
+    function showFieldError(id, msg) {
+        const err = document.getElementById(id + 'Error');
+        const el = document.getElementById(id);
+        if (err) { err.textContent = msg; err.style.display = 'block'; }
+        if (el && el.classList.contains('form-input')) el.style.borderColor = 'var(--error)';
+    }
+
+    function clearFieldError(id) {
+        const err = document.getElementById(id + 'Error');
+        const el = document.getElementById(id);
+        if (err) err.style.display = 'none';
+        if (el && el.classList.contains('form-input')) el.style.borderColor = 'var(--border)';
+    }
+
+    function clearAllErrors() {
+        document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
+        document.querySelectorAll('.form-input').forEach(e => e.style.borderColor = 'var(--border)');
+    }
+
+    // 메시지
+    function showMessage(text, type = 'success') {
+        message.textContent = text;
+        message.className = 'message ' + type;
+        message.style.display = 'block';
+        if (type === 'success') setTimeout(() => { message.style.display = 'none'; }, 3000);
+    }
+
+    function toggleLoading(show) {
+        submitBtn.style.display = show ? 'none' : 'block';
+        loading.style.display = show ? 'block' : 'none';
+    }
+
+    // 제출
+    async function handleSubmit(e) {
+        e.preventDefault();
+        if (!validateForm()) return;
+
+        toggleLoading(true);
+        message.style.display = 'none';
+
+        try {
+            const fd = new FormData(form);
+            const data = {
+                visitMonth: fd.get('visitMonth'),
+                visitDay: fd.get('visitDay'),
+                visitTime: fd.get('visitTime'),
+                visitPurpose: fd.get('visitPurpose'),
+                name: fd.get('name').trim(),
+                gender: fd.get('gender'),
+                birthYear: fd.get('birthYear'),
+                residence: fd.get('residence').trim(),
+                residenceDetail: fd.get('residenceDetail').trim(),
+                phone: fd.get('phone').trim(),
+                memo: fd.get('memo').trim()
+            };
+
+            const res = await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: new URLSearchParams({ action: 'addVisitor', data: JSON.stringify(data) })
+            });
+
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const result = await res.json();
+
+            if (result.success) {
+                saveVisitorInfo();
+                showMessage('방문 등록이 완료되었습니다. 다로리인을 찾아주셔서 감사합니다!', 'success');
+                setCurrentDate();
+                document.getElementById('visitPurpose').value = '';
+                document.getElementById('memo').value = '';
+                document.getElementById('privacyConsent').checked = false;
+                setTimeout(() => location.reload(), 1600);
+            } else {
+                showMessage(result.message || '등록 중 오류가 발생했습니다.', 'error');
+            }
+        } catch(err) {
+            console.error(err);
+            showMessage('네트워크 오류가 발생했습니다. 다시 시도해주세요.', 'error');
+        } finally {
+            toggleLoading(false);
+        }
+    }
+
+    function clearForm() {
+        setCurrentDate();
+        document.getElementById('visitPurpose').value = '';
+        document.getElementById('memo').value = '';
+        document.getElementById('privacyConsent').checked = false;
+        message.style.display = 'none';
+        clearAllErrors();
+    }
+
+    form.addEventListener('submit', handleSubmit);
+</script>
+</body>
+</html>
