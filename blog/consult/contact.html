@@ -262,12 +262,12 @@
 
     <div class="form-row">
       <div class="form-group">
-        <label for="field">사업 분야</label>
-        <select id="field">
+        <label for="field">컨설팅 분야</label>
+        <select id="field" onchange="filterConsultants(this.value)">
           <option value="">선택해주세요</option>
           <option>세무·회계·노무</option>
           <option>법인 설립·사회적경제</option>
-          <option>지식재산(IP)</option>
+          <option>지식재산</option>
           <option>마케팅·콘텐츠</option>
           <option>농식품·유통</option>
           <option>F&amp;B·숙박</option>
@@ -291,7 +291,9 @@
 
     <div class="form-group">
       <label for="consultant">희망 컨설턴트 <span class="label-optional">(선택)</span></label>
-      <input type="text" id="consultant" placeholder="전문가 소개에서 확인한 컨설턴트 이름 (없으면 비워두세요)">
+      <select id="consultant" disabled>
+        <option value="">컨설팅 분야를 먼저 선택해주세요</option>
+      </select>
     </div>
 
     <!-- 문의 내용 -->
@@ -333,6 +335,62 @@
 </footer>
 
 <script>
+// ── consultants.json 로드 ──
+let CONSULTANTS = [];
+
+fetch('consultants.json')
+  .then(function(res) { return res.json(); })
+  .then(function(data) { CONSULTANTS = data; })
+  .catch(function(err) { console.warn('consultants.json 로드 실패:', err); });
+
+// ── 컨설팅 분야 선택 시 컨설턴트 필터링 ──
+function filterConsultants(selectedField) {
+  const sel = document.getElementById('consultant');
+  sel.innerHTML = '';
+
+  if (!selectedField || selectedField === '기타') {
+    // 분야 미선택 or 기타 → 비활성화
+    sel.disabled = true;
+    const opt = document.createElement('option');
+    opt.value = '';
+    opt.textContent = selectedField === '기타'
+      ? '담당자가 직접 안내드립니다'
+      : '컨설팅 분야를 먼저 선택해주세요';
+    sel.appendChild(opt);
+    return;
+  }
+
+  // JSON의 categories 값과 매칭
+  // ※ 지식재산(IP) select값은 "지식재산", JSON categories도 "지식재산"으로 통일
+  const matched = CONSULTANTS.filter(function(c) {
+    return c.categories.some(function(cat) {
+      return cat === selectedField;
+    });
+  });
+
+  sel.disabled = false;
+
+  // 기본 옵션
+  const defaultOpt = document.createElement('option');
+  defaultOpt.value = '';
+  defaultOpt.textContent = matched.length > 0
+    ? '선택 안 함 (담당자 배정)'
+    : '해당 분야 컨설턴트 준비 중';
+  sel.appendChild(defaultOpt);
+
+  matched.forEach(function(c) {
+    const opt = document.createElement('option');
+    opt.value = c.name;
+    // 이름 + 첫 번째 소속/직함 한 줄
+    const orgFirstLine = c.org.split('\n')[0].trim();
+    opt.textContent = c.name + '  —  ' + orgFirstLine;
+    sel.appendChild(opt);
+  });
+
+  if (matched.length === 0) sel.disabled = true;
+}
+
+// ── 폼 제출 ──
 function submitForm() {
   const name       = document.getElementById('name').value.trim();
   const tel        = document.getElementById('tel').value.trim();
@@ -363,9 +421,9 @@ function submitForm() {
     '이메일       : ' + (email || '미입력') + '\n' +
     '기관명 / 상호 : ' + org + '\n' +
     '─────────────────────────\n' +
-    '사업 분야    : ' + (field || '미선택') + '\n' +
+    '컨설팅 분야  : ' + (field || '미선택') + '\n' +
     '사업 단계    : ' + (stage || '미선택') + '\n' +
-    '희망 컨설턴트 : ' + (consultant || '없음') + '\n' +
+    '희망 컨설턴트 : ' + (consultant || '없음 (담당자 배정)') + '\n' +
     '─────────────────────────\n' +
     '문의 내용\n\n' +
     message + '\n'
