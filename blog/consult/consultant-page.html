@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* ── CSS 변수 ── */
   :root {
     --cream: #FFFFFF;
     --warm-white: #FFFFFF;
@@ -35,7 +34,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
@@ -63,7 +61,6 @@
   }
   nav a.nav-link:hover { color: var(--earth); }
 
-  /* ── HERO ── */
   .hero {
     min-height: 70vh;
     max-height: 750px;
@@ -74,7 +71,7 @@
   }
   .hero-bg {
     position: absolute; inset: 0;
-    background-image: url('data:images_800x800/hero.png');
+    background-image: url('images_800x800/hero.png');
     background-size: cover;
     background-position: center 30%;
     z-index: 0;
@@ -82,7 +79,7 @@
   .hero-bg::after {
     content: '';
     position: absolute; inset: 0;
-    background: #FFFFFF;
+    background: rgba(255,255,255,0.55);
   }
   .hero-inner {
     position: relative; z-index: 2;
@@ -94,7 +91,6 @@
     align-items: stretch;
   }
 
-  /* ── HERO GLASS CARDS ── */
   .hero-glass {
     background: rgba(255,255,255,0.92);
     backdrop-filter: blur(18px);
@@ -174,7 +170,6 @@
     background: rgba(255,255,255,0.6);
   }
 
-  /* ── INTRO ── */
   .intro-section-dark { background: #0A0A0A; }
   .intro {
     padding: 80px 64px;
@@ -206,7 +201,6 @@
   .detail-text { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; }
   .detail-text strong { color: #FFFFFF; font-weight: 600; }
 
-  /* ── CONSULTANTS SECTION ── */
   .consultants-section { background: #FFFFFF; padding: 80px 64px; }
   .section-header {
     max-width: 1200px; margin: 0 auto 56px;
@@ -216,7 +210,6 @@
   .section-title { font-family: var(--serif); font-size: 36px; font-weight: 700; color: #0A0A0A; letter-spacing: -0.02em; line-height: 1.2; }
   .section-count { font-size: 13px; color: #AAAAAA; white-space: nowrap; font-family: var(--sans); }
 
-  /* ── FILTER ── */
   .filter-wrap {
     max-width: 1200px; margin: 0 auto 48px;
     display: flex; flex-wrap: wrap; gap: 8px;
@@ -232,7 +225,6 @@
   .filter-btn:hover { border-color: rgba(0,0,0,0.4); color: #0A0A0A; }
   .filter-btn.active { background: #0A0A0A; border-color: #0A0A0A; color: #FFFFFF; font-weight: 600; }
 
-  /* ── CARDS GRID ── */
   .cards-grid {
     max-width: 1200px; margin: 0 auto;
     display: grid;
@@ -240,7 +232,6 @@
     gap: 20px;
   }
 
-  /* ── CARD ── */
   .card {
     background: #F7F7F7;
     border: 1px solid #E8E8E8;
@@ -253,7 +244,6 @@
   .card:hover { background: #F0F0F0; border-color: #CCCCCC; }
   .card.open { background: #EFEFEF; border-color: #AAAAAA; }
 
-  /* ── CARD AVATAR (사각형, 세로 강조) ── */
   .card-avatar {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -295,7 +285,6 @@
   .card:hover .card-arrow { color: #0A0A0A; transform: translateY(-2px); }
   .card.open .card-arrow { color: #0A0A0A; transform: rotate(90deg); }
 
-  /* ── CARD PANEL ── */
   .card-panel {
     display: none;
     border-top: 1px solid rgba(0,0,0,0.08);
@@ -322,7 +311,6 @@
     color: #0A0A0A; border-radius: 2px;
   }
 
-  /* ── PAGINATION ── */
   .pagination {
     max-width: 1200px; margin: 48px auto 0;
     display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -338,7 +326,6 @@
   .page-btn:disabled { opacity: 0.25; cursor: not-allowed; }
   .page-info { font-size: 13px; color: #888888; letter-spacing: 0.04em; min-width: 60px; text-align: center; font-family: var(--sans); }
 
-  /* ── CONTACT ── */
   .contact-section {
     padding: 80px 64px;
     max-width: 1200px; margin: 0 auto;
@@ -362,7 +349,6 @@
   .contact-info-label { font-size: 11px; color: var(--fog); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
   .contact-info-value { font-size: 14px; color: var(--earth); font-weight: 500; }
 
-  /* ── FOOTER ── */
   footer {
     background: var(--earth); padding: 48px 64px;
     display: flex; align-items: center; justify-content: space-between;
@@ -372,7 +358,6 @@
   .footer-sub { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 4px; }
   .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.04em; }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 1100px) {
     .cards-grid { grid-template-columns: repeat(3, 1fr); }
   }
@@ -398,7 +383,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a class="nav-brand" href="#">
     청도혁신센터
@@ -409,7 +393,6 @@
   <a class="nav-link" href="#consultants">전문가 보기</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-inner">
@@ -462,7 +445,6 @@
   </div>
 </section>
 
-<!-- INTRO -->
 <section class="intro-section-dark">
   <div class="intro">
     <div class="intro-img-wrap">
@@ -494,7 +476,6 @@
   </div>
 </section>
 
-<!-- CONSULTANTS -->
 <section class="consultants-section" id="consultants">
   <div class="section-header">
     <div>
@@ -525,7 +506,6 @@
   </div>
 </section>
 
-<!-- CONTACT -->
 <section>
   <div class="contact-section">
     <div>
@@ -562,7 +542,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div>
     <div class="footer-brand">청도혁신센터 × 상상마루</div>
@@ -572,29 +551,24 @@
 </footer>
 
 <script>
-// ── 인라인 데이터 ──────────────────────────────────
 let CONSULTANTS = [];
 
-// ── 이미지 경로 설정 ──────────────────────────────
-// 이미지 폴더 경로 (배포 환경에 맞게 수정)
 const IMG_BASE = 'images_800x800/';
 function getImgSrc(c) {
-  if (!c.id) return null;  // 이재환 (id=0) 이미지 없음
+  if (!c.id) return null;
   return IMG_BASE + 'c' + c.id + '_' + c.name + '.png';
 }
 
-// ── 상태 ──────────────────────────────────────────
-let activeFilters = new Set(['전체']);
+// ── 수정 1: Set → string 단일 값으로 변경 ──
+let activeFilter = '전체';
 let currentPage = 1;
 const PAGE_SIZE = 8;
 
-// ── 유틸 ──────────────────────────────────────────
 function initials(name) { return name.charAt(0); }
 function orgToLines(org) {
   return org.split('\n').map(l => l.trim()).filter(Boolean);
 }
 
-// ── 카드 렌더링 ───────────────────────────────────
 function renderCards(list) {
   const grid = document.getElementById('cards-grid');
   grid.innerHTML = '';
@@ -645,30 +619,25 @@ function renderCards(list) {
     grid.appendChild(el);
   });
 
-  // 카운트 업데이트
   document.getElementById('visible-count').textContent =
     list.length === CONSULTANTS.length
       ? `${list.length}명의 전문가`
       : `${list.length}명 검색됨`;
 
-  // 페이지네이션 업데이트
   document.getElementById('page-info').textContent = `${currentPage} / ${totalPages}`;
   document.getElementById('btn-prev').disabled = (currentPage === 1);
   document.getElementById('btn-next').disabled = (currentPage === totalPages);
   document.getElementById('pagination').style.display = totalPages <= 1 ? 'none' : 'flex';
 }
 
-// ── 카드 토글 ─────────────────────────────────────
 function toggleCard(el, id) {
   const panel = document.getElementById('panel-' + id);
   const isOpen = el.classList.contains('open');
-  // 모든 열린 카드 닫기
   document.querySelectorAll('.card.open').forEach(c => {
     c.classList.remove('open');
     const p = c.querySelector('.card-panel');
     if (p) p.classList.remove('open');
   });
-  // 클릭한 카드가 닫혀 있었으면 열기
   if (!isOpen) {
     el.classList.add('open');
     panel.classList.add('open');
@@ -676,15 +645,12 @@ function toggleCard(el, id) {
   }
 }
 
-// ── 필터 ──────────────────────────────────────────
+// ── 수정 2: 단일 필터 반환 ──
 function getFiltered() {
-  if (activeFilters.has('전체')) return CONSULTANTS;
-  return CONSULTANTS.filter(c =>
-    c.categories.some(cat => activeFilters.has(cat))
-  );
+  if (activeFilter === '전체') return CONSULTANTS;
+  return CONSULTANTS.filter(c => c.categories.some(cat => cat === activeFilter));
 }
 
-// ── 페이지네이션 ──────────────────────────────────
 function changePage(delta) {
   const list = getFiltered();
   const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
@@ -693,43 +659,34 @@ function changePage(delta) {
   document.getElementById('consultants').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ── 필터 이벤트 ───────────────────────────────────
+// ── 수정 3: 필터 이벤트 — 단일 선택, 같은 버튼 재클릭 시 전체로 리셋 ──
 document.getElementById('filter-wrap').addEventListener('click', function(e) {
   const btn = e.target.closest('.filter-btn');
   if (!btn) return;
   const val = btn.dataset.filter;
 
-  if (val === '전체') {
-    activeFilters = new Set(['전체']);
-  } else {
-    activeFilters.delete('전체');
-    if (activeFilters.has(val)) {
-      activeFilters.delete(val);
-      if (activeFilters.size === 0) activeFilters.add('전체');
-    } else {
-      activeFilters.add(val);
-    }
-  }
+  activeFilter = (activeFilter === val && val !== '전체') ? '전체' : val;
 
   document.querySelectorAll('.filter-btn').forEach(b => {
-    b.classList.toggle('active', activeFilters.has(b.dataset.filter));
+    b.classList.toggle('active', b.dataset.filter === activeFilter);
   });
 
-    currentPage = 1;
-    renderCards(getFiltered());
+  currentPage = 1;
+  renderCards(getFiltered());
 });
 
+// ── 수정 4: total-count 참조 제거, 에러 시 메시지 표시 ──
 fetch('consultants.json')
   .then(res => res.json())
   .then(data => {
     CONSULTANTS = data;
-    document.getElementById('total-count').textContent = data.length;
     renderCards(getFiltered());
   })
   .catch(err => {
     console.error('consultants.json 로드 실패:', err);
+    document.getElementById('cards-grid').innerHTML =
+      '<p style="padding:32px;color:#888;grid-column:1/-1;">컨설턴트 데이터를 불러올 수 없습니다.</p>';
   });
-
 </script>
 </body>
 </html>
