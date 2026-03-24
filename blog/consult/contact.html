@@ -248,8 +248,8 @@
     </div>
 
     <div class="form-group">
-      <label for="email">이메일 <span class="label-optional">(선택)</span></label>
-      <input type="email" id="email" placeholder="example@email.com">
+      <label for="email">이메일</label>
+      <input type="email" id="email" placeholder="example@email.com" required>
     </div>
 
     <div class="form-group">
@@ -306,11 +306,12 @@
 
     <div class="form-footer">
       <p class="form-notice">
-        작성 후 메일 앱이 열립니다.<br>
-        내용 확인 후 전송 버튼을 눌러주세요.
+        제출하면 담당자에게 알림이 전송되고<br>
+        입력하신 이메일로 접수 확인 메일이 발송됩니다.
       </p>
-      <button class="submit-btn" onclick="submitForm()">
-        메일 작성하기 →
+      <button class="submit-btn" id="submit-btn" onclick="submitForm()">
+        <span id="btn-text">문의 접수하기 →</span>
+        <span id="btn-loading" style="display:none;">전송 중...</span>
       </button>
     </div>
 
@@ -335,6 +336,9 @@
 </footer>
 
 <script>
+// ── Apps Script 웹앱 URL — 배포 후 여기에 붙여넣기 ──
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwNa4tW0GbwgRJ-5Y302-WM8QwKoh4AwyYifDHvt0nJMU5qoLADW9DrfhtQHCUDmzC-/exec';
+
 // ── consultants.json 로드 ──
 let CONSULTANTS = [];
 
@@ -349,7 +353,6 @@ function filterConsultants(selectedField) {
   sel.innerHTML = '';
 
   if (!selectedField || selectedField === '기타') {
-    // 분야 미선택 or 기타 → 비활성화
     sel.disabled = true;
     const opt = document.createElement('option');
     opt.value = '';
@@ -360,17 +363,12 @@ function filterConsultants(selectedField) {
     return;
   }
 
-  // JSON의 categories 값과 매칭
-  // ※ 지식재산(IP) select값은 "지식재산", JSON categories도 "지식재산"으로 통일
   const matched = CONSULTANTS.filter(function(c) {
-    return c.categories.some(function(cat) {
-      return cat === selectedField;
-    });
+    return c.categories.some(function(cat) { return cat === selectedField; });
   });
 
   sel.disabled = false;
 
-  // 기본 옵션
   const defaultOpt = document.createElement('option');
   defaultOpt.value = '';
   defaultOpt.textContent = matched.length > 0
@@ -381,7 +379,6 @@ function filterConsultants(selectedField) {
   matched.forEach(function(c) {
     const opt = document.createElement('option');
     opt.value = c.name;
-    // 이름 + 첫 번째 소속/직함 한 줄
     const orgFirstLine = c.org.split('\n')[0].trim();
     opt.textContent = c.name + '  —  ' + orgFirstLine;
     sel.appendChild(opt);
@@ -390,7 +387,7 @@ function filterConsultants(selectedField) {
   if (matched.length === 0) sel.disabled = true;
 }
 
-// ── 폼 제출 ──
+// ── 폼 제출 → Apps Script POST ──
 function submitForm() {
   const name       = document.getElementById('name').value.trim();
   const tel        = document.getElementById('tel').value.trim();
@@ -402,43 +399,37 @@ function submitForm() {
   const message    = document.getElementById('message').value.trim();
 
   // 필수값 체크
-  if (!name || !tel || !org || !message) {
-    alert('이름, 연락처, 기관명, 문의 내용은 필수 항목입니다.');
+  if (!name || !tel || !email || !org || !message) {
+    alert('이름, 연락처, 이메일, 기관명, 문의 내용은 필수 항목입니다.');
     return;
   }
 
-  // 메일 제목
-  const subject = encodeURIComponent(
-    '[컨설팅 문의] ' + name + ' / ' + (field || '분야 미선택') + ' / ' + (stage || '단계 미선택')
-  );
+  // 버튼 로딩 상태
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  document.getElementById('btn-text').style.display    = 'none';
+  document.getElementById('btn-loading').style.display = 'inline';
 
-  // 메일 본문
-  const body = encodeURIComponent(
-    '[ 컨설팅 문의 ]\n' +
-    '─────────────────────────\n' +
-    '이름 / 담당자 : ' + name + '\n' +
-    '연락처       : ' + tel + '\n' +
-    '이메일       : ' + (email || '미입력') + '\n' +
-    '기관명 / 상호 : ' + org + '\n' +
-    '─────────────────────────\n' +
-    '컨설팅 분야  : ' + (field || '미선택') + '\n' +
-    '사업 단계    : ' + (stage || '미선택') + '\n' +
-    '희망 컨설턴트 : ' + (consultant || '없음 (담당자 배정)') + '\n' +
-    '─────────────────────────\n' +
-    '문의 내용\n\n' +
-    message + '\n'
-  );
+  const payload = { name, tel, email, org, field, stage, consultant, message };
 
-  // 수신 메일 주소 — 실제 주소로 변경하세요
-  const TO = 'khseong@gbcommons.org';
-
-  window.location.href = 'mailto:' + TO + '?subject=' + subject + '&body=' + body;
-
-  // 완료 메시지 표시
-  setTimeout(function () {
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(function() {
+    // no-cors 환경에서는 응답을 읽을 수 없으므로 전송 성공으로 간주
     document.getElementById('form-card').style.display = 'none';
     document.getElementById('success-msg').classList.add('show');
-  }, 800);
+  })
+  .catch(function(err) {
+    console.error(err);
+    alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    btn.disabled = false;
+    document.getElementById('btn-text').style.display    = 'inline';
+    document.getElementById('btn-loading').style.display = 'none';
+  });
 }
 </script>
 </body>
