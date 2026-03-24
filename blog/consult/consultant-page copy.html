@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>청도혁신센터 × 상상마루 컨설턴트</title>
-<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -414,85 +413,6 @@
   @media (max-width: 400px) {
     .cards-grid { grid-template-columns: 1fr; }
   }
-
-  /* ── FAQ 섹션 ── */
-  .faq-section {
-    background: #F7F7F7;
-    padding: 80px 64px;
-  }
-  .faq-inner {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  .faq-label {
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: #AAAAAA; font-weight: 500; margin-bottom: 12px;
-  }
-  .faq-title {
-    font-family: var(--serif); font-size: 32px; font-weight: 700;
-    color: #0A0A0A; letter-spacing: -0.02em; line-height: 1.2;
-    margin-bottom: 48px;
-  }
-  .faq-category {
-    margin-bottom: 36px;
-  }
-  .faq-category-label {
-    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: #AAAAAA; font-weight: 500;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #E0E0E0;
-    margin-bottom: 0;
-  }
-  .faq-item {
-    border-bottom: 1px solid #E8E8E8;
-  }
-  .faq-question {
-    width: 100%; text-align: left;
-    background: none; border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 16px;
-    padding: 18px 0;
-    font-family: var(--sans); font-size: 15px; font-weight: 500;
-    color: #0A0A0A; line-height: 1.5;
-    transition: color 0.2s;
-  }
-  .faq-question:hover { color: #444444; }
-  .faq-question.open { color: #0A0A0A; }
-  .faq-icon {
-    flex-shrink: 0;
-    width: 20px; height: 20px;
-    border: 1px solid #CCCCCC;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; color: #888888;
-    transition: all 0.25s;
-    line-height: 1;
-  }
-  .faq-question.open .faq-icon {
-    background: #0A0A0A;
-    border-color: #0A0A0A;
-    color: #FFFFFF;
-    transform: rotate(45deg);
-  }
-  .faq-answer {
-    display: none;
-    font-size: 14px; color: #555555; line-height: 1.8;
-    padding: 0 0 20px 0;
-    max-width: 680px;
-  }
-  .faq-answer.open { display: block; animation: faqIn 0.2s ease; }
-  @keyframes faqIn {
-    from { opacity: 0; transform: translateY(-6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @media (max-width: 900px) {
-    .faq-section { padding: 60px 32px; }
-    .faq-title { font-size: 26px; margin-bottom: 36px; }
-  }
-  @media (max-width: 600px) {
-    .faq-section { padding: 48px 20px; }
-    .faq-question { font-size: 14px; }
-  }
 </style>
 </head>
 <body>
@@ -628,145 +548,6 @@
   </div>
 </section>
 
-<!-- ── FAQ 섹션 ── -->
-<section class="faq-section" id="faq">
-  <div class="faq-inner">
-    <div class="faq-label">FAQ</div>
-    <h2 class="faq-title">자주 묻는 질문</h2>
-
-    <!-- 신청 및 자격 -->
-    <div class="faq-category">
-      <div class="faq-category-label">신청 및 자격</div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          누가 신청할 수 있나요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          경상북도 청도군을 기반으로 활동하는 사회적경제 조직(사회적기업·협동조합·마을기업 등), 로컬 크리에이터, 소상공인, 예비 창업자라면 누구든 신청하실 수 있습니다.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          청도군 외 지역 사업자도 신청 가능한가요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          본 프로그램은 청도군 소재 사업자 및 청도군 내 창업을 준비 중인 분을 우선 대상으로 합니다. 타 지역 거주자라도 청도 내 사업 연계 계획이 있다면 사전 문의 후 참여 가능 여부를 안내받으실 수 있습니다.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          개인 사업자도 신청할 수 있나요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          네, 가능합니다. 법인뿐 아니라 개인 사업자, 예비 창업자 모두 신청하실 수 있습니다. 사업 단계와 필요 분야를 함께 안내해 주시면 적합한 컨설턴트를 매칭해 드립니다.
-        </div>
-      </div>
-    </div>
-
-    <!-- 컨설팅 절차 -->
-    <div class="faq-category">
-      <div class="faq-category-label">컨설팅 절차</div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          신청 후 어떤 과정으로 진행되나요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          문의 접수 → 담당자 사전 상담 → 컨설턴트 매칭 → 1차 미팅(현황 파악) → 본 컨설팅 진행 순서로 이루어집니다. 사업 내용과 목표에 따라 일정은 조정될 수 있습니다.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          컨설턴트는 어떻게 배정되나요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          신청서 내용과 사전 상담을 바탕으로 사업 단계·업종·필요 분야에 가장 적합한 전문가를 담당자가 직접 매칭합니다. 원하는 전문가가 있을 경우 요청 사항으로 기재하시면 반영하도록 노력합니다.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          컨설팅은 몇 회 진행되나요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          기본적으로 회당 2시간, 총 2~3회 진행을 기준으로 하며, 사업의 복잡도와 진행 상황에 따라 횟수가 조정될 수 있습니다. 구체적인 일정은 컨설턴트와 첫 미팅에서 협의합니다.
-        </div>
-      </div>
-    </div>
-
-    <!-- 비용 -->
-    <div class="faq-category">
-      <div class="faq-category-label">비용</div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          컨설팅 비용이 있나요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          청도혁신센터 × 상상마루 기본 컨설팅 프로그램은 무료로 운영됩니다. 다만 프로그램 규모나 지원 사업 연계 여부에 따라 일부 비용이 발생할 수 있으며, 사전에 안내드립니다.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          지원 사업과 연계하면 추가 혜택이 있나요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          경북 지역 공공 지원 사업(창업지원금, 바우처, 사회적경제 육성사업 등)과 연계될 경우 컨설팅 비용 지원이 가능합니다. 담당자에게 문의하시면 현재 신청 가능한 지원 사업을 안내해 드립니다.
-        </div>
-      </div>
-    </div>
-
-    <!-- 분야 및 전문가 -->
-    <div class="faq-category">
-      <div class="faq-category-label">분야 및 전문가</div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          한 번에 여러 분야 컨설팅을 받을 수 있나요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          가능합니다. 예를 들어 세무·회계와 마케팅을 동시에 필요로 하신다면, 각 분야 전문가를 순차적으로 연결해 드립니다. 복합 니즈의 경우 사전 상담에서 우선순위를 함께 정리합니다.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          원하는 컨설턴트를 직접 선택할 수 있나요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          전문가 소개 페이지에서 각 컨설턴트의 전문 분야와 경력을 확인하신 후 희망 컨설턴트를 요청하실 수 있습니다. 일정 및 매칭 상황에 따라 조율될 수 있습니다.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          컨설팅 후 지속적인 연결이 가능한가요?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          컨설팅 종료 후에도 후속 질문이나 추가 지원이 필요하시면 담당자를 통해 연락하실 수 있습니다. 장기적인 협력이 필요한 경우 별도 프로그램 연계를 안내해 드립니다.
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
 <section>
   <div class="contact-section">
     <div>
@@ -775,7 +556,7 @@
         사업 단계와 필요 분야를 알려주시면 가장 적합한 전문가를 연결해 드립니다.<br>
         청도혁신센터 또는 상상마루로 문의해 주세요.
       </p>
-      <a class="contact-btn" href="/cdn-cgi/l/email-protection#a5c6cacbd1c4c6d1e5c6cdc0cacbc2c1ca8bced7">문의하기 →</a>
+      <a class="contact-btn" href="mailto:contact@cheongdo.kr">문의하기 →</a>
     </div>
     <div class="contact-info">
       <div class="contact-info-row">
@@ -796,7 +577,7 @@
         <div class="contact-info-icon">📬</div>
         <div>
           <div class="contact-info-label">이메일</div>
-          <div class="contact-info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2b4844455f4a485f6b48434e44454c4f44054059">[email&#160;protected]</a></div>
+          <div class="contact-info-value">contact@cheongdo.kr</div>
         </div>
       </div>
     </div>
@@ -811,26 +592,7 @@
   <div class="footer-copy">© 2025 Cheongdo Innovation Center × Sangsangmaru</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ──────────────────────────────────────────────
-//  FAQ 아코디언
-// ──────────────────────────────────────────────
-function toggleFaq(btn) {
-  const answer = btn.nextElementSibling;
-  const isOpen = btn.classList.contains('open');
-
-  // 같은 카테고리 내 다른 항목 닫기
-  document.querySelectorAll('.faq-question.open').forEach(function(q) {
-    q.classList.remove('open');
-    q.nextElementSibling.classList.remove('open');
-  });
-
-  if (!isOpen) {
-    btn.classList.add('open');
-    answer.classList.add('open');
-  }
-}
-
+<script>
 // ──────────────────────────────────────────────
 //  슬라이드쇼 (클릭·드래그·스와이프, 바 인디케이터, 3초 자동전환)
 // ──────────────────────────────────────────────
