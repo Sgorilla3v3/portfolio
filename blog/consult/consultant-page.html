@@ -719,6 +719,16 @@ document.getElementById('filter-wrap').addEventListener('click', function(e) {
     renderCards(getFiltered());
 });
 
+fetch('consultants.json')
+  .then(res => res.json())
+  .then(data => {
+    CONSULTANTS = data;
+    document.getElementById('total-count').textContent = data.length;
+    renderCards(getFiltered());
+  })
+  .catch(err => {
+    console.error('consultants.json 로드 실패:', err);
+  });
 
 </script>
 </body>
