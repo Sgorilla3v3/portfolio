@@ -177,17 +177,51 @@
     display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
     align-items: center;
   }
+
+  /* ── 슬라이드쇼 래퍼 ── */
   .intro-img-wrap {
     aspect-ratio: 4/3;
-    background: var(--mist);
-    border-radius: 4px; overflow: hidden;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
   }
-  .intro-img-bg {
+  .slideshow-container {
     width: 100%; height: 100%;
-    background: linear-gradient(135deg, #1A1A1A 0%, #111111 100%);
-    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    cursor: grab;
+    user-select: none;
   }
-  .intro-img-label { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.2); text-transform: uppercase; }
+  .slideshow-container:active { cursor: grabbing; }
+  .slide-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0; left: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  /* 가로 바 인디케이터 — 이미지 안쪽 하단 */
+  .slide-bars {
+    position: absolute;
+    bottom: 16px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 6px;
+    z-index: 10;
+  }
+  .slide-bar {
+    height: 3px; width: 28px;
+    background: rgba(255,255,255,0.35);
+    border-radius: 2px;
+    cursor: pointer;
+    border: none; padding: 0;
+    transition: background 0.3s, width 0.3s;
+  }
+  .slide-bar.active {
+    background: rgba(255,255,255,1);
+    width: 42px;
+  }
+
   .intro-badge { font-size: 11px; letter-spacing: 0.14em; color: #AAAAAA; text-transform: uppercase; font-weight: 500; margin-bottom: 16px; }
   .intro-heading {
     font-family: var(--serif); font-size: 32px; font-weight: 700;
@@ -447,12 +481,19 @@
 
 <section class="intro-section-dark">
   <div class="intro">
+
+    <!-- ── 슬라이드쇼 (activity.png / activity2.png) ── -->
     <div class="intro-img-wrap">
-      <div class="intro-img-bg" style="background:none;">
-        <img src="images_800x800/activity.png" alt="활동 사진"
-            style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="slideshow-container" id="slideshow">
+        <img class="slide-img" src="images_800x800/activity.png"  alt="활동 사진 1" style="opacity:1;">
+        <img class="slide-img" src="images_800x800/activity2.png" alt="활동 사진 2" style="opacity:0;">
+      </div>
+      <div class="slide-bars">
+        <button class="slide-bar active" aria-label="1번 이미지"></button>
+        <button class="slide-bar"        aria-label="2번 이미지"></button>
       </div>
     </div>
+
     <div>
       <div class="intro-badge">About the Program</div>
       <h2 class="intro-heading">현장에서 검증된<br>전문가와 함께합니다</h2>
@@ -552,6 +593,91 @@
 </footer>
 
 <script>
+// ──────────────────────────────────────────────
+//  슬라이드쇼 (클릭·드래그·스와이프, 바 인디케이터, 3초 자동전환)
+// ──────────────────────────────────────────────
+(function () {
+  const INTERVAL  = 3000;
+  const DRAG_THRESHOLD = 40; // px 이상 드래그 시 전환
+
+  const container = document.getElementById('slideshow');
+  const imgs  = Array.from(document.querySelectorAll('.slide-img'));
+  const bars  = Array.from(document.querySelectorAll('.slide-bar'));
+  let cur     = 0;
+  let timer   = null;
+
+  // 드래그 상태
+  let dragStartX = null;
+  let isDragging = false;
+
+  function show(idx) {
+    idx = (idx + imgs.length) % imgs.length;
+    imgs[cur].style.opacity = '0';
+    bars[cur].classList.remove('active');
+    cur = idx;
+    imgs[cur].style.opacity = '1';
+    bars[cur].classList.add('active');
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(function () { show(cur + 1); }, INTERVAL);
+  }
+
+  // 바 인디케이터 클릭
+  bars.forEach(function (bar, i) {
+    bar.addEventListener('click', function () { show(i); startTimer(); });
+  });
+
+  // ── 마우스 드래그 ──
+  container.addEventListener('mousedown', function (e) {
+    dragStartX = e.clientX;
+    isDragging = false;
+  });
+  container.addEventListener('mousemove', function (e) {
+    if (dragStartX === null) return;
+    if (Math.abs(e.clientX - dragStartX) > 5) isDragging = true;
+  });
+  container.addEventListener('mouseup', function (e) {
+    if (dragStartX === null) return;
+    const dx = e.clientX - dragStartX;
+    if (Math.abs(dx) >= DRAG_THRESHOLD) {
+      show(dx < 0 ? cur + 1 : cur - 1);
+      startTimer();
+    } else if (!isDragging) {
+      // 클릭 (드래그 없이 놓은 경우) → 다음으로
+      show(cur + 1);
+      startTimer();
+    }
+    dragStartX = null;
+    isDragging = false;
+  });
+  container.addEventListener('mouseleave', function () {
+    dragStartX = null;
+    isDragging = false;
+  });
+
+  // ── 터치 스와이프 ──
+  container.addEventListener('touchstart', function (e) {
+    dragStartX = e.touches[0].clientX;
+  }, { passive: true });
+  container.addEventListener('touchend', function (e) {
+    if (dragStartX === null) return;
+    const dx = e.changedTouches[0].clientX - dragStartX;
+    if (Math.abs(dx) >= DRAG_THRESHOLD) {
+      show(dx < 0 ? cur + 1 : cur - 1);
+      startTimer();
+    }
+    dragStartX = null;
+  });
+
+  // 자동 시작
+  startTimer();
+})();
+
+// ──────────────────────────────────────────────
+//  컨설턴트 카드 기존 로직
+// ──────────────────────────────────────────────
 let CONSULTANTS = [];
 
 const IMG_BASE = 'images_800x800/';
@@ -560,7 +686,6 @@ function getImgSrc(c) {
   return IMG_BASE + 'c' + c.id + '_' + c.name + '.png';
 }
 
-// ── 수정 1: Set → string 단일 값으로 변경 ──
 let activeFilter = '전체';
 let currentPage = 1;
 const PAGE_SIZE = 8;
@@ -646,7 +771,6 @@ function toggleCard(el, id) {
   }
 }
 
-// ── 수정 2: 단일 필터 반환 ──
 function getFiltered() {
   if (activeFilter === '전체') return CONSULTANTS;
   return CONSULTANTS.filter(c => c.categories.some(cat => cat === activeFilter));
@@ -660,7 +784,6 @@ function changePage(delta) {
   document.getElementById('consultants').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ── 수정 3: 필터 이벤트 — 단일 선택, 같은 버튼 재클릭 시 전체로 리셋 ──
 document.getElementById('filter-wrap').addEventListener('click', function(e) {
   const btn = e.target.closest('.filter-btn');
   if (!btn) return;
@@ -676,7 +799,6 @@ document.getElementById('filter-wrap').addEventListener('click', function(e) {
   renderCards(getFiltered());
 });
 
-// ── 수정 4: total-count 참조 제거, 에러 시 메시지 표시 ──
 fetch('consultants.json')
   .then(res => res.json())
   .then(data => {
