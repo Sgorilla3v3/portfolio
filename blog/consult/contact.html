@@ -413,7 +413,7 @@ function submitForm() {
   const org        = document.getElementById('org').value.trim();
   const field      = document.getElementById('field').value;
   const stage      = document.getElementById('stage').value;
-  const consultant = document.getElementById('consultant').value.trim();
+  const consultant = document.getElementById('consultant').value.trim() ?? '';
   const message    = document.getElementById('message').value.trim();
 
   // 필수값 체크
