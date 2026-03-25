@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<!-- ✅ 수정2: hero.png preload 추가 (LCP 이미지 우선 로드) -->
-<link rel="preload" as="image" href="images_800x800/hero.png">
+<!-- ✅ 수정2: hero.webp preload 추가 (LCP 이미지 우선 로드) -->
+<link rel="preload" as="image" href="images_800x800/hero.webp">
 
 <!-- ✅ 수정3: Noto Serif KR 제거 → Sans KR 단일 사용으로 woff2 요청 수 절반 감소 -->
 <!-- 기존: Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600 (woff2 23개) -->
@@ -85,7 +85,7 @@
   }
   .hero-bg {
     position: absolute; inset: 0;
-    background-image: url('images_800x800/hero.png');
+    background-image: url('images_800x800/hero.webp');
     background-size: cover;
     background-position: center 30%;
     z-index: 0;
@@ -600,8 +600,8 @@
     <div class="intro-img-wrap">
       <div class="slideshow-container" id="slideshow">
         <!-- ✅ 수정8: 첫 슬라이드 eager, 두번째 lazy -->
-        <img class="slide-img" src="images_800x800/activity.png" alt="활동 사진 1" loading="eager" style="opacity:1;" width="800" height="600">
-        <img class="slide-img" src="images_800x800/activity2.png" alt="활동 사진 2" loading="lazy" style="opacity:0;" width="800" height="600">
+        <img class="slide-img" src="images_800x800/activity.webp" alt="활동 사진 1" loading="eager" style="opacity:1;" width="1200" height="900">
+        <img class="slide-img" src="images_800x800/activity2.webp" alt="활동 사진 2" loading="lazy" style="opacity:0;" width="1200" height="900">
       </div>
       <div class="slide-bars">
         <button class="slide-bar active" aria-label="1번 이미지"></button>
