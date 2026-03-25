@@ -5,19 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>청도혁신센터 × 상상마루 컨설턴트</title>
 <link rel="icon" type="image/png" href="favicon.png">
-
-<!-- ✅ 수정1: fonts.gstatic.com preconnect 추가 (폰트 woff2 다운로드 속도 개선) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<!-- ✅ 수정2: hero.png preload 추가 (LCP 이미지 우선 로드) -->
-<link rel="preload" as="image" href="images_800x800/hero.png">
-
-<!-- ✅ 수정3: Noto Serif KR 제거 → Sans KR 단일 사용으로 woff2 요청 수 절반 감소 -->
-<!-- 기존: Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600 (woff2 23개) -->
-<!-- 변경: Noto+Sans+KR:wght@300;400;500;600;700 (woff2 약 12개) -->
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --cream: #FFFFFF;
@@ -30,14 +19,12 @@
     --sand: #CCCCCC;
     --mist: #E0E0E0;
     --fog: #AAAAAA;
-    /* ✅ 수정4: --serif를 sans로 통일 (폰트 단일화에 맞춰) */
-    --serif: 'Noto Sans KR', sans-serif;
+    --serif: 'Noto Serif KR', serif;
     --sans: 'Noto Sans KR', sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  /* ✅ 수정5: scroll-behavior를 html 전체 대신 필요한 요소에만 적용 */
-  html { }
+  html { scroll-behavior: smooth; }
 
   body {
     background: var(--warm-white);
@@ -193,6 +180,7 @@
     align-items: center;
   }
 
+  /* ── 슬라이드쇼 래퍼 ── */
   .intro-img-wrap {
     aspect-ratio: 4/3;
     border-radius: 4px;
@@ -215,6 +203,7 @@
     pointer-events: none;
     transition: opacity 0.6s ease;
   }
+  /* 가로 바 인디케이터 — 이미지 안쪽 하단 */
   .slide-bars {
     position: absolute;
     bottom: 16px; left: 50%;
@@ -306,16 +295,11 @@
     object-position: center top;
     display: block;
   }
-  /* ✅ 수정6: CLS 방지용 placeholder 스타일 */
-  .card-avatar img.loading {
-    background: #E8E8E8;
-  }
   .card-avatar .photo-placeholder {
     width: 100%; height: 100%;
-    display: none; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     font-family: var(--serif); font-size: 48px; font-weight: 700;
     color: #AAAAAA; background: #EBEBEB;
-    position: absolute; inset: 0;
   }
 
   .card-inner { padding: 16px 18px 18px; }
@@ -450,6 +434,7 @@
     color: #0A0A0A; letter-spacing: -0.02em; line-height: 1.2;
     margin-bottom: 32px;
   }
+  /* 탭바 */
   .faq-tabbar {
     display: flex;
     border-bottom: 2px solid #E0E0E0;
@@ -471,6 +456,7 @@
     color: #0A0A0A; font-weight: 600;
     border-bottom: 2px solid #0A0A0A;
   }
+  /* 카테고리 패널 */
   .faq-panel { display: none; }
   .faq-panel.active { display: block; animation: faqPanelIn 0.2s ease; }
   @keyframes faqPanelIn {
@@ -539,7 +525,8 @@
     상상마루
     <span class="nav-badge">컨설턴트</span>
   </a>
-  <a class="nav-link" href="https://cmz054.kr" target="_blank" rel="noopener noreferrer">청도혁신센터 홈페이지</a>
+  <a class="nav-link" href="https://cmz054.kr" target="_blank" rel="noopener noreferrer">청도혁신센터 홈페이지
+  </a>
 </nav>
 
 <section class="hero">
@@ -556,15 +543,15 @@
         청도혁신센터와 상상마루가 함께 구성한 <br>20인의 현장 전문가 네트워크<br><br>
         세무·법인 설립부터 F&B·관광·교육까지, <br>당신의 사업 단계에 맞는 전문가를 연결합니다
       </p>
-      <!-- ✅ 수정7: href 앵커 스크롤에 scroll-behavior 적용 (html 전체 대신) -->
-      <a class="hero-cta" href="#consultants" onclick="smoothScrollTo('consultants')">
+      <a class="hero-cta" href="#consultants">
         전문가 찾아보기 <span class="hero-cta-arrow">→</span>
       </a>
     </div>
     <div class="hero-glass-stats">
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-num" style="font-size: clamp(16px, 2vw, 20px); line-height: 1.3;">청도혁신센터</div>
+          <div class="stat-num" style="font-size: clamp(16px, 2vw, 20px); line-height: 1.3;">청도혁신센터
+          </div>
           <div class="stat-label">주관 기관</div>
         </div>
         <div class="stat-item">
@@ -578,7 +565,7 @@
         <div class="stat-item">
           <div class="stat-num">20</div>
           <div class="stat-label">전문 컨설턴트</div>
-        </div>
+        </div>        
       </div>
       <div class="hero-areas">
         <div class="hero-areas-label">전문 분야</div>
@@ -586,7 +573,7 @@
           <span class="area-chip">세무·회계·노무</span>
           <span class="area-chip">법인 설립·사회적경제</span>
           <span class="area-chip">마케팅·콘텐츠</span>
-          <span class="area-chip">F&amp;B·유통</span>
+          <span class="area-chip">F&B·유통</span>
           <span class="area-chip">관광·숙박·문화</span>
           <span class="area-chip">교육·돌봄</span>
         </div>
@@ -597,15 +584,16 @@
 
 <section class="intro-section-dark">
   <div class="intro">
+
+    <!-- ── 슬라이드쇼 (activity.png / activity2.png) ── -->
     <div class="intro-img-wrap">
       <div class="slideshow-container" id="slideshow">
-        <!-- ✅ 수정8: 첫 슬라이드 eager, 두번째 lazy -->
-        <img class="slide-img" src="images_800x800/activity.png" alt="활동 사진 1" loading="eager" style="opacity:1;" width="800" height="600">
-        <img class="slide-img" src="images_800x800/activity2.png" alt="활동 사진 2" loading="lazy" style="opacity:0;" width="800" height="600">
+        <img class="slide-img" src="images_800x800/activity.png"  alt="활동 사진 1" style="opacity:1;">
+        <img class="slide-img" src="images_800x800/activity2.png" alt="활동 사진 2" style="opacity:0;">
       </div>
       <div class="slide-bars">
         <button class="slide-bar active" aria-label="1번 이미지"></button>
-        <button class="slide-bar" aria-label="2번 이미지"></button>
+        <button class="slide-bar"        aria-label="2번 이미지"></button>
       </div>
     </div>
 
@@ -649,7 +637,7 @@
     <button class="filter-btn" data-filter="지식재산">지식재산(IP)</button>
     <button class="filter-btn" data-filter="마케팅·콘텐츠">마케팅·콘텐츠</button>
     <button class="filter-btn" data-filter="농식품·유통">농식품·유통</button>
-    <button class="filter-btn" data-filter="F&B·숙박">F&amp;B·숙박</button>
+    <button class="filter-btn" data-filter="F&B·숙박">F&B·숙박</button>
     <button class="filter-btn" data-filter="관광·문화">관광·문화</button>
     <button class="filter-btn" data-filter="교육·돌봄">교육·돌봄</button>
   </div>
@@ -663,12 +651,13 @@
   </div>
 </section>
 
-<!-- FAQ 섹션 -->
+<!-- ── FAQ 섹션 ── -->
 <section class="faq-section" id="faq">
   <div class="faq-inner">
     <div class="faq-label">FAQ</div>
     <h2 class="faq-title">자주 묻는 질문</h2>
 
+    <!-- 탭바 -->
     <div class="faq-tabbar">
       <button class="faq-tab active" onclick="switchFaqTab(this, 'faq-apply')">신청 및 자격</button>
       <button class="faq-tab" onclick="switchFaqTab(this, 'faq-process')">컨설팅 절차</button>
@@ -676,6 +665,7 @@
       <button class="faq-tab" onclick="switchFaqTab(this, 'faq-expert')">분야 및 전문가</button>
     </div>
 
+    <!-- 신청 및 자격 -->
     <div class="faq-panel active" id="faq-apply">
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
@@ -706,6 +696,7 @@
       </div>
     </div>
 
+    <!-- 컨설팅 절차 -->
     <div class="faq-panel" id="faq-process">
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
@@ -736,6 +727,7 @@
       </div>
     </div>
 
+    <!-- 비용 -->
     <div class="faq-panel" id="faq-cost">
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
@@ -757,6 +749,7 @@
       </div>
     </div>
 
+    <!-- 분야 및 전문가 -->
     <div class="faq-panel" id="faq-expert">
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
@@ -786,6 +779,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -833,28 +827,18 @@
   <div class="footer-copy">© 2025 Cheongdo Innovation Center × Sangsangmaru</div>
 </footer>
 
-<!-- ✅ 수정9: Cloudflare email-decode.min.js 완전 제거 (503 에러, 불필요) -->
-
-<script>
-// ──────────────────────────────────────────────
-//  ✅ 수정10: 스무스 스크롤 (html scroll-behavior 제거 대신 JS로 처리)
-// ──────────────────────────────────────────────
-function smoothScrollTo(id) {
-  const el = document.getElementById(id);
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
-
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ──────────────────────────────────────────────
 //  FAQ 탭 전환 + 아코디언
 // ──────────────────────────────────────────────
 function switchFaqTab(btn, panelId) {
+  // 탭 active 전환
   document.querySelectorAll('.faq-tab').forEach(function(t) {
     t.classList.remove('active');
   });
   btn.classList.add('active');
 
+  // 패널 전환 (열린 아코디언 초기화)
   document.querySelectorAll('.faq-panel').forEach(function(p) {
     p.classList.remove('active');
     p.querySelectorAll('.faq-question.open').forEach(function(q) {
@@ -869,6 +853,7 @@ function toggleFaq(btn) {
   const answer = btn.nextElementSibling;
   const isOpen = btn.classList.contains('open');
 
+  // 같은 패널 내 다른 항목 닫기
   const panel = btn.closest('.faq-panel');
   panel.querySelectorAll('.faq-question.open').forEach(function(q) {
     q.classList.remove('open');
@@ -882,17 +867,19 @@ function toggleFaq(btn) {
 }
 
 // ──────────────────────────────────────────────
-//  슬라이드쇼
+//  슬라이드쇼 (클릭·드래그·스와이프, 바 인디케이터, 3초 자동전환)
 // ──────────────────────────────────────────────
 (function () {
-  const INTERVAL = 10000;
-  const DRAG_THRESHOLD = 40;
+  const INTERVAL  = 10000;
+  const DRAG_THRESHOLD = 40; // px 이상 드래그 시 전환
 
   const container = document.getElementById('slideshow');
   const imgs  = Array.from(document.querySelectorAll('.slide-img'));
   const bars  = Array.from(document.querySelectorAll('.slide-bar'));
   let cur     = 0;
   let timer   = null;
+
+  // 드래그 상태
   let dragStartX = null;
   let isDragging = false;
 
@@ -910,10 +897,12 @@ function toggleFaq(btn) {
     timer = setInterval(function () { show(cur + 1); }, INTERVAL);
   }
 
+  // 바 인디케이터 클릭
   bars.forEach(function (bar, i) {
     bar.addEventListener('click', function () { show(i); startTimer(); });
   });
 
+  // ── 마우스 드래그 ──
   container.addEventListener('mousedown', function (e) {
     dragStartX = e.clientX;
     isDragging = false;
@@ -929,6 +918,7 @@ function toggleFaq(btn) {
       show(dx < 0 ? cur + 1 : cur - 1);
       startTimer();
     } else if (!isDragging) {
+      // 클릭 (드래그 없이 놓은 경우) → 다음으로
       show(cur + 1);
       startTimer();
     }
@@ -940,6 +930,7 @@ function toggleFaq(btn) {
     isDragging = false;
   });
 
+  // ── 터치 스와이프 ──
   container.addEventListener('touchstart', function (e) {
     dragStartX = e.touches[0].clientX;
   }, { passive: true });
@@ -953,11 +944,12 @@ function toggleFaq(btn) {
     dragStartX = null;
   });
 
+  // 자동 시작
   startTimer();
 })();
 
 // ──────────────────────────────────────────────
-//  컨설턴트 카드
+//  컨설턴트 카드 기존 로직
 // ──────────────────────────────────────────────
 let CONSULTANTS = [];
 
@@ -976,14 +968,6 @@ function orgToLines(org) {
   return org.split('\n').map(l => l.trim()).filter(Boolean);
 }
 
-// ✅ 수정11: 이미지 로드 실패 처리를 이벤트리스너로 변경 + 첫 페이지 eager/나머지 lazy 분기
-function setupCardImage(img, placeholder) {
-  img.addEventListener('error', function() {
-    img.style.display = 'none';
-    placeholder.style.display = 'flex';
-  });
-}
-
 function renderCards(list) {
   const grid = document.getElementById('cards-grid');
   grid.innerHTML = '';
@@ -994,26 +978,22 @@ function renderCards(list) {
   const start = (currentPage - 1) * PAGE_SIZE;
   const pageItems = list.slice(start, start + PAGE_SIZE);
 
-  pageItems.forEach((c, idx) => {
+  pageItems.forEach(c => {
     const el = document.createElement('div');
     el.className = 'card';
     el.dataset.id = c.id;
     const orgLines = orgToLines(c.org);
     const imgSrc = getImgSrc(c);
 
-    // ✅ 수정12: 첫 페이지 첫 4개는 eager, 나머지 lazy
-    const loadingAttr = (currentPage === 1 && idx < 4) ? 'eager' : 'lazy';
-
     el.innerHTML = `
       <div class="card-avatar">
         <img
           src="${imgSrc}"
           alt="${c.name}"
-          loading="${loadingAttr}"
-          width="800"
-          height="800"
+          loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
         >
-        <div class="photo-placeholder">${initials(c.name)}</div>
+        <div class="photo-placeholder" style="display:none;">${initials(c.name)}</div>
       </div>
       <div class="card-inner">
         <div class="card-name">${c.name}</div>
@@ -1034,12 +1014,6 @@ function renderCards(list) {
         </div>
       </div>
     `;
-
-    // ✅ 수정13: onerror 인라인 제거 → addEventListener로 처리
-    const img = el.querySelector('img');
-    const placeholder = el.querySelector('.photo-placeholder');
-    setupCardImage(img, placeholder);
-
     el.addEventListener('click', () => toggleCard(el, c.id));
     grid.appendChild(el);
   });
