@@ -164,16 +164,17 @@
 
   .form-input {
     width: 100%;
-    padding: 11px 13px;
+    padding: 13px 14px;
     border: 1.5px solid var(--border-color);
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 16px; /* iOS 자동 줌 방지: 16px 미만이면 포커스 시 줌 발생 */
     font-family: 'Noto Sans KR', sans-serif;
     color: var(--text-primary);
     background: var(--input-bg);
     transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
     -webkit-appearance: none;
     appearance: none;
+    min-height: 48px; /* 터치 타겟 최소 48px */
   }
   .form-input:focus {
     outline: none;
@@ -214,11 +215,22 @@
   }
   .error-message.show { display: block; }
 
-  /* 2열 그리드 */
+  /* 2열 그리드 — 모바일에서는 1열 */
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+  }
+  @media (max-width: 400px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* 모바일 여백 축소 */
+  @media (max-width: 480px) {
+    body { padding-bottom: 90px; } /* 하단 고정 버튼 공간 */
+    .form-container { padding: 12px 12px 0; }
+    .form-section { padding: 16px 14px; margin-bottom: 10px; }
+    .form-group { margin-bottom: 16px; } /* 터치 간격 확보 */
   }
 
   /* 거주지 조건부 필드 */
@@ -277,7 +289,7 @@
   /* 제출 버튼 */
   .submit-btn {
     width: 100%;
-    padding: 16px;
+    padding: 17px 16px;
     background: var(--primary-color);
     color: #fff;
     border: none;
@@ -289,6 +301,7 @@
     transition: all 0.2s;
     letter-spacing: -0.01em;
     box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+    min-height: 54px; /* 터치 타겟 */
   }
   .submit-btn:hover:not(:disabled) {
     background: var(--primary-dark);
@@ -301,6 +314,23 @@
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
+  }
+
+  /* 모바일 하단 고정 버튼 래퍼 */
+  .submit-wrap {
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to top, var(--background) 80%, transparent);
+    padding: 12px 16px 20px;
+    margin: 0 -16px;
+  }
+  @media (min-width: 481px) {
+    .submit-wrap {
+      position: static;
+      background: none;
+      padding: 4px 0 0;
+      margin: 0;
+    }
   }
 
   /* 로딩 오버레이 */
@@ -520,6 +550,126 @@
     font-family: 'Noto Sans KR', sans-serif;
   }
 
+  /* 재방문 환영 모달 */
+  .welcome-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.55);
+    z-index: 1100;
+    align-items: flex-end; /* 모바일: 하단 슬라이드업 */
+    justify-content: center;
+  }
+  .welcome-modal-overlay.show { display: flex; }
+  .welcome-modal-card {
+    background: #fff;
+    border-radius: 22px 22px 0 0;
+    padding: 28px 24px 36px;
+    width: 100%;
+    max-width: 540px;
+    animation: slideUp 0.32s cubic-bezier(0.32,0.72,0,1);
+    position: relative;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  /* 데스크탑: 가운데 팝업 */
+  @media (min-width: 540px) {
+    .welcome-modal-overlay { align-items: center; }
+    .welcome-modal-card {
+      border-radius: 22px;
+      max-width: 380px;
+      animation: pop 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    }
+  }
+  .welcome-handle {
+    width: 36px; height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+  @media (min-width: 540px) { .welcome-handle { display: none; } }
+  .welcome-avatar {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 30px;
+  }
+  .welcome-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .welcome-name-highlight {
+    color: var(--primary-color);
+  }
+  .welcome-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .welcome-info-box {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .welcome-info-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .welcome-info-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+    min-width: 52px;
+    flex-shrink: 0;
+  }
+  .welcome-info-value {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .welcome-btn-primary {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-bottom: 8px;
+    min-height: 52px;
+  }
+  .welcome-btn-primary:hover { background: var(--primary-dark); }
+  .welcome-btn-secondary {
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+  }
+
   /* 스크롤 진행 표시 */
   .progress-bar {
     position: fixed;
@@ -710,8 +860,10 @@
     <div class="error-message" id="privacyConsentError">개인정보 수집에 동의해주세요</div>
   </div>
 
-  <!-- 제출 버튼 -->
-  <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">방문자 등록하기</button>
+  <!-- 제출 버튼 (모바일 하단 고정) -->
+  <div class="submit-wrap">
+    <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">방문자 등록하기</button>
+  </div>
 
 </div><!-- /form-container -->
 
@@ -751,6 +903,19 @@
       <button class="btn-save-purpose" onclick="savePurposes()">저장</button>
       <button class="btn-cancel-admin" onclick="closeAdminModal()">취소</button>
     </div>
+  </div>
+</div>
+
+<!-- 재방문 환영 모달 -->
+<div class="welcome-modal-overlay" id="welcomeModal">
+  <div class="welcome-modal-card">
+    <div class="welcome-handle"></div>
+    <div class="welcome-avatar">👋</div>
+    <div class="welcome-title">다시 오셨네요,<br><span class="welcome-name-highlight" id="welcomeName"></span>님!</div>
+    <div class="welcome-sub">지난번 등록 정보가 저장되어 있어요.<br>아래 내용을 확인해 주세요.</div>
+    <div class="welcome-info-box" id="welcomeInfoBox"></div>
+    <button class="welcome-btn-primary" onclick="closeWelcomeModal(true)">이 정보로 등록할게요</button>
+    <button class="welcome-btn-secondary" onclick="closeWelcomeModal(false)">정보를 수정할게요</button>
   </div>
 </div>
 
@@ -918,7 +1083,45 @@ function checkAndLoadSavedInfo() {
     document.getElementById('returningName').textContent = info.name || '';
     document.getElementById('returningBanner').classList.add('show');
     enableReturningVisitorMode();
+
+    // 환영 모달 표시
+    showWelcomeModal(info);
   } catch(e) { localStorage.removeItem('visitorInfo'); }
+}
+
+function showWelcomeModal(info) {
+  document.getElementById('welcomeName').textContent = info.name || '';
+
+  // 저장 정보 요약 렌더
+  const residenceText = info.residenceType === '청도군'
+    ? '청도군 ' + (info.residenceEup || '')
+    : info.residenceType === '직접입력'
+      ? (info.residenceSigun || '') + (info.residenceDong ? ' ' + info.residenceDong : '')
+      : '-';
+
+  const rows = [
+    { label: '연락처',  value: info.phone     || '-' },
+    { label: '성별',    value: info.gender    || '-' },
+    { label: '출생년도', value: info.birthYear ? info.birthYear + '년' : '-' },
+    { label: '거주지',  value: residenceText  || '-' }
+  ];
+
+  document.getElementById('welcomeInfoBox').innerHTML = rows.map(r =>
+    `<div class="welcome-info-row">
+      <span class="welcome-info-label">${r.label}</span>
+      <span class="welcome-info-value">${r.value}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('welcomeModal').classList.add('show');
+}
+
+function closeWelcomeModal(keepInfo) {
+  document.getElementById('welcomeModal').classList.remove('show');
+  if (!keepInfo) {
+    // 정보 수정 선택 → 필드 잠금 해제
+    enableEditMode();
+  }
 }
 
 function enableReturningVisitorMode() {
