@@ -199,13 +199,6 @@ body {
 }
 @media (max-width: 768px) { .chart-grid-2 { grid-template-columns: 1fr; } }
 
-.chart-grid-half {
-  display: grid;
-  grid-template-columns: 1fr;
-  max-width: 540px;
-  margin-bottom: 14px;
-}
-
 .chart-card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -223,7 +216,7 @@ body {
 .chart-wrap { position: relative; }
 .chart-wrap canvas { max-width: 100%; }
 
-/* ── 로딩 스피너 ── */
+/* ── 로딩 스피너 (테이블 내부용) ── */
 .spinner-wrap {
   display: flex;
   align-items: center;
@@ -236,6 +229,110 @@ body {
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
+}
+
+/* ── 전체화면 로딩 오버레이 ── */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(241, 245, 249, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 1;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+#page-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loader-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.15), 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid rgba(37, 99, 235, 0.08);
+  min-width: 220px;
+}
+.loader-ring-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.loader-ring-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 4px solid #e2e8f0;
+}
+.loader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  border-top-color: #2563eb;
+  border-right-color: #3b82f6;
+  animation: loader-spin 0.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.loader-ring-inner {
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #93c5fd;
+  animation: loader-spin 0.7s cubic-bezier(0.4, 0, 0.2, 1) infinite reverse;
+}
+.loader-dot {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px; height: 10px;
+  background: #2563eb;
+  border-radius: 50%;
+  animation: loader-pulse 1.4s ease-in-out infinite;
+}
+@keyframes loader-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes loader-pulse {
+  0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 0.4; transform: translate(-50%, -50%) scale(0.7); }
+}
+.loader-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.loader-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+.loader-sub {
+  font-size: 12px;
+  color: #94a3b8;
+  letter-spacing: 0.01em;
+}
+.loader-dots span {
+  display: inline-block;
+  animation: loader-dot-bounce 1.2s ease-in-out infinite;
+  color: #94a3b8;
+}
+.loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes loader-dot-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40%           { transform: translateY(-4px); opacity: 1; }
 }
 
 /* ── 에러 박스 ── */
@@ -253,10 +350,114 @@ body {
 
 /* ── 방문자 목록 탭 ── */
 .list-toolbar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 날짜 필터 행 */
+.date-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.date-filter-row .filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+/* 날짜 필터 버튼 */
+.btn-date-filter {
+  padding: 7px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-date-filter:hover {
+  border-color: var(--primary-light);
+  color: var(--primary);
+  background: var(--primary-bg);
+}
+.btn-date-filter.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* 날짜 선택 인풋 */
+.date-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.date-input-wrap .input-label {
+  font-size: 12px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.date-input {
+  padding: 7px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-1);
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.date-input:focus { outline: none; border-color: var(--primary-light); }
+.date-input.active { border-color: var(--primary); background: var(--primary-bg); }
+
+/* 필터 구분선 */
+.filter-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* 필터 뱃지 (현재 적용된 필터 표시) */
+.filter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  background: #dbeafe;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e40af;
+}
+.filter-badge-clear {
+  cursor: pointer;
+  opacity: 0.7;
+  font-size: 14px;
+  line-height: 1;
+  transition: opacity 0.1s;
+}
+.filter-badge-clear:hover { opacity: 1; }
+
+/* 검색+도구 행 */
+.search-tool-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 14px;
   flex-wrap: wrap;
 }
 .search-input {
@@ -285,6 +486,17 @@ body {
   white-space: nowrap;
 }
 .btn-csv:hover { background: #059669; }
+
+/* 결과 카운트 */
+.result-count {
+  font-size: 12px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.result-count strong {
+  color: var(--primary);
+  font-weight: 700;
+}
 
 .table-wrap {
   background: var(--card);
@@ -321,6 +533,16 @@ td {
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #f8fafc; }
 
+/* 오늘 방문자 행 하이라이트 */
+tr.today-row td { background: #fffbeb; }
+tr.today-row:hover td { background: #fef3c7; }
+
+/* 중복 의심 행 */
+tr.dup-row td { background: #fff7ed; }
+tr.dup-row:hover td { background: #ffedd5; }
+tr.dup-row td { color: #9a3412; }
+tr.dup-row td strong { color: #9a3412; }
+
 .badge {
   display: inline-block;
   padding: 2px 8px;
@@ -333,6 +555,12 @@ tr:hover td { background: #f8fafc; }
 .badge-amber  { background: #fef3c7; color: #92400e; }
 .badge-purple { background: #ede9fe; color: #5b21b6; }
 .badge-gray   { background: #f1f5f9; color: #475569; }
+
+/* 오늘 날짜 뱃지 */
+.badge-today { background: #fef3c7; color: #92400e; font-size: 10px; padding: 1px 6px; margin-left: 4px; }
+
+/* 중복 의심 뱃지 */
+.badge-dup { background: #fed7aa; color: #9a3412; font-size: 10px; padding: 1px 6px; margin-left: 4px; cursor: help; }
 
 /* 페이지네이션 */
 .pagination {
@@ -426,11 +654,30 @@ tr:hover td { background: #f8fafc; }
   padding: 60px 20px;
   color: var(--text-3);
 }
-.empty-state svg { margin-bottom: 12px; opacity: 0.4; }
 .empty-state p { font-size: 14px; }
 </style>
 </head>
 <body>
+
+<!-- 전체화면 초기 로딩 오버레이 -->
+<div id="page-loader">
+  <div class="loader-card">
+    <div class="loader-ring-wrap">
+      <div class="loader-ring-bg"></div>
+      <div class="loader-ring"></div>
+      <div class="loader-ring-inner"></div>
+      <div class="loader-dot"></div>
+    </div>
+    <div class="loader-text">
+      <span class="loader-title">데이터 불러오는 중</span>
+      <span class="loader-sub">
+        잠시만 기다려주세요<span class="loader-dots">
+          <span>.</span><span>.</span><span>.</span>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
 
 <!-- 헤더 -->
 <header class="site-header">
@@ -463,8 +710,6 @@ tr:hover td { background: #f8fafc; }
 ════════════════════════════════════════ -->
 <section class="tab-content active" id="tab-overview">
   <div class="error-box" id="overviewError"></div>
-
-  <!-- KPI -->
   <div class="kpi-grid">
     <div class="kpi-card blue">
       <div class="kpi-label">총 방문자</div>
@@ -487,8 +732,6 @@ tr:hover td { background: #f8fafc; }
       <div class="kpi-sub">전체 기간 기준</div>
     </div>
   </div>
-
-  <!-- 차트 2열 -->
   <div class="chart-grid-2">
     <div class="chart-card">
       <div class="chart-title">월별 방문자 추이</div>
@@ -522,7 +765,6 @@ tr:hover td { background: #f8fafc; }
     </select>
   </div>
   <div class="error-box" id="monthlyError"></div>
-
   <div class="kpi-grid">
     <div class="kpi-card blue">
       <div class="kpi-label">선택 월 방문자</div>
@@ -545,7 +787,6 @@ tr:hover td { background: #f8fafc; }
       <div class="kpi-sub">전체 기간 기준</div>
     </div>
   </div>
-
   <div class="chart-card" style="margin-bottom:14px">
     <div class="chart-title">일별 방문자 추이</div>
     <div class="chart-wrap" style="height:220px"><canvas id="chart-daily"></canvas></div>
@@ -579,7 +820,6 @@ tr:hover td { background: #f8fafc; }
     </select>
   </div>
   <div class="error-box" id="purposeError"></div>
-
   <div class="kpi-grid">
     <div class="kpi-card blue">
       <div class="kpi-label">해당 목적 총 방문</div>
@@ -602,7 +842,6 @@ tr:hover td { background: #f8fafc; }
       <div class="kpi-sub">월 평균</div>
     </div>
   </div>
-
   <div class="chart-card" style="margin-bottom:14px">
     <div class="chart-title">월별 방문 추이</div>
     <div class="chart-wrap" style="height:220px"><canvas id="chart-purpose-monthly"></canvas></div>
@@ -627,12 +866,62 @@ tr:hover td { background: #f8fafc; }
      탭 4: 방문자 목록
 ════════════════════════════════════════ -->
 <section class="tab-content" id="tab-list">
+
+  <!-- 통합 필터 툴바 -->
   <div class="list-toolbar">
-    <input type="text" class="search-input" id="searchInput"
-           placeholder="이름, 연락처, 거주지 검색..."
-           oninput="debounceSearch()">
-    <button class="btn-csv" onclick="downloadCSV()">CSV 다운로드</button>
+
+    <!-- 날짜 필터 행 -->
+    <div class="date-filter-row">
+      <span class="filter-label">날짜 필터:</span>
+
+      <!-- 전체 버튼 -->
+      <button class="btn-date-filter active" id="btn-filter-all"
+              onclick="setDateFilter('all')">전체</button>
+
+      <!-- 오늘 버튼 -->
+      <button class="btn-date-filter" id="btn-filter-today"
+              onclick="setDateFilter('today')">오늘</button>
+
+      <div class="filter-divider"></div>
+
+      <!-- 월별 select -->
+      <span class="input-label" style="font-size:12px;color:var(--text-2)">월별:</span>
+      <select class="date-input" id="list-month-select" onchange="setDateFilter('month')">
+        <option value="">선택</option>
+      </select>
+
+      <div class="filter-divider"></div>
+
+      <!-- 날짜 직접 지정 -->
+      <span class="input-label" style="font-size:12px;color:var(--text-2)">날짜 지정:</span>
+      <input type="date" class="date-input" id="list-date-input"
+             onchange="setDateFilter('date')">
+
+      <!-- 현재 필터 뱃지 -->
+      <div id="active-filter-badge" style="display:none">
+        <span class="filter-badge">
+          <span id="active-filter-text"></span>
+          <span class="filter-badge-clear" onclick="setDateFilter('all')" title="필터 해제">×</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- 검색 + 도구 행 -->
+    <div class="search-tool-row">
+      <input type="text" class="search-input" id="searchInput"
+             placeholder="이름, 연락처, 거주지 검색..."
+             oninput="debounceSearch()">
+      <span class="result-count" id="resultCount"></span>
+      <button class="btn-date-filter" id="btn-dup-toggle"
+              onclick="toggleDupFilter()"
+              title="같은 날 동일 고유코드 중복 입력을 주황색으로 표시합니다">
+        중복 표시
+      </button>
+      <span class="result-count" id="dupCount" style="color:#ea580c"></span>
+      <button class="btn-csv" onclick="downloadCSV()">CSV 다운로드</button>
+    </div>
   </div>
+
   <div class="error-box" id="listError"></div>
   <div class="table-wrap">
     <table>
@@ -687,7 +976,7 @@ tr:hover td { background: #f8fafc; }
 /* ═══════════════════════════════════════════
    설정
 ═══════════════════════════════════════════ */
-const APPS_SCRIPT_URL_B = 'https://script.google.com/macros/s/AKfycbzELZhkYGll3PE_3Shhu4p1a3zLF00PNYUu7Qy8XuTE8MVuPbgvSVwX1jdUeV2X5n-d/exec';
+const APPS_SCRIPT_URL_B = 'https://script.google.com/macros/s/AKfycbxGoRNRYv9_xknRn8X9EB_gmb8SjRZwKIHv_EXJiq2K5MrJIBJWUd4WIwvo9_Y0Sgtq/exec';
 
 /* ═══════════════════════════════════════════
    Chart.js 전역 기본값
@@ -721,14 +1010,24 @@ const MULTI_COLORS      = ['#2563eb','#10b981','#f59e0b','#ef4444','#8b5cf6','#6
 /* ═══════════════════════════════════════════
    상태
 ═══════════════════════════════════════════ */
-let charts          = {};       // 차트 인스턴스 캐시
-let overviewData    = null;     // 전체 통계 캐시
-let globalTotal     = 0;        // 목적별 탭 비율 계산용
+let charts          = {};
+let overviewData    = null;
+let globalTotal     = 0;
 let listPage        = 1;
 let listTotalPages  = 1;
-let listVisitors    = [];
-let searchTimer     = null;
+let listVisitors    = [];       // 현재 페이지에 표시되는 방문자 (페이지네이션 후)
+let allVisitors     = [];       // 서버에서 로드된 전체 방문자 (날짜 필터 클라이언트 처리용)
+let filteredVisitors = [];      // 날짜+검색 필터 적용 후 결과
+let debounceSearchTimer = null;
 let currentTab      = 'overview';
+
+/* ── 날짜 필터 상태 ── */
+let dateFilterMode  = 'all';    // 'all' | 'today' | 'month' | 'date'
+let dateFilterValue = '';       // month: '3', date: '2026-03-26'
+
+/* ── 중복 표시 상태 ── */
+let dupFilterOn     = false;    // 중복 행 주황색 표시 on/off
+let dupKeySet       = new Set();// 중복으로 판정된 행의 visitorCode+날짜 키 Set
 
 /* ═══════════════════════════════════════════
    공통 유틸
@@ -745,6 +1044,11 @@ async function callScript(action, extra = {}) {
 function setLastUpdate() {
   document.getElementById('lastUpdate').textContent =
     '업데이트: ' + new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit' });
+}
+
+function hidePageLoader() {
+  const el = document.getElementById('page-loader');
+  if (el) el.classList.add('hidden');
 }
 
 function showError(id, msg) {
@@ -812,6 +1116,7 @@ function refreshCurrentTab() {
   btn.classList.add('spinning');
   setTimeout(() => btn.classList.remove('spinning'), 700);
   overviewData = null;
+  allVisitors  = [];
   if (currentTab === 'overview') loadOverview();
   else if (currentTab === 'monthly') loadMonthly();
   else if (currentTab === 'purpose') loadPurpose();
@@ -831,11 +1136,13 @@ async function loadOverview() {
     setLastUpdate();
   } catch(e) {
     showError('overviewError', '데이터 로드 실패: ' + e.message);
+  } finally {
+    hidePageLoader();
   }
 }
 
 function renderOverview(s) {
-  const now       = new Date();
+  const now          = new Date();
   const curMonthLabel = (now.getMonth() + 1) + '월';
 
   document.getElementById('kpi-total').textContent  = s.total.toLocaleString();
@@ -844,22 +1151,14 @@ function renderOverview(s) {
   document.getElementById('kpi-today').textContent  = s.todayNew.toLocaleString();
   document.getElementById('kpi-return').textContent = s.returnRate + '%';
 
-  // 월별 추이 (line)
   const mLabels = sortedMonthLabels(s.byMonth);
-  const mData   = mLabels.map(k => s.byMonth[k]);
-  buildLineChart('chart-monthly', mLabels, mData, '방문자 수', '#2563eb');
-
-  // 방문목적 (doughnut)
+  buildLineChart('chart-monthly', mLabels, mLabels.map(k => s.byMonth[k]), '방문자 수', '#2563eb');
   buildDoughnutChart('chart-purpose', s.byPurpose, PURPOSE_COLORS);
-
-  // 성별 (pie)
   buildPieChart('chart-gender', s.byGender, GENDER_COLORS);
 
-  // 연령대 (bar)
   const ageOrder  = ['10대','20대','30대','40대','50대','60대 이상','미상'];
   const ageLabels = ageOrder.filter(k => s.byAge[k] !== undefined);
-  const ageData   = ageLabels.map(k => s.byAge[k] || 0);
-  buildBarChart('chart-age', ageLabels, ageData, '방문자 수', AGE_COLORS);
+  buildBarChart('chart-age', ageLabels, ageLabels.map(k => s.byAge[k] || 0), '방문자 수', AGE_COLORS);
 }
 
 /* ═══════════════════════════════════════════
@@ -872,38 +1171,28 @@ async function loadMonthly() {
     const result = await callScript('getStatistics', { month, purpose: '전체' });
     const s = result.statistics;
 
-    // KPI
-    document.getElementById('kpi-month-total').textContent = s.total.toLocaleString();
+    document.getElementById('kpi-month-total').textContent    = s.total.toLocaleString();
     document.getElementById('kpi-monthly-return').textContent = s.returnRate + '%';
 
-    // 평균 일일
     const daysInMonth = month === '전체'
       ? new Date().getDate()
       : new Date(new Date().getFullYear(), parseInt(month), 0).getDate();
-    const avg = s.total > 0 ? (s.total / daysInMonth).toFixed(1) : '0.0';
-    document.getElementById('kpi-avg-daily').textContent = avg;
+    document.getElementById('kpi-avg-daily').textContent =
+      s.total > 0 ? (s.total / daysInMonth).toFixed(1) : '0.0';
 
-    // 주중 비율
     const weekdays   = ['월','화','수','목','금'];
     const weekdaySum = weekdays.reduce((acc, d) => acc + (s.byDow[d] || 0), 0);
     const dowTotal   = Object.values(s.byDow).reduce((a, b) => a + b, 0);
-    const wdRatio    = dowTotal > 0 ? ((weekdaySum / dowTotal) * 100).toFixed(1) : '0.0';
-    document.getElementById('kpi-weekday-ratio').textContent = wdRatio + '%';
+    document.getElementById('kpi-weekday-ratio').textContent =
+      dowTotal > 0 ? ((weekdaySum / dowTotal) * 100).toFixed(1) + '%' : '0.0%';
 
-    // 일별 추이 (line)
-    const dayLabels = Object.keys(s.byDay).sort((a, b) =>
-      parseInt(a) - parseInt(b));
-    const dayData = dayLabels.map(k => s.byDay[k]);
-    buildLineChart('chart-daily', dayLabels, dayData, '방문자 수', '#10b981');
-
-    // 목적 (doughnut)
+    const dayLabels = Object.keys(s.byDay).sort((a, b) => parseInt(a) - parseInt(b));
+    buildLineChart('chart-daily', dayLabels, dayLabels.map(k => s.byDay[k]), '방문자 수', '#10b981');
     buildDoughnutChart('chart-month-purpose', s.byPurpose, PURPOSE_COLORS);
 
-    // 요일 (bar)
     const dowLabels = DOW_ORDER.filter(d => s.byDow[d] !== undefined);
-    const dowData   = dowLabels.map(d => s.byDow[d] || 0);
-    buildBarChart('chart-dow', dowLabels, dowData, '방문자 수',
-      dowLabels.map((_, i) => DOW_COLORS[DOW_ORDER.indexOf(dowLabels[i])]) );
+    buildBarChart('chart-dow', dowLabels, dowLabels.map(d => s.byDow[d] || 0), '방문자 수',
+      dowLabels.map((_, i) => DOW_COLORS[DOW_ORDER.indexOf(dowLabels[i])]));
 
     setLastUpdate();
   } catch(e) {
@@ -918,7 +1207,6 @@ async function loadPurpose() {
   hideError('purposeError');
   const purpose = document.getElementById('purposeFilter').value || '전체';
 
-  // globalTotal 없으면 먼저 로드
   if (!globalTotal) {
     try {
       const r = await callScript('getStatistics', { month: '전체', purpose: '전체' });
@@ -932,33 +1220,22 @@ async function loadPurpose() {
 
     document.getElementById('kpi-purpose-total').textContent  = s.total.toLocaleString();
     document.getElementById('kpi-purpose-return').textContent = s.returnRate + '%';
-
-    const ratio = globalTotal > 0
-      ? ((s.total / globalTotal) * 100).toFixed(1) : '0.0';
-    document.getElementById('kpi-purpose-ratio').textContent = ratio + '%';
+    document.getElementById('kpi-purpose-ratio').textContent  =
+      globalTotal > 0 ? ((s.total / globalTotal) * 100).toFixed(1) + '%' : '0.0%';
 
     const monthCount = Object.keys(s.byMonth).length || 1;
-    document.getElementById('kpi-purpose-avg').textContent =
-      (s.total / monthCount).toFixed(1);
+    document.getElementById('kpi-purpose-avg').textContent = (s.total / monthCount).toFixed(1);
 
-    // 월별 추이 (line)
     const mLabels = sortedMonthLabels(s.byMonth);
-    buildLineChart('chart-purpose-monthly', mLabels,
-      mLabels.map(k => s.byMonth[k]), '방문자 수', '#8b5cf6');
-
-    // 성별 (pie)
+    buildLineChart('chart-purpose-monthly', mLabels, mLabels.map(k => s.byMonth[k]), '방문자 수', '#8b5cf6');
     buildPieChart('chart-purpose-gender', s.byGender, GENDER_COLORS);
 
-    // 연령대 (bar)
     const ageOrder  = ['10대','20대','30대','40대','50대','60대 이상','미상'];
     const ageLabels = ageOrder.filter(k => s.byAge[k] !== undefined);
-    buildBarChart('chart-purpose-age', ageLabels,
-      ageLabels.map(k => s.byAge[k] || 0), '방문자 수', AGE_COLORS);
+    buildBarChart('chart-purpose-age', ageLabels, ageLabels.map(k => s.byAge[k] || 0), '방문자 수', AGE_COLORS);
 
-    // 거주지 상위 5 (horizontal bar)
     const rLabels = Object.keys(s.topResidence);
-    const rData   = rLabels.map(k => s.topResidence[k]);
-    buildHBarChart('chart-purpose-residence', rLabels, rData, '#10b981');
+    buildHBarChart('chart-purpose-residence', rLabels, rLabels.map(k => s.topResidence[k]), '#10b981');
 
     setLastUpdate();
   } catch(e) {
@@ -969,6 +1246,370 @@ async function loadPurpose() {
 /* ═══════════════════════════════════════════
    탭 4: 방문자 목록
 ═══════════════════════════════════════════ */
+
+/* ── 날짜 필터 제어 ── */
+function setDateFilter(mode, value) {
+  // 월 select / date input 직접 트리거 시 값 추출
+  if (mode === 'month') {
+    value = document.getElementById('list-month-select').value;
+    if (!value) { setDateFilter('all'); return; }
+  }
+  if (mode === 'date') {
+    value = document.getElementById('list-date-input').value;
+    if (!value) { setDateFilter('all'); return; }
+  }
+
+  dateFilterMode  = mode;
+  dateFilterValue = value || '';
+
+  // 버튼 active 상태
+  ['all','today'].forEach(m => {
+    document.getElementById('btn-filter-' + m)
+      .classList.toggle('active', m === mode);
+  });
+
+  // 월 select, date input active 표시
+  document.getElementById('list-month-select')
+    .classList.toggle('active', mode === 'month');
+  document.getElementById('list-date-input')
+    .classList.toggle('active', mode === 'date');
+
+  // 필터 초기화 시 인풋 리셋
+  if (mode === 'all') {
+    document.getElementById('list-month-select').value = '';
+    document.getElementById('list-date-input').value   = '';
+  }
+
+  // 뱃지 표시
+  updateFilterBadge();
+
+  // 이미 로드된 데이터가 있으면 클라이언트 필터만, 없으면 서버 재로드
+  if (allVisitors.length > 0) {
+    listPage = 1;
+    applyFiltersAndRender();
+  } else {
+    listPage = 1;
+    loadVisitorList();
+  }
+}
+
+function updateFilterBadge() {
+  const badgeEl = document.getElementById('active-filter-badge');
+  const textEl  = document.getElementById('active-filter-text');
+
+  if (dateFilterMode === 'all') {
+    badgeEl.style.display = 'none';
+    return;
+  }
+
+  let label = '';
+  if (dateFilterMode === 'today') {
+    const n = new Date();
+    label = '오늘 (' + (n.getMonth()+1) + '/' + n.getDate() + ')';
+  } else if (dateFilterMode === 'month') {
+    label = dateFilterValue + '월';
+  } else if (dateFilterMode === 'date') {
+    const parts = dateFilterValue.split('-');
+    label = parseInt(parts[1]) + '월 ' + parseInt(parts[2]) + '일';
+  }
+
+  textEl.textContent    = label;
+  badgeEl.style.display = 'inline-flex';
+}
+
+/* ── 중복 토글 ── */
+function toggleDupFilter() {
+  dupFilterOn = !dupFilterOn;
+  document.getElementById('btn-dup-toggle')
+    .classList.toggle('active', dupFilterOn);
+  // 이미 데이터가 있으면 재렌더만
+  if (allVisitors.length > 0) {
+    applyFiltersAndRender();
+  }
+}
+
+/* ── 중복 키 Set 계산 (allVisitors 전체 기준)
+   기준: 같은 날(월+일) + 같은 visitorCode
+   allVisitors는 최신순 정렬(서버 reverse)이므로
+   index가 클수록 먼저 등록된 항목 → 나중 항목(작은 index)이 중복
+   → 첫 등장(가장 큰 index)을 정상, 이후 등장을 중복으로 마킹
+── */
+function buildDupSet(visitors) {
+  const seen   = new Set();
+  const dupSet = new Set();
+  // 배열이 최신순이므로 역순(오래된 것부터) 스캔해서 첫 등장 보존
+  for (let i = visitors.length - 1; i >= 0; i--) {
+    const v   = visitors[i];
+    const code = String(v.visitorCode || '').trim();
+    if (!code) continue;
+    const key = code + '|' + String(v.visitMonth) + '|' + String(v.visitDay);
+    if (seen.has(key)) {
+      // 이미 본 키 → 현재 행(더 최신)이 중복
+      dupSet.add(i);
+    } else {
+      seen.add(key);
+    }
+  }
+  return dupSet;
+}
+
+/* ── 클라이언트 필터링 ── */
+function applyFiltersAndRender() {
+  const now        = new Date();
+  const todayMonth = String(now.getMonth() + 1);
+  const todayDay   = String(now.getDate());
+  const search     = document.getElementById('searchInput').value.trim().toLowerCase();
+
+  // 1단계: 날짜 필터
+  let result = allVisitors;
+
+  if (dateFilterMode === 'today') {
+    result = result.filter(v =>
+      String(v.visitMonth) === todayMonth &&
+      String(v.visitDay)   === todayDay
+    );
+  } else if (dateFilterMode === 'month') {
+    result = result.filter(v =>
+      String(v.visitMonth) === dateFilterValue
+    );
+  } else if (dateFilterMode === 'date' && dateFilterValue) {
+    const parts       = dateFilterValue.split('-');
+    const filterMonth = String(parseInt(parts[1]));
+    const filterDay   = String(parseInt(parts[2]));
+    result = result.filter(v =>
+      String(v.visitMonth) === filterMonth &&
+      String(v.visitDay)   === filterDay
+    );
+  }
+
+  // 2단계: 텍스트 검색
+  if (search) {
+    result = result.filter(v =>
+      (v.name      || '').toLowerCase().includes(search) ||
+      (v.phone     || '').includes(search) ||
+      (v.residence || '').includes(search)
+    );
+  }
+
+  filteredVisitors = result;
+
+  // 3단계: allVisitors 전체 기준 중복 Set 계산 (필터와 무관하게 전체 기준)
+  const dupSet = dupFilterOn ? buildDupSet(allVisitors) : new Set();
+
+  // filteredVisitors 내 인덱스 → allVisitors 기준 중복 여부 매핑
+  // filteredVisitors 각 항목이 allVisitors의 몇 번 인덱스인지 추적
+  const allIndexMap = new Map();
+  allVisitors.forEach((v, i) => allIndexMap.set(v, i));
+
+  // 페이지네이션 (클라이언트)
+  const pageSize   = 20;
+  const total      = filteredVisitors.length;
+  listTotalPages   = Math.max(1, Math.ceil(total / pageSize));
+  listPage         = Math.min(listPage, listTotalPages);
+
+  const start      = (listPage - 1) * pageSize;
+  const pageSlice  = filteredVisitors.slice(start, start + pageSize);
+
+  // pageSlice 각 항목의 중복 여부
+  const pageSliceDup = pageSlice.map(v => dupSet.has(allIndexMap.get(v)));
+
+  renderVisitorTable(pageSlice, total, pageSliceDup, dupSet.size);
+}
+
+/* ── 서버에서 전체 로드 ── */
+async function loadVisitorList() {
+  const pw = sessionStorage.getItem('listPassword');
+  hideError('listError');
+
+  const tbody = document.getElementById('listTableBody');
+  tbody.innerHTML = '<tr><td colspan="9"><div class="spinner-wrap"><div class="spinner"></div></div></td></tr>';
+  document.getElementById('pagination').style.display = 'none';
+  document.getElementById('resultCount').textContent  = '';
+
+  try {
+    // 날짜 필터가 있을 때는 전체 로드 (pageSize=1000), 없을 때는 서버 페이지네이션
+    const needAll  = (dateFilterMode !== 'all');
+    const pageSize = needAll ? '1000' : '20';
+    const search   = !needAll ? document.getElementById('searchInput').value.trim() : '';
+
+    const result = await callScript('getVisitorList', {
+      password: pw,
+      page:     '1',
+      pageSize,
+      search
+    });
+
+    allVisitors = result.data.visitors || [];
+
+    if (needAll) {
+      // 클라이언트 필터링
+      applyFiltersAndRender();
+    } else {
+      // 기존 서버 페이지네이션
+      filteredVisitors = allVisitors;
+      listTotalPages   = result.data.totalPages || 1;
+      listPage         = result.data.page       || 1;
+      // 서버 페이지네이션 모드에서도 중복 표시 적용
+      const dupSet    = dupFilterOn ? buildDupSet(allVisitors) : new Set();
+      const allIdxMap = new Map(allVisitors.map((v, i) => [v, i]));
+      const pageDup   = allVisitors.map(v => dupSet.has(allIdxMap.get(v)));
+      renderVisitorTable(allVisitors, result.data.total, pageDup, dupSet.size);
+    }
+
+    setLastUpdate();
+  } catch(e) {
+    if (e.message === 'UNAUTHORIZED') {
+      sessionStorage.removeItem('listAuth');
+      sessionStorage.removeItem('listPassword');
+      openAuthModal();
+    } else {
+      showError('listError', '목록 로드 실패: ' + e.message);
+      tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><p>데이터를 불러오지 못했습니다.</p></div></td></tr>';
+    }
+  }
+}
+
+/* ── 페이지 변경 (클라이언트 필터 모드) ── */
+function changePage(dir) {
+  listPage = Math.max(1, Math.min(listTotalPages, listPage + dir));
+
+  if (dateFilterMode !== 'all' || document.getElementById('searchInput').value.trim()) {
+    // 클라이언트 필터 모드
+    const pageSize  = 20;
+    const start     = (listPage - 1) * pageSize;
+    const pageSlice = filteredVisitors.slice(start, start + pageSize);
+    const dupSet    = dupFilterOn ? buildDupSet(allVisitors) : new Set();
+    const allIdxMap = new Map(allVisitors.map((v, i) => [v, i]));
+    const pageDup   = pageSlice.map(v => dupSet.has(allIdxMap.get(v)));
+    renderVisitorTable(pageSlice, filteredVisitors.length, pageDup, dupSet.size);
+  } else {
+    loadVisitorList();
+  }
+}
+
+/* ── 테이블 렌더링 ── */
+function renderVisitorTable(visitors, total, dupFlags, dupTotal) {
+  listVisitors = visitors;
+
+  const tbody = document.getElementById('listTableBody');
+  const pg    = document.getElementById('pagination');
+
+  // 결과 카운트
+  document.getElementById('resultCount').innerHTML =
+    total > 0
+      ? '총 <strong>' + total.toLocaleString() + '</strong>건'
+      : '';
+
+  // 중복 카운트 표시
+  const dupCountEl = document.getElementById('dupCount');
+  if (dupFilterOn && dupTotal > 0) {
+    dupCountEl.innerHTML = '중복 <strong>' + dupTotal + '</strong>건';
+  } else {
+    dupCountEl.textContent = '';
+  }
+
+  if (!visitors.length) {
+    tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><p>검색 결과가 없습니다.</p></div></td></tr>';
+    pg.style.display = 'none';
+    return;
+  }
+
+  const now        = new Date();
+  const todayMonth = String(now.getMonth() + 1);
+  const todayDay   = String(now.getDate());
+  const flags      = dupFlags || [];
+
+  tbody.innerHTML = visitors.map((v, i) => {
+    const visitDate  = v.visitMonth && v.visitDay
+      ? v.visitMonth + '월 ' + v.visitDay + '일' : '-';
+    const residence  = [v.residence, v.residenceDetail].filter(Boolean).join(' ');
+    const ageGroup   = getAgeGroup(v.birthYear);
+    const badgeClass = purposeBadgeClass(v.visitPurpose || '');
+
+    // 오늘 방문 여부
+    const isToday    = String(v.visitMonth) === todayMonth && String(v.visitDay) === todayDay;
+    const todayBadge = isToday ? '<span class="badge badge-today">오늘</span>' : '';
+
+    // 중복 여부 (중복 표시 on일 때만)
+    const isDup      = dupFilterOn && flags[i];
+    const dupBadge   = isDup
+      ? '<span class="badge badge-dup" title="같은 날 동일 고유코드 중복 입력">중복</span>'
+      : '';
+
+    // 행 클래스 결정 (중복 우선, 오늘 그 다음)
+    let rowClass = '';
+    if (isDup)       rowClass = 'class="dup-row"';
+    else if (isToday) rowClass = 'class="today-row"';
+
+    return `<tr ${rowClass}>
+      <td style="color:var(--text-2);font-size:12px">${v.registeredAt || '-'}</td>
+      <td>${visitDate}${todayBadge}</td>
+      <td>${v.visitTime || '-'}</td>
+      <td><span class="badge ${badgeClass}">${v.visitPurpose || '-'}</span></td>
+      <td><strong>${v.name || '-'}</strong>${dupBadge}</td>
+      <td>${v.gender || '-'}</td>
+      <td>${ageGroup}</td>
+      <td>${residence || '-'}</td>
+      <td style="color:var(--text-2)">${v.phone || '-'}</td>
+    </tr>`;
+  }).join('');
+
+  // 페이지네이션
+  document.getElementById('pageInfo').textContent  = listPage + ' / ' + listTotalPages;
+  document.getElementById('prevBtn').disabled      = listPage <= 1;
+  document.getElementById('nextBtn').disabled      = listPage >= listTotalPages;
+  pg.style.display = 'flex';
+}
+
+/* ── 검색 디바운스 ── */
+function debounceSearch() {
+  clearTimeout(debounceSearchTimer);
+  debounceSearchTimer = setTimeout(() => {
+    listPage = 1;
+    if (allVisitors.length > 0 && dateFilterMode !== 'all') {
+      // 이미 전체 로드됨 → 클라이언트 필터만
+      applyFiltersAndRender();
+    } else {
+      // 서버 검색
+      allVisitors = [];
+      loadVisitorList();
+    }
+  }, 300);
+}
+
+/* ── CSV 다운로드 (filteredVisitors 전체 기준) ── */
+function downloadCSV() {
+  const source = (dateFilterMode !== 'all' || filteredVisitors.length > 0)
+    ? filteredVisitors : listVisitors;
+  if (!source.length) { alert('다운로드할 데이터가 없습니다.'); return; }
+
+  const headers = ['등록일시','방문일','방문시간','방문목적','이름','성별','연령대','거주지','연락처'];
+  const rows = source.map(v => [
+    v.registeredAt || '',
+    (v.visitMonth || '') + '월 ' + (v.visitDay || '') + '일',
+    v.visitTime    || '',
+    v.visitPurpose || '',
+    v.name         || '',
+    v.gender       || '',
+    getAgeGroup(v.birthYear),
+    [v.residence, v.residenceDetail].filter(Boolean).join(' '),
+    v.phone        || ''
+  ]);
+  const csv = [headers, ...rows]
+    .map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(','))
+    .join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const date = new Date().toLocaleDateString('ko-KR').replace(/\.\s*/g, '-').replace(/-$/, '');
+  const suffix = dateFilterMode !== 'all' ? '_' + document.getElementById('active-filter-text').textContent : '';
+  a.href = url;
+  a.download = '방문자목록' + suffix + '_' + date + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ── 인증 모달 ── */
 function openAuthModal() {
   document.getElementById('listPassword').value = '';
   document.getElementById('authError').textContent = '';
@@ -976,12 +1617,6 @@ function openAuthModal() {
   document.getElementById('authModal').classList.add('show');
   setTimeout(() => document.getElementById('listPassword').focus(), 100);
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('listPassword').addEventListener('keydown', e => {
-    if (e.key === 'Enter') submitAuth();
-  });
-});
 
 async function submitAuth() {
   const pw = document.getElementById('listPassword').value;
@@ -1001,7 +1636,14 @@ async function submitAuth() {
     document.getElementById('authModal').classList.remove('show');
     btn.disabled = false;
     btn.textContent = '확인';
-    renderVisitorList(result.data);
+    allVisitors = result.data.visitors || [];
+    filteredVisitors = allVisitors;
+    listTotalPages   = result.data.totalPages || 1;
+    listPage         = 1;
+    const dupSet    = dupFilterOn ? buildDupSet(allVisitors) : new Set();
+    const allIdxMap = new Map(allVisitors.map((v, i) => [v, i]));
+    const pageDup   = allVisitors.map(v => dupSet.has(allIdxMap.get(v)));
+    renderVisitorTable(allVisitors, result.data.total, pageDup, dupSet.size);
     setLastUpdate();
   } catch(e) {
     btn.disabled = false;
@@ -1017,117 +1659,9 @@ async function submitAuth() {
   }
 }
 
-let debounceSearchTimer = null;
-function debounceSearch() {
-  clearTimeout(debounceSearchTimer);
-  debounceSearchTimer = setTimeout(() => { listPage = 1; loadVisitorList(); }, 300);
-}
-
-async function loadVisitorList() {
-  const pw     = sessionStorage.getItem('listPassword');
-  const search = document.getElementById('searchInput').value.trim();
-  hideError('listError');
-
-  const tbody = document.getElementById('listTableBody');
-  tbody.innerHTML = '<tr><td colspan="9"><div class="spinner-wrap"><div class="spinner"></div></div></td></tr>';
-
-  try {
-    const result = await callScript('getVisitorList', {
-      password: pw,
-      page:     String(listPage),
-      pageSize: '20',
-      search
-    });
-    renderVisitorList(result.data);
-    setLastUpdate();
-  } catch(e) {
-    if (e.message === 'UNAUTHORIZED') {
-      sessionStorage.removeItem('listAuth');
-      sessionStorage.removeItem('listPassword');
-      openAuthModal();
-    } else {
-      showError('listError', '목록 로드 실패: ' + e.message);
-      tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><p>데이터를 불러오지 못했습니다.</p></div></td></tr>';
-    }
-  }
-}
-
-function renderVisitorList(data) {
-  listVisitors   = data.visitors || [];
-  listTotalPages = data.totalPages || 1;
-  listPage       = data.page || 1;
-
-  const tbody = document.getElementById('listTableBody');
-  const pg    = document.getElementById('pagination');
-
-  if (!listVisitors.length) {
-    tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><p>검색 결과가 없습니다.</p></div></td></tr>';
-    pg.style.display = 'none';
-    return;
-  }
-
-  tbody.innerHTML = listVisitors.map(v => {
-    const visitDate  = v.visitMonth && v.visitDay
-      ? v.visitMonth + '월 ' + v.visitDay + '일' : '-';
-    const residence  = [v.residence, v.residenceDetail].filter(Boolean).join(' ');
-    const ageGroup   = getAgeGroup(v.birthYear);
-    const badgeClass = purposeBadgeClass(v.visitPurpose || '');
-    return `<tr>
-      <td style="color:var(--text-2);font-size:12px">${v.registeredAt || '-'}</td>
-      <td>${visitDate}</td>
-      <td>${v.visitTime || '-'}</td>
-      <td><span class="badge ${badgeClass}">${v.visitPurpose || '-'}</span></td>
-      <td><strong>${v.name || '-'}</strong></td>
-      <td>${v.gender || '-'}</td>
-      <td>${ageGroup}</td>
-      <td>${residence || '-'}</td>
-      <td style="color:var(--text-2)">${v.phone || '-'}</td>
-    </tr>`;
-  }).join('');
-
-  // 페이지네이션
-  document.getElementById('pageInfo').textContent = listPage + ' / ' + listTotalPages;
-  document.getElementById('prevBtn').disabled = listPage <= 1;
-  document.getElementById('nextBtn').disabled = listPage >= listTotalPages;
-  pg.style.display = 'flex';
-}
-
-function changePage(dir) {
-  listPage = Math.max(1, Math.min(listTotalPages, listPage + dir));
-  loadVisitorList();
-}
-
-function downloadCSV() {
-  if (!listVisitors.length) { alert('다운로드할 데이터가 없습니다.'); return; }
-  const headers = ['등록일시','방문일','방문시간','방문목적','이름','성별','연령대','거주지','연락처'];
-  const rows = listVisitors.map(v => [
-    v.registeredAt || '',
-    (v.visitMonth || '') + '월 ' + (v.visitDay || '') + '일',
-    v.visitTime    || '',
-    v.visitPurpose || '',
-    v.name         || '',
-    v.gender       || '',
-    getAgeGroup(v.birthYear),
-    [v.residence, v.residenceDetail].filter(Boolean).join(' '),
-    v.phone        || ''
-  ]);
-  const csv = [headers, ...rows]
-    .map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(','))
-    .join('\n');
-  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  const date = new Date().toLocaleDateString('ko-KR').replace(/\.\s*/g, '-').replace(/-$/, '');
-  a.href = url; a.download = '방문자목록_' + date + '.csv';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
 /* ═══════════════════════════════════════════
-   Chart 빌더 함수들
+   Chart 빌더 함수들 (기존과 동일)
 ═══════════════════════════════════════════ */
-
-// Line (area)
 function buildLineChart(id, labels, data, yLabel, color) {
   destroyChart(id);
   const ctx = document.getElementById(id);
@@ -1137,16 +1671,13 @@ function buildLineChart(id, labels, data, yLabel, color) {
     data: {
       labels,
       datasets: [{
-        label: yLabel,
-        data,
+        label: yLabel, data,
         borderColor: color,
         backgroundColor: hexToRgba(color, 0.1),
         borderWidth: 2.5,
         pointBackgroundColor: color,
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        fill: true,
-        tension: 0.35
+        pointRadius: 4, pointHoverRadius: 6,
+        fill: true, tension: 0.35
       }]
     },
     options: {
@@ -1154,17 +1685,12 @@ function buildLineChart(id, labels, data, yLabel, color) {
       plugins: { legend: { display: false } },
       scales: {
         x: { grid: { display: false }, ticks: { maxRotation: 0 } },
-        y: {
-          beginAtZero: true,
-          grid: { color: '#f1f5f9' },
-          ticks: { stepSize: 1, precision: 0 }
-        }
+        y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } }
       }
     }
   });
 }
 
-// Bar
 function buildBarChart(id, labels, data, yLabel, colors) {
   destroyChart(id);
   const ctx = document.getElementById(id);
@@ -1174,50 +1700,27 @@ function buildBarChart(id, labels, data, yLabel, colors) {
     : labels.map(() => colors);
   charts[id] = new Chart(ctx, {
     type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: yLabel,
-        data,
-        backgroundColor: bgColors,
-        borderRadius: 5,
-        borderSkipped: false
-      }]
-    },
+    data: { labels, datasets: [{ label: yLabel, data, backgroundColor: bgColors, borderRadius: 5, borderSkipped: false }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
         x: { grid: { display: false } },
-        y: {
-          beginAtZero: true,
-          grid: { color: '#f1f5f9' },
-          ticks: { stepSize: 1, precision: 0 }
-        }
+        y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } }
       }
     }
   });
 }
 
-// Horizontal Bar
 function buildHBarChart(id, labels, data, color) {
   destroyChart(id);
   const ctx = document.getElementById(id);
   if (!ctx) return;
   charts[id] = new Chart(ctx, {
     type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        data,
-        backgroundColor: labels.map((_, i) => hexToRgba(color, 0.75 - i * 0.1)),
-        borderRadius: 4,
-        borderSkipped: false
-      }]
-    },
+    data: { labels, datasets: [{ data, backgroundColor: labels.map((_, i) => hexToRgba(color, 0.75 - i * 0.1)), borderRadius: 4, borderSkipped: false }] },
     options: {
-      indexAxis: 'y',
-      responsive: true, maintainAspectRatio: false,
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
         x: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { precision: 0 } },
@@ -1227,58 +1730,40 @@ function buildHBarChart(id, labels, data, color) {
   });
 }
 
-// Doughnut
 function buildDoughnutChart(id, dataObj, colorMap) {
   destroyChart(id);
   const ctx = document.getElementById(id);
   if (!ctx) return;
   const labels = Object.keys(dataObj);
   const data   = labels.map(k => dataObj[k]);
-  const colors = labels.map((k, i) =>
-    colorMap[k] || MULTI_COLORS[i % MULTI_COLORS.length]);
+  const colors = labels.map((k, i) => colorMap[k] || MULTI_COLORS[i % MULTI_COLORS.length]);
   charts[id] = new Chart(ctx, {
     type: 'doughnut',
-    data: {
-      labels,
-      datasets: [{ data, backgroundColor: colors, borderWidth: 2, borderColor: '#fff', hoverOffset: 6 }]
-    },
+    data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 2, borderColor: '#fff', hoverOffset: 6 }] },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      cutout: '60%',
-      plugins: {
-        legend: {
-          position: 'right',
-          labels: { font: { size: 11 }, padding: 10 }
-        }
-      }
+      responsive: true, maintainAspectRatio: false, cutout: '60%',
+      plugins: { legend: { position: 'right', labels: { font: { size: 11 }, padding: 10 } } }
     }
   });
 }
 
-// Pie
 function buildPieChart(id, dataObj, colors) {
   destroyChart(id);
   const ctx = document.getElementById(id);
   if (!ctx) return;
-  const labels = Object.keys(dataObj);
-  const data   = labels.map(k => dataObj[k]);
+  const labels   = Object.keys(dataObj);
+  const data     = labels.map(k => dataObj[k]);
   const bgColors = labels.map((_, i) => colors[i] || MULTI_COLORS[i % MULTI_COLORS.length]);
   charts[id] = new Chart(ctx, {
     type: 'pie',
-    data: {
-      labels,
-      datasets: [{ data, backgroundColor: bgColors, borderWidth: 2, borderColor: '#fff', hoverOffset: 6 }]
-    },
+    data: { labels, datasets: [{ data, backgroundColor: bgColors, borderWidth: 2, borderColor: '#fff', hoverOffset: 6 }] },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'right', labels: { font: { size: 11 }, padding: 10 } }
-      }
+      plugins: { legend: { position: 'right', labels: { font: { size: 11 }, padding: 10 } } }
     }
   });
 }
 
-// Hex → rgba 헬퍼
 function hexToRgba(hex, alpha) {
   const r = parseInt(hex.slice(1,3), 16);
   const g = parseInt(hex.slice(3,5), 16);
@@ -1287,9 +1772,10 @@ function hexToRgba(hex, alpha) {
 }
 
 /* ═══════════════════════════════════════════
-   월 필터 초기화 (현재 월까지 동적 생성)
+   초기화
 ═══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
+  // 월 필터 (월별 분석 탭)
   const sel = document.getElementById('monthFilter');
   const curMonth = new Date().getMonth() + 1;
   for (let m = 1; m <= curMonth; m++) {
@@ -1299,7 +1785,28 @@ document.addEventListener('DOMContentLoaded', () => {
     sel.appendChild(opt);
   }
 
-  // 초기 전체 대시보드 로드
+  // 방문자 목록 탭 월 select 초기화
+  const listMonthSel = document.getElementById('list-month-select');
+  for (let m = 1; m <= curMonth; m++) {
+    const opt = document.createElement('option');
+    opt.value = String(m);
+    opt.textContent = m + '월';
+    listMonthSel.appendChild(opt);
+  }
+
+  // 날짜 지정 input: 오늘 날짜를 max로 설정
+  const today = new Date();
+  const yyyy  = today.getFullYear();
+  const mm    = String(today.getMonth() + 1).padStart(2, '0');
+  const dd    = String(today.getDate()).padStart(2, '0');
+  document.getElementById('list-date-input').max = `${yyyy}-${mm}-${dd}`;
+
+  // Enter 키 인증
+  document.getElementById('listPassword').addEventListener('keydown', e => {
+    if (e.key === 'Enter') submitAuth();
+  });
+
+  // 초기 대시보드 로드
   loadOverview();
 });
 </script>
