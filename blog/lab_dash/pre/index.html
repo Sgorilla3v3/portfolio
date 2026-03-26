@@ -673,6 +673,37 @@
         let charts = {};
         let currentTab = 'overall';
 
+        // 시간 포맷팅 함수
+        function parseAndFormatTime(value) {
+            if (!value) return '-';
+            
+            let hours, minutes;
+            
+            // 숫자인 경우 (Excel/Google Sheets 시간 serial)
+            if (typeof value === 'number') {
+                hours = Math.floor(value * 24);
+                minutes = Math.floor((value * 24 - hours) * 60);
+            }
+            // 문자열인 경우 (예: "09:30:00" 또는 "오전 9:30:00")
+            else if (typeof value === 'string') {
+                const timeMatch = value.match(/(\d+):(\d+)/);
+                if (timeMatch) {
+                    hours = parseInt(timeMatch[1]);
+                    minutes = parseInt(timeMatch[2]);
+                } else {
+                    return value; // 이미 포맷된 문자열이면 그대로 반환
+                }
+            } else {
+                return '-';
+            }
+            
+            // 한글 형식으로 변환
+            const period = hours < 12 ? '오전' : '오후';
+            const displayHour = hours === 0 ? 12 : (hours > 12 ? hours - 12 : hours);
+            
+            return `${period} ${displayHour}시 ${minutes}분`;
+        }
+
         // 페이지 로드 시 데이터 불러오기
         document.addEventListener('DOMContentLoaded', function() {
             loadDashboardData();
@@ -733,7 +764,11 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    allVisitors = result.visitors;
+                    // 데이터 로드 시 시간 포맷팅 적용
+                    allVisitors = result.visitors.map(visitor => ({
+                        ...visitor,
+                        visitTime: parseAndFormatTime(visitor.visitTime)
+                    }));
                     filteredVisitors = [...allVisitors];
                     
                     updateLastUpdated();
@@ -1449,7 +1484,7 @@
                 row.innerHTML = `
                     <td>${timestamp.toLocaleString('ko-KR')}</td>
                     <td>${visitor.visitMonth} ${visitor.visitDay}</td>
-                    <td>${visitor.visitTime || '-'}</td>
+                    <td>${visitor.visitTime}</td>
                     <td>${visitor.visitPurpose || '-'}</td>
                     <td>${visitor.name}</td>
                     <td>${visitor.gender}</td>
