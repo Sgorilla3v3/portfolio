@@ -820,9 +820,9 @@ const APPS_SCRIPT_URL_A = 'https://script.google.com/macros/s/AKfycbwf69ulGtNOlT
 const DEFAULT_PURPOSES = [
   '프로그램 참여',
   '행사운영 및 주최',
-  /*'장비 및 시설이용(회의)',
+  '장비 및 시설이용(회의)',
   '비즈니스 미팅(투자/MOU)',
-  '네트워킹',
+  /*'네트워킹',
   '시설 견학'*/
 ];
 
@@ -1146,7 +1146,8 @@ function validateForm() {
     showError('gender', '성별을 선택해주세요'); isValid = false;
   }
   const by = parseInt(document.getElementById('birthYear').value);
-  if (!by || by < 1900 || by > 2024) {
+  const maxYear = new Date().getFullYear() - 1;
+  if (!by || by < 1900 || by > maxYear) {
     showError('birthYear', '올바른 출생년도를 입력해주세요'); isValid = false;
   }
   const phone = document.getElementById('phone').value.trim();
@@ -1199,6 +1200,13 @@ async function handleSubmit() {
     if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
+
+  // disabled 상태 필드는 일시 해제 후 값 읽기
+  const disabledFields = ['name','gender','birthYear','phone','residenceType','residenceEup','residenceSigun','residenceDong'];
+  disabledFields.forEach(id => {
+    const f = document.getElementById(id);
+    if (f) { f.disabled = false; f.readOnly = false; }
+  });
 
   // 데이터 조립
   const type = document.getElementById('residenceType').value;
