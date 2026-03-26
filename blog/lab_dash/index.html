@@ -976,7 +976,7 @@ tr.dup-row td strong { color: #9a3412; }
 /* ═══════════════════════════════════════════
    설정
 ═══════════════════════════════════════════ */
-const APPS_SCRIPT_URL_B = 'https://script.google.com/macros/s/AKfycbxGoRNRYv9_xknRn8X9EB_gmb8SjRZwKIHv_EXJiq2K5MrJIBJWUd4WIwvo9_Y0Sgtq/exec';
+const APPS_SCRIPT_URL_B = 'https://script.google.com/macros/s/AKfycbxy33JCzqpF6lUc-X3AV1DFEaJX3a-tf_TbE4RfNmeWNy6HRDvSxfVn1ju9Vv1WtHEG/exec';
 
 /* ═══════════════════════════════════════════
    Chart.js 전역 기본값
@@ -1026,7 +1026,7 @@ let dateFilterMode  = 'all';    // 'all' | 'today' | 'month' | 'date'
 let dateFilterValue = '';       // month: '3', date: '2026-03-26'
 
 /* ── 중복 표시 상태 ── */
-let dupFilterOn     = false;    // 중복 행 주황색 표시 on/off
+let dupFilterOn     = true;     // 중복 행 주황색 표시 on/off (기본: 항상 on)
 let dupKeySet       = new Set();// 중복으로 판정된 행의 visitorCode+날짜 키 Set
 
 /* ═══════════════════════════════════════════
@@ -1434,7 +1434,7 @@ async function loadVisitorList() {
 
     const result = await callScript('getVisitorList', {
       password: pw,
-      page:     '1',
+      page:     String(listPage),
       pageSize,
       search
     });
@@ -1805,6 +1805,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('listPassword').addEventListener('keydown', e => {
     if (e.key === 'Enter') submitAuth();
   });
+
+  // 중복 표시 버튼 초기 active 상태 반영
+  document.getElementById('btn-dup-toggle').classList.add('active');
 
   // 초기 대시보드 로드
   loadOverview();
