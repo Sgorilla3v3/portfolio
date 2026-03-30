@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Notion Custom Agent v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+  --bg: #FFFFFF;
+  --surface: #F7F6F3;
+  --dark: #2F3437;
+  --dark2: #3D4448;
+  --accent: #E16259;
+  --green: #458262;
+  --muted: #6B7280;
+  --subtle: #A0A9B0;
+  --border: #E5E5E2;
+  --accent-bg: #FDF2F1;
+  --green-bg: #F0F7F3;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'Noto Sans KR', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  width:100%; height:100%;
+  background:#111;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  font-family:var(--sans); overflow:hidden;
+}
+
+/* ── DECK ── */
+.deck {
+  position:relative; width:1280px; height:720px;
+  overflow:hidden; border-radius:6px;
+  box-shadow:0 40px 100px rgba(0,0,0,.7);
+}
+
+/* ── SLIDES ── */
+.slide {
+  position:absolute; inset:0;
+  width:1280px; height:720px;
+  opacity:0; pointer-events:none;
+  transform:translateY(14px);
+  transition:opacity .32s ease, transform .32s ease;
+  overflow:hidden;
+}
+.slide.active { opacity:1; pointer-events:auto; transform:translateY(0); }
+
+/* ── PROGRESS BAR ── */
+.progress-bar {
+  position:absolute; top:0; left:0; right:0;
+  height:3px; z-index:200;
+  background:rgba(255,255,255,.06);
+}
+.progress-fill { height:100%; transition:width .32s ease, background .32s ease; }
+
+/* ── FIXED HEADER (used by content slides) ── */
+.slide-header {
+  position:absolute; top:0; left:0; right:0;
+  height:72px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 64px; background:inherit; z-index:10;
+}
+.slide-header.dark-hdr { border-bottom-color:rgba(255,255,255,.08); }
+.hdr-left { display:flex; align-items:baseline; gap:14px; }
+.part-tag {
+  font-size:11px; font-weight:600; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted);
+}
+.dark-hdr .part-tag { color:var(--subtle); }
+.hdr-title {
+  font-size:26px; font-weight:700; color:var(--dark); line-height:1.2;
+}
+.dark-hdr .hdr-title { color:#fff; }
+.hdr-badge {
+  padding:4px 12px; border-radius:20px;
+  background:var(--surface); font-size:11px; color:var(--muted);
+  border:1px solid var(--border);
+}
+
+/* ── SLIDE BODY ── */
+.slide-body {
+  position:absolute; top:72px; left:0; right:0; bottom:36px;
+  padding:20px 64px; overflow:hidden;
+}
+
+/* ── FOOTER (날짜·페이지번호 — 슬라이드 내부) ── */
+.slide-footer {
+  position:absolute; bottom:0; left:0; right:0; height:36px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 64px;
+}
+.footer-date { font-size:11px; color:var(--muted); }
+.footer-num  { font-size:11px; color:var(--subtle); }
+.dark-footer .footer-date,
+.dark-footer .footer-num { color:rgba(255,255,255,.25); }
+
+/* ── NAV BAR — deck 아래 독립 고정 영역 ── */
+.nav-bar {
+  width:1280px; height:48px;
+  background:#1c1f21;
+  border-top:1px solid rgba(255,255,255,.07);
+  display:flex; align-items:center; justify-content:center;
+  gap:18px; flex-shrink:0;
+}
+.nav-btn {
+  width:30px; height:30px; border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.07);
+  color:rgba(255,255,255,.65); cursor:pointer; font-size:11px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .2s;
+}
+.nav-btn:hover { background:rgba(255,255,255,.18); color:#fff; border-color:rgba(255,255,255,.55); }
+.slide-counter { font-size:11px; color:rgba(255,255,255,.35); min-width:44px; text-align:center; letter-spacing:.04em; }
+.dots { display:flex; gap:4px; align-items:center; }
+.dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,.2); cursor:pointer; transition:all .2s; }
+.dot.active { background:var(--accent); width:14px; border-radius:3px; }
+.part-indicator { font-size:10px; color:rgba(255,255,255,.3); letter-spacing:.08em; text-transform:uppercase; min-width:120px; text-align:right; }
+.part-indicator span { color:rgba(255,255,255,.55); }
+
+/* ── COMMON CARDS ── */
+.card { background:#fff; border-radius:12px; border:1.5px solid var(--border); }
+.card-dark { background:var(--dark2); border-radius:12px; border:1.5px solid rgba(255,255,255,.06); }
+.highlight { color:var(--accent); font-weight:700; }
+.highlight-g { color:var(--green); font-weight:700; }
+.badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 10px; border-radius:20px;
+  font-size:11px; font-weight:600;
+}
+
+
+/* ══════════════════════════════════════
+   S01 — COVER
+══════════════════════════════════════ */
+#s01 {
+  background:var(--dark);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center;
+}
+.cover-deco-ring {
+  position:absolute; border-radius:50%;
+  border:1px solid rgba(255,255,255,.07);
+  pointer-events:none;
+}
+.cover-deco-dot {
+  position:absolute; width:6px; height:6px;
+  border-radius:50%; background:var(--accent);
+}
+.cover-logo {
+  width:60px; height:60px; background:#fff; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px; margin-bottom:28px;
+  box-shadow:0 8px 28px rgba(0,0,0,.35);
+}
+.cover-title {
+  font-family:var(--serif); font-size:54px; color:#fff;
+  line-height:1.1; margin-bottom:14px; letter-spacing:-.01em;
+}
+.cover-title span { color:var(--accent); }
+.cover-sub { font-size:18px; color:var(--subtle); font-weight:300; margin-bottom:32px; }
+.cover-line { width:56px; height:3px; background:var(--accent); border-radius:2px; margin:0 auto 28px; }
+.cover-tags { display:flex; gap:12px; justify-content:center; }
+.cover-tag {
+  display:flex; align-items:center; gap:7px;
+  padding:8px 16px; border-radius:20px;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15);
+  font-size:13px; color:rgba(255,255,255,.8);
+}
+.cover-tag i { color:var(--accent); font-size:12px; }
+.cover-date { position:absolute; bottom:50px; font-size:12px; color:rgba(255,255,255,.25); }
+
+
+/* ══════════════════════════════════════
+   S02 — TIMELINE
+══════════════════════════════════════ */
+#s02 { background:var(--bg); }
+.tl-row {
+  display:flex; align-items:flex-start;
+  margin-top:4px; position:relative;
+}
+.tl-node {
+  flex:1; display:flex; flex-direction:column; align-items:center; position:relative;
+}
+.tl-node::after {
+  content:''; position:absolute; top:20px; left:50%; right:-50%;
+  height:2px; background:var(--border); z-index:0;
+}
+.tl-node:last-child::after { display:none; }
+.tl-dot {
+  width:40px; height:40px; border-radius:50%;
+  background:var(--border); border:3px solid #fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px; z-index:1; position:relative;
+}
+.tl-dot.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+.tl-card {
+  margin-top:18px; padding:20px;
+  background:var(--surface); border-radius:12px;
+  width:calc(100% - 28px); text-align:center; border:1.5px solid var(--border);
+}
+.tl-card.cur {
+  background:var(--dark); border-color:var(--dark);
+  box-shadow:0 8px 24px rgba(225,98,89,.15);
+}
+.tl-ver { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.tl-card.cur .tl-ver { color:var(--subtle); }
+.tl-date { font-size:12px; color:var(--muted); margin-bottom:10px; }
+.tl-card.cur .tl-date { color:var(--subtle); }
+.tl-head { font-size:16px; font-weight:700; color:var(--dark); margin-bottom:10px; }
+.tl-card.cur .tl-head { color:var(--accent); font-size:17px; }
+.tl-desc { font-size:12px; color:var(--muted); line-height:1.65; }
+.tl-card.cur .tl-desc { color:var(--subtle); }
+.tl-before {
+  margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.1);
+  font-size:11px; color:rgba(255,255,255,.35); line-height:1.5;
+}
+
+
+/* ══════════════════════════════════════
+   S03 — WHAT IS
+══════════════════════════════════════ */
+#s03 { background:var(--surface); }
+.what-layout { display:grid; grid-template-columns:1fr 1fr; gap:20px; height:100%; }
+.def-box {
+  background:var(--dark); border-radius:12px; padding:22px 24px;
+  border-left:4px solid var(--accent); margin-bottom:16px;
+  display:flex; align-items:center; gap:14px;
+}
+.def-icon { font-size:32px; flex-shrink:0; }
+.def-text { font-size:14px; color:#fff; line-height:1.7; font-weight:300; }
+.def-text strong { color:var(--accent); font-weight:600; }
+.transition-box {
+  background:#fff; border-radius:12px; padding:16px 18px;
+  border:1.5px solid var(--border); flex:1;
+  display:flex; flex-direction:column; gap:14px;
+}
+.trans-title { font-size:13px; font-weight:700; color:var(--dark); }
+.trans-diagram {
+  display:flex; align-items:center; justify-content:space-around; flex:1;
+}
+.trans-node { text-align:center; }
+.trans-icon {
+  width:52px; height:52px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; margin:0 auto 8px;
+}
+.trans-icon.personal { background:var(--surface); border:2px solid var(--border); color:var(--muted); }
+.trans-icon.team { background:var(--dark); color:#fff; }
+.trans-label { font-size:12px; font-weight:600; color:var(--dark); margin-bottom:3px; }
+.trans-sub { font-size:10px; color:var(--muted); line-height:1.4; }
+.trans-arrow { font-size:22px; color:var(--accent); }
+.trans-badge {
+  text-align:center; padding:8px 12px; border-radius:8px;
+  background:var(--surface); border:1px solid var(--border);
+  font-size:11px; color:var(--muted);
+}
+.trans-badge strong { color:var(--green); }
+.feat-cards { display:flex; flex-direction:column; gap:12px; }
+.feat-card {
+  background:#fff; border-radius:10px; padding:16px 18px;
+  border:1.5px solid var(--border);
+  display:flex; align-items:center; gap:14px;
+}
+.feat-ic {
+  width:40px; height:40px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.feat-ic.a1 { background:rgba(225,98,89,.1); color:var(--accent); }
+.feat-ic.a2 { background:rgba(47,52,55,.08); color:var(--dark); }
+.feat-ic.a3 { background:rgba(69,130,98,.1); color:var(--green); }
+.feat-name { font-size:14px; font-weight:700; color:var(--dark); margin-bottom:3px; }
+.feat-desc { font-size:11px; color:var(--muted); line-height:1.45; }
+.feat-vs { font-size:10px; color:var(--green); font-weight:600; margin-top:3px; }
+
+
+/* ══════════════════════════════════════
+   S04 — COMPARE
+══════════════════════════════════════ */
+#s04 { background:var(--bg); }
+.compare-top {
+  display:grid; grid-template-columns:1fr auto 1fr;
+  gap:16px; align-items:center; margin-bottom:16px;
+}
+.cmp-illus {
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  padding:14px 16px; border-radius:10px; border:1.5px solid var(--border);
+  background:var(--surface);
+}
+.cmp-illus-icon {
+  width:36px; height:36px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center; font-size:17px;
+}
+.cmp-illus-info { flex:1; }
+.cmp-illus-name { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:2px; }
+.cmp-illus-sub { font-size:10px; color:var(--muted); }
+.cmp-limit {
+  display:flex; align-items:center; gap:5px;
+  font-size:10px; color:var(--muted); margin-top:5px;
+}
+.cmp-vs {
+  width:40px; height:40px; border-radius:50%;
+  background:var(--dark); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:700; flex-shrink:0;
+}
+.cmp-illus.right { background:var(--dark); border-color:var(--dark); }
+.cmp-illus.right .cmp-illus-name { color:#fff; }
+.cmp-illus.right .cmp-illus-sub { color:var(--subtle); }
+.cmp-illus.right .cmp-limit { color:var(--accent); }
+.cmp-table { width:100%; border-radius:12px; overflow:hidden; border:1.5px solid var(--border); }
+.cmp-thead {
+  display:grid; grid-template-columns:130px 1fr 1fr;
+  background:var(--surface);
+}
+.cmp-th {
+  padding:12px 20px; font-size:12px; font-weight:700; color:var(--muted);
+  letter-spacing:.05em; text-transform:uppercase;
+}
+.cmp-th.dark { background:var(--dark); color:#fff; }
+.cmp-row { display:grid; grid-template-columns:130px 1fr 1fr; border-top:1px solid var(--border); }
+.cmp-row:hover { background:rgba(0,0,0,.015); }
+.cmp-label {
+  padding:13px 20px; font-size:11px; font-weight:700;
+  color:var(--muted); letter-spacing:.06em; text-transform:uppercase;
+  display:flex; align-items:center; gap:6px;
+}
+.cmp-label i { font-size:12px; }
+.cmp-cell {
+  padding:13px 20px; font-size:13px; color:var(--dark);
+  display:flex; align-items:center; gap:8px;
+  border-left:1px solid var(--border);
+}
+.cmp-cell.right-cell { background:rgba(47,52,55,.02); }
+.cmp-check { color:var(--accent); font-size:13px; }
+.cmp-x { color:var(--border); font-size:13px; }
+.cmp-summary {
+  margin-top:12px; padding:11px 18px;
+  background:var(--surface); border-radius:8px; border:1px solid var(--border);
+  font-size:12px; color:var(--muted); text-align:center; line-height:1.5;
+}
+.cmp-summary strong { color:var(--dark); }
+
+
+/* ══════════════════════════════════════
+   S05 — TRIGGERS & INTEGRATIONS
+══════════════════════════════════════ */
+#s05 { background:var(--surface); }
+.s05-layout { display:grid; grid-template-columns:1fr 1.6fr; gap:20px; height:100%; }
+.trigger-col { display:flex; flex-direction:column; gap:12px; }
+.s05-col-card {
+  background:#fff; border-radius:12px; padding:16px 18px;
+  border:1.5px solid var(--border); flex:1;
+}
+.col-head { font-size:14px; font-weight:700; color:var(--dark); margin-bottom:14px; display:flex; align-items:center; gap:7px; }
+.col-head i { color:var(--accent); }
+.trig-item {
+  background:var(--surface); border-radius:9px; padding:12px 14px;
+  display:flex; align-items:flex-start; gap:10px; margin-bottom:10px;
+}
+.trig-item:last-child { margin-bottom:0; }
+.trig-ic {
+  width:36px; height:36px; border-radius:8px;
+  background:var(--accent); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px; flex-shrink:0;
+}
+.trig-ic.grn { background:var(--green); }
+.trig-name { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:3px; }
+.trig-desc { font-size:11px; color:var(--muted); line-height:1.5; }
+.int-col { background:#fff; border-radius:12px; padding:16px 18px; border:1.5px solid var(--border); }
+.int-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:4px; }
+.int-item { background:var(--surface); border-radius:9px; padding:12px; }
+.int-head { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.int-ic {
+  width:28px; height:28px; border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; color:#fff; flex-shrink:0;
+}
+.int-name { font-size:13px; font-weight:700; color:var(--dark); }
+.int-desc { font-size:11px; color:var(--muted); line-height:1.4; }
+.int-info {
+  margin-top:12px; padding:10px 14px;
+  background:var(--accent-bg); border-radius:8px; border:1px solid var(--accent);
+  font-size:11px; color:var(--muted); line-height:1.5;
+}
+.int-info i { color:var(--accent); margin-right:4px; }
+
+
+/* ══════════════════════════════════════
+   S06 — FLOW
+══════════════════════════════════════ */
+#s06 { background:var(--bg); }
+.flow-steps {
+  display:grid; grid-template-columns:repeat(5,1fr);
+  gap:0; align-items:start; margin-bottom:20px;
+}
+.fl-step { display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
+.fl-step::after {
+  content:'→'; position:absolute; right:-10px; top:14px;
+  font-size:16px; color:var(--muted);
+}
+.fl-step:last-child::after { display:none; }
+.fl-num {
+  width:30px; height:30px; border-radius:50%;
+  background:var(--dark); color:#fff; font-size:13px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:10px; position:relative; z-index:1;
+}
+.fl-num.a { background:var(--accent); }
+.fl-card {
+  background:var(--surface); border-radius:10px; padding:14px 10px;
+  width:calc(100% - 20px); border:1.5px solid var(--border);
+  transition:box-shadow .2s;
+}
+.fl-card:hover { box-shadow:0 6px 18px rgba(0,0,0,.09); }
+.fl-card.a-top { border-top:3px solid var(--accent); }
+.fl-ic { font-size:18px; margin-bottom:7px; }
+.fl-name { font-size:12px; font-weight:700; color:var(--dark); margin-bottom:4px; }
+.fl-desc { font-size:10px; color:var(--muted); line-height:1.5; }
+.flow-info-row { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.fi-card {
+  background:var(--surface); border-radius:9px; padding:12px 16px;
+  border:1px solid var(--border); display:flex; align-items:center; gap:10px;
+}
+.fi-card i { color:var(--green); font-size:15px; flex-shrink:0; }
+.fi-title { font-size:12px; font-weight:700; color:var(--dark); margin-bottom:2px; }
+.fi-sub { font-size:11px; color:var(--muted); }
+.flow-quote {
+  background:var(--surface); border-radius:9px; padding:12px 18px;
+  border-left:4px solid var(--green); margin-bottom:14px;
+  font-size:12px; color:var(--muted); font-style:italic; line-height:1.6;
+}
+
+
+/* ══════════════════════════════════════
+   S07 — CONTROL & PRICING
+══════════════════════════════════════ */
+#s07 { background:var(--surface); }
+.s07-layout { display:grid; grid-template-columns:1fr 1fr; gap:20px; height:100%; }
+.sec-list { display:flex; flex-direction:column; gap:9px; }
+.sec-item { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--dark); }
+.sec-item i { width:18px; color:var(--green); font-size:13px; flex-shrink:0; }
+.ent-badge {
+  margin-top:14px; padding:10px 14px;
+  background:var(--accent-bg); border:1px solid var(--accent);
+  border-radius:8px; font-size:12px; color:var(--accent); font-weight:600;
+  display:flex; align-items:center; gap:7px;
+}
+.price-tl { display:flex; flex-direction:column; gap:0; }
+.pt-step { display:flex; gap:12px; align-items:flex-start; position:relative; }
+.pt-step:not(:last-child) { padding-bottom:18px; }
+.pt-step:not(:last-child)::after {
+  content:''; position:absolute; left:17px; top:34px; bottom:0;
+  width:2px; background:var(--border);
+}
+.pt-dot {
+  width:34px; height:34px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; color:#fff; flex-shrink:0; z-index:1;
+}
+.pt-dot.free { background:var(--green); }
+.pt-dot.paid { background:var(--dark); }
+.pt-info { padding-top:3px; }
+.pt-period { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:3px; }
+.pt-desc { font-size:12px; color:var(--muted); line-height:1.55; }
+.pt-footnote {
+  margin-top:14px; padding:10px 14px;
+  background:var(--surface); border-radius:8px; border:1px solid var(--border);
+  font-size:11px; color:var(--muted); line-height:1.5;
+}
+
+
+/* ══════════════════════════════════════
+   S08 — CAN / CANNOT
+══════════════════════════════════════ */
+#s08 { background:var(--bg); }
+.s08-layout { display:grid; grid-template-columns:1fr 1fr; gap:20px; height:100%; }
+.can-box {
+  background:var(--green-bg); border-radius:12px; padding:16px 18px;
+  border:1.5px solid rgba(69,130,98,.25);
+}
+.cannot-box {
+  background:var(--accent-bg); border-radius:12px; padding:16px 18px;
+  border:1.5px solid rgba(225,98,89,.25);
+}
+.s08-head {
+  font-size:14px; font-weight:700; margin-bottom:14px;
+  display:flex; align-items:center; gap:7px;
+}
+.s08-head.g { color:var(--green); }
+.s08-head.r { color:var(--accent); }
+.work-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.work-card {
+  background:#fff; border-radius:9px; padding:14px 12px;
+  border:1.5px solid rgba(69,130,98,.15); text-align:center;
+}
+.wc-ic {
+  width:36px; height:36px; border-radius:8px;
+  margin:0 auto 8px; display:flex; align-items:center; justify-content:center;
+  font-size:16px;
+}
+.wc-ic.n { background:rgba(47,52,55,.08); color:var(--dark); }
+.wc-ic.s { background:rgba(74,21,75,.1); color:#4A154B; }
+.wc-ic.e { background:rgba(242,78,30,.1); color:#F24E1E; }
+.wc-name { font-size:12px; font-weight:700; color:var(--dark); margin-bottom:4px; }
+.wc-desc { font-size:10px; color:var(--muted); line-height:1.4; }
+.cant-list { display:flex; flex-direction:column; gap:9px; }
+.cant-item {
+  background:#fff; border-radius:8px; padding:12px 14px;
+  display:flex; align-items:flex-start; gap:9px;
+  border:1px solid rgba(225,98,89,.12);
+}
+.cant-item i { color:var(--accent); font-size:13px; margin-top:1px; flex-shrink:0; }
+.cant-name { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:2px; }
+.cant-desc { font-size:11px; color:var(--muted); line-height:1.45; }
+.cant-date {
+  margin-top:12px; padding:10px 14px;
+  background:#fff; border-radius:8px; border:1.5px solid var(--accent);
+  font-size:12px; color:var(--accent); font-weight:600;
+  display:flex; align-items:center; gap:7px;
+}
+
+
+/* ══════════════════════════════════════
+   S09 — BIG NUMBERS
+══════════════════════════════════════ */
+#s09 { background:var(--dark); }
+.big-grid { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:16px; height:100%; }
+.big-card {
+  background:var(--dark2); border-radius:12px; padding:26px 24px;
+  position:relative; overflow:hidden;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.big-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; }
+.big-card.r::before { background:var(--accent); }
+.big-card.g::before { background:var(--green); }
+.bc-top { display:flex; align-items:flex-start; justify-content:space-between; }
+.bc-icon { font-size:24px; opacity:.5; }
+.big-card.r .bc-icon { color:var(--accent); }
+.big-card.g .bc-icon { color:var(--green); }
+.big-num {
+  font-family:var(--serif); font-size:52px; line-height:1; margin-bottom:6px;
+}
+.big-card.r .big-num { color:var(--accent); }
+.big-card.g .big-num { color:var(--green); }
+.big-label { font-size:13px; color:var(--subtle); font-weight:500; margin-bottom:4px; }
+.big-sub { font-size:11px; color:var(--muted); line-height:1.45; }
+.big-bubble {
+  position:absolute; top:16px; right:16px;
+  background:rgba(255,255,255,.06); border-radius:8px;
+  padding:5px 9px; font-size:10px; color:var(--subtle);
+  border:1px solid rgba(255,255,255,.08); max-width:140px; text-align:right;
+  line-height:1.4;
+}
+
+
+/* ══════════════════════════════════════
+   S10 — RAMP
+══════════════════════════════════════ */
+#s10 { background:var(--bg); }
+.ramp-layout { display:grid; grid-template-columns:260px 1fr; gap:18px; height:100%; }
+.ramp-left {
+  background:var(--surface); border-radius:12px; padding:16px 18px;
+  border:1.5px solid var(--border); display:flex; flex-direction:column; gap:12px;
+}
+.ramp-goal {
+  background:var(--dark); border-radius:9px; padding:14px;
+  font-size:13px; font-weight:700; color:#fff; text-align:center; line-height:1.45;
+}
+.ramp-desc { font-size:12px; color:var(--muted); line-height:1.65; }
+.ramp-mini { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.rm-card { background:#fff; border-radius:8px; padding:10px; text-align:center; border:1px solid var(--border); }
+.rm-num { font-family:var(--serif); font-size:22px; color:var(--accent); }
+.rm-label { font-size:10px; color:var(--muted); margin-top:2px; }
+.ramp-right { display:flex; flex-direction:column; gap:12px; }
+.agent-card {
+  background:var(--dark); border-radius:12px; padding:16px 18px;
+}
+.agent-name {
+  font-size:16px; font-weight:700; color:#fff; margin-bottom:5px;
+  display:flex; align-items:center; gap:8px;
+}
+.agent-status {
+  font-size:10px; padding:2px 8px; border-radius:10px;
+  background:var(--accent); color:#fff; font-weight:600; margin-left:auto;
+}
+.agent-sub { font-size:12px; color:var(--subtle); line-height:1.55; }
+.agent-flow {
+  display:flex; align-items:center; gap:8px; margin-top:10px;
+  flex-wrap:nowrap;
+}
+.af-step {
+  flex:1; background:rgba(255,255,255,.07); border-radius:7px;
+  padding:8px 6px; text-align:center; font-size:10px; color:var(--subtle); line-height:1.4;
+}
+.af-step i { display:block; font-size:14px; color:var(--green); margin-bottom:4px; }
+.af-arrow { color:var(--muted); font-size:12px; flex-shrink:0; }
+.metrics-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.met-card { background:var(--surface); border-radius:8px; padding:12px; text-align:center; border:1px solid var(--border); }
+.met-num { font-family:var(--serif); font-size:26px; color:var(--accent); }
+.met-label { font-size:10px; color:var(--muted); margin-top:2px; }
+.ramp-quote {
+  background:var(--surface); border-radius:9px; padding:13px 16px;
+  border-left:4px solid var(--accent); font-size:12px; color:var(--muted); font-style:italic; line-height:1.6;
+}
+.q-author { font-style:normal; font-weight:600; color:var(--dark); margin-top:5px; font-size:11px; }
+
+
+/* ══════════════════════════════════════
+   S11 — BRAINTRUST
+══════════════════════════════════════ */
+#s11 { background:var(--surface); }
+.s11-ctx { font-size:12px; color:var(--muted); font-style:italic; margin-bottom:14px; margin-top:-4px; }
+.buddy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:12px; }
+.buddy-card {
+  background:#fff; border-radius:12px; padding:16px 18px;
+  border:1.5px solid var(--border);
+}
+.buddy-bar { height:4px; border-radius:3px; margin:-16px -18px 14px; border-radius:10px 10px 0 0; }
+.buddy-top-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.buddy-ic { font-size:20px; }
+.buddy-trigger {
+  font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px;
+  letter-spacing:.04em;
+}
+.buddy-trigger.sched { background:rgba(69,130,98,.1); color:var(--green); }
+.buddy-trigger.event { background:rgba(225,98,89,.1); color:var(--accent); }
+.buddy-name { font-size:12px; font-weight:700; color:var(--dark); margin-bottom:8px; }
+.buddy-actions { font-size:11px; color:var(--muted); line-height:1.6; margin-bottom:8px; }
+.buddy-result { font-size:11px; color:var(--green); font-weight:600; line-height:1.5; }
+.bt-bar {
+  background:var(--dark); border-radius:10px; padding:12px 24px;
+  display:grid; grid-template-columns:repeat(3,1fr);
+}
+.bt-item { text-align:center; }
+.bt-item + .bt-item { border-left:1px solid rgba(255,255,255,.08); }
+.bt-val { font-size:14px; font-weight:700; color:#fff; margin-bottom:2px; }
+.bt-lbl { font-size:10px; color:var(--subtle); }
+
+
+/* ══════════════════════════════════════
+   S12 — REMOTE / CLAY / VERCEL
+══════════════════════════════════════ */
+#s12 { background:var(--bg); }
+.case-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:12px; }
+.case-card {
+  background:var(--surface); border-radius:12px; padding:16px 18px;
+  border:1.5px solid var(--border); display:flex; flex-direction:column;
+}
+.case-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;
+  color:#fff; margin-bottom:12px; align-self:flex-start;
+}
+.case-agent { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:7px; }
+.case-flow { font-size:11px; color:var(--muted); line-height:1.6; margin-bottom:10px; }
+.case-stats { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px; }
+.cs-stat { background:#fff; border-radius:6px; padding:7px 10px; border:1px solid var(--border); }
+.cs-val { font-size:13px; font-weight:700; color:var(--accent); }
+.cs-lbl { font-size:10px; color:var(--muted); }
+.case-quote { font-size:11px; color:var(--muted); font-style:italic; line-height:1.55; margin-top:auto; padding-top:9px; border-top:1px solid var(--border); }
+.case-attr { font-style:normal; font-weight:600; color:var(--dark); font-size:10px; }
+.case-agents { display:flex; flex-direction:column; gap:7px; margin-bottom:10px; }
+.ca-block { background:#fff; border-radius:7px; padding:8px 10px; border:1px solid var(--border); }
+.ca-name { font-size:11px; font-weight:700; color:var(--dark); margin-bottom:2px; }
+.ca-desc { font-size:10px; color:var(--muted); }
+.pattern-note {
+  background:var(--surface); border-radius:8px; padding:10px 20px;
+  border:1px solid var(--border); font-size:12px; color:var(--muted);
+  font-style:italic; text-align:center; line-height:1.6;
+}
+
+
+/* ══════════════════════════════════════
+   S13 — PATTERN SUMMARY
+══════════════════════════════════════ */
+#s13 { background:var(--surface); }
+.s13-layout { display:grid; grid-template-columns:1fr 1fr; gap:20px; height:100%; }
+.pattern-diagram {
+  background:#fff; border-radius:12px; padding:20px;
+  border:1.5px solid var(--border);
+  display:flex; flex-direction:column; gap:12px;
+}
+.pd-title { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:4px; }
+.pd-flow { display:flex; flex-direction:column; gap:0; flex:1; justify-content:center; }
+.pd-row { display:flex; align-items:center; gap:10px; padding:10px 0; }
+.pd-row + .pd-row { border-top:1px solid var(--border); }
+.pd-box {
+  border-radius:9px; padding:10px 14px; text-align:center; flex:1;
+}
+.pd-box.input { background:var(--surface); border:1.5px solid var(--border); }
+.pd-box.agent { background:var(--dark); }
+.pd-box.result { background:var(--green-bg); border:1.5px solid rgba(69,130,98,.25); }
+.pd-box.human { background:var(--accent-bg); border:1.5px solid rgba(225,98,89,.2); }
+.pd-box-icon { font-size:18px; margin-bottom:4px; }
+.pd-box-name { font-size:12px; font-weight:700; }
+.pd-box.agent .pd-box-name { color:#fff; }
+.pd-box.input .pd-box-name, .pd-box.result .pd-box-name { color:var(--dark); }
+.pd-box.human .pd-box-name { color:var(--accent); }
+.pd-box-sub { font-size:10px; color:var(--muted); margin-top:2px; }
+.pd-box.agent .pd-box-sub { color:var(--subtle); }
+.pd-arrow { color:var(--muted); font-size:14px; flex-shrink:0; }
+.pd-message {
+  background:var(--dark); border-radius:9px; padding:12px 16px; text-align:center;
+  font-size:15px; font-weight:700; color:#fff; line-height:1.4;
+}
+.pd-message span { color:var(--accent); }
+.saving-col { display:flex; flex-direction:column; gap:10px; }
+.sav-title { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:2px; }
+.sav-card {
+  background:#fff; border-radius:10px; padding:14px 16px;
+  border:1.5px solid var(--border); display:flex; align-items:center; gap:12px;
+}
+.sav-ic { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+.sav-company { font-size:12px; font-weight:700; color:var(--dark); margin-bottom:3px; }
+.sav-num { font-size:20px; font-weight:700; color:var(--accent); font-family:var(--serif); }
+.sav-detail { font-size:10px; color:var(--muted); }
+
+
+/* ══════════════════════════════════════
+   S14 — CHECKLIST
+══════════════════════════════════════ */
+#s14 { background:var(--surface); }
+.check-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:12px; }
+.check-card { background:#fff; border-radius:12px; padding:16px 18px; border:1.5px solid var(--border); }
+.step-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 10px; border-radius:12px; font-size:11px; font-weight:700;
+  color:#fff; margin-bottom:12px;
+}
+.check-items { display:flex; flex-direction:column; gap:8px; }
+.ci-row { display:flex; align-items:flex-start; gap:8px; }
+.ci-check { color:var(--green); font-size:14px; margin-top:1px; flex-shrink:0; }
+.ci-text { font-size:12px; color:var(--dark); line-height:1.45; flex:1; }
+.ci-status {
+  font-size:10px; font-weight:600; padding:1px 7px; border-radius:8px;
+  margin-top:1px; flex-shrink:0;
+}
+.ci-status.must { background:rgba(225,98,89,.1); color:var(--accent); }
+.ci-status.rec { background:rgba(69,130,98,.1); color:var(--green); }
+.ci-status.week { background:rgba(47,52,55,.08); color:var(--muted); }
+.ci-status.when { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
+.clipboard {
+  background:#fff; border-radius:12px;
+  border:1.5px solid rgba(225,98,89,.35); overflow:hidden;
+}
+.clipboard-top {
+  background:rgba(225,98,89,.08); padding:9px 18px;
+  display:flex; align-items:center; gap:8px;
+  border-bottom:1px solid rgba(225,98,89,.2);
+}
+.clipboard-top i { color:var(--accent); font-size:14px; }
+.clipboard-top span { font-size:13px; font-weight:700; color:var(--accent); }
+.clipboard-body { padding:12px 18px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.cw-item i { color:var(--accent); margin-right:4px; font-size:11px; }
+.cw-title { font-size:12px; font-weight:700; color:var(--dark); margin-bottom:3px; }
+.cw-desc { font-size:11px; color:var(--muted); line-height:1.5; }
+.check-status-bar {
+  display:flex; align-items:center; gap:16px;
+  font-size:11px; color:var(--muted);
+}
+.csb-item { display:flex; align-items:center; gap:5px; }
+.csb-dot { width:7px; height:7px; border-radius:50%; }
+
+
+/* ══════════════════════════════════════
+   S15 — CLOSING
+══════════════════════════════════════ */
+#s15 {
+  background:var(--dark);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center;
+}
+.close-ring {
+  position:absolute; border-radius:50%;
+  border:1px solid rgba(255,255,255,.07); pointer-events:none;
+}
+.close-dot { position:absolute; width:6px; height:6px; border-radius:50%; background:var(--accent); }
+.close-label { font-size:11px; color:var(--subtle); letter-spacing:.12em; text-transform:uppercase; margin-bottom:28px; }
+.close-msg { font-family:var(--serif); font-size:46px; color:#fff; line-height:1.15; margin-bottom:18px; }
+.close-msg .em { color:var(--accent); }
+.close-line { width:56px; height:3px; background:var(--accent); border-radius:2px; margin:0 auto 18px; }
+.close-sub { font-size:15px; color:var(--subtle); margin-bottom:30px; font-weight:300; }
+.close-free {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:8px 20px; border-radius:20px; background:var(--green);
+  font-size:13px; font-weight:700; color:#fff; margin-bottom:28px;
+}
+.close-tags { display:flex; gap:12px; justify-content:center; margin-bottom:28px; }
+.close-tag {
+  display:flex; align-items:center; gap:7px;
+  padding:7px 14px; border-radius:20px;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+  font-size:12px; color:rgba(255,255,255,.7);
+}
+.close-tag i { color:var(--accent); font-size:11px; }
+.close-links { display:flex; gap:12px; }
+.close-link {
+  background:var(--dark2); border-radius:8px; padding:10px 18px;
+  text-align:left; border:1px solid rgba(255,255,255,.07);
+  cursor:pointer; transition:background .2s;
+}
+.close-link:hover { background:#4A5056; }
+.cl-name { font-size:12px; font-weight:700; color:#fff; margin-bottom:2px; }
+.cl-url { font-size:10px; color:var(--muted); }
+.close-date { position:absolute; bottom:50px; font-size:11px; color:rgba(255,255,255,.2); }
+</style>
+</head>
+<body>
+<div style="display:flex;flex-direction:column;align-items:center;">
+<div class="deck" id="deck">
+  <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+
+<!-- ═══ S01 COVER ═══════════════════════════════════════════ -->
+<div class="slide active" id="s01">
+  <div class="cover-deco-ring" style="width:220px;height:220px;top:80px;right:90px;"></div>
+  <div class="cover-deco-ring" style="width:160px;height:160px;bottom:120px;left:80px;"></div>
+  <div class="cover-deco-dot" style="top:190px;left:140px;"></div>
+  <div class="cover-deco-dot" style="bottom:190px;right:180px;opacity:.6;"></div>
+  <div class="cover-logo"><i class="fas fa-file-alt" style="color:var(--dark);font-size:26px;"></i></div>
+  <div class="cover-title">Notion <span>Custom</span> Agent</div>
+  <div class="cover-sub">팀의 반복 업무를 자동화하는 AI 워크플로우</div>
+  <div class="cover-line"></div>
+  <div class="cover-tags">
+    <div class="cover-tag"><i class="fas fa-bolt"></i> 자율 실행</div>
+    <div class="cover-tag"><i class="fas fa-users"></i> 팀 공유</div>
+    <div class="cover-tag"><i class="fas fa-clock"></i> 24/7 운영</div>
+  </div>
+  <div class="cover-date">2026.03</div>
+</div>
+
+<!-- ═══ S02 TIMELINE ═══════════════════════════════════════ -->
+<div class="slide" id="s02">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 1 · 도입</span>
+      <span class="hdr-title">Notion AI는 어떻게 진화했나</span>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="tl-row">
+      <div class="tl-node">
+        <div class="tl-dot"><i class="fas fa-cube" style="font-size:14px;color:var(--muted);"></i></div>
+        <div class="tl-card">
+          <div class="tl-ver">Notion 3.0</div>
+          <div class="tl-date">2025. 09. 18</div>
+          <div class="tl-head">AI 에이전트 도입</div>
+          <div class="tl-desc">퍼스널 에이전트 출시<br>멀티스텝 자율 작업 (최대 20분)<br>Notion 내 모든 작업 자동 수행</div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);line-height:1.5;">이전: AI가 질문에만 답변<br>이후: AI가 실제 작업을 수행</div>
+        </div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-dot"><i class="fas fa-mobile-alt" style="font-size:14px;color:var(--muted);"></i></div>
+        <div class="tl-card">
+          <div class="tl-ver">Notion 3.2</div>
+          <div class="tl-date">2026. 01. 20</div>
+          <div class="tl-head">모바일 & 멀티모델</div>
+          <div class="tl-desc">모바일 AI 지원<br>GPT-5.2 / Claude Opus 4.5<br>Gemini 3 모델 선택 가능</div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);line-height:1.5;">이전: 데스크탑 전용<br>이후: 어디서나 AI 활용</div>
+        </div>
+      </div>
+      <div class="tl-node">
+        <div class="tl-dot on"><i class="fas fa-rocket" style="font-size:14px;"></i></div>
+        <div class="tl-card cur">
+          <div class="tl-ver">Notion 3.3</div>
+          <div class="tl-date">2026. 02. 24</div>
+          <div class="tl-head">커스텀 에이전트 정식 출시</div>
+          <div class="tl-desc">팀용 자율 에이전트<br>트리거·스케줄 기반 24/7 운영<br>워크스페이스 공유 가능</div>
+          <div class="tl-before">이전: 개인만 사용 가능<br>이후: 팀 전체가 자동화 혜택</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;">
+      <div style="background:var(--surface);border-radius:10px;padding:12px 16px;border:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+        <i class="fas fa-history" style="color:var(--muted);font-size:16px;flex-shrink:0;"></i>
+        <div><div style="font-size:12px;font-weight:700;color:var(--dark);">1년 반 만의 진화</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">단순 어시스턴트 → 자율 팀 에이전트</div></div>
+      </div>
+      <div style="background:var(--surface);border-radius:10px;padding:12px 16px;border:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+        <i class="fas fa-layer-group" style="color:var(--muted);font-size:16px;flex-shrink:0;"></i>
+        <div><div style="font-size:12px;font-weight:700;color:var(--dark);">3단계 아키텍처</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">문서·DB → 에이전트 → 커스텀 자동화</div></div>
+      </div>
+      <div style="background:var(--dark);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+        <i class="fas fa-star" style="color:var(--accent);font-size:16px;flex-shrink:0;"></i>
+        <div><div style="font-size:12px;font-weight:700;color:#fff;">오늘의 핵심</div><div style="font-size:11px;color:var(--subtle);margin-top:2px;">Notion 3.3 커스텀 에이전트 딥다이브</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">2 / 15</span></div>
+</div>
+
+<!-- ═══ S03 WHAT IS ══════════════════════════════════════════ -->
+<div class="slide" id="s03">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 1 · 도입</span>
+      <span class="hdr-title">커스텀 에이전트란?</span>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="what-layout">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="def-box">
+          <div class="def-icon"><i class="fas fa-robot" style="color:var(--accent);"></i></div>
+          <div class="def-text">반복 업무를 자율적으로 처리하는 <strong>팀용 AI 워크플로우 자동화 도구.</strong><br>직접 프롬프트 없이, 설정한 트리거나 스케줄에 따라 <strong>24/7 독립 동작.</strong></div>
+        </div>
+        <div class="transition-box">
+          <div class="trans-title"><i class="fas fa-arrow-right" style="color:var(--accent);margin-right:6px;"></i>'나'를 넘어 '우리'의 도구로</div>
+          <div class="trans-diagram">
+            <div class="trans-node">
+              <div class="trans-icon personal"><i class="fas fa-user"></i></div>
+              <div class="trans-label">퍼스널 에이전트</div>
+              <div class="trans-sub">나만 사용<br>요청 시에만 동작</div>
+            </div>
+            <div class="trans-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+            <div class="trans-node">
+              <div class="trans-icon team"><i class="fas fa-users"></i></div>
+              <div class="trans-label">커스텀 에이전트</div>
+              <div class="trans-sub">팀 전체 공유<br>24/7 자율 동작</div>
+            </div>
+          </div>
+          <div class="trans-badge"><i class="fas fa-clock" style="margin-right:5px;"></i>24시간 잠들지 않는 <strong>업무 파트너</strong></div>
+        </div>
+      </div>
+      <div class="feat-cards">
+        <div class="feat-card">
+          <div class="feat-ic a1"><i class="fas fa-bolt"></i></div>
+          <div>
+            <div class="feat-name">자율 실행</div>
+            <div class="feat-desc">트리거 또는 스케줄 설정만 하면 알아서 실행됩니다</div>
+            <div class="feat-vs">이전: 매번 직접 요청 필요 → 이제: 설정 후 자동 반복</div>
+          </div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ic a2"><i class="fas fa-users"></i></div>
+          <div>
+            <div class="feat-name">팀 공유</div>
+            <div class="feat-desc">한 번 만들면 워크스페이스 전체가 사용할 수 있습니다</div>
+            <div class="feat-vs">이전: 개인만 사용 → 이제: 팀 전체 혜택</div>
+          </div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ic a3"><i class="fas fa-clock"></i></div>
+          <div>
+            <div class="feat-name">24/7 운영</div>
+            <div class="feat-desc">오프라인 상태에도 멈추지 않고 동작합니다</div>
+            <div class="feat-vs">이전: 온라인일 때만 → 이제: 잠자는 동안에도</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">3 / 15</span></div>
+</div>
+
+<!-- ═══ S04 COMPARE ══════════════════════════════════════════ -->
+<div class="slide" id="s04">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 2 · 비교</span>
+      <span class="hdr-title">퍼스널 에이전트 vs 커스텀 에이전트</span>
+    </div>
+    <div class="hdr-badge">비교 분석</div>
+  </div>
+  <div class="slide-body">
+    <div class="compare-top">
+      <div class="cmp-illus">
+        <div class="cmp-illus-icon" style="background:var(--surface);border:1.5px solid var(--border);"><i class="fas fa-user" style="color:var(--muted);"></i></div>
+        <div class="cmp-illus-info">
+          <div class="cmp-illus-name">퍼스널 에이전트</div>
+          <div class="cmp-illus-sub">개인용 AI 보조 도구</div>
+          <div class="cmp-limit"><i class="fas fa-hand-pointer"></i> 매번 직접 클릭이 필요합니다</div>
+        </div>
+      </div>
+      <div class="cmp-vs">vs</div>
+      <div class="cmp-illus right">
+        <div class="cmp-illus-icon" style="background:var(--accent);"><i class="fas fa-robot" style="color:#fff;"></i></div>
+        <div class="cmp-illus-info">
+          <div class="cmp-illus-name">커스텀 에이전트</div>
+          <div class="cmp-illus-sub" style="color:var(--subtle);">팀용 AI 워크플로우</div>
+          <div class="cmp-limit" style="color:var(--accent);"><i class="fas fa-bolt"></i> 트리거/스케줄로 자동 실행됩니다</div>
+        </div>
+      </div>
+    </div>
+    <div class="cmp-table">
+      <div class="cmp-thead">
+        <div class="cmp-th"></div>
+        <div class="cmp-th" style="color:var(--muted);">퍼스널 에이전트</div>
+        <div class="cmp-th dark">커스텀 에이전트</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label"><i class="fas fa-play-circle"></i> 실행 방식</div>
+        <div class="cmp-cell"><i class="fas fa-times-circle cmp-x"></i> 사용자 직접 요청 (수동)</div>
+        <div class="cmp-cell right-cell"><i class="fas fa-check-circle cmp-check"></i> <span class="highlight">트리거 / 스케줄 자율 실행</span></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label"><i class="fas fa-share-alt"></i> 공유</div>
+        <div class="cmp-cell"><i class="fas fa-times-circle cmp-x"></i> 나만 사용</div>
+        <div class="cmp-cell right-cell"><i class="fas fa-check-circle cmp-check"></i> <span class="highlight">워크스페이스 공유 가능</span></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label"><i class="fas fa-clock"></i> 동작 시간</div>
+        <div class="cmp-cell"><i class="fas fa-times-circle cmp-x"></i> 요청 시에만</div>
+        <div class="cmp-cell right-cell"><i class="fas fa-check-circle cmp-check"></i> <span class="highlight">24/7 상시 운영</span></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label"><i class="fas fa-coins"></i> 비용</div>
+        <div class="cmp-cell"><i class="fas fa-check-circle" style="color:var(--green);font-size:13px;"></i> 플랜 내 포함</div>
+        <div class="cmp-cell right-cell">Notion 크레딧 소비</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label"><i class="fas fa-bullseye"></i> 주요 용도</div>
+        <div class="cmp-cell">문서·DB 보조 작업</div>
+        <div class="cmp-cell right-cell"><span class="highlight">반복 업무 자동화</span></div>
+      </div>
+    </div>
+    <div class="cmp-summary">핵심 차이: <strong>퍼스널</strong>은 내가 시작 → <strong>커스텀</strong>은 트리거/스케줄이 시작 · <strong>퍼스널</strong>은 나만 사용 → <strong>커스텀</strong>은 팀 전체 혜택</div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">4 / 15</span></div>
+</div>
+
+<!-- ═══ S05 TRIGGERS ═════════════════════════════════════════ -->
+<div class="slide" id="s05">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 3 · 핵심 기능</span>
+      <span class="hdr-title">실행 방식 & 연동 범위</span>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="s05-layout">
+      <div class="trigger-col">
+        <div class="s05-col-card" style="flex:none;">
+          <div class="col-head"><i class="fas fa-play-circle"></i> 언제 실행되나?</div>
+          <div class="trig-item">
+            <div class="trig-ic"><i class="fas fa-bolt"></i></div>
+            <div>
+              <div class="trig-name">이벤트 트리거</div>
+              <div class="trig-desc">Slack 메시지 수신, 이메일 도착, DB 항목 추가 등 특정 이벤트 발생 시 즉시 실행</div>
+            </div>
+          </div>
+          <div class="trig-item">
+            <div class="trig-ic"><i class="fas fa-calendar-alt"></i></div>
+            <div>
+              <div class="trig-name">스케줄 실행</div>
+              <div class="trig-desc">매일 오전 9시, 매주 월요일 등 정해진 시간에 자동 반복 실행</div>
+            </div>
+          </div>
+        </div>
+        <div class="s05-col-card" style="flex:1;">
+          <div class="col-head"><i class="fas fa-check-circle" style="color:var(--green);"></i> 실행 조건</div>
+          <div class="trig-item">
+            <div class="trig-ic grn"><i class="fas fa-filter"></i></div>
+            <div>
+              <div class="trig-name">조건 충족 시</div>
+              <div class="trig-desc">설정한 조건이 맞으면 자동 실행, 아니면 대기합니다</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;letter-spacing:.05em;text-transform:uppercase;">시나리오 예시</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="background:var(--surface);border-radius:7px;padding:8px 10px;font-size:11px;color:var(--dark);display:flex;align-items:center;gap:7px;"><i class="fab fa-slack" style="color:#4A154B;"></i> Slack 메시지 도착 → 즉시 분류·응답</div>
+              <div style="background:var(--surface);border-radius:7px;padding:8px 10px;font-size:11px;color:var(--dark);display:flex;align-items:center;gap:7px;"><i class="fas fa-sun" style="color:var(--accent);"></i> 매일 오전 9시 → 전날 요약 리포트 생성</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="int-col">
+        <div class="col-head"><i class="fas fa-plug"></i> 어디와 연결되나?</div>
+        <div class="int-grid">
+          <div class="int-item">
+            <div class="int-head"><div class="int-ic" style="background:#2F3437;"><i class="fas fa-file-alt"></i></div><span class="int-name">Notion</span></div>
+            <div class="int-desc">페이지, DB, Mail, Calendar</div>
+          </div>
+          <div class="int-item">
+            <div class="int-head"><div class="int-ic" style="background:#4A154B;"><i class="fab fa-slack"></i></div><span class="int-name">Slack</span></div>
+            <div class="int-desc">채널 모니터링, 메시지 전송</div>
+          </div>
+          <div class="int-item">
+            <div class="int-head"><div class="int-ic" style="background:#F24E1E;"><i class="fab fa-figma"></i></div><span class="int-name">Figma</span></div>
+            <div class="int-desc">보드 → 문서 변환</div>
+          </div>
+          <div class="int-item">
+            <div class="int-head"><div class="int-ic" style="background:#5E6AD2;"><i class="fas fa-tasks"></i></div><span class="int-name">Linear</span></div>
+            <div class="int-desc">이슈 트래킹 연동</div>
+          </div>
+          <div class="int-item">
+            <div class="int-head"><div class="int-ic" style="background:#FF7A59;"><i class="fas fa-headset"></i></div><span class="int-name">HubSpot</span></div>
+            <div class="int-desc">CRM 데이터 접근 (MCP)</div>
+          </div>
+          <div class="int-item" style="border:1.5px dashed rgba(225,98,89,.4);background:var(--accent-bg);">
+            <div class="int-head"><div class="int-ic" style="background:var(--green);"><i class="fas fa-cogs"></i></div><span class="int-name" style="color:var(--accent);">Custom MCP</span></div>
+            <div class="int-desc" style="color:var(--accent);">커스텀 서버 직접 연결</div>
+          </div>
+        </div>
+        <div class="int-info">
+          <i class="fas fa-info-circle"></i><strong style="color:var(--dark);">연동 범위 확장</strong> — Notion 내부뿐 아니라 외부 도구와 연결해 더 많은 컨텍스트를 활용할 수 있습니다.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">5 / 15</span></div>
+</div>
+
+<!-- ═══ S06 FLOW ══════════════════════════════════════════════ -->
+<div class="slide" id="s06">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 3 · 핵심 기능</span>
+      <span class="hdr-title">에이전트, 어떻게 만드나?</span>
+    </div>
+    <div style="text-align:right;"><div style="font-size:12px;color:var(--muted);">5단계 플로우</div><div style="font-size:11px;color:var(--subtle);margin-top:2px;">최소 2분이면 완성</div></div>
+  </div>
+  <div class="slide-body">
+    <div class="flow-steps">
+      <div class="fl-step"><div class="fl-num a">1</div><div class="fl-card a-top"><div class="fl-ic"><i class="fas fa-comment-dots" style="color:var(--accent);"></i></div><div class="fl-name">자연어 설명</div><div class="fl-desc">"매일 9시에 Slack 요약해줘"처럼 원하는 동작을 자유롭게 입력</div></div></div>
+      <div class="fl-step"><div class="fl-num">2</div><div class="fl-card"><div class="fl-ic"><i class="fas fa-magic" style="color:var(--dark);"></i></div><div class="fl-name">AI 초안 생성</div><div class="fl-desc">Notion AI가 지시사항과 도구 연결을 자동으로 구성</div></div></div>
+      <div class="fl-step"><div class="fl-num">3</div><div class="fl-card"><div class="fl-ic"><i class="fas fa-cog" style="color:var(--dark);"></i></div><div class="fl-name">세부 설정</div><div class="fl-desc">트리거, 소스 범위, AI 모델 직접 조정</div></div></div>
+      <div class="fl-step"><div class="fl-num">4</div><div class="fl-card"><div class="fl-ic"><i class="fas fa-play" style="color:var(--dark);"></i></div><div class="fl-name">테스트 실행</div><div class="fl-desc">저장 전 1회 실행해 결과 확인 및 로그 검토</div></div></div>
+      <div class="fl-step"><div class="fl-num a">5</div><div class="fl-card a-top"><div class="fl-ic"><i class="fas fa-rocket" style="color:var(--accent);"></i></div><div class="fl-name">팀 공유</div><div class="fl-desc">워크스페이스에 배포, 어드민 권한 최종 확인</div></div></div>
+    </div>
+    <div class="flow-quote"><i class="fas fa-circle" style="color:var(--green);font-size:8px;margin-right:6px;"></i><strong>핵심:</strong> 자연어 한 줄만 써도 Notion AI가 나머지를 알아서 구성해준다 — <span style="color:var(--green);">기술 지식 없이도 에이전트를 빠르게 만들 수 있습니다.</span></div>
+    <div class="flow-info-row">
+      <div class="fi-card"><i class="fas fa-clock"></i><div><div class="fi-title">평균 생성 시간</div><div class="fi-sub">2~3분 (자연어 설명 → 테스트 완료)</div></div></div>
+      <div class="fi-card"><i class="fas fa-check-circle"></i><div><div class="fi-title">자연어 → 정상 동작률</div><div class="fi-sub">92% (자연어 설명 → 정상 동작)</div></div></div>
+      <div class="fi-card"><i class="fas fa-users"></i><div><div class="fi-title">팀 공유</div><div class="fi-sub">워크스페이스 전체 즉시 적용</div></div></div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">6 / 15</span></div>
+</div>
+
+<!-- ═══ S07 CONTROL & PRICING ════════════════════════════════ -->
+<div class="slide" id="s07">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 3 · 핵심 기능</span>
+      <span class="hdr-title">제어 & 비용</span>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="s07-layout">
+      <div class="s05-col-card">
+        <div class="col-head"><i class="fas fa-shield-alt"></i> 안전하게 운영하려면</div>
+        <div class="sec-list">
+          <div class="sec-item"><i class="fas fa-user-shield"></i> 어드민이 에이전트 생성 권한 관리</div>
+          <div class="sec-item"><i class="fas fa-list-alt"></i> 모든 실행 이력 로그 저장</div>
+          <div class="sec-item"><i class="fas fa-undo"></i> 변경사항 롤백 가능</div>
+          <div class="sec-item"><i class="fas fa-lock"></i> 에이전트별 소스 접근 범위 개별 설정</div>
+          <div class="sec-item"><i class="fas fa-shield-virus"></i> 프롬프트 인젝션 자동 탐지 가드레일</div>
+          <div class="sec-item"><i class="fas fa-power-off"></i> 언제든 에이전트 즉시 비활성화</div>
+        </div>
+        <div class="ent-badge"><i class="fas fa-building"></i> Enterprise: Zero data retention + MCP 감사 로그</div>
+      </div>
+      <div class="s05-col-card">
+        <div class="col-head"><i class="fas fa-coins"></i> 비용은 어떻게 되나?</div>
+        <div class="price-tl">
+          <div class="pt-step">
+            <div class="pt-dot free"><i class="fas fa-gift" style="font-size:13px;"></i></div>
+            <div class="pt-info">
+              <div class="pt-period">~ 2026. 05. 03</div>
+              <div class="pt-desc">Business / Enterprise 플랜에서<br>크레딧 소비 없이 자유롭게 사용 가능</div>
+            </div>
+          </div>
+          <div class="pt-step">
+            <div class="pt-dot paid"><i class="fas fa-credit-card" style="font-size:11px;"></i></div>
+            <div class="pt-info">
+              <div class="pt-period">2026. 05. 04 ~</div>
+              <div class="pt-desc">에이전트 작업량 기준 Notion 크레딧 소비<br>어드민 대시보드 실시간 추적 / 필요한 만큼 구매</div>
+            </div>
+          </div>
+        </div>
+        <div class="pt-footnote">퍼스널 에이전트 · AI Meeting Notes · Enterprise Search<br>→ 크레딧 소비 없이 플랜 내 포함</div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;letter-spacing:.05em;text-transform:uppercase;">크레딧 절약 팁</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="font-size:11px;color:var(--dark);display:flex;align-items:center;gap:7px;"><i class="fas fa-chevron-right" style="color:var(--green);font-size:9px;"></i> 트리거 빈도를 실제 필요 수준으로 조정</div>
+            <div style="font-size:11px;color:var(--dark);display:flex;align-items:center;gap:7px;"><i class="fas fa-chevron-right" style="color:var(--green);font-size:9px;"></i> 소스 접근 범위 최소화 (불필요한 읽기 방지)</div>
+            <div style="font-size:11px;color:var(--dark);display:flex;align-items:center;gap:7px;"><i class="fas fa-chevron-right" style="color:var(--green);font-size:9px;"></i> 단순 작업엔 Auto 모델 사용</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">7 / 15</span></div>
+</div>
+
+<!-- ═══ S08 CAN / CANNOT ═════════════════════════════════════ -->
+<div class="slide" id="s08">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 3 · 핵심 기능</span>
+      <span class="hdr-title">할 수 있는 것 / 주의할 것</span>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="s08-layout">
+      <div class="can-box">
+        <div class="s08-head g"><i class="fas fa-check-circle"></i> 할 수 있는 것</div>
+        <div class="work-grid">
+          <div class="work-card">
+            <div class="wc-ic n"><i class="fas fa-file-alt"></i></div>
+            <div class="wc-name">Notion / Slack</div>
+            <div class="wc-desc">페이지 요약, 채널 모니터링 및 자동 응답</div>
+          </div>
+          <div class="work-card">
+            <div class="wc-ic s"><i class="fas fa-envelope"></i></div>
+            <div class="wc-name">Email / Calendar</div>
+            <div class="wc-desc">수신함 분류, 초안 작성, 팀 스케줄 조율</div>
+          </div>
+          <div class="work-card">
+            <div class="wc-ic e"><i class="fas fa-cogs"></i></div>
+            <div class="wc-name">External Tools</div>
+            <div class="wc-desc">Figma, HubSpot 등 MCP 연동 자동화</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+          <div style="background:#fff;border-radius:8px;padding:10px 18px;border:1px solid rgba(69,130,98,.2);font-size:12px;color:var(--dark);display:flex;align-items:center;gap:8px;"><i class="fas fa-robot" style="color:var(--green);"></i> 반복 업무 자동화 (티켓 분류, 정기 리포트 등)</div>
+          <div style="background:#fff;border-radius:8px;padding:10px 18px;border:1px solid rgba(69,130,98,.2);font-size:12px;color:var(--dark);display:flex;align-items:center;gap:8px;"><i class="fab fa-slack" style="color:#4A154B;"></i> Slack Q&A 자동 응답 — 반복 질문 처리</div>
+          <div style="background:#fff;border-radius:8px;padding:10px 18px;border:1px solid rgba(69,130,98,.2);font-size:12px;color:var(--dark);display:flex;align-items:center;gap:8px;"><i class="fas fa-chart-bar" style="color:var(--green);"></i> 일간·주간 스탠드업 리포트 자동 생성</div>
+        </div>
+      </div>
+      <div class="cannot-box">
+        <div class="s08-head r"><i class="fas fa-exclamation-triangle"></i> 주의할 것</div>
+        <div class="cant-list">
+          <div class="cant-item">
+            <i class="fas fa-times-circle"></i>
+            <div><div class="cant-name">플랜 제한</div><div class="cant-desc">Free / Plus 플랜에서는 사용 불가<br>Business 또는 Enterprise 전용</div></div>
+          </div>
+          <div class="cant-item">
+            <i class="fas fa-bug"></i>
+            <div><div class="cant-name">프롬프트 인젝션</div><div class="cant-desc">에이전트가 읽는 문서·채널에 악성 지시 삽입 가능<br>낯선 소스 접근 전 반드시 검토</div></div>
+          </div>
+          <div class="cant-item">
+            <i class="fas fa-chart-line"></i>
+            <div><div class="cant-name">크레딧 가변 소비</div><div class="cant-desc">작업 복잡도에 따라 크레딧 소비량 가변<br>사전 사용량 모니터링 필요</div></div>
+          </div>
+          <div class="cant-item">
+            <i class="fas fa-brain"></i>
+            <div><div class="cant-name">모델 의존성</div><div class="cant-desc">선택한 AI 모델에 따라 성능 차이 발생<br>모델 변경 시 동작 결과 재검증 필요</div></div>
+          </div>
+        </div>
+        <div class="cant-date"><i class="fas fa-calendar-check"></i> 2026.05.04부터 크레딧 과금 시작 — 지금이 실험 적기!</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">8 / 15</span></div>
+</div>
+
+<!-- ═══ S09 BIG NUMBERS ══════════════════════════════════════ -->
+<div class="slide" id="s09">
+  <div class="slide-header dark-hdr" style="background:var(--dark);">
+    <div class="hdr-left">
+      <span class="part-tag">PART 4 · 사용 사례</span>
+      <span class="hdr-title">숫자로 보는 커스텀 에이전트</span>
+    </div>
+  </div>
+  <div class="slide-body" style="background:var(--dark);">
+    <div class="big-grid">
+      <div class="big-card r">
+        <div class="bc-top"><i class="fas fa-robot bc-icon"></i></div>
+        <div class="big-num">21,000+</div>
+        <div class="big-label">베타 기간 중 생성된 에이전트</div>
+        <div class="big-sub">출시 직전까지 얼리 테스터가 만든 수</div>
+        <div class="big-bubble">Notion 출시 전<br>이미 검증된 수요</div>
+      </div>
+      <div class="big-card r">
+        <div class="bc-top"><i class="fas fa-building bc-icon"></i></div>
+        <div class="big-num">2,800개</div>
+        <div class="big-label">Notion 사내 운영 중인 에이전트</div>
+        <div class="big-sub">직원 수보다 많은 에이전트가 24/7 동작 중</div>
+        <div class="big-bubble">직원보다 많은<br>AI 동료</div>
+      </div>
+      <div class="big-card g">
+        <div class="bc-top"><i class="fas fa-database bc-icon"></i></div>
+        <div class="big-num">50%+</div>
+        <div class="big-label">에이전트가 직접 만든 Notion DB 비율</div>
+        <div class="big-sub">사람보다 에이전트가 더 많은 DB를 생성</div>
+        <div class="big-bubble">AI가 사람보다<br>더 많이 생성</div>
+      </div>
+      <div class="big-card g">
+        <div class="bc-top"><i class="fas fa-clock bc-icon"></i></div>
+        <div class="big-num">4,000건</div>
+        <div class="big-label">Ramp 단일 에이전트, 2주간 응답 수</div>
+        <div class="big-sub">절감 시간 약 2,000시간 추정</div>
+        <div class="big-bubble">담당자<br>2,000시간 절감</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer dark-footer" style="background:var(--dark);"><span class="footer-date">2026.03</span><span class="footer-num">9 / 15</span></div>
+</div>
+
+<!-- ═══ S10 RAMP ══════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 4 · 사용 사례 · Ramp</span>
+      <span class="hdr-title" style="font-size:22px;">300개 에이전트로 운영하는 Q&A 자동화</span>
+    </div>
+    <div class="hdr-badge">Ramp · 기업가치 $32B</div>
+  </div>
+  <div class="slide-body">
+    <div class="ramp-layout">
+      <div class="ramp-left">
+        <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;">배경 & 목표</div>
+        <div class="ramp-goal">"세계에서 가장<br>생산성 높은 회사"</div>
+        <div class="ramp-desc">2024년 중반 업무를 Notion으로 통합. 에이전트를 그 위에 얹어 AI 자동화를 구축. 결과: 밸류에이션 3배 성장, 연매출 $1B 돌파.</div>
+        <div class="ramp-mini">
+          <div class="rm-card"><div class="rm-num">300+</div><div class="rm-label">에이전트 운영</div></div>
+          <div class="rm-card"><div class="rm-num" style="color:var(--green);">24/7</div><div class="rm-label">상시 운영</div></div>
+        </div>
+      </div>
+      <div class="ramp-right">
+        <div class="agent-card">
+          <div class="agent-name"><i class="fas fa-magic" style="color:var(--accent);"></i> Product Oracle <div class="agent-status">활성화</div></div>
+          <div class="agent-sub">Slack 채널에서 수신된 질문을 Notion 지식베이스 기반으로 답변. 하루 수십 건의 제품/지원 질문을 높은 정확도로 처리합니다.</div>
+          <div class="agent-flow">
+            <div class="af-step"><i class="fab fa-slack"></i>Slack<br>질문 수신</div>
+            <div class="af-arrow"><i class="fas fa-arrow-right"></i></div>
+            <div class="af-step"><i class="fas fa-search"></i>Notion KB<br>검색</div>
+            <div class="af-arrow"><i class="fas fa-arrow-right"></i></div>
+            <div class="af-step"><i class="fas fa-reply"></i>자동 응답<br>생성</div>
+            <div class="af-arrow"><i class="fas fa-arrow-right"></i></div>
+            <div class="af-step"><i class="fas fa-check-circle"></i>담당자<br>감사</div>
+          </div>
+        </div>
+        <div class="metrics-row">
+          <div class="met-card"><div class="met-num">300+</div><div class="met-label">에이전트 운영</div></div>
+          <div class="met-card"><div class="met-num">70%</div><div class="met-label">생산성 툴 비용 절감</div></div>
+          <div class="met-card"><div class="met-num">3×</div><div class="met-label">팀 속도 향상</div></div>
+        </div>
+        <div class="ramp-quote">"에이전트가 매일 수십 건의 세밀한 질문을 처리한다. 팀은 이제 응답을 감사하고 에이전트를 개선하는 데만 집중한다."<div class="q-author">— Ben Levick, Head of Operations & Internal AI</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">10 / 15</span></div>
+</div>
+
+<!-- ═══ S11 BRAINTRUST ════════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 4 · 사용 사례 · Braintrust</span>
+      <span class="hdr-title" style="font-size:22px;">마케팅 VP의 3개 버디 에이전트</span>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="s11-ctx"><i class="fas fa-quote-left" style="color:var(--accent);margin-right:6px;font-size:10px;"></i>매일 오전 5시, VP가 직접 수집하던 정보를 에이전트가 대신한다</div>
+    <div class="buddy-grid">
+      <div class="buddy-card">
+        <div class="buddy-bar" style="background:var(--accent);"></div>
+        <div class="buddy-top-row"><div class="buddy-ic"><i class="fas fa-search"></i></div><div class="buddy-trigger sched"><i class="fas fa-calendar-alt"></i> 매일 오전 9시</div></div>
+        <div class="buddy-name">Competitive Intelligence Buddy</div>
+        <div class="buddy-actions">▸ 경쟁사 changelog 자동 스캔<br>▸ Gong 통화 녹취에서 경쟁 키워드 추출</div>
+        <div class="buddy-result">→ Notion 영업 one-pager 자동 업데이트<br>영업팀 항상 최신 정보 확보</div>
+      </div>
+      <div class="buddy-card">
+        <div class="buddy-bar" style="background:var(--green);"></div>
+        <div class="buddy-top-row"><div class="buddy-ic"><i class="fas fa-handshake"></i></div><div class="buddy-trigger event"><i class="fas fa-bolt"></i> Slack 이벤트</div></div>
+        <div class="buddy-name">Customer Evidence Buddy</div>
+        <div class="buddy-actions">▸ 영업팀 Slack에서 클로즈된 딜 감지<br>▸ 로고 사용 권한 자동 감지</div>
+        <div class="buddy-result">→ 고객 레퍼런스 DB 자동 업데이트<br>주간 요약 → 마케팅팀 + CEO 전송</div>
+      </div>
+      <div class="buddy-card">
+        <div class="buddy-bar" style="background:var(--muted);"></div>
+        <div class="buddy-top-row"><div class="buddy-ic"><i class="fas fa-chart-line"></i></div><div class="buddy-trigger sched"><i class="fas fa-calendar-alt"></i> 주간 스케줄</div></div>
+        <div class="buddy-name">Deal Spotter</div>
+        <div class="buddy-actions">▸ 업그레이드 가능성 높은 계정 분석</div>
+        <div class="buddy-result">→ 영업팀에게 주간 리포트 자동 발송<br>영업 준비 시간 대폭 단축</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border-radius:10px;padding:12px 18px;margin-bottom:12px;border-left:4px solid var(--accent);display:flex;align-items:center;gap:12px;">
+      <i class="fas fa-quote-left" style="color:var(--accent);font-size:18px;flex-shrink:0;"></i>
+      <div>
+        <div style="font-size:12px;color:var(--muted);font-style:italic;line-height:1.6;">"경쟁 에이전트 하나가 매일 업데이트를 올리고, 고객 레퍼런스 에이전트는 주간 요약을 나와 CEO에게 보낸다. 각 업데이트가 하루 20분씩을 돌려준다."</div>
+        <div style="font-size:11px;font-weight:700;color:var(--dark);margin-top:4px;">— Morgane Palomares, VP of Marketing · Braintrust</div>
+      </div>
+    </div>
+    <div class="bt-bar">
+      <div class="bt-item"><div class="bt-val">하루 20분+</div><div class="bt-lbl">에이전트 1개당 절감</div></div>
+      <div class="bt-item"><div class="bt-val">항상 최신 정보</div><div class="bt-lbl">영업팀 경쟁 인텔리전스</div></div>
+      <div class="bt-item"><div class="bt-val">판단·전략에 집중</div><div class="bt-lbl">VP의 업무 재배분</div></div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">11 / 15</span></div>
+</div>
+
+<!-- ═══ S12 THREE CASES ══════════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 4 · 사용 사례</span>
+      <span class="hdr-title">업종을 가리지 않는 자동화</span>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="case-badge" style="background:var(--dark);"><i class="fas fa-globe"></i> Remote · 글로벌 HR</div>
+        <div class="case-agent">IT 헬프데스크 에이전트</div>
+        <div class="case-flow">Slack 수신 → 자동 분류 → 자율 해결 or 에스컬레이션<br>Slack ↔ Notion DB 상태 자동 동기화</div>
+        <div class="case-stats">
+          <div class="cs-stat"><div class="cs-val">주 20h</div><div class="cs-lbl">시간 절감</div></div>
+          <div class="cs-stat"><div class="cs-val">95%+</div><div class="cs-lbl">분류 정확도</div></div>
+          <div class="cs-stat"><div class="cs-val">25%+</div><div class="cs-lbl">자율 해결</div></div>
+          <div class="cs-stat"><div class="cs-val">100%</div><div class="cs-lbl">DB 동기화</div></div>
+        </div>
+        <div class="case-quote">"기존 헬프데스크 시스템을 에이전트 하나로 대체했다."<div class="case-attr">— James Lawley, IT Ops Manager</div></div>
+      </div>
+      <div class="case-card">
+        <div class="case-badge" style="background:var(--green);"><i class="fas fa-database"></i> Clay · 데이터 인리치먼트</div>
+        <div class="case-agent">채널 요약 · Incident Reporter</div>
+        <div class="case-agents">
+          <div class="ca-block"><div class="ca-name"><i class="fab fa-slack" style="color:#4A154B;margin-right:4px;"></i>채널 요약 에이전트</div><div class="ca-desc">Slack + Notion DB 요약 → 자동 푸시</div></div>
+          <div class="ca-block"><div class="ca-name"><i class="fas fa-bug" style="color:var(--accent);margin-right:4px;"></i>Incident Reporter</div><div class="ca-desc">인시던트 감지 → 루트 코즈 분석 → 사후 보고서 자동 작성</div></div>
+        </div>
+        <div class="case-quote">"Slack을 직접 훑던 시간이 0이 됐다."<div class="case-attr">— Willie Yao, Head of Engineering</div></div>
+      </div>
+      <div class="case-card">
+        <div class="case-badge" style="background:var(--accent);">▲ Vercel · 프론트엔드 클라우드</div>
+        <div class="case-agent">Draft Grader & Rewriter</div>
+        <div class="case-flow">CEO 전달 초안 → Slack 수신 → 품질 평가 & 자동 재작성<br>기준: Chief of Staff의 CEO 커뮤니케이션 가이드라인</div>
+        <div class="case-stats">
+          <div class="cs-stat"><div class="cs-val">100%</div><div class="cs-lbl">품질 일관성</div></div>
+          <div class="cs-stat"><div class="cs-val">50%</div><div class="cs-lbl">시간 절감</div></div>
+          <div class="cs-stat"><div class="cs-val">24/7</div><div class="cs-lbl">모니터링</div></div>
+          <div class="cs-stat"><div class="cs-val">99%</div><div class="cs-lbl">정확도</div></div>
+        </div>
+        <div class="case-quote">"곧 Vercel에는 직원보다 더 많은 에이전트가 운영될 것이다."<div class="case-attr">— Brian Emerick, Technical PM</div></div>
+      </div>
+    </div>
+    <div class="pattern-note">IT 자동화 / 마케팅 인텔리전스 / 커뮤니케이션 품질 관리 — 업종과 팀이 달라도 패턴은 같다: <strong>반복을 에이전트에게, 판단은 사람에게.</strong></div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">12 / 15</span></div>
+</div>
+
+<!-- ═══ S13 PATTERN SUMMARY ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 4 · 사용 사례</span>
+      <span class="hdr-title">모든 사례의 공통 패턴</span>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="s13-layout">
+      <div class="pattern-diagram">
+        <div class="pd-title"><i class="fas fa-project-diagram" style="color:var(--accent);margin-right:6px;"></i>반복은 에이전트에게, 판단은 사람에게</div>
+        <div class="pd-flow">
+          <div class="pd-row">
+            <div class="pd-box input"><div class="pd-box-icon"><i class="fas fa-sync-alt" style="color:var(--muted);"></i></div><div class="pd-box-name">반복 업무</div><div class="pd-box-sub">Q&A·분류·리포트</div></div>
+            <div class="pd-arrow"><i class="fas fa-arrow-right"></i></div>
+            <div class="pd-box agent"><div class="pd-box-icon"><i class="fas fa-robot" style="color:var(--accent);"></i></div><div class="pd-box-name">에이전트 (자동)</div><div class="pd-box-sub">24/7 독립 처리</div></div>
+          </div>
+          <div class="pd-row">
+            <div class="pd-box result"><div class="pd-box-icon"><i class="fas fa-file-check" style="color:var(--green);"></i></div><div class="pd-box-name">결과물</div><div class="pd-box-sub">리포트·응답·DB</div></div>
+            <div class="pd-arrow"><i class="fas fa-arrow-right"></i></div>
+            <div class="pd-box human"><div class="pd-box-icon"><i class="fas fa-user-tie" style="color:var(--accent);"></i></div><div class="pd-box-name">사람 (판단)</div><div class="pd-box-sub">감사·전략·개선</div></div>
+          </div>
+        </div>
+        <div class="pd-message">반복을 에이전트에게, <span>판단은 사람에게</span></div>
+      </div>
+      <div class="saving-col">
+        <div class="sav-title"><i class="fas fa-chart-bar" style="color:var(--accent);margin-right:6px;"></i>실제 절감 효과</div>
+        <div class="sav-card">
+          <div class="sav-ic" style="background:rgba(225,98,89,.1);color:var(--accent);"><i class="fas fa-building"></i></div>
+          <div>
+            <div class="sav-company">Ramp</div>
+            <div class="sav-num">2,000h</div>
+            <div class="sav-detail">단일 에이전트 2주간 절감</div>
+          </div>
+        </div>
+        <div class="sav-card">
+          <div class="sav-ic" style="background:rgba(47,52,55,.08);color:var(--dark);"><i class="fas fa-globe"></i></div>
+          <div>
+            <div class="sav-company">Remote</div>
+            <div class="sav-num">20h/주</div>
+            <div class="sav-detail">IT 헬프데스크 에이전트 1개</div>
+          </div>
+        </div>
+        <div class="sav-card">
+          <div class="sav-ic" style="background:rgba(69,130,98,.1);color:var(--green);"><i class="fas fa-chart-line"></i></div>
+          <div>
+            <div class="sav-company">Braintrust</div>
+            <div class="sav-num">20분/일 × 3</div>
+            <div class="sav-detail">버디 에이전트 3개 합산</div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border-radius:9px;padding:11px 14px;border:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.6;margin-top:2px;">
+          <i class="fas fa-lightbulb" style="color:var(--accent);margin-right:5px;"></i>
+          팀이 절감한 시간은 <strong style="color:var(--dark);">고부가가치 업무</strong>와 <strong style="color:var(--dark);">전략적 사고</strong>에 재투자됩니다.
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:12px 14px;border:1.5px solid var(--border);margin-top:2px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-file-alt" style="color:#fff;font-size:12px;"></i></div>
+            <div><div style="font-size:11px;font-weight:700;color:var(--dark);">Notion 사내 — 피드백 라우터</div><div style="font-size:10px;color:var(--muted);">공동창업자 직접 구축 · Notion 사내 최다 사용 에이전트</div></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.55;">채널로 들어오는 제품 피드백 → 유형별 분류 → 담당 팀 자동 배분</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">13 / 15</span></div>
+</div>
+
+<!-- ═══ S14 CHECKLIST ════════════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="slide-header">
+    <div class="hdr-left">
+      <span class="part-tag">PART 5 · 도입 가이드</span>
+      <span class="hdr-title">우리 팀, 어떻게 시작하나?</span>
+    </div>
+    <div style="text-align:right;font-size:12px;color:var(--muted);">팀 도입 체크리스트</div>
+  </div>
+  <div class="slide-body">
+    <div class="check-grid">
+      <div class="check-card">
+        <div class="step-badge" style="background:var(--green);"><i class="fas fa-flag"></i> ① 도입 전</div>
+        <div class="check-items">
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">Business 또는 Enterprise 플랜 확인</span><span class="ci-status must">필수</span></div>
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">어드민 계정에서 에이전트 생성 권한 활성화</span><span class="ci-status must">필수</span></div>
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">자동화할 반복 업무 목록 작성 (우선순위 순)</span><span class="ci-status rec">권장</span></div>
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">에이전트 접근 소스 범위 사전 정의</span><span class="ci-status rec">권장</span></div>
+        </div>
+      </div>
+      <div class="check-card">
+        <div class="step-badge" style="background:var(--accent);"><i class="fas fa-pencil-alt"></i> ② 설계 시</div>
+        <div class="check-items">
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">트리거 조건 명확히 정의</span><span class="ci-status must">필수</span></div>
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">접근 범위 최소화 원칙 적용</span><span class="ci-status must">필수</span></div>
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">이상 동작 시 알림 채널 설정</span><span class="ci-status rec">권장</span></div>
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">프롬프트 인젝션 위험 소스 사전 검토</span><span class="ci-status rec">권장</span></div>
+        </div>
+      </div>
+      <div class="check-card">
+        <div class="step-badge" style="background:var(--dark);"><i class="fas fa-play-circle"></i> ③ 운영 중</div>
+        <div class="check-items">
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">어드민 대시보드에서 크레딧 주기적 확인</span><span class="ci-status week">주간</span></div>
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">실행 로그 정기 감사</span><span class="ci-status week">월간</span></div>
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">모델 변경 시 동작 결과 재검증</span><span class="ci-status when">필요시</span></div>
+          <div class="ci-row"><i class="fas fa-check-circle ci-check"></i><span class="ci-text">05.04 전 크레딧 필요량 예측</span><span class="ci-status must">필수</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="clipboard">
+      <div class="clipboard-top"><i class="fas fa-exclamation-triangle"></i><span>두 가지 꼭 주의하세요</span></div>
+      <div class="clipboard-body">
+        <div class="cw-item"><div class="cw-title"><i class="fas fa-bug"></i>프롬프트 인젝션</div><div class="cw-desc">에이전트가 읽는 문서·채널에 악성 지시 삽입 가능<br>→ 낯선 소스 접근 전 반드시 검토</div></div>
+        <div class="cw-item"><div class="cw-title"><i class="fas fa-ban"></i>플랜 제한</div><div class="cw-desc">Free / Plus 플랜에서는 커스텀 에이전트 사용 불가<br>→ Business 또는 Enterprise 플랜 필요</div></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+      <div class="check-status-bar">
+        <div class="csb-item"><div class="csb-dot" style="background:var(--green);"></div>체크리스트 완료 후 에이전트 생성 가능</div>
+        <div class="csb-item"><div class="csb-dot" style="background:var(--accent);"></div>설정이 필요한 항목</div>
+      </div>
+      <div style="font-size:11px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:5px;"><i class="fas fa-gift"></i> 2026.05.03까지 무료 — 지금이 도입 실험 적기</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="footer-date">2026.03</span><span class="footer-num">14 / 15</span></div>
+</div>
+
+<!-- ═══ S15 CLOSING ══════════════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="close-ring" style="width:240px;height:240px;top:70px;right:80px;"></div>
+  <div class="close-ring" style="width:180px;height:180px;bottom:100px;left:70px;"></div>
+  <div class="close-dot" style="top:180px;left:130px;"></div>
+  <div class="close-dot" style="bottom:180px;right:160px;opacity:.5;"></div>
+  <div class="close-label">PART 5 · 마무리</div>
+  <div class="close-msg">한 번 만들면,<br>팀이 <span class="em">자는 동안에도</span> 일한다.</div>
+  <div class="close-line"></div>
+  <div class="close-free"><i class="fas fa-gift"></i> 지금 무료로 시작하세요 (~2026.05.03)</div>
+  <div class="close-tags">
+    <div class="close-tag"><i class="fas fa-bolt"></i> 자율 실행</div>
+    <div class="close-tag"><i class="fas fa-users"></i> 팀 공유</div>
+    <div class="close-tag"><i class="fas fa-clock"></i> 24/7 운영</div>
+  </div>
+  <div class="close-links">
+    <div class="close-link"><div class="cl-name">공식 블로그</div><div class="cl-url">notion.com/blog/introducing-custom-agents</div></div>
+    <div class="close-link"><div class="cl-name">릴리즈 노트 3.3</div><div class="cl-url">notion.com/releases/2026-02-24</div></div>
+  </div>
+  <div class="close-date">2026.03</div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav-bar">
+  <span class="part-indicator" id="partIndicator"><span></span></span>
+  <button class="nav-btn" onclick="nav(-1)"><i class="fas fa-chevron-left"></i></button>
+  <div class="dots" id="dots"></div>
+  <span class="slide-counter" id="counter">1 / 15</span>
+  <button class="nav-btn" onclick="nav(1)"><i class="fas fa-chevron-right"></i></button>
+  <span style="min-width:120px;"></span>
+</div>
+
+</div><!-- /wrapper -->
+
+<script>
+const SLIDES = document.querySelectorAll('.slide');
+const TOTAL = SLIDES.length;
+const PART_COLORS = ['#A0A9B0','#A0A9B0','#A0A9B0','#6B7280','#458262','#458262','#458262','#458262','#E16259','#E16259','#E16259','#E16259','#E16259','#2F3437','#2F3437'];
+const PART_LABELS = ['PART 1 · 도입','PART 1 · 도입','PART 1 · 도입','PART 2 · 비교','PART 3 · 핵심 기능','PART 3 · 핵심 기능','PART 3 · 핵심 기능','PART 3 · 핵심 기능','PART 4 · 사용 사례','PART 4 · 사용 사례','PART 4 · 사용 사례','PART 4 · 사용 사례','PART 4 · 사용 사례','PART 5 · 도입 가이드','PART 5 · 마무리'];
+let cur = 0;
+
+function buildDots() {
+  const el = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot'+(i===0?' active':'');
+    d.onclick = ()=>goTo(i);
+    el.appendChild(d);
+  }
+}
+
+function goTo(idx){
+  SLIDES[cur].classList.remove('active');
+  document.querySelectorAll('.dot')[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(TOTAL-1, idx));
+  SLIDES[cur].classList.add('active');
+  document.querySelectorAll('.dot')[cur].classList.add('active');
+  document.getElementById('counter').textContent = (cur+1)+' / '+TOTAL;
+  document.getElementById('pFill').style.width = ((cur+1)/TOTAL*100)+'%';
+  document.getElementById('pFill').style.background = PART_COLORS[cur];
+  document.getElementById('partIndicator').innerHTML = '<span>'+PART_LABELS[cur]+'</span>';
+}
+
+function nav(d){ goTo(cur+d); }
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') nav(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') nav(-1);
+});
+
+buildDots();
+document.getElementById('pFill').style.width = (1/TOTAL*100)+'%';
+document.getElementById('pFill').style.background = PART_COLORS[0];
+document.getElementById('partIndicator').innerHTML = '<span>'+PART_LABELS[0]+'</span>';
+</script>
+</body>
+</html>
