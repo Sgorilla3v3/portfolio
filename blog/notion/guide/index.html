@@ -637,23 +637,6 @@ td strong{color:var(--tx-primary);font-weight:600;}
     <div class="card"><div class="card-icon c-gray">🔒</div><h3>데이터 학습 금지</h3><p>고객 데이터로 모델 학습 불가. Enterprise는 Zero Data Retention.</p></div>
   </div>
   <div class="callout warn"><span class="ci">💰</span><div><strong>과금 안내</strong> — 2026.05.03까지 무료 체험. 2026.05.04부터 Notion Credits 사용 ($10 / 1,000 크레딧, Business·Enterprise Add-on).</div></div>
-
-  <!-- ── 핵심 용어 단어장 ── -->
-  <div class="h2">핵심 용어 단어장</div>
-  <p class="lead">노션을 처음 배우거나 팀원에게 설명할 때 자주 마주치는 핵심 용어들을 정리했다. 검색창에 용어를 입력하거나 카테고리 버튼으로 필터링하면 원하는 용어를 빠르게 찾을 수 있다.</p>
-
-  <div class="glossary-search-wrap">
-    <span class="glossary-search-icon">🔍</span>
-    <input class="glossary-search" id="gSearch" type="text" placeholder="용어 검색..." oninput="filterGlossary()">
-  </div>
-  <div class="glossary-filter">
-    <button class="gf-btn active" onclick="setFilter('all',this)">전체</button>
-    <button class="gf-btn" onclick="setFilter('구조',this)">구조</button>
-    <button class="gf-btn" onclick="setFilter('데이터베이스',this)">데이터베이스</button>
-    <button class="gf-btn" onclick="setFilter('권한',this)">권한</button>
-    <button class="gf-btn" onclick="setFilter('AI',this)">AI / 에이전트</button>
-  </div>
-  <div class="glossary-grid" id="glossaryGrid"></div>
 </section>
 
 <!-- ══════════ 플랜 비교 ══════════ -->
@@ -706,6 +689,28 @@ td strong{color:var(--tx-primary);font-weight:600;}
     </div>
   </div>
   <div class="callout tip"><span class="ci">📌</span><div><strong>핵심 원칙</strong> — 워크스페이스 데이터 구조가 정돈되어 있을수록 Agent 품질이 높아진다. DB 구조 설계가 먼저다.</div></div>
+</section>
+<section id="words" class="section">
+  <div class="sec-head">
+    <div class="sec-title">용어집</div>
+    <div class="sec-desc">핵심 단어들을 한번씩 읽어보자</div>
+  </div>
+  <!-- ── 핵심 용어 단어장 ── -->
+  <div class="h2">핵심 용어 단어장</div>
+  <p class="lead">노션을 처음 배우거나 팀원에게 설명할 때 자주 마주치는 핵심 용어들을 정리했다. 검색창에 용어를 입력하거나 카테고리 버튼으로 필터링하면 원하는 용어를 빠르게 찾을 수 있다.</p>
+
+  <div class="glossary-search-wrap">
+    <span class="glossary-search-icon">🔍</span>
+    <input class="glossary-search" id="gSearch" type="text" placeholder="용어 검색..." oninput="filterGlossary()">
+  </div>
+  <div class="glossary-filter">
+    <button class="gf-btn active" onclick="setFilter('all',this)">전체</button>
+    <button class="gf-btn" onclick="setFilter('구조',this)">구조</button>
+    <button class="gf-btn" onclick="setFilter('데이터베이스',this)">데이터베이스</button>
+    <button class="gf-btn" onclick="setFilter('권한',this)">권한</button>
+    <button class="gf-btn" onclick="setFilter('AI',this)">AI / 에이전트</button>
+  </div>
+  <div class="glossary-grid" id="glossaryGrid"></div>
 </section>
 
 </main>
