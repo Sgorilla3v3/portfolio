@@ -1,0 +1,597 @@
+{
+  "volume": 1,
+  "innovators": [
+    {
+      "id": "vol01_001",
+      "page": 1,
+      "name": "김기태",
+      "org": "그로채",
+      "group": "",
+      "region": "각남면",
+      "domains": [
+        "농식품",
+        "서비스 및 유통"
+      ],
+      "activity": "",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/grochae_",
+        "naver": "https://naver.me/5WO6rlBS"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/김기태.jpg"
+    },
+    {
+      "id": "vol01_002",
+      "page": 2,
+      "name": "김기훈",
+      "org": "이륜마굿간",
+      "group": "함께하는 기업",
+      "region": "청도읍",
+      "domains": [
+        "식음료",
+        "문화 예술"
+      ],
+      "activity": "바이크족 관련 사업 진행  및 로컬크리에이터로 활발한 활동",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/2h_stable"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/김기훈.jpg"
+    },
+    {
+      "id": "vol01_003",
+      "page": 3,
+      "name": "김은하",
+      "org": "멜로우티 대표",
+      "group": "",
+      "region": "매전면",
+      "domains": [
+        "식음료",
+        "숙박업",
+        "교육"
+      ],
+      "activity": "매전면 카페 운영 및 로컬크리에이터로 활발한 활동",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/mellow_t_cafe"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/김은하.jpg"
+    },
+    {
+      "id": "vol01_004",
+      "page": 4,
+      "name": "김정화",
+      "org": "마마스 핸즈",
+      "group": "",
+      "region": "화양읍",
+      "domains": [
+        "상품판매 및 체험"
+      ],
+      "activity": "",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/mmh_cheongdo"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/김정화.jpg"
+    },
+    {
+      "id": "vol01_005",
+      "page": 5,
+      "name": "박선미",
+      "org": "홍차리에/대표",
+      "group": "함께하는 기업",
+      "region": "화양읍",
+      "domains": [
+        "식음료",
+        "상품판매 및 체험"
+      ],
+      "activity": "폴란드 8년 거주 후 홍차전문카페 창업, 국제 Tea Club 운영",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/hongcha_lier",
+        "naver": "https://m.smartstore.naver.com/hongchalier"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/박선미.jpg"
+    },
+    {
+      "id": "vol01_006",
+      "page": 6,
+      "name": "배정란",
+      "org": "노는엄마들/대표",
+      "group": "입주기업",
+      "region": "화양읍",
+      "domains": [
+        "커뮤니티, 마을, 공동체",
+        "교육"
+      ],
+      "activity": "공동육아 및 문화기획",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/baejungran",
+        "instagram_2": "https://www.instagram.com/nolja_mom_22"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/배정란.jpg"
+    },
+    {
+      "id": "vol01_007",
+      "page": 7,
+      "name": "오동엽",
+      "org": "이로움",
+      "group": "함께하는 기업",
+      "region": "화양읍",
+      "domains": [
+        "농식품",
+        "서비스 및 유통"
+      ],
+      "activity": "",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/dyohhh"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/오동엽.jpg"
+    },
+    {
+      "id": "vol01_008",
+      "page": 8,
+      "name": "임미정",
+      "org": "(주)유니디자인경영연구소/대표",
+      "group": "",
+      "region": "풍각면",
+      "domains": [
+        "커뮤니티, 마을, 공동체"
+      ],
+      "activity": "",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/lims_note",
+        "instagram_2": "https://www.instagram.com/design_dilemma_"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/임미정.jpg"
+    },
+    {
+      "id": "vol01_009",
+      "page": 9,
+      "name": "정인숙",
+      "org": "덕인농가",
+      "group": "",
+      "region": "매전면",
+      "domains": [
+        "농식품",
+        "상품판매 및 체험"
+      ],
+      "activity": "",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/jeonginsug266"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/정인숙.jpg"
+    },
+    {
+      "id": "vol01_010",
+      "page": 10,
+      "name": "조경현",
+      "org": "꿈꾸는 공작소/소장",
+      "group": "",
+      "region": "풍각면",
+      "domains": [
+        "상품판매 및 체험",
+        "숙박업"
+      ],
+      "activity": "",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://: https://www.instagram.com/dreaming_makers",
+        "website": "https://: https://cafe.naver.com/hyunriri"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/조경현.jpg"
+    },
+    {
+      "id": "vol01_011",
+      "page": 11,
+      "name": "조민정",
+      "org": "꿈그린농원/실장",
+      "group": "함께하는 기업",
+      "region": "각남면",
+      "domains": [
+        "상품판매 및 체험",
+        "농식품"
+      ],
+      "activity": "꿈그린 농원 운영",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/mj_._._jo",
+        "instagram_2": "https://www.instagram.com/d.green_farm"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/조민정.jpg"
+    },
+    {
+      "id": "vol01_012",
+      "page": 12,
+      "name": "조은경",
+      "org": "우아한호작질 / 대표",
+      "group": "함께하는 기업",
+      "region": "각남면",
+      "domains": [
+        "상품판매 및 체험"
+      ],
+      "activity": "라탄공방 운영 및 외부출강, 미술학도 부부",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://: https://www.instagram.com/wooahan_rattan",
+        "website": "https://: link.inpock.co.kr/wooahan_rattan"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/조은경.jpg"
+    },
+    {
+      "id": "vol01_013",
+      "page": 13,
+      "name": "지소영",
+      "org": "할:베스트/대표",
+      "group": "함께하는 기업",
+      "region": "이서면",
+      "domains": [
+        "커뮤니티, 마을, 공동체",
+        "문화 예술"
+      ],
+      "activity": "문화 예술 프로젝트로 농촌 시니어의 사회참여 지원",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/jisoyeong25",
+        "instagram_2": "https://www.instagram.com/hal__best"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/지소영.jpg"
+    },
+    {
+      "id": "vol01_014",
+      "page": 14,
+      "name": "진보라",
+      "org": "꾸꾸네/대표",
+      "group": "함께하는 기업",
+      "region": "운문면",
+      "domains": [
+        "식음료",
+        "서비스 및 유통"
+      ],
+      "activity": "운문면에 위치한 디저트 카페",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/popora92",
+        "instagram_2": "https://www.instagram.com/kkukkune_kkakka",
+        "naver": "https://smartstore.naver.com/kkukkune"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/진보라.jpg"
+    },
+    {
+      "id": "vol01_015",
+      "page": 15,
+      "name": "최형규",
+      "org": "원더/대표",
+      "group": "입주기업",
+      "region": "매전면",
+      "domains": [
+        "서비스 및 유통"
+      ],
+      "activity": "청도 매전면의 폐교를 리모델링해 반려견 전용 캠핑장으로 운영",
+      "projects": "청도 사람책, 지역기업",
+      "sns": {
+        "instagram": "https://www.instagram.com/wonder_land_dog"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/최형규.jpg"
+    },
+    {
+      "id": "vol01_016",
+      "page": 16,
+      "name": "김경일",
+      "org": "청도군 귀농귀촌 종합지원센터",
+      "group": "",
+      "region": "청도읍",
+      "domains": [
+        "커뮤니티, 마을, 공동체"
+      ],
+      "activity": "",
+      "projects": "청도 사람책, 중간지원조직 및 기관",
+      "sns": {
+        "instagram": "https://: https://www.instagram.com/return_cheongdo",
+        "website": "https://: http://www.gocheongdo.or.kr/"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/김경일.jpg"
+    },
+    {
+      "id": "vol01_017",
+      "page": 17,
+      "name": "곽정의",
+      "org": "청도혁신센터/사업매니저",
+      "group": "",
+      "region": "화양읍",
+      "domains": [
+        "커뮤니티, 마을, 공동체"
+      ],
+      "activity": "다로리 마을공동체 주민",
+      "projects": "청도 사람책, 재단 직원",
+      "sns": {},
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/곽정의.jpg"
+    },
+    {
+      "id": "vol01_018",
+      "page": 18,
+      "name": "김경순",
+      "org": "청도 발도르프 마을",
+      "group": "",
+      "region": "화양읍",
+      "domains": [
+        "커뮤니티, 마을, 공동체",
+        "상품판매 및 체험"
+      ],
+      "activity": "",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://www.instagram.com/re.green.c/"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/김경순.jpg"
+    },
+    {
+      "id": "vol01_019",
+      "page": 19,
+      "name": "김지환",
+      "org": "운문우체국/국장",
+      "group": "",
+      "region": "운문면",
+      "domains": [
+        "커뮤니티, 마을, 공동체"
+      ],
+      "activity": "공무원 및 청도3040 포럼 활동",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://www.instagram.com/unmunpost"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/김지환.jpg"
+    },
+    {
+      "id": "vol01_020",
+      "page": 20,
+      "name": "박미나",
+      "org": "청도여성 CEO 클럽/대표",
+      "group": "입주기업",
+      "region": "이서면",
+      "domains": [
+        "상품판매 및 체험",
+        "농식품"
+      ],
+      "activity": "이서면에서 활동, 야생화",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://www.instagram.com/mina_bandb"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/박미나.jpg"
+    },
+    {
+      "id": "vol01_021",
+      "page": 21,
+      "name": "박성재",
+      "org": "잭과 사과나무, 다스/대표",
+      "group": "",
+      "region": "각남면",
+      "domains": [
+        "상품판매 및 체험",
+        "농식품"
+      ],
+      "activity": "잭과 사과나무 농장 / 청년예술단체 다스 운영",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://www.instagram.com/jack_and_appletree"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/박성재.jpg"
+    },
+    {
+      "id": "vol01_022",
+      "page": 22,
+      "name": "엄윤숙",
+      "org": "각북촌년 농장운영",
+      "group": "",
+      "region": "각북면",
+      "domains": [
+        "커뮤니티, 마을, 공동체",
+        "농식품"
+      ],
+      "activity": "각북 사과 농장 운영 및 청도군, 청도혁신센터  sns 홍보단 활동",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://www.instagram.com/eom_yunsuk"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/엄윤숙.jpg"
+    },
+    {
+      "id": "vol01_023",
+      "page": 23,
+      "name": "예병진",
+      "org": "청년농부",
+      "group": "",
+      "region": "금천면",
+      "domains": [
+        "농식품"
+      ],
+      "activity": "",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://인스타: https://www.instagram.com/minari_5914",
+        "youtube": "https://유튜브: https://www.youtube.com/@minari_5914"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/예병진.jpg"
+    },
+    {
+      "id": "vol01_024",
+      "page": 24,
+      "name": "이동혁",
+      "org": "청도군 체육회/배드민턴 코치",
+      "group": "",
+      "region": "청도읍",
+      "domains": [
+        "교육"
+      ],
+      "activity": "청도군내 배드민턴 교육",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://www.instagram.com/hyuk_imnida"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/이동혁.jpg"
+    },
+    {
+      "id": "vol01_025",
+      "page": 25,
+      "name": "이수영",
+      "org": "가까이마켓/대표",
+      "group": "",
+      "region": "금천면",
+      "domains": [
+        "커뮤니티, 마을, 공동체",
+        "문화 예술",
+        "교육"
+      ],
+      "activity": "금천에 위치한 농산물 판매업(인터넷)",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://www.instagram.com/bok.sooyoung",
+        "instagram_2": "https://www.instagram.com/gaggai_market"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/이수영.jpg"
+    },
+    {
+      "id": "vol01_026",
+      "page": 26,
+      "name": "장세범",
+      "org": "채채네팜",
+      "group": "",
+      "region": "이서면",
+      "domains": [
+        "농식품",
+        "상품판매 및 체험"
+      ],
+      "activity": "이서면에서 부모님과 함께 농사짓고 있는 청년농부 부부",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://www.instagram.com/chaechaesfarm",
+        "naver": "https://naver.me/5thwSHRn"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/장세범.jpg"
+    },
+    {
+      "id": "vol01_027",
+      "page": 27,
+      "name": "최정원",
+      "org": "청도신문",
+      "group": "",
+      "region": "청도읍",
+      "domains": [
+        "커뮤니티, 마을, 공동체"
+      ],
+      "activity": "청도군 지역신문사",
+      "projects": "청도 사람책",
+      "sns": {
+        "instagram": "https://www.instagram.com/choi_sa_im_dang",
+        "website": "http://www.chdnews.com/"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/최정원.jpg"
+    },
+    {
+      "id": "vol01_028",
+      "page": 28,
+      "name": "홍은영",
+      "org": "홍홍패밀리/대표",
+      "group": "",
+      "region": "이서면",
+      "domains": [
+        "서비스 및 유통"
+      ],
+      "activity": "축산업 및 인터넷 판매업",
+      "projects": "청도 사람책",
+      "sns": {
+        "personal": "https://hey8886@naver.com"
+      },
+      "tagline": "",
+      "short_bio": "",
+      "story": "",
+      "thumbnail": "images/vol-01/홍은영.jpg"
+    }
+  ]
+}
