@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>경북시민재단 — 2026 총회 사업보고</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+:root {
+  --teal:        #009e9f;
+  --teal-dark:   #007e7f;
+  --teal-deep:   #005f60;
+  --teal-light:  #e0f5f5;
+  --teal-mid:    #b3e5e5;
+  --accent:      #6366F1;
+  --accent-lt:   #eef2ff;
+  --dark:        #1a2e2e;
+  --body:        #333333;
+  --muted:       #6b7c7c;
+  --border:      #d8eaea;
+  --bg:          #f4f9f9;
+  --white:       #ffffff;
+  --shadow:      0 2px 12px rgba(0,158,159,0.08);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
+  background:var(--bg);
+  color:var(--body);
+  font-size:15px;
+  line-height:1.65;
+  max-width:480px;
+  margin:0 auto;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ──────────────────── HEADER ──────────────────── */
+.site-header {
+  background:var(--teal);
+  padding:0 16px;
+  height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:200;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+.logo {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:white;
+  font-size:15px;
+  font-weight:700;
+  letter-spacing:-0.3px;
+}
+.logo svg { width:28px;height:28px; }
+.header-badge {
+  background:rgba(255,255,255,0.2);
+  color:white;
+  font-size:11px;
+  font-weight:600;
+  padding:4px 10px;
+  border-radius:20px;
+  letter-spacing:0.3px;
+}
+
+/* ──────────────────── HERO ──────────────────── */
+.hero {
+  background:var(--dark);
+  padding:32px 20px 28px;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before {
+  content:'';
+  position:absolute;
+  top:-60px;right:-60px;
+  width:220px;height:220px;
+  border-radius:50%;
+  background:rgba(0,158,159,0.15);
+}
+.hero::after {
+  content:'';
+  position:absolute;
+  bottom:-30px;left:-30px;
+  width:140px;height:140px;
+  border-radius:50%;
+  background:rgba(99,102,241,0.1);
+}
+.hero-eyebrow {
+  font-size:11px;font-weight:600;
+  color:var(--teal);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+  position:relative;z-index:1;
+}
+.hero h1 {
+  font-size:26px;font-weight:700;
+  color:white;line-height:1.3;
+  letter-spacing:-0.5px;
+  margin-bottom:8px;
+  position:relative;z-index:1;
+}
+.hero h1 em { color:var(--teal);font-style:normal; }
+.hero-sub {
+  font-size:13px;color:rgba(255,255,255,0.6);
+  margin-bottom:24px;font-weight:300;
+  position:relative;z-index:1;
+}
+
+/* ──────────────────── IMPACT GRID ──────────────────── */
+.impact-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  position:relative;z-index:1;
+}
+.impact-card {
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px;
+  padding:14px 16px;
+}
+.impact-card.hi { background:rgba(0,158,159,0.18);border-color:rgba(0,158,159,0.35); }
+.impact-card.hi2 { background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.25); }
+.impact-val {
+  font-size:23px;font-weight:700;
+  color:white;letter-spacing:-0.5px;line-height:1.1;
+}
+.impact-val span { font-size:13px;font-weight:400;color:rgba(255,255,255,0.55); }
+.impact-lbl { font-size:11px;color:rgba(255,255,255,0.45);margin-top:4px; }
+
+/* ──────────────────── TAB NAV ──────────────────── */
+.tab-nav {
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  overflow-x:auto;
+  scrollbar-width:none;
+  position:sticky;
+  top:52px;
+  z-index:190;
+}
+.tab-nav::-webkit-scrollbar { display:none; }
+.tab-btn {
+  flex-shrink:0;
+  padding:12px 16px;
+  font-size:13px;font-weight:500;
+  color:var(--muted);
+  border:none;background:none;cursor:pointer;
+  border-bottom:2px solid transparent;
+  font-family:inherit;white-space:nowrap;
+  transition:color .2s,border-color .2s;
+}
+.tab-btn.active { color:var(--teal);border-bottom-color:var(--teal);font-weight:700; }
+
+/* ──────────────────── SECTION HEADER ──────────────────── */
+.sec-head {
+  padding:22px 20px 8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.sec-head h2 {
+  font-size:17px;font-weight:700;
+  color:var(--dark);letter-spacing:-0.3px;
+}
+.sec-head h2 span {
+  display:block;
+  font-size:11px;font-weight:600;
+  color:var(--teal);letter-spacing:0.5px;
+  margin-bottom:2px;
+}
+.cnt-badge {
+  font-size:11px;font-weight:600;
+  color:var(--teal);background:var(--teal-light);
+  padding:3px 10px;border-radius:20px;
+  flex-shrink:0;
+}
+.cnt-badge.org { color:var(--accent);background:var(--accent-lt); }
+
+/* ──────────────────── PROJECT LIST ──────────────────── */
+.proj-list {
+  padding:4px 14px 14px;
+  display:flex;flex-direction:column;gap:8px;
+}
+
+/* ──────────────────── CARD ──────────────────── */
+.pcard {
+  background:var(--white);
+  border-radius:14px;
+  border:1px solid var(--border);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  transition:box-shadow .15s;
+}
+.pcard:active { box-shadow:none; }
+.pcard.open .card-body { display:block; }
+.pcard.open .chevron { transform:rotate(180deg); color:var(--teal); }
+
+.card-hd {
+  padding:13px 14px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.card-num {
+  flex-shrink:0;
+  width:26px;height:26px;
+  background:var(--teal-light);
+  color:var(--teal-dark);
+  border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;
+}
+.card-num.org { background:var(--accent-lt);color:#4338ca; }
+
+.ctw { flex:1;min-width:0; }
+.ctitle {
+  font-size:13.5px;font-weight:700;
+  color:var(--dark);letter-spacing:-0.2px;
+  line-height:1.35;margin-bottom:5px;
+}
+.cmeta { display:flex;flex-wrap:wrap;gap:4px; }
+.tag {
+  font-size:10.5px;
+  padding:2px 7px;
+  border-radius:4px;font-weight:500;
+}
+.tag.p { background:#f0f4f4;color:var(--muted); }
+.tag.b { background:var(--accent-lt);color:var(--accent); }
+.tag.pr{ background:var(--teal-light);color:var(--teal-dark); }
+
+.chevron {
+  flex-shrink:0;width:18px;height:18px;
+  color:#c5d5d5;
+  transition:transform .25s,color .2s;
+  margin-top:3px;
+}
+
+/* ──────────────────── CARD BODY ──────────────────── */
+.card-body {
+  display:none;
+  border-top:1px solid var(--border);
+  padding:0 14px 14px;
+  animation:slideIn .2s ease;
+}
+@keyframes slideIn {
+  from{opacity:0;transform:translateY(-4px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.summary {
+  font-size:12.5px;color:var(--muted);
+  line-height:1.75;padding:11px 0 12px;
+  border-bottom:1px dashed var(--border);
+}
+
+/* KPI */
+.kpi-wrap { padding:12px 0; }
+.kpi-lbl {
+  font-size:10px;font-weight:700;
+  color:var(--muted);letter-spacing:0.8px;
+  text-transform:uppercase;margin-bottom:8px;
+}
+.kpi-row { margin-bottom:9px; }
+.kpi-top { display:flex;justify-content:space-between;margin-bottom:3px; }
+.kpi-name { font-size:12px;color:var(--dark);font-weight:500; }
+.kpi-v    { font-size:12px;color:var(--teal);font-weight:700; }
+.gauge {
+  height:5px;background:var(--teal-light);
+  border-radius:3px;overflow:hidden;
+}
+.gauge-f {
+  height:100%;
+  background:linear-gradient(90deg,var(--teal),var(--teal-dark));
+  border-radius:3px;
+  transition:width .9s cubic-bezier(.4,0,.2,1);
+}
+
+/* Highlights */
+.hl-wrap {
+  padding:10px 0;
+  border-top:1px dashed var(--border);
+}
+.hl-item {
+  display:flex;gap:7px;
+  margin-bottom:6px;align-items:flex-start;
+}
+.hl-dot {
+  flex-shrink:0;width:5px;height:5px;
+  background:var(--teal);border-radius:50%;
+  margin-top:8px;
+}
+.hl-dot.org { background:var(--accent); }
+.hl-text { font-size:12px;color:var(--body);line-height:1.65; }
+
+/* Accordion */
+.acc-item { border-top:1px solid var(--border);margin-top:2px; }
+.acc-btn {
+  width:100%;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;
+  background:none;border:none;
+  font-family:inherit;font-size:12px;font-weight:600;
+  color:var(--dark);cursor:pointer;text-align:left;
+}
+.acc-btn svg { flex-shrink:0;transition:transform .2s;color:var(--muted); }
+.acc-btn.open svg { transform:rotate(180deg); }
+.acc-body {
+  font-size:12px;color:var(--muted);
+  line-height:1.7;padding-bottom:10px;
+  display:none;
+}
+.acc-body.open { display:block; }
+.acc-body li { margin-left:14px;margin-bottom:3px; }
+
+/* ──────────────────── DIVIDER ──────────────────── */
+.divider {
+  height:8px;background:var(--bg);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+
+/* ──────────────────── MORE BUTTON ──────────────────── */
+.more-btn {
+  width:100%;padding:12px;
+  background:var(--white);
+  border:1px dashed var(--border);
+  border-radius:12px;
+  font-family:inherit;font-size:13px;font-weight:600;
+  cursor:pointer;letter-spacing:-0.2px;
+  transition:background .15s;
+}
+.more-btn:active { background:var(--teal-light); }
+
+/* ──────────────────── IMPACT PANEL ──────────────────── */
+.stats-grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  padding:20px 16px 8px;
+}
+.stat-card {
+  background:var(--white);border:1px solid var(--border);
+  border-radius:12px;padding:16px;box-shadow:var(--shadow);
+}
+.stat-v {
+  font-size:26px;font-weight:700;
+  color:var(--teal);letter-spacing:-0.5px;line-height:1.1;
+}
+.stat-u { font-size:14px;font-weight:400;color:var(--muted); }
+.stat-l { font-size:12px;color:var(--muted);margin-top:4px; }
+
+/* 월별 방문객 바차트 */
+.chart-wrap { padding:16px; }
+.chart-title {
+  font-size:11px;font-weight:700;
+  color:var(--muted);letter-spacing:0.8px;
+  text-transform:uppercase;margin-bottom:12px;
+}
+.bar-row { display:flex;align-items:center;gap:8px;margin-bottom:7px; }
+.bar-mo { font-size:11px;color:var(--muted);width:22px;text-align:right;flex-shrink:0; }
+.bar-wrap { flex:1;height:20px;background:var(--teal-light);border-radius:5px;overflow:hidden;position:relative; }
+.bar-fill {
+  height:100%;
+  background:linear-gradient(90deg,var(--teal-light) 0%,var(--teal) 100%);
+  border-radius:5px;
+  transition:width 1s cubic-bezier(.4,0,.2,1);
+}
+.bar-v { font-size:11px;color:var(--dark);font-weight:600;width:36px;flex-shrink:0; }
+
+/* 사업비 파이차트 대용 */
+.budget-bars { padding:16px; }
+.budget-row { margin-bottom:10px; }
+.budget-info { display:flex;justify-content:space-between;margin-bottom:4px; }
+.budget-name { font-size:12px;color:var(--dark);font-weight:600; }
+.budget-amt  { font-size:12px;color:var(--teal);font-weight:700; }
+.budget-bar  { height:8px;background:var(--border);border-radius:4px;overflow:hidden; }
+.budget-fill { height:100%;border-radius:4px;transition:width 1s; }
+
+/* 파트너 태그들 */
+.partner-cloud { padding:16px; display:flex;flex-wrap:wrap;gap:7px; }
+.partner-tag {
+  background:var(--white);border:1px solid var(--border);
+  border-radius:20px;padding:5px 12px;
+  font-size:12px;color:var(--dark);font-weight:500;
+}
+
+/* ──────────────────── ABOUT PANEL ──────────────────── */
+.about-hero {
+  background:var(--dark);
+  padding:32px 20px 28px;
+  position:relative;overflow:hidden;
+}
+.about-hero::before {
+  content:'';position:absolute;top:-50px;right:-50px;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(0,158,159,0.15);
+}
+.about-hero h1 { font-size:26px;font-weight:700;color:white;letter-spacing:-0.5px; }
+.about-hero h1 em { color:var(--teal);font-style:normal; }
+.about-hero p { font-size:13px;color:rgba(255,255,255,0.6);margin-top:6px;font-weight:300; }
+.about-body { padding:24px 20px; }
+.about-intro {
+  font-size:13.5px;line-height:1.85;color:var(--body);
+  margin-bottom:22px;
+  padding:16px;
+  background:var(--teal-light);
+  border-radius:12px;
+  border-left:3px solid var(--teal);
+}
+.about-item {
+  display:flex;gap:12px;margin-bottom:16px;align-items:flex-start;
+}
+.about-icon {
+  flex-shrink:0;width:36px;height:36px;
+  background:var(--teal-light);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--teal);
+}
+.about-item h3 { font-size:14px;font-weight:700;color:var(--dark);margin-bottom:3px; }
+.about-item p  { font-size:12px;color:var(--muted);line-height:1.65; }
+
+.info-box {
+  background:var(--teal-light);border-radius:12px;
+  padding:16px;margin-top:12px;
+}
+.info-box .row {
+  display:flex;gap:8px;
+  font-size:13px;margin-bottom:8px;
+  align-items:flex-start;
+}
+.info-box .row:last-child { margin-bottom:0; }
+.info-box .lbl {
+  font-size:11px;font-weight:700;color:var(--teal-dark);
+  width:40px;flex-shrink:0;padding-top:1px;
+}
+.info-box .val { color:var(--dark);font-weight:500;line-height:1.5; }
+
+/* ──────────────────── BOTTOM NAV ──────────────────── */
+.bottom-nav {
+  position:fixed;
+  bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:var(--white);
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  padding-bottom:env(safe-area-inset-bottom);
+  z-index:200;
+  box-shadow:0 -2px 12px rgba(0,0,0,0.06);
+}
+.nav-item {
+  display:flex;flex-direction:column;
+  align-items:center;padding:8px 0 10px;
+  font-size:10px;color:var(--muted);
+  cursor:pointer;border:none;background:none;
+  font-family:inherit;font-weight:500;gap:2px;
+  transition:color .15s;
+}
+.nav-item.active { color:var(--teal); }
+.nav-item svg { width:20px;height:20px; }
+
+/* ──────────────────── PANELS ──────────────────── */
+.page-content { padding-bottom:80px; }
+.panel { display:none; }
+.panel.active { display:block; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="site-header">
+  <div class="logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M16 2L28 9V23L16 30L4 23V9Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/>
+      <path d="M16 7L24 12V20L16 25L8 20V12Z" fill="rgba(255,255,255,0.18)"/>
+      <path d="M16 12L20 14.5V19.5L16 22L12 19.5V14.5Z" fill="white"/>
+      <path d="M16 14.5L18 15.7V18.3L16 19.5L14 18.3V15.7Z" fill="#009e9f"/>
+    </svg>
+    경북시민재단
+  </div>
+  <span class="header-badge">2026 총회</span>
+</header>
+
+<!-- ═══════════════════ PAGE CONTENT ═══════════════════ -->
+<div class="page-content">
+
+<!-- ════════════ PANEL: HOME (사업목록) ════════════ -->
+<div class="panel active" id="panel-home">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-eyebrow">2026 정기총회 · 사업보고</div>
+    <h1>시민이 만드는<br><em>경북의 변화</em></h1>
+    <p class="hero-sub">2025년 법인사업 개별사업 결과보고서</p>
+    <div class="impact-grid">
+      <div class="impact-card hi">
+        <div class="impact-val">17<span>개 사업</span></div>
+        <div class="impact-lbl">청도혁신센터 + 법인자체사업</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-val">2,767<span>명</span></div>
+        <div class="impact-lbl">로컬임팩트랩 총 방문객</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-val">291<span>회</span></div>
+        <div class="impact-lbl">공간 대관 횟수</div>
+      </div>
+      <div class="impact-card hi2">
+        <div class="impact-val">6<span>개사</span></div>
+        <div class="impact-lbl">혁신센터 입주기업</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 탭 -->
+  <nav class="tab-nav" id="home-tabs">
+    <button class="tab-btn active" onclick="switchTab(this,'청도혁신')">Ⅰ. 청도혁신센터</button>
+    <button class="tab-btn" onclick="switchTab(this,'법인일반')">Ⅱ-1. 법인 일반사업</button>
+    <button class="tab-btn" onclick="switchTab(this,'용역')">Ⅱ-2. 용역사업</button>
+    <button class="tab-btn" onclick="switchTab(this,'플랫폼')">Ⅱ-3. 문제해결플랫폼</button>
+  </nav>
+
+  <!-- 청도혁신센터 사업 -->
+  <div id="tab-청도혁신">
+    <div class="sec-head">
+      <h2><span>Ⅰ. 청도혁신센터 운영 사업</span>청도혁신센터</h2>
+      <span class="cnt-badge">14개</span>
+    </div>
+    <div class="proj-list">
+
+      <!-- 1 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">1</div>
+          <div class="ctw">
+            <div class="ctitle">미리 맛보는 소통협력공간</div>
+            <div class="cmeta">
+              <span class="tag p">2025.02–12</span>
+              <span class="tag b">1억 359만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도 주민·청년·청소년이 자유롭게 드나드는 공간 운영 실험. 대관 절차를 카카오톡으로 일원화하고 세대별 맞춤 프로그램을 운영하여 방문객 2,767명을 달성했습니다.</p>
+          <div class="kpi-wrap">
+            <div class="kpi-lbl">KPI 달성 현황</div>
+            <div class="kpi-row">
+              <div class="kpi-top"><span class="kpi-name">총 방문객 수</span><span class="kpi-v">2,767명</span></div>
+              <div class="gauge"><div class="gauge-f" style="width:0%" data-w="92"></div></div>
+            </div>
+            <div class="kpi-row">
+              <div class="kpi-top"><span class="kpi-name">총 대관 횟수</span><span class="kpi-v">291회</span></div>
+              <div class="gauge"><div class="gauge-f" style="width:0%" data-w="85"></div></div>
+            </div>
+            <div class="kpi-row">
+              <div class="kpi-top"><span class="kpi-name">청소년 원데이클래스</span><span class="kpi-v">6회 (목표 달성)</span></div>
+              <div class="gauge"><div class="gauge-f" style="width:0%" data-w="100"></div></div>
+            </div>
+          </div>
+          <div class="hl-wrap">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">1층 라운지가 전체 대관의 81.7% 차지 — 접근성 높은 핵심 거점 확인</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">입주기업 6개사 유치 (결실의 계절, 노는엄마들, 브릭분교 등)</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">외부 대학·기업 대관으로 청도 외부로 브랜딩 확산</div></div>
+          </div>
+          <div class="acc-item">
+            <button class="acc-btn" onclick="toggleAcc(this,event)">향후 과제<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4.5L6.5 9L11 4.5"/></svg></button>
+            <div class="acc-body"><ul>
+              <li>단발성 참여 → 정기 소모임·커뮤니티로 확장 구조 마련</li>
+              <li>공간 인지도 제고를 위한 적극적 홍보 전략 수립</li>
+              <li>외부 협업·정기 대관 비중 확대로 로컬 브랜딩 거점화</li>
+            </ul></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">2</div>
+          <div class="ctw">
+            <div class="ctitle">로컬임팩트랩 운영</div>
+            <div class="cmeta">
+              <span class="tag p">2025.02–12</span>
+              <span class="tag b">5,000만원</span>
+              <span class="tag pr">노는엄마들</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">지역 여성·청년 창업가를 위한 실험적 공간 운영. 노는엄마들과 협력하여 돌봄과 창업 활동을 연결하는 모델을 구축하고, 월별 다채로운 프로그램을 운영했습니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">6월 수선 바느질 강의 만족도 평균 5.0 (만점) 기록</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">"청도에 젊은 여성이 이렇게 많은 줄 몰랐다"는 긍정 피드백 다수</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">지역 여성 창업가 네트워크 형성 및 돌봄-창업 연계 모델 시범 운영</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">3</div>
+          <div class="ctw">
+            <div class="ctitle">로컬브랜딩 생활실험팀 공모</div>
+            <div class="cmeta">
+              <span class="tag p">2025.02–12</span>
+              <span class="tag b">5,600만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도의 로컬 브랜딩을 주민 스스로 만들어가는 '생활실험팀' 공모 및 지원 사업. 주민 주도형 실험 프로젝트를 통해 지역 브랜드 자산을 축적합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">청도천 체육공원 내 농구 코트 조성, 야외 줌바 프로그램 운영</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">시니어 대상 티테라피, 재난 대비 교육 매뉴얼 제작 등 복지·안전 프로젝트</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">4</div>
+          <div class="ctw">
+            <div class="ctitle">소통협력공간 브랜딩</div>
+            <div class="cmeta">
+              <span class="tag p">2025.02–12</span>
+              <span class="tag b">3,000만원</span>
+              <span class="tag pr">노는엄마들</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">소통협력공간의 브랜드 정체성을 구축하고 지역 주민의 인지도를 높이기 위한 사업. LED 쥐불놀이, 뱀 풍선 만들기 등 어린이 대상 프로그램으로 자연스러운 모객을 유도했습니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">대관 절차 카카오톡 채널 일원화 → 실시간 문의 대응 체계 구축</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">청소년부터 학부모까지 다양한 연령대 참여로 다세대 브랜딩 구현</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">5</div>
+          <div class="ctw">
+            <div class="ctitle">모두의 마을</div>
+            <div class="cmeta">
+              <span class="tag p">2025.03–09</span>
+              <span class="tag b">5,000만원</span>
+              <span class="tag pr">찰나의 순간</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">마을 어르신의 삶과 역사를 청소년이 직접 기록하는 세대 간 연결 프로젝트. 청소년이 '마을 기록가'라는 주체적 역할을 수행하며 지역 정체성을 형성합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">어르신들이 기록 과정을 통해 마을에 대한 자긍심 고취</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">청소년-어르신 세대 간 자연스러운 교류 및 소통 구조 확립</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">6</div>
+          <div class="ctw">
+            <div class="ctitle">소통협력공간 주간</div>
+            <div class="cmeta">
+              <span class="tag p">2025.02–12</span>
+              <span class="tag pr">노는엄마들 · 다로리인</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">부제: '청도 모두 이루어질지도'. 스탬프 투어와 굿즈(타포린백·양말) 제공으로 주민 적극 참여를 유도하고 관내·외 기업 부스를 병행 운영한 지역 축제형 공간 주간입니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">스탬프 투어 및 굿즈 제공으로 주민 참여 유도</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">타지역 기업 부스 병행 운영으로 주민에게 폭넓은 자원·문화 접촉 기회 제공</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">7</div>
+          <div class="ctw">
+            <div class="ctitle">경북지속가능캠프</div>
+            <div class="cmeta">
+              <span class="tag p">2025.01–10</span>
+              <span class="tag b">4,000만원</span>
+              <span class="tag pr">협동조합 온누리 · 다로리인</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">경북 전역의 로컬크리에이터와 청년 창업가들이 개별 활동을 넘어 공동 의제를 발굴하고 협력하는 캠프형 플랫폼.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">개별 활동에 머물던 경북 청년 창업가들의 협력 네트워크 구축</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">경북 전역을 아우르는 지속가능 의제 공론화 채널 형성</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">8</div>
+          <div class="ctw">
+            <div class="ctitle">경북지속가능포럼</div>
+            <div class="cmeta">
+              <span class="tag p">2025.06–12</span>
+              <span class="tag b">5,000만원</span>
+              <span class="tag pr">협동조합 온누리 · 다로리인</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">경북의 지속 가능한 발전을 위한 공개 포럼. 지역 혁신 주체들이 모여 경북의 미래 방향을 함께 논의하는 공개 의제 설정의 장입니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">경북 로컬 생태계의 현황과 과제를 공개적으로 공론화</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">다양한 이해관계자 참여를 통한 협력적 의제 발굴</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">9</div>
+          <div class="ctw">
+            <div class="ctitle">로컬 소셜비즈니스 창업가 양성과정</div>
+            <div class="cmeta">
+              <span class="tag p">2025.01–12</span>
+              <span class="tag b">2,080만원</span>
+              <span class="tag pr">다음세대재단 · 비커넥트랩</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">지역 문제를 사업 기회로 전환하는 소셜비즈니스 창업가를 양성하는 과정. 국내외 다양한 창업 사례를 비교하여 지역 자원을 활용한 지속 가능한 모델 개발을 지원합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">지역 자원 활용 지속 가능한 비즈니스 모델 개발 역량 강화</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">임팩트 빌더 양성으로 선후배 창업가 간 자생적 생태계 확장 기반 마련</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">10</div>
+          <div class="ctw">
+            <div class="ctitle">관계안내소 운영</div>
+            <div class="cmeta">
+              <span class="tag p">2025.10–12</span>
+              <span class="tag b">2,000만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도에 관심 있는 외부인과 지역 주민을 연결하는 관계 형성 안내소 운영. 유입 인구와 지역 자원을 매칭하여 지속적인 관계인구를 만드는 거점 역할을 합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">외부인-주민 간 1:1 관계 형성 프로그램 운영</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">청도 방문·체류자를 관계인구로 전환하는 연결 구조 마련</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">11</div>
+          <div class="ctw">
+            <div class="ctitle">N개의 공론장</div>
+            <div class="cmeta">
+              <span class="tag p">2025.06–11</span>
+              <span class="tag b">2,700만원</span>
+              <span class="tag pr">아울러사회적협동조합</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">민·관·지역 주체 간 거버넌스 기반 구축 및 다양한 지역 의제 발굴을 위한 공론장 운영. 주민이 정책 논의의 주체로 참여하는 구조를 만들어 행정 연계성을 강화합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">주민이 정책 논의 주체로 참여 → 지역 문제 해결 자긍심·주도성 강화</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">공론장 의제가 실제 행정 정책으로 발전하는 사례 창출</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">12</div>
+          <div class="ctw">
+            <div class="ctitle">청소년 로컬창업가 양성과정</div>
+            <div class="cmeta">
+              <span class="tag p">2025.07–11</span>
+              <span class="tag b">5,000만원</span>
+              <span class="tag pr">(주)비피</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">지역 청소년이 동네 자원을 창업 기회로 바라보는 관점을 형성하는 양성과정. 시제품·로고·랜딩페이지 등 실제 결과물을 만들어내며 자기효능감을 높입니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">"동네 자원 = 창업 기회"라는 관점 전환 성공</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">시제품·로고·랜딩페이지 등 실제 결과물 시각화로 자기효능감 고취</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">13</div>
+          <div class="ctw">
+            <div class="ctitle">경북-청도 브랜딩 지역자원발굴</div>
+            <div class="cmeta">
+              <span class="tag p">2025.08–12</span>
+              <span class="tag b">3,000만원</span>
+              <span class="tag pr">MYSC · 띵스베럴</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도의 무형 자원 — 사람의 이야기를 발굴하고 기록하는 로컬 브랜딩 프로젝트. 시민 취타대를 통해 다양한 세대가 어우러지는 공동체를 형성했습니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">시민 취타대를 통한 다세대 공동체 형성 및 유대감 강화</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">지역 참여자 목소리 담은 스토리북 제작 — 청도의 인적 자산 기록화</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">14</div>
+          <div class="ctw">
+            <div class="ctitle">스테이 in 로컬</div>
+            <div class="cmeta">
+              <span class="tag p">2025.01–12</span>
+              <span class="tag b">2,500만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">외부인이 청도에 체류하며 지역의 일상을 경험하는 스테이 프로그램. 단순 관광을 넘어 지역과의 깊은 관계를 형성하는 생활형 체류 모델을 제안합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">생활형 체류 경험 제공으로 청도 관계인구 확장</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">이주 희망자 탐색 거점으로서의 기능 수행</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /proj-list 청도 -->
+  </div><!-- /tab-청도혁신 -->
+
+  <!-- 법인 일반사업 탭 -->
+  <div id="tab-법인일반" style="display:none">
+    <div class="sec-head">
+      <h2><span>Ⅱ-1. 법인 자체 운영 — 일반사업</span>법인 일반사업</h2>
+      <span class="cnt-badge org">8개</span>
+    </div>
+    <div class="proj-list">
+
+      <!-- B1 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">1</div>
+          <div class="ctw">
+            <div class="ctitle">지역관광추진조직(DMO) 육성 지원</div>
+            <div class="cmeta">
+              <span class="tag p">2025.03–12</span>
+              <span class="tag b">2억원 (집행률 95.7%)</span>
+              <span class="tag pr">협동조합 온누리</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">경북 지역 관광 추진 조직(DMO)의 역량을 강화하고 지속 가능한 운영 구조를 설계하는 지원 사업. 지역 관광 자원과 로컬 브랜딩을 연계합니다.</p>
+          <div class="kpi-wrap">
+            <div class="kpi-lbl">집행 현황</div>
+            <div class="kpi-row">
+              <div class="kpi-top"><span class="kpi-name">예산 집행률</span><span class="kpi-v" style="color:var(--accent)">95.7%</span></div>
+              <div class="gauge"><div class="gauge-f" style="width:0%;background:linear-gradient(90deg,var(--accent-lt),var(--accent))" data-w="96"></div></div>
+            </div>
+          </div>
+          <div class="hl-wrap">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">DMO 조직 역량 진단 및 운영 개선 방안 도출</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">지역 관광 자원과 로컬 브랜딩 연계 전략 수립</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B2 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">2</div>
+          <div class="ctw">
+            <div class="ctitle">갭먼스@청도 (1시군-1생활인구 특화)</div>
+            <div class="cmeta">
+              <span class="tag p">2025.04–12</span>
+              <span class="tag b">1억 4천만원 (집행률 95.7%)</span>
+              <span class="tag pr">협동조합 온누리</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">외부 청년들이 청도에서 한 달간 살아보며 관계인구를 형성하는 생활인구 특화 프로젝트. 체류(먼스테이) → 탐색(청도프리뷰) → 관계확대(데이@청도)의 3단계 이주 모델을 확립했습니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">체류 → 탐색 → 관계확대 3단계 로컬 정착 모델 확립</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">외부 유입 인력과 지역 주민 간 교류로 사회적 자본 확충</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B3 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">3</div>
+          <div class="ctw">
+            <div class="ctitle">청청 연결프로젝트 (드림e 팩토리)</div>
+            <div class="cmeta">
+              <span class="tag p">2025.03–12</span>
+              <span class="tag b">7,000만원</span>
+              <span class="tag pr">청도군</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청년과 청도를 연결하는 프로젝트. 프로그램 참여 300명, 80회 운영, 10개 지원기관 연계, 청년 커뮤니티 10개 신규 발굴을 목표로 진행했습니다.</p>
+          <div class="kpi-wrap">
+            <div class="kpi-lbl">주요 목표</div>
+            <div class="kpi-row">
+              <div class="kpi-top"><span class="kpi-name">프로그램 참여인원 목표</span><span class="kpi-v" style="color:var(--accent)">300명</span></div>
+              <div class="gauge"><div class="gauge-f" style="width:0%;background:linear-gradient(90deg,var(--accent-lt),var(--accent))" data-w="80"></div></div>
+            </div>
+            <div class="kpi-row">
+              <div class="kpi-top"><span class="kpi-name">청년 커뮤니티 신규 발굴</span><span class="kpi-v" style="color:var(--accent)">10개</span></div>
+              <div class="gauge"><div class="gauge-f" style="width:0%;background:linear-gradient(90deg,var(--accent-lt),var(--accent))" data-w="85"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B4 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">4</div>
+          <div class="ctw">
+            <div class="ctitle">청도군 청년 스타트업 활성화 및 로컬 임팩트 스타트업 밸리 조성</div>
+            <div class="cmeta">
+              <span class="tag p">2025.03–12</span>
+              <span class="tag pr">청도군 · MYSC</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">인구활력펀드 1호 출자기업 '시그널케어' 배출로 청도가 '창업하기 좋은 도시' 브랜드 이미지를 각인. 청도군-MYSC-청도혁신센터 긴밀한 거버넌스를 구축했습니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">인구활력펀드 1호 출자기업(시그널케어) 배출 — 청도 창업 도시 브랜드 확산</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">청도군-MYSC-청도혁신센터 3자 협력 거버넌스 구축</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B5 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">5</div>
+          <div class="ctw">
+            <div class="ctitle">청도상상마루 운영 (2025–2028)</div>
+            <div class="cmeta">
+              <span class="tag p">2025.09–12 (1단계)</span>
+              <span class="tag pr">청도군 · MYSC</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도군민 누구나 쉽게 문화를 즐길 수 있는 일상 공간 '청도상상마루' 운영 및 성과 종합 보고. 2025–2028년 장기 운영 계획 수립을 포함합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">청도군민 일상 문화 공간 운영 기반 조성</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">2025–2028 장기 운영 로드맵 수립</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B6 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">6</div>
+          <div class="ctw">
+            <div class="ctitle">054스페이스 조성사업 건축기획용역</div>
+            <div class="cmeta">
+              <span class="tag p">2025.04–12</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도 지역번호 054를 상징하는 복합 문화 공간 '054스페이스' 건축 기획 용역. 공간 설계부터 운영 모델까지 통합적으로 기획합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">054스페이스 건축 기획 및 공간 프로그래밍 방향 수립</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">건폐율 등 건축 규정 검토 및 설계 가이드라인 도출</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B7 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">7</div>
+          <div class="ctw">
+            <div class="ctitle">2026 청도군 스마트산업·문화관광 융합 신성장 지원</div>
+            <div class="cmeta">
+              <span class="tag p">2026.05–12 (24개월)</span>
+              <span class="tag b">법인 배분 8억원</span>
+              <span class="tag pr">경북테크노파크 · 경북자동차임베디드연구원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">생산(농업)-가공(식품제조)-소비(관광)가 연결되는 지역 경제 선순환 파이프라인 구축 사업. 24개월간 수혜기업 매출 18억원 창출 및 신규 고용 9명을 목표로 합니다.</p>
+          <div class="kpi-wrap">
+            <div class="kpi-lbl">24개월 목표 (2026–2027)</div>
+            <div class="kpi-row">
+              <div class="kpi-top"><span class="kpi-name">수혜기업 매출 창출 목표</span><span class="kpi-v" style="color:var(--accent)">18억원</span></div>
+              <div class="gauge"><div class="gauge-f" style="width:0%;background:linear-gradient(90deg,var(--accent-lt),var(--accent))" data-w="70"></div></div>
+            </div>
+            <div class="kpi-row">
+              <div class="kpi-top"><span class="kpi-name">스마트기술 컨설팅</span><span class="kpi-v" style="color:var(--accent)">40건</span></div>
+              <div class="gauge"><div class="gauge-f" style="width:0%;background:linear-gradient(90deg,var(--accent-lt),var(--accent))" data-w="60"></div></div>
+            </div>
+          </div>
+          <div class="hl-wrap">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">생산-가공-소비 연결 지역 경제 선순환 구조 완성 목표</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">청년 농부·우수 인력 정착 기반 마련, 체류형 관광객 확대</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B8 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">8</div>
+          <div class="ctw">
+            <div class="ctitle">직장적응 지원사업</div>
+            <div class="cmeta">
+              <span class="tag p">2025.02–12</span>
+              <span class="tag b">5,000만원</span>
+              <span class="tag pr">청도군</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청년 근로자의 직무 효율 향상, 스트레스 관리, 조직문화 개선을 위한 직장 적응 지원. AI·ChatGPT 활용 교육과 예술 매체를 통한 정서적 지지 체계를 마련했습니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">AI·ChatGPT 프롬프트 교육으로 실무 시간 단축 및 서류 작업 능력 강화</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">음악·낙서 예술 매체를 통한 중간관리자-신입사원 간 비언어적 소통 증진</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /proj-list 법인일반 -->
+  </div><!-- /tab-법인일반 -->
+
+  <!-- 용역사업 탭 -->
+  <div id="tab-용역" style="display:none">
+    <div class="sec-head">
+      <h2><span>Ⅱ-2. 법인 자체 운영 — 용역사업</span>용역사업</h2>
+      <span class="cnt-badge org">3개</span>
+    </div>
+    <div class="proj-list">
+
+      <!-- R1 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">1</div>
+          <div class="ctw">
+            <div class="ctitle">영주시 인구활력센터 조직구성 및 운영방안 연구용역</div>
+            <div class="cmeta">
+              <span class="tag p">2025.04–12</span>
+              <span class="tag b">1,980만원</span>
+              <span class="tag pr">영주시 인구활력팀</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">영주시 인구활력센터의 조직 구성 및 중장기 운영 방안을 연구하는 용역. 지방소멸대응기금 투자 사업과 연계한 효율적 운영 구조를 제안합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">인구활력센터 역할·비전 수립, 지역 내 인구 정책 거점 위상 확립</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">지방소멸대응기금 투자 사업과 실질 연계 방안 마련</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- R2 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">2</div>
+          <div class="ctw">
+            <div class="ctitle">청도 로컬브랜딩 귀촌지원체계 수립 용역</div>
+            <div class="cmeta">
+              <span class="tag p">2025.04–12</span>
+              <span class="tag b">8,865만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도 로컬 브랜드와 귀촌 지원 체계를 통합적으로 설계하는 연구 용역. 청도만의 귀촌 문화를 브랜딩하여 이주 희망자에게 매력적인 지역 정체성을 제시합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">청도 로컬 브랜드 기반 귀촌 지원 통합 체계 설계</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">이주 희망자 유입을 위한 청도만의 매력적 지역 정체성 도출</div></div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- R3 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">3</div>
+          <div class="ctw">
+            <div class="ctitle">칠곡군 로컬브랜딩 기획디자인 마스터플랜 — 칠곡 페달 스테이션</div>
+            <div class="cmeta">
+              <span class="tag p">2025.04–12</span>
+              <span class="tag b">1,800만원</span>
+              <span class="tag pr">칠곡군</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">왜관읍 중심 생활인구 유입 기반 조성과 로컬브랜드 확립을 목표로 한 마스터플랜 수립 용역. 지역여건 분석과 장기적 변화를 위한 PDCA 성과측정 프레임워크를 제공했습니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">로컬브랜딩 추진계획서 1식, 중간보고 1회, 결과보고 1회 납품</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">지역상권 연계 방안 및 관계인구 형성 연구 레퍼런스 확보</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">칠곡군 로컬브랜딩 마스터플랜 후속 수주를 위한 발판 마련</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tab-용역 -->
+
+  <!-- 플랫폼 탭 -->
+  <div id="tab-플랫폼" style="display:none">
+    <div class="sec-head">
+      <h2><span>Ⅱ-3. 경북지역문제해결플랫폼</span>지역문제해결</h2>
+      <span class="cnt-badge org">5개</span>
+    </div>
+    <div class="proj-list">
+
+      <!-- P1 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">1</div>
+          <div class="ctw">
+            <div class="ctitle">2025년 경북지역문제해결플랫폼 운영</div>
+            <div class="cmeta">
+              <span class="tag p">2025.04–12</span>
+              <span class="tag b">5,000만원 (집행률 83%)</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">경북 지역문제를 시민이 직접 발굴하고 해결하는 플랫폼 운영. 동해안 바다 사막화 대응, 시니어 참여형 굿즈 개발(할미랑) 등 혁신적인 솔루션을 발굴했습니다.</p>
+          <div class="kpi-wrap">
+            <div class="kpi-lbl">집행 현황</div>
+            <div class="kpi-row">
+              <div class="kpi-top"><span class="kpi-name">예산 집행률</span><span class="kpi-v" style="color:var(--accent)">83%</span></div>
+              <div class="gauge"><div class="gauge-f" style="width:0%;background:linear-gradient(90deg,var(--accent-lt),var(--accent))" data-w="83"></div></div>
+            </div>
+          </div>
+          <div class="hl-wrap">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">시민다이버와 함께하는 동해안 바다 사막화 해결 프로젝트 — 한국수산자원공단 협업</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">지역 시니어 참여형 굿즈 개발 '할미랑' — 노인을 생산 주체로 전환하는 비즈니스 모델 기반 마련</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">청도 문화자원·관광 상품 접목으로 지속 가능한 사회적경제 모델 가능성 확인</div></div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- P2 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">2</div>
+          <div class="ctw">
+            <div class="ctitle">경상북도 RE100 시민클럽</div>
+            <div class="cmeta">
+              <span class="tag p">농어촌 상생협력기금</span>
+              <span class="tag b">1,100만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">인구소멸지역 에너지 자립마을 조성을 통한 지속가능한 커뮤니티 구축 및 탄소중립 실천문화 확산.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">마을주민 대상 에너지 교육·컨설팅 3회, 에너지 감축 마을캠페인 1회 진행</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">마을 공용 공간 태양광 발전 시설(3kw) 1개소 설치 완료</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">주민주도 에너지 자립 사례 창출 및 탄소중립 실천 확산</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P3 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">3</div>
+          <div class="ctw">
+            <div class="ctitle">식품소외지역 든든먹거리 안심배송지원사업</div>
+            <div class="cmeta">
+              <span class="tag p">농어촌 상생협력기금</span>
+              <span class="tag b">900만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">식품 구매 접근성이 낮은 지역 주민에게 농산물 식품 키트를 전달하는 복지 지원사업. 단발 지원을 넘어 지역 기반 상시 먹거리 지원체계 구축을 목표로 합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">식품소외지역 2개읍·7개면·58개리 100가구 농산물 식품 키트 지원</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">키트 관리방법 안내지 1식 + 만성질환관리 식습관 정보지 1식 포함 배포</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">지역 로컬푸드 연계 및 지원기관 협업으로 장기적 소외지역 복지 모델 발전</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P4 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">4</div>
+          <div class="ctw">
+            <div class="ctitle">L-NEAS 기반 TS 먼데이 프로젝트</div>
+            <div class="cmeta">
+              <span class="tag p">경북시민재단 기부금</span>
+              <span class="tag b">951만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">지역 대기영향예측시스템(L-NEAS)을 활용해 교통 부문 배출량 변화에 따른 대기질 영향을 정량적으로 분석. 경북 교통관리 정책 수립의 근거 자료를 제공합니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">CAPSS 기반 최신 배출량(2021) 데이터로 L-NEAS 9km 대기질 모사 수행</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">교통(선오염원) 부문 배출량 변화(ton/yr) 정리 및 정책·시나리오별 농도 변화 제시</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">경북 교통관리 정책이 실제 대기질에 미치는 영향 정량 측정, 정책 근거 자료 제공</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P5 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">5</div>
+          <div class="ctw">
+            <div class="ctitle">지역상생 협력 팝업스토어 운영</div>
+            <div class="cmeta">
+              <span class="tag p">한국전력기술 기부금</span>
+              <span class="tag b">1,500만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">한국전력기술 사옥 내 유휴공간을 활용한 로컬기업 팝업스토어 운영. 공기업의 사회적 역할 강화와 지역 기반 협력 생태계 조성에 기여했습니다.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">총 매출액 7,718,800원 달성, 기업 평균 매출액 771,880원</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">한국전력기술·지역 주민·참여기업 간 교류 활성화로 지역 협력 생태계 초석 마련</div></div>
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">로컬기업 브랜드 인지도 및 신뢰도 증대 효과 확인</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tab-플랫폼 -->
+
+
+</div><!-- /panel-home -->
+
+
+<!-- ════════════ PANEL: 성과 ════════════ -->
+<div class="panel" id="panel-impact">
+  <section class="hero">
+    <div class="hero-eyebrow">2025 주요 성과 요약</div>
+    <h1>숫자로 보는<br><em>임팩트</em></h1>
+    <p class="hero-sub">청도혁신센터 + 법인사업 통합 성과</p>
+  </section>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-v">2,767<span class="stat-u">명</span></div>
+      <div class="stat-l">로컬임팩트랩 총 방문객</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-v">291<span class="stat-u">회</span></div>
+      <div class="stat-l">공간 대관 횟수</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-v">6<span class="stat-u">개사</span></div>
+      <div class="stat-l">입주기업 유치</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-v">17<span class="stat-u">+</span></div>
+      <div class="stat-l">총 운영 사업 수</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">월별 방문객 현황 — 청도혁신센터 (2025)</div>
+    <div id="bar-chart"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="budget-bars">
+    <div class="chart-title">주요 사업 예산 규모</div>
+    <div class="budget-row">
+      <div class="budget-info"><span class="budget-name">DMO 육성 지원</span><span class="budget-amt">2억원</span></div>
+      <div class="budget-bar"><div class="budget-fill" style="width:0%;background:var(--teal)" data-w="100"></div></div>
+    </div>
+    <div class="budget-row">
+      <div class="budget-info"><span class="budget-name">갭먼스@청도</span><span class="budget-amt">1.4억원</span></div>
+      <div class="budget-bar"><div class="budget-fill" style="width:0%;background:var(--teal)" data-w="70"></div></div>
+    </div>
+    <div class="budget-row">
+      <div class="budget-info"><span class="budget-name">미리맛보는 소통협력공간</span><span class="budget-amt">1억 359만원</span></div>
+      <div class="budget-bar"><div class="budget-fill" style="width:0%;background:var(--teal)" data-w="52"></div></div>
+    </div>
+    <div class="budget-row">
+      <div class="budget-info"><span class="budget-name">청도 귀촌지원체계 수립</span><span class="budget-amt">8,865만원</span></div>
+      <div class="budget-bar"><div class="budget-fill" style="width:0%;background:var(--teal-mid)" data-w="44"></div></div>
+    </div>
+    <div class="budget-row">
+      <div class="budget-info"><span class="budget-name">드림e 팩토리</span><span class="budget-amt">7,000만원</span></div>
+      <div class="budget-bar"><div class="budget-fill" style="width:0%;background:var(--teal-mid)" data-w="35"></div></div>
+    </div>
+    <div class="budget-row">
+      <div class="budget-info"><span class="budget-name">경북지속가능포럼·캠프</span><span class="budget-amt">9,000만원</span></div>
+      <div class="budget-bar"><div class="budget-fill" style="width:0%;background:var(--teal-mid)" data-w="45"></div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div style="padding:16px">
+    <div class="chart-title">협력 파트너</div>
+    <div class="partner-cloud">
+      <span class="partner-tag">협동조합 온누리</span>
+      <span class="partner-tag">노는엄마들</span>
+      <span class="partner-tag">MYSC</span>
+      <span class="partner-tag">다로리인</span>
+      <span class="partner-tag">찰나의 순간</span>
+      <span class="partner-tag">다음세대재단</span>
+      <span class="partner-tag">비커넥트랩</span>
+      <span class="partner-tag">아울러사협</span>
+      <span class="partner-tag">(주)비피</span>
+      <span class="partner-tag">띵스베럴</span>
+      <span class="partner-tag">청도군</span>
+      <span class="partner-tag">영주시 인구활력팀</span>
+      <span class="partner-tag">경북테크노파크</span>
+      <span class="partner-tag">한국수산자원공단</span>
+    </div>
+  </div>
+</div><!-- /panel-impact -->
+
+
+<!-- ════════════ PANEL: 재단소개 ════════════ -->
+<div class="panel" id="panel-about">
+  <section class="about-hero">
+    <div class="hero-eyebrow" style="position:relative;z-index:1">사단법인</div>
+    <h1 style="position:relative;z-index:1">경북시민재단<br><em>Gyeongbuk<br>Citizens'</em></h1>
+    <p style="position:relative;z-index:1">Foundation</p>
+  </section>
+
+  <div class="about-body">
+    <div class="about-intro">
+      시민이 직접 지역의 난제를 발견하고, 다양한 이해관계자와의 협력으로 해결 방안을 모색하여 <strong>지역의 새로운 변화</strong>를 만들어 갑니다.
+    </div>
+
+    <div class="about-item">
+      <div class="about-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      </div>
+      <div>
+        <h3>청도혁신센터 운영</h3>
+        <p>경북 청도를 거점으로 지역 주민·청년·기업이 함께 실험하는 혁신 공간을 운영합니다.</p>
+      </div>
+    </div>
+
+    <div class="about-item">
+      <div class="about-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div>
+        <h3>로컬 브랜딩 · 생활인구 확대</h3>
+        <p>관계인구를 생활인구로 전환하는 프로젝트와 지역 자원 발굴 활동을 이어갑니다.</p>
+      </div>
+    </div>
+
+    <div class="about-item">
+      <div class="about-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div>
+        <h3>지역문제해결 플랫폼</h3>
+        <p>경북의 지역 현안을 시민과 행정이 함께 풀어가는 공론화·협력 플랫폼을 운영합니다.</p>
+      </div>
+    </div>
+
+    <div class="about-item">
+      <div class="about-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div>
+        <h3>스타트업 · 창업 생태계</h3>
+        <p>청년 로컬 창업가를 발굴하고 육성하여 청도를 창업하기 좋은 도시로 만들어갑니다.</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="row"><div class="lbl">주소</div><div class="val">경상북도 청도군 청도읍 한내길 194, 2층</div></div>
+      <div class="row"><div class="lbl">TEL</div><div class="val">070-4757-5100~2</div></div>
+      <div class="row"><div class="lbl">E-MAIL</div><div class="val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6f040d1c065e5e5c5f2f010e190a1d410c0002">[email&#160;protected]</a></div></div>
+      <div class="row"><div class="lbl">웹사이트</div><div class="val">gbcommons.org</div></div>
+    </div>
+  </div>
+</div><!-- /panel-about -->
+
+<!-- ════════════ PANEL: 2026 사업계획 ════════════ -->
+<div class="panel" id="panel-plan">
+  <section class="hero">
+    <div class="hero-eyebrow">2026 사업계획</div>
+    <h1>26년도<br><em>로드맵</em></h1>
+    <p class="hero-sub">소통협력공간 + 법인 자체사업</p>
+  </section>
+
+  <div class="sec-wrap">
+    <div class="sec-head">
+      <h2><span>2026 사업계획</span>소통협력공간 + 법인사업</h2>
+      <span class="cnt-badge">10개</span>
+    </div>
+    <div class="proj-list">
+
+      <!-- 소통협력공간 소제목 -->
+      <div style="padding:6px 2px 2px;font-size:10px;font-weight:700;color:var(--teal-dark);letter-spacing:0.8px;text-transform:uppercase;">소통협력공간 (청도상상마루)</div>
+
+      <!-- S1 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">1</div>
+          <div class="ctw">
+            <div class="ctitle">심야책바</div>
+            <div class="cmeta">
+              <span class="tag pr">신규</span>
+              <span class="tag p">생활인구 활성화</span>
+              <span class="tag b">2,000만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">커뮤니티 공간을 활용한 청년 심야 놀이터 운영. 책을 매개로 한 대화·교류로 지역 내 새로운 문화 감수성 확산 및 상상마루 열린 커뮤니티 이미지 강화.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">주제도서 선정 및 홍보 → 사전신청 → 심야책바 진행 → 후속 프로그램 기획</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">야간 시간대 공간 활용도 제고 및 열린 커뮤니티 이미지 강화</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S2 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">2</div>
+          <div class="ctw">
+            <div class="ctitle">창업 및 커뮤니티 지원</div>
+            <div class="cmeta">
+              <span class="tag pr">신규</span>
+              <span class="tag p">거점공간기능</span>
+              <span class="tag b">4,000만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도 지역 창업 및 활동가의 성장 기반 강화. 창업 컨설팅·IR 피칭대회 등을 통해 지역 창업 생태계 구축.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">참여기업 선정 → 입주 계약 → 공간 지원 및 교육프로그램 운영 → IR 피칭데이</div></div>
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">청도군 내외 창업 자원 발굴 및 연계를 통한 창업 생태계 구축</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">3</div>
+          <div class="ctw">
+            <div class="ctitle">청도 마운틴 영화제</div>
+            <div class="cmeta">
+              <span class="tag pr">신규</span>
+              <span class="tag p">생활인구 활성화</span>
+              <span class="tag b">1,500만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도군 내 영화 문화 기반 조성 및 주민 문화 향유권 확대. 청도 상상마루의 지역 문화 거점화 및 공간 브랜드 강화.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">기획 및 섭외 → 홍보·사전운영 준비 → 행사 운영 → 평가 및 발전방향 모색</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">4</div>
+          <div class="ctw">
+            <div class="ctitle">미라클 헬씨 모닝</div>
+            <div class="cmeta">
+              <span class="tag pr">신규</span>
+              <span class="tag p">생활인구 활성화</span>
+              <span class="tag b">2,300만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도군 주민의 아침 시간 활용도 제고 및 건강문화 확산. 일상 속 '작은 행복과 회복'을 경험하는 지역 생활문화 정착.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">기획 및 강사 섭외 → 참여자 모집 → 프로그램 운영 → 후속모임 추진 → 만족도 조사</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S5 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num">5</div>
+          <div class="ctw">
+            <div class="ctitle">소통협력공간 주간</div>
+            <div class="cmeta">
+              <span class="tag">유지</span>
+              <span class="tag p">거점공간기능</span>
+              <span class="tag b">5,000만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">상상마루 입주조직·이용 주민의 공동기획을 통한 주민주도의 지역 정체성 확립. 지속 가능한 지역 공동체 네트워크 구축.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot"></div><div class="hl-text">계획 수립 → 지역 거버넌스 모집 → 사업 홍보 및 행사 진행 → 아카이브</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 법인 자체사업 소제목 -->
+      <div style="padding:16px 2px 2px;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:0.8px;text-transform:uppercase;">법인 자체사업</div>
+
+      <!-- B1 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">6</div>
+          <div class="ctw">
+            <div class="ctitle">청도온스테이</div>
+            <div class="cmeta">
+              <span class="tag b">법인사업</span>
+              <span class="tag p">생활인구</span>
+              <span class="tag b">2억 5천만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">점진적 경험 모델을 통해 다양한 삶이 설계되는 정착 기반 마련. 숙박·공유주방·창업 실험 등 장기체류 생활 라운지 제공.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">발주처: 행정안전부 / 청도군</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B2 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">7</div>
+          <div class="ctw">
+            <div class="ctitle">청년탐색 드림스테이</div>
+            <div class="cmeta">
+              <span class="tag b">법인사업</span>
+              <span class="tag p">청년정착</span>
+              <span class="tag b">2억 5천만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">머무르고 겪고 일하며 뿌리내리는 생활형 귀촌 청년 정착 체계 마련.</p>
+        </div>
+      </div>
+
+      <!-- B3 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">8</div>
+          <div class="ctw">
+            <div class="ctitle">로컬임팩트 스타트업밸리 조성</div>
+            <div class="cmeta">
+              <span class="tag b">법인사업</span>
+              <span class="tag p">창업생태계</span>
+              <span class="tag b">3억 5천만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">청도군 내 유입된 귀농귀촌인·청년·체류인구가 창업·정주로 자연스럽게 이행할 수 있도록 교육부터 사업화까지 전 과정을 지원하는 통합체계 구축.</p>
+        </div>
+      </div>
+
+      <!-- B4 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">9</div>
+          <div class="ctw">
+            <div class="ctitle">시군구연고산업육성사업</div>
+            <div class="cmeta">
+              <span class="tag b">법인사업</span>
+              <span class="tag p">스마트농업</span>
+              <span class="tag b">4억원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">스마트 농업·고부가가치 식품제조·문화콘텐츠 융합을 통한 청도형 신성장 거점 구축.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">발주처: 중소벤처기업부 외 4개 부처 / 소통협력공간 사업 연계</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B5 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="card-hd">
+          <div class="card-num org">10</div>
+          <div class="ctw">
+            <div class="ctitle">청년 크리에이터 양성</div>
+            <div class="cmeta">
+              <span class="tag b">법인사업</span>
+              <span class="tag p">청년육성</span>
+              <span class="tag b">5천만원</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6.5L9 11.5L14 6.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="summary">지역 우수 청년 크리에이터 발굴·양성을 통한 협업체계 구축. 집중 성장지원으로 지역 정착 기반 마련.</p>
+          <div class="hl-wrap" style="padding-top:11px;border-top:none;">
+            <div class="hl-item"><div class="hl-dot org"></div><div class="hl-text">발주처: 경북문화재단 / 콘텐츠진흥원 — 크리에이터별 성장지원금 최대 1,000만원</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 합계 -->
+      <div style="background:var(--teal-light);border-radius:12px;padding:14px 16px;margin-top:8px;">
+        <p style="font-size:11px;color:var(--teal-dark);font-weight:700;letter-spacing:0.5px;margin-bottom:8px;">2026 사업비 합계</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+          <span style="font-size:13px;color:var(--dark);">법인 전체 사업 (운영비 포함)</span>
+          <span style="font-size:14px;font-weight:700;color:var(--accent);">약 23억 7,900만원</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /panel-plan -->
+
+
+
+</div><!-- /page-content -->
+
+
+<!-- ════════════ BOTTOM NAV ════════════ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-home" onclick="switchPanel('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+    사업목록
+  </button>
+  <button class="nav-item" id="nav-impact" onclick="switchPanel('impact')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    성과
+  </button>
+  <button class="nav-item" id="nav-about" onclick="switchPanel('about')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    재단소개
+  </button>
+  <button class="nav-item" id="nav-plan" onclick="switchPanel('plan')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+    26년계획
+  </button>
+<!--
+  <button class="nav-item" onclick="window.open('https://gbcommons.org','_blank')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    공식 홈페이지
+  </button>
+-->
+</nav>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── 패널 전환 ── */
+function switchPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  const nb = document.getElementById('nav-' + name);
+  if (nb) nb.classList.add('active');
+  window.scrollTo(0, 0);
+  if (name === 'impact') {
+    setTimeout(() => {
+      renderBarChart();
+      animateBars();
+    }, 100);
+  }
+}
+
+/* ── 탭 전환 (홈 내부) ── */
+const tabIds = { '청도혁신': 'tab-청도혁신', '법인일반': 'tab-법인일반', '용역': 'tab-용역', '플랫폼': 'tab-플랫폼' };
+function switchTab(btn, key) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  Object.values(tabIds).forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+  const target = document.getElementById(tabIds[key]);
+  if (target) target.style.display = 'block';
+}
+
+/* ── 카드 토글 ── */
+function toggleCard(card) {
+  const wasOpen = card.classList.contains('open');
+  document.querySelectorAll('.pcard.open').forEach(c => {
+    c.classList.remove('open');
+  });
+  if (!wasOpen) {
+    card.classList.add('open');
+    // animate gauges in this card
+    card.querySelectorAll('.gauge-f[data-w]').forEach(el => {
+      setTimeout(() => { el.style.width = el.dataset.w + '%'; }, 50);
+    });
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+  }
+}
+
+/* ── 아코디언 ── */
+function toggleAcc(btn, e) {
+  e.stopPropagation();
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+/* ── 월별 방문객 바차트 ── */
+const monthData = [
+  ['3월', 95], ['4월', 162], ['5월', 146], ['6월', 313],
+  ['7월', 530], ['8월', 456], ['9월', 275], ['10월', 134],
+  ['11월', 343], ['12월', 313]
+];
+const maxV = 530;
+
+function renderBarChart() {
+  const c = document.getElementById('bar-chart');
+  if (!c || c.dataset.rendered) return;
+  c.dataset.rendered = '1';
+  c.innerHTML = monthData.map(([m, v]) => `
+    <div class="bar-row">
+      <span class="bar-mo">${m}</span>
+      <div class="bar-wrap"><div class="bar-fill" style="width:0%" data-w="${Math.round(v/maxV*100)}"></div></div>
+      <span class="bar-v">${v}</span>
+    </div>
+  `).join('');
+  setTimeout(() => {
+    c.querySelectorAll('.bar-fill').forEach(el => {
+      el.style.width = el.dataset.w + '%';
+    });
+  }, 50);
+}
+
+function animateBars() {
+  document.querySelectorAll('.budget-fill[data-w]').forEach(el => {
+    setTimeout(() => { el.style.width = el.dataset.w + '%'; }, 100);
+  });
+}
+
+/* ── 초기화 ── */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.gauge-f[data-w]').forEach(el => {
+    el.style.transition = 'width 0.7s ease';
+  });
+  document.querySelectorAll('.budget-fill[data-w]').forEach(el => {
+    el.style.transition = 'width 0.7s ease';
+  });
+  document.querySelectorAll('.bar-fill').forEach(el => {
+    el.style.transition = 'width 0.5s ease';
+  });
+});
+</script>
+</body>
+</html>
