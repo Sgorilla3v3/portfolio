@@ -3,48 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>코미디영화제 사전 논의 자료</title>
+<title>PRD — 청도 마운틴영화제</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════════
-   DESIGN SYSTEM
-   폰트: Noto Sans KR (본문·제목 전체) + DM Mono (숫자·코드·레이블 한정)
-   컬러: 흑백 메인, 강조는 순수 검정 계열만
-   모서리: 직각 기본, 예외 없음
-   ══════════════════════════════════════════════ */
-
 :root {
-  /* ── 베이스 (흑백 구조) ── */
+  --black:   #0d0d0d;
+  --dark:    #1f1f1f;
+  --gray-d:  #3a3a3a;
+  --gray-m:  #767676;
+  --gray-l:  #b8b8b8;
+  --gray-xl: #e4e4e4;
+  --off:     #f5f5f3;
   --white:   #ffffff;
-  --off:     #f4f6f4;   /* 그린 기운 살짝 섞은 오프화이트 */
-  --border:  #dde4dd;   /* 그린 기운 살짝 섞은 보더 */
-  --mid:     #7a8f7a;   /* 중간 그린-그레이 */
-  --dark:    #2d3d2d;   /* 다크 그린-블랙 */
-  --black:   #111811;   /* 거의 검정, 아주 미세한 그린 */
 
-  /* ── 컬러 포인트 3색 (포레스트 그린 계열) ──
-     헤더/강조: #1A3A2A  (딥 포레스트)
-     센터 구분: #2D5A3D  (미드 포레스트)
-     협동조합:  #4A7C5F  (라이트 포레스트)
-     ────────────────────────────────────────── */
-  --accent:       #1A3A2A;   /* 헤더, 주요 블록 헤드, nav active */
-  --accent-mid:   #2D5A3D;   /* 혁신센터 역할 헤더, 원칙 번호 */
-  --accent-light: #4A7C5F;   /* 협동조합 역할 헤더, 타임라인 협동조합 */
+  /* 포인트 3색 */
+  --red:     #c0392b;   /* 강조·경고 */
+  --amber:   #c67c00;   /* 서브 강조 */
+  --slate:   #4a5568;   /* 정보·구분 */
 
-  /* 배경 틴트 (색상 블록 배경으로 사용) */
-  --tint-deep:  #EBF0EB;   /* accent 틴트 — off white with green */
-  --tint-mid:   #EDF2EE;   /* 섹션 desc, tl alt 배경 */
-
-  /* 타이포 */
   --sans: 'Noto Sans KR', sans-serif;
-  --mono: 'DM Mono', monospace;
+  --mono: 'IBM Plex Mono', monospace;
+  --display: 'Bebas Neue', sans-serif;
 
-  /* 간격 */
-  --gap-sm: 8px;
-  --gap-md: 16px;
-  --gap-lg: 32px;
+  --border: 1px solid var(--gray-xl);
+  --border-d: 1px solid var(--gray-d);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,85 +38,90 @@ body {
   background: var(--white);
   color: var(--black);
   font-family: var(--sans);
-  font-size: 14px;
-  line-height: 1.75;
+  font-size: 13.5px;
+  line-height: 1.8;
   -webkit-font-smoothing: antialiased;
 }
 
-@media print {
-  body { font-size: 11px; }
-  .no-print { display: none !important; }
-  .page-break { page-break-before: always; }
-  header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-}
+/* ── 레이아웃 ─────────────────────────── */
+.page { max-width: 940px; margin: 0 auto; padding: 0 40px 120px; }
 
-/* ── 헤더 ─────────────────────────────────── */
-header {
-  background: var(--accent);
-  color: var(--white);
-  padding: 52px 0 40px;
-  border-bottom: 3px solid var(--accent);
+/* ── 헤더 ────────────────────────────── */
+.doc-header {
+  border-bottom: 3px solid var(--black);
+  padding: 64px 0 36px;
+  margin-bottom: 0;
 }
-.header-inner {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-.doc-eyebrow {
+.doc-label {
   font-family: var(--mono);
   font-size: 10px;
-  letter-spacing: 0.18em;
-  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  color: var(--gray-m);
+  margin-bottom: 18px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
 }
-header h1 {
-  font-size: 28px;
-  font-weight: 900;
-  line-height: 1.35;
-  letter-spacing: -0.025em;
-  margin-bottom: 6px;
+.doc-label::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--red);
 }
-.header-tagline {
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
+.doc-title {
+  font-family: var(--display);
+  font-size: 72px;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+.doc-title span { color: var(--red); }
+.doc-subtitle {
+  font-size: 14px;
   font-weight: 300;
+  color: var(--gray-m);
+  margin-top: 14px;
   margin-bottom: 36px;
 }
-.header-meta {
+.doc-meta-row {
   display: flex;
-  gap: 40px;
+  gap: 0;
+  border-top: var(--border);
+  padding-top: 20px;
   flex-wrap: wrap;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.12);
 }
-.meta-item { display: flex; flex-direction: column; gap: 3px; }
-.meta-label {
+.meta-cell {
+  padding: 0 28px 0 0;
+  margin-right: 28px;
+  border-right: var(--border);
+}
+.meta-cell:first-child { padding-left: 0; }
+.meta-cell:last-child { border-right: none; }
+.meta-k {
   font-family: var(--mono);
   font-size: 9px;
-  letter-spacing: 0.14em;
-  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: var(--gray-m);
+  margin-bottom: 3px;
 }
-.meta-val {
+.meta-v {
   font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.9);
+  font-weight: 700;
+  color: var(--black);
 }
+.meta-v.red { color: var(--red); }
 
-/* ── 탭 네비 ─────────────────────────────── */
-.nav-bar {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
+/* ── 탭 내비 ─────────────────────────── */
+.nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 0 var(--border);
-}
-.nav-inner {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 0 40px;
+  background: var(--white);
+  border-bottom: 2px solid var(--black);
   display: flex;
   gap: 0;
   overflow-x: auto;
@@ -140,495 +129,244 @@ header h1 {
 .nav-btn {
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
-  padding: 14px 18px;
+  border-bottom: 3px solid transparent;
+  position: relative;
+  bottom: -2px;
+  padding: 14px 20px;
   font-family: var(--sans);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--mid);
+  color: var(--gray-m);
   cursor: pointer;
   white-space: nowrap;
-  transition: color 0.15s, border-color 0.15s;
-  position: relative;
-  top: 1px;
+  letter-spacing: 0.02em;
+  transition: color 0.12s;
 }
-.nav-btn:hover { color: var(--accent); }
+.nav-btn:hover { color: var(--black); }
 .nav-btn.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--black);
   font-weight: 700;
+  border-bottom-color: var(--red);
 }
 
-/* ── 본문 ────────────────────────────────── */
-main {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 48px 40px 100px;
-}
-
-.section { display: none; animation: fadeIn 0.2s ease; }
+/* ── 섹션 ────────────────────────────── */
+.section { display: none; padding-top: 52px; }
 .section.active { display: block; }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── 섹션 헤더 ────────────────────────────── */
-.sec-header {
+/* ── 섹션 헤더 ───────────────────────── */
+.sec-hd {
   display: flex;
   align-items: baseline;
-  gap: 14px;
-  margin-bottom: 8px;
-  padding-bottom: 14px;
-  border-bottom: 2px solid var(--accent);
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--black);
 }
 .sec-num {
   font-family: var(--mono);
-  font-size: 10px;
-  color: var(--accent-light);
+  font-size: 11px;
+  color: var(--red);
   letter-spacing: 0.08em;
+  flex-shrink: 0;
 }
 .sec-title {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-family: var(--display);
+  font-size: 34px;
+  letter-spacing: 0.02em;
   color: var(--black);
+  line-height: 1;
 }
 .sec-desc {
   font-size: 13px;
-  color: var(--dark);
-  line-height: 1.8;
+  color: var(--gray-d);
+  line-height: 1.85;
+  padding: 16px 20px;
+  border-left: 3px solid var(--slate);
+  background: var(--off);
   margin-bottom: 32px;
-  margin-top: 14px;
-  padding: 14px 18px;
-  background: var(--tint-mid);
-  border-left: 3px solid var(--accent-mid);
 }
 
-/* ── 공통 블록 ────────────────────────────── */
-.block {
-  border: 1px solid var(--border);
-  margin-bottom: 20px;
-}
-.block-head {
-  background: var(--accent);
+/* ── 공통 블록 ───────────────────────── */
+.block { border: var(--border); margin-bottom: 20px; }
+.block-hd {
+  background: var(--black);
   color: var(--white);
   padding: 10px 16px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.block-head.gray {
-  background: var(--tint-deep);
-  color: var(--accent);
-  border-bottom: 1px solid var(--border);
+.block-hd.inv {
+  background: var(--off);
+  color: var(--black);
+  border-bottom: var(--border);
 }
-.block-body {
-  padding: 20px;
+.block-hd.amber {
+  background: var(--amber);
+  color: var(--white);
 }
+.block-hd.slate {
+  background: var(--slate);
+  color: var(--white);
+}
+.block-body { padding: 20px; }
 
-/* ── 개요 그리드 ───────────────────────────── */
-.overview-grid {
+/* ── 개요 그리드 ─────────────────────── */
+.ov-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
+  border: var(--border);
   margin-bottom: 20px;
 }
 .ov-cell {
-  background: var(--white);
-  padding: 16px 18px;
+  padding: 18px 20px;
+  border-right: var(--border);
+  border-bottom: var(--border);
 }
-.ov-label {
+.ov-cell:nth-child(3n) { border-right: none; }
+.ov-cell:nth-last-child(-n+3) { border-bottom: none; }
+.ov-k {
   font-family: var(--mono);
   font-size: 9px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--mid);
+  color: var(--gray-m);
   margin-bottom: 6px;
 }
-.ov-val {
+.ov-v {
   font-size: 15px;
   font-weight: 700;
   color: var(--black);
-  line-height: 1.3;
+  line-height: 1.35;
 }
-.ov-sub {
-  font-size: 11px;
-  color: var(--mid);
-  margin-top: 3px;
-}
-@media (max-width: 600px) { .overview-grid { grid-template-columns: 1fr 1fr; } }
+.ov-v.red { color: var(--red); }
+.ov-sub { font-size: 11px; color: var(--gray-m); margin-top: 3px; }
 
-/* ── 계약 구조도 ───────────────────────────── */
-.contract-flow {
+/* ── 구조도 (흐름) ───────────────────── */
+.flow {
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr;
+  grid-template-columns: 1fr 56px 1fr 56px 1fr;
+  border: var(--border);
+  margin-bottom: 8px;
+}
+.flow-node {
+  padding: 22px 18px;
+  text-align: center;
+}
+.flow-node.n1 { background: var(--black); color: var(--white); }
+.flow-node.n2 { background: var(--slate); color: var(--white); }
+.flow-node.n3 { background: var(--off); color: var(--black); border-left: var(--border); }
+.flow-arrow {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0;
-  border: 1px solid var(--border);
-  margin-bottom: 12px;
-}
-.cf-node {
-  padding: 20px 18px;
-  text-align: center;
-}
-.cf-node.n-black { background: var(--accent);     color: var(--white); }
-.cf-node.n-dark  { background: var(--accent-mid); color: var(--white); }
-.cf-node.n-light { background: var(--tint-deep);  color: var(--dark);  border-left: 1px solid var(--border); }
-.cf-arrow-col {
-  padding: 12px 8px;
-  text-align: center;
+  justify-content: center;
   background: var(--white);
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
+  border-left: var(--border);
+  border-right: var(--border);
+  gap: 4px;
+  padding: 8px;
 }
-.cf-arrow-icon { font-size: 18px; color: var(--mid); line-height: 1; }
-.cf-arrow-label {
-  font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  color: var(--mid);
-  display: block;
-  margin-top: 4px;
-}
-.cf-org { font-weight: 700; font-size: 13px; margin-bottom: 4px; line-height: 1.4; }
-.cf-role { font-size: 11px; opacity: 0.7; line-height: 1.5; }
-.cf-badge {
-  display: inline-block;
+.arrow-icon { font-size: 16px; color: var(--gray-m); }
+.arrow-lbl {
   font-family: var(--mono);
   font-size: 8px;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  color: var(--gray-m);
+  text-align: center;
+  line-height: 1.4;
+}
+.fn-org { font-weight: 700; font-size: 13px; margin-bottom: 5px; line-height: 1.4; }
+.fn-role { font-size: 11px; opacity: 0.75; line-height: 1.55; }
+.fn-tag {
+  display: inline-block;
   margin-top: 8px;
-  padding: 2px 7px;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
   border: 1px solid currentColor;
   opacity: 0.6;
 }
-.n-light .cf-badge-warn {
-  border-color: var(--accent);
-  color: var(--accent);
-  opacity: 1;
-  font-weight: 700;
+.flow-note {
+  font-size: 11.5px;
+  color: var(--gray-d);
+  padding: 10px 16px;
+  border: var(--border);
+  border-top: none;
+  background: var(--off);
+  margin-bottom: 20px;
 }
 
-/* ── 역할 2분할 ───────────────────────────── */
-.role-split {
+/* ── 2단 분할 ────────────────────────── */
+.split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid var(--border);
+  border: var(--border);
   margin-bottom: 20px;
 }
-@media (max-width: 640px) { .role-split { grid-template-columns: 1fr; } }
-.role-col {}
-.role-col-head {
-  padding: 11px 16px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  border-bottom: 1px solid var(--border);
+.split-col + .split-col { border-left: var(--border); }
+.split-hd {
+  padding: 10px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-bottom: var(--border);
 }
-.role-col-head.center { background: var(--accent);     color: var(--white); }
-.role-col-head.coop   { background: var(--accent-mid); color: var(--white); border-left: 1px solid rgba(255,255,255,0.1); }
-.role-col-body { padding: 14px 16px; }
-.role-item {
-  font-size: 12.5px;
-  color: var(--dark);
-  padding: 5px 0;
-  border-bottom: 1px solid var(--border);
+.split-hd.black { background: var(--black); color: var(--white); }
+.split-hd.slate { background: var(--slate); color: var(--white); }
+.split-body { padding: 4px 0; }
+.split-item {
   display: flex;
   gap: 10px;
-  line-height: 1.55;
-}
-.role-item:last-child { border-bottom: none; }
-.role-item::before {
-  content: '·';
-  color: var(--mid);
-  flex-shrink: 0;
-  font-size: 16px;
-  line-height: 1.3;
-}
-.role-col + .role-col { border-left: 1px solid var(--border); }
-
-/* ── 경고 박스 ────────────────────────────── */
-.warn-box {
-  border: 2px solid var(--accent);
-  padding: 0;
-  margin-bottom: 20px;
-}
-.warn-box-head {
-  background: var(--accent);
-  color: var(--white);
-  padding: 10px 16px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-.warn-box-body { padding: 16px 18px; }
-.warn-list { list-style: none; }
-.warn-list li {
-  font-size: 13px;
-  color: var(--dark);
-  padding: 7px 0;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 12px;
-  line-height: 1.65;
-}
-.warn-list li:last-child { border-bottom: none; }
-.warn-list li::before {
-  content: '→';
-  color: var(--accent-mid);
-  font-weight: 700;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-/* ── 원칙 목록 ────────────────────────────── */
-.principle-list { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); }
-.principle-item {
-  display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
-}
-.principle-item:last-child { border-bottom: none; }
-.principle-num {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--white);
-  background: var(--accent-mid);
-  width: 48px;
-  min-width: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.04em;
-}
-.principle-body { padding: 14px 18px; }
-.principle-head {
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--accent);
-  margin-bottom: 3px;
-}
-.principle-text {
+  padding: 8px 16px;
   font-size: 12.5px;
   color: var(--dark);
-  line-height: 1.65;
+  border-bottom: var(--border);
+  line-height: 1.6;
 }
-.hl { background: var(--tint-deep); font-weight: 700; padding: 0 3px; color: var(--accent); }
+.split-item:last-child { border-bottom: none; }
+.split-item::before { content: '—'; color: var(--gray-l); flex-shrink: 0; font-family: var(--mono); font-size: 12px; }
 
-/* ── 테이블 ──────────────────────────────── */
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  margin-bottom: 0;
-}
-.data-table th {
-  background: var(--accent);
+/* ── 테이블 ─────────────────────────── */
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th {
+  background: var(--black);
   color: var(--white);
   padding: 10px 14px;
   text-align: left;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  font-family: var(--mono);
 }
-.data-table td {
+.tbl td {
   padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: var(--border);
   vertical-align: top;
   color: var(--dark);
-  line-height: 1.6;
-}
-.data-table tr:last-child td { border-bottom: none; }
-.data-table tbody tr:hover td { background: var(--tint-mid); }
-.td-label { font-weight: 600; color: var(--accent); }
-.td-pending { color: var(--mid); font-style: italic; }
-.td-total { font-weight: 700; color: var(--accent); background: var(--tint-deep) !important; }
-.data-table.border { border: 1px solid var(--border); }
-
-/* ── 타임라인 ─────────────────────────────── */
-.tl-wrap { border: 1px solid var(--border); }
-.tl-thead {
-  display: grid;
-  grid-template-columns: 70px 1fr 1fr;
-  background: var(--accent);
-}
-.tl-th {
-  padding: 10px 14px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--white);
-  letter-spacing: 0.04em;
-}
-.tl-th.gray { background: var(--accent-mid); }
-.tl-row {
-  display: grid;
-  grid-template-columns: 70px 1fr 1fr;
-  border-top: 1px solid var(--border);
-}
-.tl-month {
-  padding: 16px 12px;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--accent-light);
-  border-right: 1px solid var(--border);
-  display: flex;
-  align-items: flex-start;
-  line-height: 1.4;
-}
-.tl-cell {
-  padding: 14px;
-  font-size: 12.5px;
-  color: var(--dark);
   line-height: 1.65;
-  border-right: 1px solid var(--border);
 }
-.tl-cell:last-child { border-right: none; }
-.tl-cell.alt { background: var(--tint-mid); }
-.tl-item {
-  padding: 3px 0;
-  border-bottom: 1px solid var(--border);
-}
-.tl-item:last-child { border-bottom: none; }
-.tl-milestone {
-  margin-top: 8px;
-  padding-top: 7px;
-  border-top: 1px solid var(--accent-mid);
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--accent-mid);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.tl-milestone::before { content: '▸'; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tbody tr:hover td { background: var(--off); }
+.tbl.bordered { border: var(--border); }
+.td-k { font-weight: 700; color: var(--black); }
+.td-red { font-weight: 700; color: var(--red); }
+.td-pending { color: var(--gray-m); font-style: italic; font-family: var(--mono); font-size: 11px; }
+.td-total { font-weight: 700; background: var(--off) !important; color: var(--black); }
 
-/* ── 교육 단계 테이블 ─────────────────────── */
-.edu-table { border: 1px solid var(--border); width: 100%; margin-top: 24px; }
-
-/* ── 체크리스트 ───────────────────────────── */
-.checklist { border: 1px solid var(--border); }
-.check-item {
+/* ── 예산 바 ─────────────────────────── */
+.budget-bar {
   display: flex;
-  align-items: flex-start;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background 0.12s;
-}
-.check-item:last-child { border-bottom: none; }
-.check-item:hover { background: var(--tint-mid); }
-.check-item.done { background: var(--tint-mid); }
-.check-item.done .check-box { background: var(--accent-mid); color: var(--white); }
-.check-box {
-  width: 48px;
-  min-width: 48px;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  border-right: 1px solid var(--border);
-  color: var(--mid);
-  align-self: stretch;
-  font-family: var(--mono);
-  font-weight: 500;
-  transition: background 0.12s, color 0.12s;
-}
-.check-content {
-  padding: 13px 16px;
-  flex: 1;
-}
-.check-head {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 3px;
-}
-.check-sub {
-  font-size: 12px;
-  color: var(--mid);
-  line-height: 1.6;
-}
-.check-badge {
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  border-left: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.badge-inner {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 500;
-  white-space: nowrap;
-}
-.badge-key     { color: var(--accent);     font-weight: 700; }
-.badge-confirm { color: var(--accent-mid); }
-.badge-discuss { color: var(--accent-light); }
-
-/* ── 논의 2컬럼 ──────────────────────────── */
-.discuss-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid var(--border);
-  margin-bottom: 20px;
-}
-@media (max-width: 600px) { .discuss-grid { grid-template-columns: 1fr; } }
-.discuss-col { }
-.discuss-col + .discuss-col { border-left: 1px solid var(--border); }
-.discuss-col-head {
-  padding: 10px 14px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  border-bottom: 1px solid var(--border);
-}
-.discuss-col-head.black { background: var(--accent);     color: var(--white); }
-.discuss-col-head.dark  { background: var(--accent-mid); color: var(--white); }
-.discuss-col-body { padding: 4px 0; }
-.discuss-q {
-  font-size: 12.5px;
-  color: var(--dark);
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 10px;
-  line-height: 1.6;
-}
-.discuss-q:last-child { border-bottom: none; }
-.dq-mark {
-  font-family: var(--mono);
-  font-size: 9px;
-  color: var(--accent-light);
-  flex-shrink: 0;
-  margin-top: 3px;
-  letter-spacing: 0.05em;
-}
-
-/* ── 예산 바 ─────────────────────────────── */
-.budget-bar-wrap { margin-bottom: 20px; }
-.budget-total-bar {
-  display: flex;
-  height: 36px;
-  border: 1px solid var(--border);
-  margin-bottom: 12px;
+  height: 40px;
+  border: var(--border);
+  margin-bottom: 16px;
   overflow: hidden;
 }
-.btb-seg {
+.bb-seg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -637,227 +375,372 @@ main {
   font-weight: 500;
   letter-spacing: 0.05em;
 }
-.btb-coop   { background: var(--accent);     color: var(--white); flex: 14; }
-.btb-center { background: var(--tint-deep);  color: var(--accent-mid); flex: 1; border-left: 1px solid var(--border); }
+.bb-main  { background: var(--black); color: var(--white); flex: 14; }
+.bb-edu   { background: var(--amber); color: var(--white); flex: 2; border-left: 2px solid var(--white); }
 
-.budget-rows { display: flex; flex-direction: column; gap: 10px; }
-.budget-row {
-  display: grid;
-  grid-template-columns: 140px 1fr 90px;
-  align-items: center;
-  gap: 14px;
-}
-.budget-label { font-size: 13px; font-weight: 600; color: var(--accent); }
-.budget-track {
-  height: 8px;
-  background: var(--tint-deep);
-  border: 1px solid var(--border);
-}
-.budget-fill { height: 100%; background: var(--accent); }
-.budget-amt {
-  font-family: var(--mono);
-  font-size: 12px;
-  text-align: right;
-  color: var(--dark);
-}
+.bud-rows { display: flex; flex-direction: column; gap: 12px; }
+.bud-row { display: grid; grid-template-columns: 180px 1fr 100px; align-items: center; gap: 14px; }
+.bud-lbl { font-size: 13px; font-weight: 600; color: var(--black); }
+.bud-track { height: 6px; background: var(--gray-xl); }
+.bud-fill { height: 100%; }
+.bud-amt { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--dark); }
 
-/* ── 이슈 테이블 ─────────────────────────── */
-.issue-table { border: 1px solid var(--border); width: 100%; }
-
-/* ── 프린트 버튼 ─────────────────────────── */
-.print-btn {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  background: var(--accent);
+/* ── 경고 박스 ───────────────────────── */
+.alert {
+  border: 2px solid var(--red);
+  margin-bottom: 20px;
+}
+.alert-hd {
+  background: var(--red);
   color: var(--white);
-  border: none;
-  padding: 12px 22px;
-  font-family: var(--sans);
-  font-size: 12.5px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(26,58,42,0.35);
-  z-index: 200;
-  letter-spacing: 0.03em;
-  transition: background 0.15s;
+  padding: 10px 16px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.print-btn:hover { background: var(--accent-mid); }
+.alert-body { padding: 16px 20px; }
+.alert-list { list-style: none; }
+.alert-list li {
+  display: flex;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: var(--border);
+  font-size: 13px;
+  color: var(--dark);
+  line-height: 1.65;
+}
+.alert-list li:last-child { border-bottom: none; }
+.alert-list li::before { content: '→'; color: var(--red); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
 
-/* ── 유틸 ────────────────────────────────── */
-.mt-24 { margin-top: 24px; }
-.mt-16 { margin-top: 16px; }
-.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.label-tag {
+/* ── 원칙 목록 ───────────────────────── */
+.principles { border: var(--border); }
+.principle-item {
+  display: flex;
+  border-bottom: var(--border);
+}
+.principle-item:last-child { border-bottom: none; }
+.p-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--slate);
+  width: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+}
+.p-body { padding: 13px 18px; }
+.p-hd { font-weight: 700; font-size: 13px; color: var(--black); margin-bottom: 3px; }
+.p-txt { font-size: 12.5px; color: var(--dark); line-height: 1.65; }
+.hl { background: var(--gray-xl); font-weight: 700; padding: 0 3px; }
+
+/* ── 타임라인 ────────────────────────── */
+.tl { border: var(--border); }
+.tl-head {
+  display: grid;
+  grid-template-columns: 64px 1fr 1fr;
+  background: var(--black);
+}
+.tl-th {
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tl-th.sl { background: var(--slate); }
+.tl-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 1fr;
+  border-top: var(--border);
+}
+.tl-month {
+  padding: 14px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+  border-right: var(--border);
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+}
+.tl-cell {
+  padding: 12px 14px;
+  font-size: 12.5px;
+  color: var(--dark);
+  line-height: 1.65;
+  border-right: var(--border);
+}
+.tl-cell:last-child { border-right: none; background: var(--off); }
+.tl-item {
+  padding: 3px 0;
+  border-bottom: var(--border);
+  display: flex;
+  gap: 8px;
+}
+.tl-item:last-child { border-bottom: none; }
+.tl-item::before { content: '·'; color: var(--gray-l); flex-shrink: 0; }
+.tl-ms {
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 2px solid var(--amber);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: 0.04em;
+}
+
+/* ── 체크리스트 ──────────────────────── */
+.cl { border: var(--border); }
+.cl-item {
+  display: flex;
+  align-items: stretch;
+  border-bottom: var(--border);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.cl-item:last-child { border-bottom: none; }
+.cl-item:hover { background: var(--off); }
+.cl-item.done { background: var(--off); }
+.cl-item.done .cl-box { background: var(--black); color: var(--white); }
+.cl-box {
+  width: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 14px;
+  border-right: var(--border);
+  color: var(--gray-l);
+  transition: background 0.1s, color 0.1s;
+}
+.cl-content { padding: 12px 16px; flex: 1; }
+.cl-hd { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 2px; }
+.cl-sub { font-size: 11.5px; color: var(--gray-m); line-height: 1.6; }
+.cl-badge {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  border-left: var(--border);
+  flex-shrink: 0;
+}
+.badge {
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  font-weight: 700;
+  white-space: nowrap;
   padding: 2px 6px;
-  border: 1px solid var(--border);
-  color: var(--mid);
+  border: 1.5px solid currentColor;
 }
+.badge.key    { color: var(--red); }
+.badge.check  { color: var(--amber); }
+.badge.disc   { color: var(--slate); }
+
+/* ── 유틸 ───────────────────────────── */
+.mt-24 { margin-top: 24px; }
+.mt-16 { margin-top: 16px; }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .note {
   font-size: 11.5px;
-  color: var(--mid);
-  line-height: 1.65;
-  padding-top: 10px;
-  margin-top: 10px;
-  border-top: 1px solid var(--border);
+  color: var(--gray-m);
+  padding: 10px 16px;
+  border-top: var(--border);
+  background: var(--off);
 }
-.divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* ── 교육사업 카드 ────────────────────── */
+.edu-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: var(--border);
+  margin-bottom: 20px;
+}
+.edu-card { padding: 0; }
+.edu-card + .edu-card { border-left: var(--border); }
+.edu-card-hd {
+  padding: 10px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-bottom: var(--border);
+}
+.edu-card-hd.black { background: var(--black); color: var(--white); }
+.edu-card-hd.amber { background: var(--amber); color: var(--white); }
+.edu-card-body { padding: 18px; }
+.edu-row { display: flex; gap: 10px; margin-bottom: 10px; font-size: 12.5px; line-height: 1.6; }
+.edu-row:last-child { margin-bottom: 0; }
+.edu-k { font-weight: 700; color: var(--black); min-width: 72px; flex-shrink: 0; font-size: 11px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-m); }
+.edu-v { color: var(--dark); }
+
+@media print {
+  .nav { display: none; }
+  .section { display: block !important; padding-top: 32px; }
+  .page-break { page-break-before: always; }
+}
+@media (max-width: 640px) {
+  .doc-title { font-size: 48px; }
+  .ov-grid { grid-template-columns: 1fr 1fr; }
+  .flow { grid-template-columns: 1fr; }
+  .flow-arrow { display: none; }
+  .split { grid-template-columns: 1fr; }
+  .edu-cards { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- ▸ 헤더 -->
-<header>
-  <div class="header-inner">
-    <div class="doc-eyebrow">Pre-Meeting Document · 계약 전 사전 협의 자료</div>
-    <h1>청도 코미디 영화제<br>프로그램 구성 사전 협의</h1>
-    <p class="header-tagline">청도혁신센터 ↔ 커뮤니티 시네마 네트워크 협동조합</p>
-    <div class="header-meta">
-      <div class="meta-item">
-        <span class="meta-label">작성일</span>
-        <span class="meta-val">2026. 04. 15</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">작성</span>
-        <span class="meta-val">청도혁신센터</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">총 예산</span>
-        <span class="meta-val">1,500만원</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">용역 규모</span>
-        <span class="meta-val">1,400만원 (협동조합)</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">현재 단계</span>
-        <span class="meta-val">계약 전 협의</span>
-      </div>
+<div class="page">
+
+<!-- ── 헤더 ──────────────────────────── -->
+<header class="doc-header">
+  <div class="doc-label">Product Requirements Document · 사전 협의 자료 · 2026.04.16</div>
+  <div class="doc-title">청도<br><span>마운틴</span><br>영화제</div>
+  <p class="doc-subtitle">청도혁신센터 ↔ 커뮤니티 시네마 네트워크 협동조합 — 계약 전 사전 협의용</p>
+  <div class="doc-meta-row">
+    <div class="meta-cell">
+      <div class="meta-k">사업</div>
+      <div class="meta-v">소통협력공간 사업</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-k">영화제 예산</div>
+      <div class="meta-v red">1,400만원</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-k">교육 연계 예산</div>
+      <div class="meta-v">200만원 (별도 사업)</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-k">장소</div>
+      <div class="meta-v">청도 상상마루</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-k">단계</div>
+      <div class="meta-v">계약 전 협의</div>
     </div>
   </div>
 </header>
 
-<!-- ▸ 탭 네비 -->
-<nav class="nav-bar no-print">
-  <div class="nav-inner">
-    <button class="nav-btn active" onclick="showSection('overview', this)">01 개요 및 구조</button>
-    <button class="nav-btn" onclick="showSection('roles', this)">02 역할 분담</button>
-    <button class="nav-btn" onclick="showSection('budget', this)">03 예산 구조</button>
-    <button class="nav-btn" onclick="showSection('timeline', this)">04 월별 추진 계획</button>
-    <button class="nav-btn" onclick="showSection('checklist', this)">05 협의 체크리스트</button>
-  </div>
+<!-- ── 탭 내비 ────────────────────────── -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="show('overview', this)">01 개요 및 구조</button>
+  <button class="nav-btn" onclick="show('roles', this)">02 역할 분담</button>
+  <button class="nav-btn" onclick="show('budget', this)">03 예산 구조</button>
+  <button class="nav-btn" onclick="show('education', this)">04 교육 연계 사업</button>
+  <button class="nav-btn" onclick="show('timeline', this)">05 월별 추진 계획</button>
+  <button class="nav-btn" onclick="show('checklist', this)">06 협의 체크리스트</button>
 </nav>
 
-<main>
-
-<!-- ══════════════════════════════════════════
-     섹션 01 · 개요 및 구조
-     ══════════════════════════════════════════ -->
+<!-- ══════════════════════════════════
+     01 · 개요 및 구조
+     ══════════════════════════════════ -->
 <div class="section active" id="overview">
-  <div class="sec-header">
+  <div class="sec-hd">
     <span class="sec-num">01</span>
     <h2 class="sec-title">사업 개요 및 운영 구조</h2>
   </div>
   <div class="sec-desc">
-    이 자료는 <strong>계약 확정 전</strong> 협동조합 측과 프로그램 구성 및 과업 범위를 논의하기 위한 사전 협의용 문서입니다.
-    협동조합이 프로그램 구성과 예산 계획을 제시하면, 혁신센터가 확인·합의하는 방식으로 진행합니다.
+    이 문서는 <strong>계약 확정 전</strong> 협동조합 측과 프로그램 구성 및 과업 범위를 논의하기 위한 사전 협의용 PRD입니다.
+    영화제 운영(1,400만원)과 영상제작 교육 연계(200만원, 별도 사업)는 재원과 집행 구조가 완전히 분리됩니다.
   </div>
 
-  <!-- 개요 그리드 -->
-  <div class="overview-grid">
+  <div class="ov-grid">
     <div class="ov-cell">
-      <div class="ov-label">행사명</div>
-      <div class="ov-val">청도 코미디 영화제</div>
+      <div class="ov-k">행사명</div>
+      <div class="ov-v">청도 마운틴영화제</div>
       <div class="ov-sub">가제 — 확정 필요</div>
     </div>
     <div class="ov-cell">
-      <div class="ov-label">장소</div>
-      <div class="ov-val">청도 상상마루</div>
+      <div class="ov-k">장소</div>
+      <div class="ov-v">청도 상상마루</div>
       <div class="ov-sub">옥상 / 2층 / 1층</div>
     </div>
     <div class="ov-cell">
-      <div class="ov-label">일시</div>
-      <div class="ov-val">11월 (소통협력주간)</div>
+      <div class="ov-k">일시</div>
+      <div class="ov-v">11월 (소통협력주간)</div>
       <div class="ov-sub">또는 독립 일정 — 확정 필요</div>
     </div>
     <div class="ov-cell">
-      <div class="ov-label">관람료</div>
-      <div class="ov-val">전액 무료</div>
+      <div class="ov-k">관람료</div>
+      <div class="ov-v">전액 무료</div>
       <div class="ov-sub"> </div>
     </div>
     <div class="ov-cell">
-      <div class="ov-label">총 예산</div>
-      <div class="ov-val">1,500만원</div>
-      <div class="ov-sub">용역 1,400 + 직접 100</div>
+      <div class="ov-k">영화제 예산</div>
+      <div class="ov-v red">1,400만원</div>
+      <div class="ov-sub">소통협력공간 사업 재원</div>
     </div>
     <div class="ov-cell">
-      <div class="ov-label">현재 단계</div>
-      <div class="ov-val">계약 전 협의</div>
+      <div class="ov-k">현재 단계</div>
+      <div class="ov-v">계약 전 협의</div>
       <div class="ov-sub">과업지시서 미작성</div>
     </div>
   </div>
 
-  <!-- 계약 구조도 -->
   <div class="block">
-    <div class="block-head">운영 주체 구조</div>
+    <div class="block-hd">운영 주체 구조</div>
     <div class="block-body" style="padding:0;">
-      <div class="contract-flow">
-        <div class="cf-node n-black">
-          <div class="cf-org">청도혁신센터</div>
-          <div class="cf-role">발주자 (갑)<br>기획·예산·의사결정 총괄<br>대외 협의 (군청·후원)</div>
+      <div class="flow">
+        <div class="flow-node n1">
+          <div class="fn-org">청도혁신센터</div>
+          <div class="fn-role">발주자 (갑)<br>기획·예산·의사결정<br>대외 협의 총괄</div>
         </div>
-        <div class="cf-arrow-col">
-          <div class="cf-arrow-icon">→</div>
-          <span class="cf-arrow-label">용역계약<br>1,400만원</span>
+        <div class="flow-arrow">
+          <span class="arrow-icon">→</span>
+          <span class="arrow-lbl">용역계약<br>1,400만원</span>
         </div>
-        <div class="cf-node n-dark">
-          <div class="cf-org">커뮤니티 시네마<br>네트워크 협동조합</div>
-          <div class="cf-role">수탁자 (을)<br>영화콘텐츠·현장·장비·교육</div>
-          <span class="cf-badge">= 대구영상미디어센터</span>
+        <div class="flow-node n2">
+          <div class="fn-org">커뮤니티 시네마<br>네트워크 협동조합</div>
+          <div class="fn-role">수탁자 (을)<br>영화제 운영 전담<br>상영·현장·장비·게스트</div>
+          <span class="fn-tag">= 대구영상미디어센터</span>
         </div>
-        <div class="cf-arrow-col">
-          <div class="cf-arrow-icon">↕</div>
-          <span class="cf-arrow-label">동일<br>운영주체</span>
+        <div class="flow-arrow">
+          <span class="arrow-icon">↕</span>
+          <span class="arrow-lbl">동일<br>운영주체</span>
         </div>
-        <div class="cf-node n-light">
-          <div class="cf-org">대구영상<br>미디어센터</div>
-          <div class="cf-role">별도 법인 아님<br>동일 운영 주체</div>
-          <span class="cf-badge cf-badge-warn">예산 분리 필수</span>
+        <div class="flow-node n3">
+          <div class="fn-org">대구영상<br>미디어센터</div>
+          <div class="fn-role">별도 법인 아님<br>동일 운영 주체<br>교육 강사 섭외 협력</div>
+          <span class="fn-tag" style="border-color:var(--red);color:var(--red);opacity:1;font-weight:700;">예산 분리 필수</span>
         </div>
       </div>
-      <p class="note" style="padding:10px 16px;margin:0;border-top:1px solid var(--border);">
-        ※ 협동조합과 대구영상미디어센터는 운영 주체가 동일합니다. 용역비(1,400만원)는 센터 운영 계좌와 분리된 별도 계좌로 관리되어야 합니다.
-      </p>
+      <p class="flow-note">※ 협동조합과 대구영상미디어센터는 운영 주체가 동일합니다. 용역비(1,400만원)는 영화제 전용으로만 사용하며, 센터 운영 계좌와 분리된 별도 계좌로 관리합니다.</p>
     </div>
   </div>
 
-  <!-- 오늘 논의 목적 -->
   <div class="block">
-    <div class="block-head">오늘 논의 목적</div>
+    <div class="block-hd inv">오늘 논의 목적</div>
     <div class="block-body" style="padding:0;">
-      <div class="discuss-grid">
-        <div class="discuss-col">
-          <div class="discuss-col-head dark">협동조합이 제시할 내용</div>
-          <div class="discuss-col-body">
-            <div class="discuss-q"><span class="dq-mark">→</span>상영 프로그램 구성안 (장편·단편·고전 편수 및 후보작)</div>
-            <div class="discuss-q"><span class="dq-mark">→</span>게스트·감독 섭외 계획 및 예상 비용</div>
-            <div class="discuss-q"><span class="dq-mark">→</span>청소년 교육 프로그램 세부 구성</div>
-            <div class="discuss-q"><span class="dq-mark">→</span>현장 운영 인력·장비 계획</div>
-            <div class="discuss-q"><span class="dq-mark">→</span>항목별 예산 배분안 (1,400만원 한도)</div>
+      <div class="split">
+        <div class="split-col">
+          <div class="split-hd slate">협동조합이 제시할 내용</div>
+          <div class="split-body">
+            <div class="split-item">상영 프로그램 구성안 (장편·단편·고전 편수 및 후보작)</div>
+            <div class="split-item">게스트·감독 섭외 계획 및 예상 비용</div>
+            <div class="split-item">현장 운영 인력·장비 계획</div>
+            <div class="split-item">항목별 예산 배분안 (1,400만원 한도)</div>
           </div>
         </div>
-        <div class="discuss-col">
-          <div class="discuss-col-head black">혁신센터가 확인할 내용</div>
-          <div class="discuss-col-body">
-            <div class="discuss-q"><span class="dq-mark">→</span>예산 항목·금액의 적정성 검토</div>
-            <div class="discuss-q"><span class="dq-mark">→</span>과업 범위 및 책임 소재 확인</div>
-            <div class="discuss-q"><span class="dq-mark">→</span>대구영상미디어센터 예산 분리 방식 합의</div>
-            <div class="discuss-q"><span class="dq-mark">→</span>정산 절차 및 중간 보고 일정 협의</div>
-            <div class="discuss-q"><span class="dq-mark">→</span>미결 사항 확인 및 의사결정</div>
+        <div class="split-col">
+          <div class="split-hd black">혁신센터가 확인할 내용</div>
+          <div class="split-body">
+            <div class="split-item">예산 항목·금액의 적정성 검토</div>
+            <div class="split-item">과업 범위 및 책임 소재 확인</div>
+            <div class="split-item">대구영상미디어센터 예산 분리 방식 합의</div>
+            <div class="split-item">정산 절차 및 중간 보고 일정 협의</div>
           </div>
         </div>
       </div>
@@ -866,11 +749,11 @@ main {
 </div>
 
 
-<!-- ══════════════════════════════════════════
-     섹션 02 · 역할 분담
-     ══════════════════════════════════════════ -->
+<!-- ══════════════════════════════════
+     02 · 역할 분담
+     ══════════════════════════════════ -->
 <div class="section" id="roles">
-  <div class="sec-header">
+  <div class="sec-hd">
     <span class="sec-num">02</span>
     <h2 class="sec-title">역할 분담</h2>
   </div>
@@ -879,88 +762,78 @@ main {
     오늘 논의를 통해 항목별 담당자와 책임 범위를 명확히 합의합니다.
   </div>
 
-  <div class="role-split">
-    <div class="role-col">
-      <div class="role-col-head center">청도혁신센터 주관 과업</div>
-      <div class="role-col-body">
-        <div class="role-item">운영위원회 구성·운영, 날짜·공간 확정</div>
-        <div class="role-item">영화 전문 자문 위촉 (계약·협약)</div>
-        <div class="role-item">청도군청 협의 (후원·홍보 협력)</div>
-        <div class="role-item">소통협력주간 일정 연계 또는 독립 일정 확정</div>
-        <div class="role-item">청소년 공모전 수요조사·규정 작성·공문</div>
-        <div class="role-item">심사위원회 구성 (외부 자문·지역 주민·지역 청년)</div>
-        <div class="role-item">학교 MOU 조율, 단체 관람 일정 행정 지원</div>
-        <div class="role-item">SNS 운영, 보도자료, 주민 커뮤니티 홍보</div>
-        <div class="role-item">예약 시스템 운영 (네이버예약/구글폼, D-30 오픈)</div>
-        <div class="role-item">1층 루프상영·포토존 스태프 2인 상주</div>
-        <div class="role-item">전체 예산 집행·정산, 결과보고서 작성 (D+30)</div>
-        <div class="role-item">홍보·운영비 100만원 직접 집행</div>
+  <div class="split">
+    <div class="split-col">
+      <div class="split-hd black">청도혁신센터 주관 과업</div>
+      <div class="split-body">
+        <div class="split-item">운영위원회 구성·운영, 날짜·공간 확정</div>
+        <div class="split-item">영화 전문 자문 위촉 (계약·협약)</div>
+        <div class="split-item">청도군청 협의 (후원·홍보 협력)</div>
+        <div class="split-item">소통협력주간 일정 연계 또는 독립 일정 확정</div>
+        <div class="split-item">청소년 공모전 수요조사·규정 작성·공문</div>
+        <div class="split-item">심사위원회 구성 (외부 자문·지역 주민·지역 청년)</div>
+        <div class="split-item">학교 MOU 조율, 단체 관람 일정 행정 지원</div>
+        <div class="split-item">SNS 운영, 보도자료, 주민 커뮤니티 홍보</div>
+        <div class="split-item">예약 시스템 운영 (D-30 오픈)</div>
+        <div class="split-item">1층 루프상영·포토존 스태프 2인 상주</div>
+        <div class="split-item">전체 예산 집행·정산, 결과보고서 작성 (D+30)</div>
+        <div class="split-item">054브랜드스쿨 챌린저 과정 연계 및 예산 매칭</div>
       </div>
     </div>
-    <div class="role-col">
-      <div class="role-col-head coop">협동조합 주관 과업 (용역 1,400만원)</div>
-      <div class="role-col-body">
-        <div class="role-item">장편 상영작 후보 리스트업·최종 선정 (3편 내외)</div>
-        <div class="role-item">단편 상영작 선정 (10편 내외, 공모작 포함)</div>
-        <div class="role-item">상영권 협의·계약 (장편·단편 전체)</div>
-        <div class="role-item">고전 코미디 상영작 선정 (어르신 타깃)</div>
-        <div class="role-item">상영 섹션 큐레이션</div>
-        <div class="role-item">감독 GV 섭외·일정 조율·계약</div>
-        <div class="role-item">라운드 토크 패널 섭외</div>
-        <div class="role-item">2층 오픈마이크 헤드라이너 코미디언 섭외</div>
-        <div class="role-item">MC 섭외 또는 추천</div>
-        <div class="role-item">코미디 교육 강의 코미디언 섭외</div>
-        <div class="role-item">코미디쇼 단체 관람 공연 섭외 (배낀다 쇼 등)</div>
-        <div class="role-item">코미디 영상 제작 강의 기획·진행</div>
-        <div class="role-item">제작비 지원 10팀 중간 점검·피드백 (9월)</div>
-        <div class="role-item">수상작 상영 편집본 확인·큐레이션 작업</div>
-        <div class="role-item">옥상 장비 임차·세팅 (200인치 스크린·프로젝터·음향)</div>
-        <div class="role-item">1층 루프상영 장비 운영</div>
-        <div class="role-item">D-7 사전 테스트, 우천 대비 플랜 B 장비</div>
-        <div class="role-item">옥상 현장 운영 (예약 확인·좌석 안내·당일 스태프)</div>
-        <div class="role-item">코미디 밸 결합 포토존 기획·제작·설치</div>
-        <div class="role-item">용역 정산 서류 제출 (D+14)</div>
+    <div class="split-col">
+      <div class="split-hd slate">협동조합 주관 과업 (용역 1,400만원)</div>
+      <div class="split-body">
+        <div class="split-item">장편 상영작 후보 리스트업·최종 선정 (3편 내외)</div>
+        <div class="split-item">단편 상영작 선정 (10편 내외, 공모작 포함)</div>
+        <div class="split-item">상영권 협의·계약 (장편·단편 전체)</div>
+        <div class="split-item">고전 코미디 상영작 선정 (어르신 타깃)</div>
+        <div class="split-item">상영 섹션 큐레이션</div>
+        <div class="split-item">감독 GV 섭외·일정 조율·계약</div>
+        <div class="split-item">라운드 토크 패널 섭외</div>
+        <div class="split-item">2층 오픈마이크 헤드라이너 코미디언 섭외</div>
+        <div class="split-item">MC 섭외 또는 추천</div>
+        <div class="split-item">수상작 상영 편집본 확인·큐레이션</div>
+        <div class="split-item">옥상 장비 임차·세팅 (스크린·프로젝터·음향)</div>
+        <div class="split-item">D-7 사전 테스트, 우천 대비 플랜 B</div>
+        <div class="split-item">옥상 현장 운영 (예약 확인·좌석 안내·스태프)</div>
+        <div class="split-item">포토존 기획·제작·설치</div>
+        <div class="split-item">용역 정산 서류 제출 (D+14)</div>
+        <div class="split-item">영상제작 교육 강사 섭외 협력 (대구영상미디어센터 통해)</div>
       </div>
     </div>
   </div>
 
-  <!-- 이슈 테이블 -->
-  <div class="block">
-    <div class="block-head gray">오늘 확인이 필요한 역할 분담 이슈</div>
+  <div class="block mt-24">
+    <div class="block-hd inv">확인이 필요한 역할 분담 이슈</div>
     <div class="block-body" style="padding:0;">
-      <table class="data-table border">
+      <table class="tbl bordered">
         <thead>
           <tr>
             <th style="width:22%">항목</th>
-            <th style="width:38%">현재 기준안</th>
+            <th style="width:36%">현재 기준안</th>
             <th>확인 필요 사항</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="td-label">2층 오픈마이크 운영</td>
+            <td class="td-k">2층 오픈마이크 운영</td>
             <td>협동조합 주관 (헤드라이너 섭외 포함)</td>
             <td>김기훈 대표와 재논의 결과 반영 필요</td>
           </tr>
           <tr>
-            <td class="td-label">청소년 교육 코미디언</td>
-            <td>협동조합 섭외 범위 내 포함 가정</td>
-            <td>계약 범위 포함 여부 명확히 확인</td>
-          </tr>
-          <tr>
-            <td class="td-label">감독 GV 후보 발굴</td>
+            <td class="td-k">감독 GV 후보 발굴</td>
             <td>협동조합 추천 우선</td>
             <td>혁신센터 네트워크 병행 가능 여부</td>
           </tr>
           <tr>
-            <td class="td-label">우천 대비 플랜 B</td>
+            <td class="td-k">우천 대비 플랜 B</td>
             <td>협동조합 장비 준비 가정</td>
             <td>상상마루 실내 대안 공간 여부 확인</td>
           </tr>
           <tr>
-            <td class="td-label">단체 관람 코미디쇼</td>
+            <td class="td-k">코미디쇼 단체 관람</td>
             <td>배낀다 쇼 등 (협동조합 섭외)</td>
-            <td>일정·예산 확인 필요</td>
+            <td>영화제 예산 내 포함 여부, 일정·비용 확인</td>
           </tr>
         </tbody>
       </table>
@@ -969,47 +842,64 @@ main {
 </div>
 
 
-<!-- ══════════════════════════════════════════
-     섹션 03 · 예산 구조
-     ══════════════════════════════════════════ -->
+<!-- ══════════════════════════════════
+     03 · 예산 구조
+     ══════════════════════════════════ -->
 <div class="section" id="budget">
-  <div class="sec-header">
+  <div class="sec-hd">
     <span class="sec-num">03</span>
     <h2 class="sec-title">예산 구조 및 분리 원칙</h2>
   </div>
   <div class="sec-desc">
-    협동조합이 오늘 항목별 예산 배분안을 제시합니다. 혁신센터는 적정성을 검토하고,
-    대구영상미디어센터와의 <strong>예산 분리 방식</strong>을 오늘 반드시 합의합니다.
+    영화제 예산(1,400만원)은 <strong>소통협력공간 사업</strong> 재원으로만 집행합니다.
+    교육 연계 예산(200만원)은 <strong>고향올래 사업 / 054브랜드스쿨 챌린저 과정</strong>으로 별도 편성되며, 두 사업의 예산은 완전히 분리됩니다.
   </div>
 
-  <!-- 예산 시각화 -->
   <div class="block">
-    <div class="block-head">총 예산 구조 — 1,500만원</div>
+    <div class="block-hd">영화제 예산 — 1,400만원 (소통협력공간 사업)</div>
     <div class="block-body">
-      <div class="budget-total-bar">
-        <div class="btb-seg btb-coop">협동조합 용역비 1,400만원</div>
-        <div class="btb-seg btb-center">직접 100</div>
+      <div class="budget-bar">
+        <div class="bb-seg bb-main">영화제 용역비 1,400만원 (협동조합)</div>
       </div>
-      <div class="budget-rows">
-        <div class="budget-row">
-          <span class="budget-label">협동조합 용역비</span>
-          <div class="budget-track"><div class="budget-fill" style="width:93.3%"></div></div>
-          <span class="budget-amt">1,400만원</span>
+      <div class="bud-rows">
+        <div class="bud-row">
+          <span class="bud-lbl">상영권</span>
+          <div class="bud-track"><div class="bud-fill" style="width:32%;background:var(--black)"></div></div>
+          <span class="bud-amt">450만원</span>
         </div>
-        <div class="budget-row">
-          <span class="budget-label">센터 홍보·운영비</span>
-          <div class="budget-track"><div class="budget-fill" style="width:6.7%;background:var(--accent-light)"></div></div>
-          <span class="budget-amt">100만원</span>
+        <div class="bud-row">
+          <span class="bud-lbl">게스트 초청</span>
+          <div class="bud-track"><div class="bud-fill" style="width:21%;background:var(--black)"></div></div>
+          <span class="bud-amt">300만원</span>
+        </div>
+        <div class="bud-row">
+          <span class="bud-lbl">외주 운영 인건비</span>
+          <div class="bud-track"><div class="bud-fill" style="width:21%;background:var(--black)"></div></div>
+          <span class="bud-amt">300만원</span>
+        </div>
+        <div class="bud-row">
+          <span class="bud-lbl">장비 임차</span>
+          <div class="bud-track"><div class="bud-fill" style="width:14%;background:var(--slate)"></div></div>
+          <span class="bud-amt">150~200만원</span>
+        </div>
+        <div class="bud-row">
+          <span class="bud-lbl">청소년 공모전</span>
+          <div class="bud-track"><div class="bud-fill" style="width:7%;background:var(--slate)"></div></div>
+          <span class="bud-amt">100만원</span>
+        </div>
+        <div class="bud-row">
+          <span class="bud-lbl">포토존 제작</span>
+          <div class="bud-track"><div class="bud-fill" style="width:4%;background:var(--gray-l)"></div></div>
+          <span class="bud-amt">50만원</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 항목별 예산 대조 -->
   <div class="block">
-    <div class="block-head gray">협동조합 용역비 항목별 내역 — 기준안 vs 협동조합 제안 (오늘 대조)</div>
+    <div class="block-hd inv">항목별 내역 — 기준안 vs 협동조합 제안 (오늘 대조)</div>
     <div class="block-body" style="padding:0;">
-      <table class="data-table border">
+      <table class="tbl bordered">
         <thead>
           <tr>
             <th style="width:18%">항목</th>
@@ -1020,46 +910,40 @@ main {
         </thead>
         <tbody>
           <tr>
-            <td class="td-label">상영권</td>
+            <td class="td-k">상영권</td>
             <td>450만원</td>
             <td class="td-pending">오늘 확인</td>
-            <td>장편 1편 + 단편 5~8편 + 고전 1편 (웃앤스 협의 포함)</td>
+            <td>장편 1편 + 단편 5~8편 + 고전 1편</td>
           </tr>
           <tr>
-            <td class="td-label">게스트 초청</td>
+            <td class="td-k">게스트 초청</td>
             <td>300만원</td>
             <td class="td-pending">오늘 확인</td>
             <td>감독·배우 교통·숙박·사례비, 사회자 1인</td>
           </tr>
           <tr>
-            <td class="td-label">외주 운영 인건비</td>
+            <td class="td-k">외주 운영 인건비</td>
             <td>300만원</td>
             <td class="td-pending">오늘 확인</td>
             <td>현장 스태프·진행 전반</td>
           </tr>
           <tr>
-            <td class="td-label">장비 임차</td>
+            <td class="td-k">장비 임차</td>
             <td>150~200만원</td>
             <td class="td-pending">오늘 확인</td>
-            <td>옥상 야외 상영용 음향·영상 장비 (옥상 추가분 포함)</td>
+            <td>옥상 야외 상영용 음향·영상 장비</td>
           </tr>
           <tr>
-            <td class="td-label">청소년 공모전</td>
+            <td class="td-k">청소년 공모전</td>
             <td>100만원</td>
             <td class="td-pending">오늘 확인</td>
             <td>시상금 70만원 + 운영비 30만원</td>
           </tr>
           <tr>
-            <td class="td-label">포토존 제작</td>
+            <td class="td-k">포토존 제작</td>
             <td>50만원</td>
             <td class="td-pending">오늘 확인</td>
-            <td>코미디 밸 결합 포토존 기획·제작·설치</td>
-          </tr>
-          <tr>
-            <td class="td-label">기타</td>
-            <td>조정</td>
-            <td class="td-pending">오늘 확인</td>
-            <td>위 항목 내 흡수 또는 별도 편성 검토</td>
+            <td>포토존 기획·제작·설치</td>
           </tr>
           <tr>
             <td class="td-total">합계</td>
@@ -1069,17 +953,14 @@ main {
           </tr>
         </tbody>
       </table>
-      <p class="note" style="padding:10px 16px;margin:0;">
-        ※ 현재 예산이 상영료 750 / 공간·홍보비 750으로 편성되어 있어 항목별 세분화 예산변경 신청이 필요합니다.
-      </p>
+      <p class="note">※ 현재 예산이 상영료 750 / 공간·홍보비 750으로 편성되어 있어 항목별 세분화 예산변경 신청이 필요합니다.</p>
     </div>
   </div>
 
-  <!-- 경고 박스 -->
-  <div class="warn-box">
-    <div class="warn-box-head">대구영상미디어센터 예산 분리 — 계약 전 합의 필수</div>
-    <div class="warn-box-body">
-      <ul class="warn-list">
+  <div class="alert">
+    <div class="alert-hd">대구영상미디어센터 예산 분리 — 계약 전 합의 필수</div>
+    <div class="alert-body">
+      <ul class="alert-list">
         <li>협동조합과 대구영상미디어센터는 운영 주체가 동일하므로, 용역비(1,400만원)가 센터 운영비로 혼용될 위험이 있습니다.</li>
         <li>협동조합 내부에서 센터 장비·공간·인력을 활용할 경우, 별도 내부 거래 명세 없이는 보조금 정산 시 문제가 됩니다.</li>
         <li>대구영상미디어센터 소속 직원이 용역에 참여할 경우, 센터 인건비와 이중 계상 여부를 반드시 확인합니다.</li>
@@ -1087,44 +968,43 @@ main {
     </div>
   </div>
 
-  <!-- 예산 분리 5원칙 -->
   <div class="block">
-    <div class="block-head">과업지시서·계약서에 포함할 예산 분리 조항 (초안)</div>
+    <div class="block-hd slate">과업지시서·계약서에 포함할 예산 분리 조항 (초안)</div>
     <div class="block-body" style="padding:0;">
-      <div class="principle-list">
+      <div class="principles">
         <div class="principle-item">
-          <div class="principle-num">01</div>
-          <div class="principle-body">
-            <div class="principle-head">독립 회계 운용</div>
-            <div class="principle-text">협동조합은 본 용역 예산(1,400만원)을 대구영상미디어센터 운영 계좌와 분리된 <span class="hl">별도 계좌</span>로 관리한다.</div>
+          <div class="p-num">01</div>
+          <div class="p-body">
+            <div class="p-hd">독립 회계 운용</div>
+            <div class="p-txt">협동조합은 본 용역 예산(1,400만원)을 대구영상미디어센터 운영 계좌와 분리된 <span class="hl">별도 계좌</span>로 관리한다.</div>
           </div>
         </div>
         <div class="principle-item">
-          <div class="principle-num">02</div>
-          <div class="principle-body">
-            <div class="principle-head">내부 거래 명세 의무</div>
-            <div class="principle-text">협동조합이 대구영상미디어센터의 공간·장비·인력을 사용할 경우, <span class="hl">시장 단가 기준의 내부 거래 명세서</span>를 혁신센터에 제출한다.</div>
+          <div class="p-num">02</div>
+          <div class="p-body">
+            <div class="p-hd">내부 거래 명세 의무</div>
+            <div class="p-txt">센터의 공간·장비·인력을 활용할 경우, <span class="hl">시장 단가 기준의 내부 거래 명세서</span>를 혁신센터에 제출한다.</div>
           </div>
         </div>
         <div class="principle-item">
-          <div class="principle-num">03</div>
-          <div class="principle-body">
-            <div class="principle-head">인건비 이중 계상 금지</div>
-            <div class="principle-text">대구영상미디어센터 소속 직원이 본 용역에 참여할 경우, <span class="hl">센터 인건비와 중복 계상</span>하지 않는다.</div>
+          <div class="p-num">03</div>
+          <div class="p-body">
+            <div class="p-hd">인건비 이중 계상 금지</div>
+            <div class="p-txt">센터 소속 직원이 본 용역에 참여할 경우, <span class="hl">센터 인건비와 중복 계상</span>하지 않는다.</div>
           </div>
         </div>
         <div class="principle-item">
-          <div class="principle-num">04</div>
-          <div class="principle-body">
-            <div class="principle-head">정산 서류 분리 제출</div>
-            <div class="principle-text">용역 정산 시 대구영상미디어센터 지출과 완전히 분리된 <span class="hl">독립 증빙 자료</span>를 제출한다.</div>
+          <div class="p-num">04</div>
+          <div class="p-body">
+            <div class="p-hd">정산 서류 분리 제출</div>
+            <div class="p-txt">용역 정산 시 <span class="hl">독립 증빙 자료</span>를 별도로 제출한다.</div>
           </div>
         </div>
         <div class="principle-item">
-          <div class="principle-num">05</div>
-          <div class="principle-body">
-            <div class="principle-head">중간·완료 모니터링 권한</div>
-            <div class="principle-text">혁신센터는 <span class="hl">9월 중간 점검</span> 및 <span class="hl">D+14 완료 후</span> 용역비 집행 내역을 요청·확인할 수 있다. 이상 집행 시 시정 요구 또는 용역비 일부 반환 요청 가능.</div>
+          <div class="p-num">05</div>
+          <div class="p-body">
+            <div class="p-hd">중간·완료 모니터링 권한</div>
+            <div class="p-txt">혁신센터는 <span class="hl">9월 중간 점검</span> 및 <span class="hl">D+14 완료 후</span> 집행 내역을 요청·확인할 수 있다.</div>
           </div>
         </div>
       </div>
@@ -1133,12 +1013,142 @@ main {
 </div>
 
 
-<!-- ══════════════════════════════════════════
-     섹션 04 · 월별 추진 계획
-     ══════════════════════════════════════════ -->
-<div class="section" id="timeline">
-  <div class="sec-header">
+<!-- ══════════════════════════════════
+     04 · 교육 연계 사업
+     ══════════════════════════════════ -->
+<div class="section" id="education">
+  <div class="sec-hd">
     <span class="sec-num">04</span>
+    <h2 class="sec-title">교육 연계 사업</h2>
+  </div>
+  <div class="sec-desc">
+    영화제와 연계하여 청소년 대상 영상(영화) 제작 교육을 운영합니다.
+    이 교육은 영화제 예산(1,400만원)과 완전히 분리된 별도 사업으로 진행되며, 재원·집행 주체·지원 구조가 다릅니다.
+  </div>
+
+  <div class="edu-cards">
+    <div class="edu-card">
+      <div class="edu-card-hd black">영화제 사업</div>
+      <div class="edu-card-body">
+        <div class="edu-row"><span class="edu-k">사업명</span><span class="edu-v">소통협력공간 사업</span></div>
+        <div class="edu-row"><span class="edu-k">예산</span><span class="edu-v" style="font-weight:700;">1,400만원</span></div>
+        <div class="edu-row"><span class="edu-k">집행 주체</span><span class="edu-v">혁신센터 → 협동조합 용역</span></div>
+        <div class="edu-row"><span class="edu-k">주요 내용</span><span class="edu-v">영화제 운영 전반 (상영·장비·게스트·현장)</span></div>
+        <div class="edu-row"><span class="edu-k">교육 포함</span><span class="edu-v">해당 없음 — 별도 사업으로 분리</span></div>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-card-hd amber">영상제작 교육 사업</div>
+      <div class="edu-card-body">
+        <div class="edu-row"><span class="edu-k">사업명</span><span class="edu-v">고향올래 / 054브랜드스쿨 챌린저 과정</span></div>
+        <div class="edu-row"><span class="edu-k">예산</span><span class="edu-v" style="font-weight:700;">200만원 내외</span></div>
+        <div class="edu-row"><span class="edu-k">지원 방식</span><span class="edu-v">혁신센터가 챌린저 과정 예산 매칭</span></div>
+        <div class="edu-row"><span class="edu-k">강사 섭외</span><span class="edu-v">대구영상미디어센터가 섭외 협력</span></div>
+        <div class="edu-row"><span class="edu-k">맥락</span><span class="edu-v">외부 강사가 청도에서 영상제작 교육 창업을 실행하는 챌린저 과정으로 지원 연계</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-hd inv">교육 프로그램 단계별 흐름</div>
+    <div class="block-body" style="padding:0;">
+      <table class="tbl bordered">
+        <thead>
+          <tr>
+            <th style="width:20%">단계</th>
+            <th style="width:12%">시기</th>
+            <th style="width:24%">주관</th>
+            <th>내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-k">1. 강사 섭외</td>
+            <td>6~7월</td>
+            <td>대구영상미디어센터 → 혁신센터 매칭</td>
+            <td>054브랜드스쿨 챌린저 과정 요건에 맞는 영상제작 교육 강사 섭외</td>
+          </tr>
+          <tr>
+            <td class="td-k">2. 강의 1회차</td>
+            <td>7월 4주</td>
+            <td>외부 강사 (챌린저 과정)</td>
+            <td>영상 제작 기초 이해 + 아이디어 발굴</td>
+          </tr>
+          <tr>
+            <td class="td-k">3. 강의 2회차</td>
+            <td>8월 2주</td>
+            <td>외부 강사 (챌린저 과정)</td>
+            <td>촬영·편집 실습 + 공모전 요건 안내</td>
+          </tr>
+          <tr>
+            <td class="td-k">4. 제작비 지원</td>
+            <td>8월 3주</td>
+            <td>혁신센터 (공동 검토)</td>
+            <td>참여 의지 확실한 10팀 선정, 팀당 소액 제작비 지급</td>
+          </tr>
+          <tr>
+            <td class="td-k">5. 중간 점검</td>
+            <td>9월</td>
+            <td>강사 자문</td>
+            <td>제작 중 영상 검토, 방향 피드백</td>
+          </tr>
+          <tr>
+            <td class="td-k">6. 제출·심사</td>
+            <td>10월 1~2주</td>
+            <td>혁신센터 + 운영위</td>
+            <td>공모전 마감 및 외부 자문·지역 주민·청년 심사위원 심사</td>
+          </tr>
+          <tr>
+            <td class="td-k">7. 상영·시상</td>
+            <td>D-Day</td>
+            <td>협동조합(상영) + 혁신센터(시상)</td>
+            <td>수상작 영화제 상영 프로그램에 포함, 폐막 세리머니 결합</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block mt-24">
+    <div class="block-hd amber">주요 확인 사항</div>
+    <div class="block-body" style="padding:0;">
+      <table class="tbl bordered">
+        <thead>
+          <tr>
+            <th style="width:28%">항목</th>
+            <th>내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-k">챌린저 과정 신청 주체</td>
+            <td>강사(외부 인원)가 054브랜드스쿨에 직접 신청하는 구조인지 확인 필요</td>
+          </tr>
+          <tr>
+            <td class="td-k">혁신센터 매칭 조건</td>
+            <td>200만원 예산 매칭의 집행 조건 및 정산 방식 확인</td>
+          </tr>
+          <tr>
+            <td class="td-k">학교 MOU</td>
+            <td>최소 1개교 확보 후 진행 — 청도고 대상 논의 중. MOU 체결 여부 확인</td>
+          </tr>
+          <tr>
+            <td class="td-k">영화제 예산과 중복 여부</td>
+            <td>교육 강사비가 영화제 예산(1,400만원)과 이중 계상되지 않도록 명확히 분리</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     05 · 월별 추진 계획
+     ══════════════════════════════════ -->
+<div class="section" id="timeline">
+  <div class="sec-hd">
+    <span class="sec-num">05</span>
     <h2 class="sec-title">월별 추진 계획</h2>
   </div>
   <div class="sec-desc">
@@ -1147,12 +1157,12 @@ main {
   </div>
 
   <div style="overflow-x:auto;">
-    <div style="min-width:580px;">
-      <div class="tl-wrap">
-        <div class="tl-thead">
-          <div class="tl-th" style="background:var(--accent);border-right:1px solid rgba(255,255,255,0.1);">월</div>
+    <div style="min-width:560px;">
+      <div class="tl">
+        <div class="tl-head">
+          <div class="tl-th" style="border-right:1px solid rgba(255,255,255,0.1);">월</div>
           <div class="tl-th" style="border-right:1px solid rgba(255,255,255,0.1);">혁신센터 핵심 과업</div>
-          <div class="tl-th gray">협동조합 핵심 과업</div>
+          <div class="tl-th sl">협동조합 핵심 과업</div>
         </div>
 
         <div class="tl-row">
@@ -1160,11 +1170,11 @@ main {
           <div class="tl-cell">
             <div class="tl-item">날짜·공간 서면 확정</div>
             <div class="tl-item">운영위원회 구성 (명단 확정)</div>
-            <div class="tl-item">영화 자문 위촉 완료 (계약·협약)</div>
-            <div class="tl-item">청소년 공모전 수요 조사 (중·고교 교사 접촉)</div>
-            <div class="tl-milestone">날짜·공간 서면 확정, 자문 계약</div>
+            <div class="tl-item">영화 자문 위촉 완료</div>
+            <div class="tl-item">청소년 공모전 수요 조사</div>
+            <div class="tl-ms">날짜·공간 서면 확정, 자문 계약</div>
           </div>
-          <div class="tl-cell alt">
+          <div class="tl-cell">
             <div class="tl-item">초기 협의 참여</div>
             <div class="tl-item">자문 내용 협의</div>
           </div>
@@ -1175,88 +1185,74 @@ main {
           <div class="tl-cell">
             <div class="tl-item">공모전 규정 초안 작성</div>
             <div class="tl-item">학교 MOU 추진</div>
-            <div class="tl-item">감독·게스트 1차 컨택 지원</div>
+            <div class="tl-item">054브랜드스쿨 교육 강사 섭외 조율 시작</div>
           </div>
-          <div class="tl-cell alt">
+          <div class="tl-cell">
             <div class="tl-item">장편 상영 후보작 3~5편 리스트업</div>
             <div class="tl-item">단편 후보작 10편 내외, 섭외 우선순위 확정</div>
             <div class="tl-item">감독·게스트 1차 컨택</div>
-            <div class="tl-item">코미디 교육 강의 기획안 초안 작성</div>
-            <div class="tl-milestone">후보작 리스트 문서화, 감독 응답 수령</div>
+            <div class="tl-item">대구영상미디어센터 통해 교육 강사 추천</div>
+            <div class="tl-ms">후보작 리스트 문서화, 감독 응답 수령</div>
           </div>
         </div>
 
         <div class="tl-row">
           <div class="tl-month">7월</div>
           <div class="tl-cell">
-            <div class="tl-item">공모전 공고 오픈 (학교 공문 + SNS 동시)</div>
+            <div class="tl-item">공모전 공고 오픈</div>
             <div class="tl-item">포스터·홍보물 디자인 의뢰</div>
-            <div class="tl-item">단체 관람 학생 모집 (MOU 학교 담당교사 통해)</div>
+            <div class="tl-item">단체 관람 학생 모집</div>
+            <div class="tl-item">영상제작 교육 강의 1회차 운영 (054브랜드스쿨)</div>
           </div>
-          <div class="tl-cell alt">
+          <div class="tl-cell">
             <div class="tl-item">장편·단편 상영권 협의 및 계약 착수</div>
             <div class="tl-item">감독·게스트 출연 확약 및 계약</div>
-            <div class="tl-item">코미디 교육 강의 1회차 시작</div>
             <div class="tl-item">코미디쇼 단체 관람 공연 섭외·일정 확정</div>
-            <div class="tl-item">포토존 기획안 제출</div>
-            <div class="tl-milestone">공고 완료, 상영권 계약 착수</div>
-          </div>
-        </div>
-
-        <div class="tl-row">
-          <div class="tl-month">7~8월</div>
-          <div class="tl-cell">
-            <div class="tl-item">단체 관람 일정 조율</div>
-            <div class="tl-item">코미디 교육 행정 지원</div>
-          </div>
-          <div class="tl-cell alt">
-            <div class="tl-item">코미디 영상 제작 강의 기획·진행</div>
-            <div class="tl-item">대상: MOU 학교 학생 중 참여 희망자</div>
-            <div class="tl-item">내용: 코미디 구조 이해 → 아이디어 발굴 → 촬영·편집 기초</div>
-            <div class="tl-milestone">교육 대상 학생 참여 확정, 강의 일정 확정</div>
+            <div class="tl-ms">상영권 계약 착수, 게스트 확약</div>
           </div>
         </div>
 
         <div class="tl-row">
           <div class="tl-month">8월</div>
           <div class="tl-cell">
-            <div class="tl-item">옥상 사전 예약 시스템 오픈 (D-30)</div>
-            <div class="tl-item">SNS 홍보 본격화</div>
-            <div class="tl-item">보도자료 3개 매체 이상 발송</div>
-            <div class="tl-item">자원봉사자 모집 공고</div>
+            <div class="tl-item">영상제작 교육 강의 2회차 운영</div>
+            <div class="tl-item">제작비 지원 10팀 선정 (공동 검토)</div>
+            <div class="tl-item">SNS 홍보 본격 개시</div>
           </div>
-          <div class="tl-cell alt">
+          <div class="tl-cell">
             <div class="tl-item">상영권 계약 완료</div>
-            <div class="tl-item">장비 임차 업체 선정 착수</div>
-            <div class="tl-item">포토존 제작 착수</div>
-            <div class="tl-milestone">상영권 계약서 체결, 예약 링크 오픈</div>
+            <div class="tl-item">장비 임차 업체 선정</div>
+            <div class="tl-item">포토존 기획안 확정</div>
+            <div class="tl-ms">상영 프로그램 확정, 장비 계약</div>
           </div>
         </div>
 
         <div class="tl-row">
           <div class="tl-month">9월</div>
           <div class="tl-cell">
-            <div class="tl-item">공모 중간 점검·피드백</div>
-            <div class="tl-item">버퍼 기간 활용 (이전 달 과업 보완)</div>
+            <div class="tl-item">예약 시스템 오픈 (D-30 기준 역산)</div>
+            <div class="tl-item">심사위원회 구성 완료</div>
+            <div class="tl-item">중간 집행 내역 보고 수령</div>
           </div>
-          <div class="tl-cell alt">
-            <div class="tl-item">제작비 지원 10팀 중간 점검 피드백</div>
-            <div class="tl-item">(영상 검토, 방향 조언)</div>
+          <div class="tl-cell">
+            <div class="tl-item">홍보물 최종본 납품</div>
+            <div class="tl-item">자원봉사자 오리엔테이션</div>
+            <div class="tl-item">영상제작 교육 중간 점검·피드백</div>
+            <div class="tl-ms">홍보물 납품, 중간 보고</div>
           </div>
         </div>
 
         <div class="tl-row">
           <div class="tl-month">10월</div>
           <div class="tl-cell">
-            <div class="tl-item">청소년 공모전 마감 및 1차 심사</div>
-            <div class="tl-item">최종 수상작 확정·수상자 통보</div>
-            <div class="tl-item">자원봉사자 오리엔테이션</div>
+            <div class="tl-item">공모전 마감 및 심사</div>
+            <div class="tl-item">수상자 통보</div>
           </div>
-          <div class="tl-cell alt">
+          <div class="tl-cell">
             <div class="tl-item">장비 임차 계약 완료</div>
             <div class="tl-item">포토존 납품</div>
-            <div class="tl-item">수상작 상영 편집본 확인·큐레이션 작업</div>
-            <div class="tl-milestone">수상자 통보 완료, 장비 계약서 체결</div>
+            <div class="tl-item">수상작 상영 편집본 확인·큐레이션</div>
+            <div class="tl-ms">수상자 통보 완료, 장비 계약서 체결</div>
           </div>
         </div>
 
@@ -1266,250 +1262,176 @@ main {
             <div class="tl-item">D-7: 현장 사전 방문, 예약 현황 점검</div>
             <div class="tl-item">D-Day: 1층 루프상영·포토존 스태프 운영</div>
             <div class="tl-item">D-Day: SNS 실시간 업로드</div>
-            <div class="tl-item">D+7: 결과 데이터 취합</div>
             <div class="tl-item">D+30: 최종 결과보고서 완성·제출</div>
           </div>
-          <div class="tl-cell alt">
+          <div class="tl-cell">
             <div class="tl-item">D-7: 장비 테스트, 공간 배치 확인</div>
             <div class="tl-item">D-Day: 옥상 총괄 운영</div>
             <div class="tl-item">D-Day: 게스트 의전, 장비 총괄</div>
             <div class="tl-item">D+14: 용역 정산 서류 제출</div>
-            <div class="tl-milestone">D+30 결과보고서 완성</div>
+            <div class="tl-ms">D+30 결과보고서 완성</div>
           </div>
         </div>
 
-      </div><!-- /tl-wrap -->
-    </div>
-  </div>
-
-  <!-- 청소년 교육 단계 -->
-  <div class="block mt-24">
-    <div class="block-head gray">청소년 영화 교육 프로그램 단계별 흐름</div>
-    <div class="block-body" style="padding:0;">
-      <table class="data-table border">
-        <thead>
-          <tr>
-            <th style="width:20%">단계</th>
-            <th style="width:12%">시기</th>
-            <th style="width:22%">주관</th>
-            <th>내용</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="td-label">1. 코미디쇼 관람</td>
-            <td>7월</td>
-            <td>협동조합</td>
-            <td>배낀다 쇼 등 코미디 공연 단체 관람</td>
-          </tr>
-          <tr>
-            <td class="td-label">2. 강의 1회차</td>
-            <td>7월 4주</td>
-            <td>협동조합</td>
-            <td>코미디 구조 이해 + 아이디어 발굴 (코미디언 직접 진행)</td>
-          </tr>
-          <tr>
-            <td class="td-label">3. 강의 2회차</td>
-            <td>8월 2주</td>
-            <td>협동조합</td>
-            <td>촬영·편집 기초 + 공모전 요건 안내 (영상 전문가 연계 가능)</td>
-          </tr>
-          <tr>
-            <td class="td-label">4. 제작비 지원</td>
-            <td>8월 3주</td>
-            <td>혁신센터 (협동조합 공동 검토)</td>
-            <td>참여 의지 확실한 10팀 선정, 팀당 소액 제작비 지급</td>
-          </tr>
-          <tr>
-            <td class="td-label">5. 중간 점검</td>
-            <td>9월</td>
-            <td>협동조합 자문</td>
-            <td>제작 중 영상 검토, 방향 피드백</td>
-          </tr>
-          <tr>
-            <td class="td-label">6. 제출·심사</td>
-            <td>10월 1~2주</td>
-            <td>혁신센터 + 운영위</td>
-            <td>공모전 마감 및 외부 자문·지역 주민·청년 심사위원 심사</td>
-          </tr>
-          <tr>
-            <td class="td-label">7. 상영·시상</td>
-            <td>D-Day</td>
-            <td>협동조합(상영) + 혁신센터(시상)</td>
-            <td>단편 묶음 큐레이션에 수상작 포함 상영, 폐막 세리머니 결합</td>
-          </tr>
-        </tbody>
-      </table>
+      </div>
     </div>
   </div>
 </div>
 
 
-<!-- ══════════════════════════════════════════
-     섹션 05 · 협의 체크리스트
-     ══════════════════════════════════════════ -->
+<!-- ══════════════════════════════════
+     06 · 협의 체크리스트
+     ══════════════════════════════════ -->
 <div class="section" id="checklist">
-  <div class="sec-header">
-    <span class="sec-num">05</span>
-    <h2 class="sec-title">오늘 협의 체크리스트</h2>
+  <div class="sec-hd">
+    <span class="sec-num">06</span>
+    <h2 class="sec-title">협의 체크리스트</h2>
   </div>
   <div class="sec-desc">
     오늘 회의에서 반드시 합의해야 할 항목입니다. 항목을 클릭해 처리 상태를 표시할 수 있습니다.
-    <strong>[필수]</strong> 항목은 계약 전 반드시 결정이 필요한 사항입니다.
   </div>
 
-  <div class="checklist" id="checklistEl">
+  <div class="cl">
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">행사 날짜 확정</div>
-        <div class="check-sub">10월 31일 vs 소통협력주간(11월) 연계 — 두 옵션 중 최종 결정. 날짜 미확정 시 전체 타임라인 수립 불가.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">행사 날짜 확정</div>
+        <div class="cl-sub">10월 31일 vs 소통협력주간(11월) 연계 — 두 옵션 중 최종 결정. 날짜 미확정 시 전체 타임라인 수립 불가.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-key">[필수]</span></div>
+      <div class="cl-badge"><span class="badge key">[필수]</span></div>
     </div>
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">대구영상미디어센터 예산 분리 방식 합의</div>
-        <div class="check-sub">별도 계좌 운용 여부, 내부 거래 명세 제출 방식, 정산 조건 — 계약서 반영 전 오늘 합의 필수.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">대구영상미디어센터 예산 분리 방식 합의</div>
+        <div class="cl-sub">별도 계좌 운용 여부, 내부 거래 명세 제출 방식, 정산 조건 — 계약서 반영 전 오늘 합의 필수.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-key">[필수]</span></div>
+      <div class="cl-badge"><span class="badge key">[필수]</span></div>
     </div>
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">협동조합 프로그램 구성안 확인</div>
-        <div class="check-sub">장편·단편·고전 편수 및 후보작 리스트 / 코미디언 섭외 계획 / 현장 운영 인력 구성 — 협동조합 제시 자료 검토.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">협동조합 프로그램 구성안 확인</div>
+        <div class="cl-sub">장편·단편·고전 편수 및 후보작 리스트 / 코미디언 섭외 계획 / 현장 운영 인력 구성.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-confirm">[확인]</span></div>
+      <div class="cl-badge"><span class="badge check">[확인]</span></div>
     </div>
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">항목별 예산 배분안 확인</div>
-        <div class="check-sub">협동조합이 제안하는 항목별 금액 적정성 검토 / 총액 1,400만원 한도 내 조정 / 예산변경 신청 필요 여부 확인.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">항목별 예산 배분안 확인</div>
+        <div class="cl-sub">협동조합이 제안하는 항목별 금액 적정성 검토 / 총액 1,400만원 한도 내 조정 / 예산변경 신청 필요 여부 확인.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-confirm">[확인]</span></div>
+      <div class="cl-badge"><span class="badge check">[확인]</span></div>
     </div>
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">2층 오픈마이크 운영 방식</div>
-        <div class="check-sub">김기훈 대표와의 재논의 결과 반영 — 코미디 공연 성격 강화 여부, MC 포함 여부 확인.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">2층 오픈마이크 운영 방식</div>
+        <div class="cl-sub">김기훈 대표와의 재논의 결과 반영 — 공연 성격 강화 여부, MC 포함 여부 확인.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-discuss">[협의]</span></div>
+      <div class="cl-badge"><span class="badge disc">[협의]</span></div>
     </div>
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">청소년 공모전 학교 MOU 여부</div>
-        <div class="check-sub">최소 1개교 확보 후 진행 — 현재 청도고 대상 논의 중. 협동조합 참여 MOU 체결 여부 확인.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">054브랜드스쿨 챌린저 과정 연계 구조 확인</div>
+        <div class="cl-sub">강사 섭외 주체(대구영상미디어센터) / 예산 매칭 방식(200만원) / 챌린저 과정 신청 절차 확인.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-discuss">[협의]</span></div>
+      <div class="cl-badge"><span class="badge check">[확인]</span></div>
     </div>
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">청소년 교육 강의 코미디언 섭외</div>
-        <div class="check-sub">협동조합 용역 범위(1,400만원) 내 포함 여부 — 별도 비용 발생 시 예산 항목 조정 필요.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">청소년 공모전 학교 MOU 여부</div>
+        <div class="cl-sub">최소 1개교 확보 후 진행 — 현재 청도고 대상 논의 중. MOU 체결 여부 확인.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-confirm">[확인]</span></div>
+      <div class="cl-badge"><span class="badge disc">[협의]</span></div>
     </div>
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">감독 GV 후보 발굴 방식</div>
-        <div class="check-sub">협동조합 추천 우선 vs 혁신센터 네트워크 병행 — 웃앤스 상영권 협의와의 연계 여부 포함.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">감독 GV 후보 발굴 방식</div>
+        <div class="cl-sub">협동조합 추천 우선 vs 혁신센터 네트워크 병행 — 상영권 협의와의 연계 여부 포함.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-discuss">[협의]</span></div>
+      <div class="cl-badge"><span class="badge disc">[협의]</span></div>
     </div>
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">우천 대비 플랜 B</div>
-        <div class="check-sub">상상마루 실내 대안 공간 여부 — 협동조합 장비 플랜 B 준비 범위 확인.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">우천 대비 플랜 B</div>
+        <div class="cl-sub">상상마루 실내 대안 공간 여부 — 협동조합 장비 플랜 B 준비 범위 확인.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-confirm">[확인]</span></div>
+      <div class="cl-badge"><span class="badge check">[확인]</span></div>
     </div>
 
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">단체 관람 코미디쇼 (배낀다 쇼 등)</div>
-        <div class="check-sub">협동조합의 섭외 가능 공연 리스트, 예산 추정액, 학교 연계 일정 확인.</div>
+    <div class="cl-item" onclick="toggle(this)">
+      <div class="cl-box">—</div>
+      <div class="cl-content">
+        <div class="cl-hd">중간 보고 및 정산 일정 합의</div>
+        <div class="cl-sub">9월 중간 집행 내역 보고 방식, D+14 정산 서류 제출 형식 — 계약 조건으로 반영할 내용 확인.</div>
       </div>
-      <div class="check-badge"><span class="badge-inner badge-discuss">[협의]</span></div>
-    </div>
-
-    <div class="check-item" onclick="toggleCheck(this)">
-      <div class="check-box">—</div>
-      <div class="check-content">
-        <div class="check-head">중간 보고 및 정산 일정 합의</div>
-        <div class="check-sub">9월 중간 집행 내역 보고 방식, D+14 정산 서류 제출 형식 — 계약 조건으로 반영할 내용 확인.</div>
-      </div>
-      <div class="check-badge"><span class="badge-inner badge-confirm">[확인]</span></div>
+      <div class="cl-badge"><span class="badge check">[확인]</span></div>
     </div>
 
   </div>
 
   <div class="row mt-16">
-    <span style="font-size:12px;color:var(--mid);">클릭하여 완료 처리</span>
-    <button onclick="resetAll()" style="margin-left:auto;background:none;border:1px solid var(--border);padding:6px 14px;font-family:var(--sans);font-size:11px;cursor:pointer;color:var(--mid);letter-spacing:0.02em;">전체 초기화</button>
+    <span style="font-size:11.5px;color:var(--gray-m);font-family:var(--mono);">클릭하여 완료 처리</span>
+    <button onclick="resetAll()" style="margin-left:auto;background:none;border:var(--border);padding:6px 14px;font-family:var(--mono);font-size:10px;cursor:pointer;color:var(--gray-m);letter-spacing:0.05em;text-transform:uppercase;">전체 초기화</button>
   </div>
 
-  <div style="margin-top:28px;padding:16px 18px;border:1px solid var(--border);background:var(--tint-mid);">
-    <div style="font-size:11.5px;font-weight:700;color:var(--accent);margin-bottom:8px;letter-spacing:0.03em;">범례</div>
-    <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:12px;color:var(--dark);">
-      <span style="color:var(--accent);font-weight:700;"><strong>[필수]</strong> — 계약 전 반드시 결정 필요</span>
-      <span style="color:var(--accent-mid);"><strong>[확인]</strong> — 협동조합 제시 자료 검토</span>
-      <span style="color:var(--accent-light);"><strong>[협의]</strong> — 양측 논의 후 결정</span>
+  <div style="margin-top:24px;padding:14px 18px;border:var(--border);background:var(--off);">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gray-m);margin-bottom:8px;">범례</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:12px;">
+      <span><strong style="color:var(--red);border:1.5px solid var(--red);padding:1px 5px;font-family:var(--mono);font-size:9px;">[필수]</strong> <span style="color:var(--dark);margin-left:6px;">계약 전 반드시 결정</span></span>
+      <span><strong style="color:var(--amber);border:1.5px solid var(--amber);padding:1px 5px;font-family:var(--mono);font-size:9px;">[확인]</strong> <span style="color:var(--dark);margin-left:6px;">협동조합 제시 자료 검토</span></span>
+      <span><strong style="color:var(--slate);border:1.5px solid var(--slate);padding:1px 5px;font-family:var(--mono);font-size:9px;">[협의]</strong> <span style="color:var(--dark);margin-left:6px;">양측 논의 후 결정</span></span>
     </div>
   </div>
 </div>
 
-</main>
+</div><!-- /page -->
 
-<footer style="border-top:1px solid var(--border);margin-top:60px;padding:20px 40px;text-align:center;font-size:11px;color:var(--mid);letter-spacing:0.04em;font-family:var(--mono);" class="no-print">
-  청도혁신센터 · 코미디영화제 사전 논의 자료 · 2026.04.15 · 계약 전 협의 단계
+<footer style="border-top:2px solid var(--black);margin-top:60px;padding:18px 40px;text-align:center;font-size:10px;color:var(--gray-m);letter-spacing:0.1em;font-family:var(--mono);text-transform:uppercase;">
+  청도혁신센터 · 청도 마운틴영화제 PRD · 2026.04.16 · 계약 전 협의 단계
 </footer>
 
-<button class="print-btn no-print" onclick="window.print()">인쇄 / PDF 저장</button>
+<button onclick="window.print()" style="position:fixed;bottom:28px;right:28px;background:var(--black);color:var(--white);border:none;padding:12px 22px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.08em;text-transform:uppercase;box-shadow:4px 4px 0 var(--gray-xl);">인쇄 / PDF</button>
 
 <script>
-  function showSection(id, btn) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function toggle(el) {
+  const box = el.querySelector('.cl-box');
+  if (el.classList.contains('done')) {
+    el.classList.remove('done');
+    box.textContent = '—';
+  } else {
+    el.classList.add('done');
+    box.textContent = '✓';
   }
-
-  function toggleCheck(el) {
-    const box = el.querySelector('.check-box');
-    if (el.classList.contains('done')) {
-      el.classList.remove('done');
-      box.textContent = '—';
-    } else {
-      el.classList.add('done');
-      box.textContent = '✓';
-    }
-  }
-
-  function resetAll() {
-    document.querySelectorAll('.check-item').forEach(el => {
-      el.classList.remove('done');
-      el.querySelector('.check-box').textContent = '—';
-    });
-  }
+}
+function resetAll() {
+  document.querySelectorAll('.cl-item').forEach(el => {
+    el.classList.remove('done');
+    el.querySelector('.cl-box').textContent = '—';
+  });
+}
 </script>
 </body>
 </html>
