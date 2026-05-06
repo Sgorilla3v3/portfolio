@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>청도상상마루 운영 기획서 — 호모 루덴스 프레임</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+/* ===== CSS 변수 ===== */
+:root {
+  --bg: #f8f6f1;
+  --bg2: #eeeae0;
+  --surface: #ffffff;
+  --surface2: #f2ede3;
+  --border: #d8d0bc;
+  --text: #1a1612;
+  --text2: #4a4036;
+  --text3: #7a6e60;
+  --accent: #2c5f2e;
+  --accent2: #4a8c4d;
+  --accent-light: #e8f4e9;
+  --agon: #1d4e89;
+  --agon-light: #dce9f7;
+  --alea: #b45309;
+  --alea-light: #fef3c7;
+  --mimicry: #166534;
+  --mimicry-light: #dcfce7;
+  --ilinx: #581c87;
+  --ilinx-light: #f3e8ff;
+  --warn: #991b1b;
+  --warn-light: #fee2e2;
+  --spring: #86efac;
+  --summer: #93c5fd;
+  --autumn: #fdba74;
+  --winter: #a5b4fc;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --radius: 8px;
+  --radius-lg: 16px;
+  --nav-h: 60px;
+}
+[data-theme="dark"] {
+  --bg: #0f0d0a;
+  --bg2: #1a1712;
+  --surface: #201e18;
+  --surface2: #2a2720;
+  --border: #3a3628;
+  --text: #f0ece4;
+  --text2: #c8bfaf;
+  --text3: #8a7e6e;
+  --accent: #5aaa5e;
+  --accent2: #7dc880;
+  --accent-light: #1a2e1a;
+  --agon-light: #0f1e33;
+  --alea-light: #2a1a05;
+  --mimicry-light: #0a1e12;
+  --ilinx-light: #1a0a2e;
+  --warn-light: #2e0a0a;
+  --spring: #166534;
+  --summer: #1d4e89;
+  --autumn: #92400e;
+  --winter: #3730a3;
+  --shadow: 0 2px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* ===== 리셋 & 기본 ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  transition: background 0.3s, color 0.3s;
+}
+img { max-width: 100%; }
+a { color: var(--accent); text-decoration: none; }
+
+/* ===== 네비게이션 ===== */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 2rem;
+  box-shadow: var(--shadow);
+  gap: 1.5rem;
+}
+#nav .nav-logo {
+  font-family: 'Nanum Myeongjo', serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+#nav .nav-links {
+  display: flex; gap: 0.25rem;
+  overflow-x: auto; flex: 1;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+#nav .nav-links::-webkit-scrollbar { display: none; }
+#nav .nav-links a {
+  color: var(--text3);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.3rem 0.65rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+#nav .nav-links a:hover { background: var(--bg2); color: var(--text); }
+#nav .nav-links a.active { background: var(--accent-light); color: var(--accent); }
+#nav .nav-right { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
+#theme-toggle {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 0.3rem 0.7rem;
+  cursor: pointer; font-size: 0.8rem; color: var(--text2);
+  transition: all 0.2s;
+}
+#theme-toggle:hover { background: var(--border); }
+
+/* ===== 레이아웃 ===== */
+main { padding-top: var(--nav-h); }
+.section {
+  padding: 5rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section-full {
+  padding: 5rem 2rem;
+}
+.section-full .inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+.section-sub {
+  color: var(--text3);
+  font-size: 1rem;
+  margin-bottom: 3rem;
+  max-width: 640px;
+}
+
+/* ===== 섹션 0: 히어로 ===== */
+#s0 {
+  min-height: calc(100vh - var(--nav-h));
+  display: flex; align-items: center;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+#s0::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 70% 40%, var(--accent-light) 0%, transparent 70%);
+  pointer-events: none;
+}
+#s0 .hero-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 5rem 2rem;
+  position: relative;
+}
+#s0 .hero-badge {
+  display: inline-block;
+  background: var(--accent-light);
+  border: 1px solid var(--accent2);
+  color: var(--accent);
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+}
+#s0 .hero-title {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  max-width: 820px;
+}
+#s0 .hero-title em {
+  font-style: normal;
+  color: var(--accent);
+  position: relative;
+}
+#s0 .hero-sub {
+  font-size: 1.1rem;
+  color: var(--text2);
+  max-width: 560px;
+  margin-bottom: 2.5rem;
+  line-height: 1.8;
+}
+#s0 .hero-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+#s0 .hero-meta-item { font-size: 0.8rem; color: var(--text3); }
+#s0 .hero-meta-item strong { display: block; color: var(--text); font-size: 0.88rem; margin-bottom: 0.1rem; }
+#s0 .hero-claims {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+#s0 .claim-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow);
+}
+#s0 .claim-num {
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+#s0 .claim-text { font-size: 0.9rem; color: var(--text2); line-height: 1.5; }
+
+/* ===== 섹션 1: 진단 ===== */
+#s1 { background: var(--bg2); }
+.diag-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+.diag-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.diag-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent);
+}
+.diag-icon {
+  width: 48px; height: 48px;
+  background: var(--accent-light);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.25rem;
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+.diag-gap {
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 0.5rem;
+}
+.diag-title { font-family: 'Nanum Myeongjo', serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+.diag-body { font-size: 0.9rem; color: var(--text2); margin-bottom: 1rem; line-height: 1.65; }
+.diag-hl {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--accent);
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+}
+
+/* ===== 섹션 2: 이론 ===== */
+.theory-blocks { display: flex; flex-direction: column; gap: 3rem; }
+
+/* 블록 A: 놀이 특성 아코디언 */
+.accordion { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.accordion-item { border-bottom: 1px solid var(--border); }
+.accordion-item:last-child { border-bottom: none; }
+.accordion-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  background: var(--surface);
+  transition: background 0.2s;
+  gap: 1rem;
+}
+.accordion-header:hover { background: var(--surface2); }
+.accordion-header-left { display: flex; align-items: center; gap: 1rem; }
+.accordion-num {
+  width: 28px; height: 28px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700;
+  flex-shrink: 0;
+}
+.accordion-label { font-weight: 600; font-size: 0.95rem; }
+.accordion-en { font-size: 0.75rem; color: var(--text3); margin-left: 0.4rem; }
+.accordion-icon { color: var(--text3); font-size: 1rem; transition: transform 0.2s; }
+.accordion-item.open .accordion-icon { transform: rotate(180deg); }
+.accordion-body {
+  display: none;
+  padding: 1rem 1.5rem 1.5rem 4rem;
+  background: var(--surface2);
+}
+.accordion-item.open .accordion-body { display: block; }
+.accordion-body p { font-size: 0.9rem; color: var(--text2); margin-bottom: 0.6rem; }
+.accordion-body .example {
+  margin-top: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem; color: var(--text3);
+}
+.accordion-body .example strong { color: var(--accent); }
+
+/* 블록 B: 카이와 2x2 */
+.kaio-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.kaio-cell {
+  padding: 1.75rem;
+  background: var(--surface);
+  position: relative;
+}
+.kaio-cell::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+}
+.kaio-cell.agon::before { background: var(--agon); }
+.kaio-cell.alea::before { background: var(--alea); }
+.kaio-cell.mimicry::before { background: var(--mimicry); }
+.kaio-cell.ilinx::before { background: var(--ilinx); }
+.kaio-type {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.kaio-badge {
+  font-size: 0.7rem; font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+.agon .kaio-badge { background: var(--agon-light); color: var(--agon); }
+.alea .kaio-badge { background: var(--alea-light); color: var(--alea); }
+.mimicry .kaio-badge { background: var(--mimicry-light); color: var(--mimicry); }
+.ilinx .kaio-badge { background: var(--ilinx-light); color: var(--ilinx); }
+.kaio-name { font-family: 'Nanum Myeongjo', serif; font-size: 1.15rem; font-weight: 700; }
+.kaio-def { font-size: 0.85rem; color: var(--text2); margin: 0.5rem 0 0.75rem; line-height: 1.5; }
+.kaio-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.kaio-tag {
+  font-size: 0.72rem; font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  background: var(--surface2);
+}
+
+/* 블록 C: 파이디아-루두스 */
+.spectrum-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+}
+.spectrum-labels {
+  display: flex; justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.spectrum-label { font-weight: 700; font-size: 0.9rem; }
+.spectrum-label.left { color: var(--mimicry); }
+.spectrum-label.right { color: var(--agon); }
+.spectrum-bar {
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(to right, var(--mimicry-light), var(--agon-light));
+  border: 1px solid var(--border);
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+.spectrum-marker {
+  position: absolute; top: -8px;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.spectrum-marker .dot {
+  width: 14px; height: 32px;
+  border-radius: 3px;
+}
+.spectrum-marker.current .dot { background: var(--warn); }
+.spectrum-marker.proposed .dot { background: var(--accent); }
+.spectrum-marker .dot-label {
+  font-size: 0.68rem; font-weight: 700;
+  white-space: nowrap;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+.spectrum-marker.current .dot-label { color: var(--warn); background: var(--warn-light); }
+.spectrum-marker.proposed .dot-label { color: var(--accent); background: var(--accent-light); }
+.spectrum-desc { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text3); }
+
+/* 블록 D: Puerilism */
+.warn-box {
+  background: var(--warn-light);
+  border: 1px solid #fca5a5;
+  border-left: 4px solid var(--warn);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+}
+.warn-box h4 { color: var(--warn); font-size: 1rem; margin-bottom: 0.75rem; }
+.warn-box p { font-size: 0.9rem; color: var(--text2); margin-bottom: 0.75rem; }
+.warn-compare {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0.75rem; margin-top: 1rem;
+}
+.warn-col { font-size: 0.85rem; }
+.warn-col h5 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+.warn-col.bad h5 { color: var(--warn); }
+.warn-col.good h5 { color: var(--accent); }
+.warn-col li { list-style: none; padding: 0.25rem 0; color: var(--text2); padding-left: 1rem; position: relative; }
+.warn-col.bad li::before { content: '✗'; position: absolute; left: 0; color: var(--warn); }
+.warn-col.good li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); }
+
+/* ===== 섹션 3: 공간 설계 ===== */
+#s3 { background: var(--bg2); }
+.floor-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+@media (max-width: 700px) { .floor-container { grid-template-columns: 1fr; } }
+
+/* SVG 단면도 */
+.floor-svg-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.floor-svg-wrap h3 { font-size: 0.85rem; font-weight: 600; color: var(--text3); margin-bottom: 1rem; }
+
+/* 층별 아코디언 */
+.floor-accordion { display: flex; flex-direction: column; gap: 0.75rem; }
+.floor-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.floor-header {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.floor-header:hover { background: var(--surface2); }
+.floor-num {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1rem; flex-shrink: 0;
+}
+.floor-num.f1 { background: var(--alea-light); color: var(--alea); }
+.floor-num.f2 { background: var(--agon-light); color: var(--agon); }
+.floor-num.f3 { background: var(--mimicry-light); color: var(--mimicry); }
+.floor-num.f4 { background: var(--ilinx-light); color: var(--ilinx); }
+.floor-info { flex: 1; }
+.floor-name { font-weight: 600; font-size: 0.95rem; }
+.floor-type { font-size: 0.75rem; color: var(--text3); }
+.floor-chevron { color: var(--text3); transition: transform 0.2s; }
+.floor-item.open .floor-chevron { transform: rotate(180deg); }
+.floor-detail {
+  display: none;
+  padding: 0 1.25rem 1.25rem 4.25rem;
+  font-size: 0.88rem; color: var(--text2);
+}
+.floor-item.open .floor-detail { display: block; }
+.floor-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.75rem; }
+.floor-col h5 { font-size: 0.75rem; font-weight: 700; color: var(--text3); margin-bottom: 0.3rem; }
+.floor-col p { font-size: 0.85rem; }
+.floor-proposal {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  background: var(--accent-light);
+  border-radius: 6px;
+  font-size: 0.82rem; color: var(--accent);
+}
+.floor-proposal strong { display: block; margin-bottom: 0.2rem; }
+
+/* 순환 다이어그램 */
+.cycle-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  margin-top: 2rem;
+}
+.cycle-wrap h3 { font-size: 0.85rem; font-weight: 600; color: var(--text3); margin-bottom: 1rem; }
+
+/* ===== 섹션 4: 사업 구조 ===== */
+.biz-blocks { display: flex; flex-direction: column; gap: 3rem; }
+
+/* 계절 달력 */
+.season-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 2rem; align-items: center;
+  box-shadow: var(--shadow);
+}
+@media (max-width: 680px) { .season-wrap { grid-template-columns: 1fr; } }
+.season-legend { display: flex; flex-direction: column; gap: 0.75rem; }
+.season-legend-item { display: flex; align-items: flex-start; gap: 0.75rem; }
+.season-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 3px;
+}
+.season-legend-text h5 { font-size: 0.88rem; font-weight: 600; }
+.season-legend-text p { font-size: 0.78rem; color: var(--text3); }
+
+/* 페르소나 토글 */
+.persona-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.persona-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.persona-tab {
+  flex: 1; padding: 0.85rem 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--text3);
+  border: none; background: none;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+}
+.persona-tab:hover { color: var(--text); }
+.persona-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--surface); }
+.persona-body { padding: 2rem; }
+.persona-panel { display: none; animation: fadeIn 0.2s; }
+.persona-panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.journey-steps {
+  display: flex; gap: 0; flex-wrap: nowrap; overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+.journey-step {
+  flex: 0 0 auto; min-width: 140px;
+  position: relative;
+}
+.journey-step::after {
+  content: '→';
+  position: absolute; right: -10px; top: 18px;
+  color: var(--text3); font-size: 1rem;
+  z-index: 1;
+}
+.journey-step:last-child::after { display: none; }
+.step-box {
+  margin: 0 20px 0 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.85rem;
+}
+.step-num { font-size: 0.65rem; font-weight: 700; color: var(--text3); letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+.step-name { font-weight: 600; font-size: 0.88rem; margin-bottom: 0.3rem; }
+.step-prog { font-size: 0.78rem; color: var(--accent); font-weight: 500; margin-bottom: 0.3rem; }
+.step-cond { font-size: 0.75rem; color: var(--text3); }
+
+/* ===== 섹션 5: 보충 사업 ===== */
+#s5 { background: var(--bg2); }
+.filter-bar { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.filter-btn {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 0.82rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+}
+.filter-btn:hover { background: var(--bg2); }
+.filter-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+.biz-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+.biz-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.biz-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.biz-card.hidden { display: none; }
+.biz-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.75rem; }
+.biz-num { font-size: 0.7rem; font-weight: 700; color: var(--text3); }
+.biz-badge {
+  font-size: 0.68rem; font-weight: 700;
+  padding: 0.2rem 0.6rem; border-radius: 20px;
+  flex-shrink: 0;
+}
+.biz-badge.now { background: #dcfce7; color: #166534; }
+.biz-badge.y1 { background: #dce9f7; color: var(--agon); }
+.biz-badge.y2 { background: var(--surface2); color: var(--text3); border: 1px solid var(--border); }
+.biz-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.4rem; }
+.biz-type { display: flex; gap: 0.4rem; margin-bottom: 0.6rem; }
+.biz-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.5; margin-bottom: 0.75rem; }
+.biz-footer { display: flex; justify-content: space-between; align-items: center; }
+.biz-budget { font-size: 0.78rem; color: var(--text3); }
+
+/* ===== 섹션 6: 성과 지표 ===== */
+.kpi-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+}
+table { width: 100%; border-collapse: collapse; background: var(--surface); }
+th {
+  background: var(--surface2);
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font-size: 0.82rem; font-weight: 700;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 0.85rem 1rem;
+  font-size: 0.88rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface2); }
+.current-kpi { color: var(--text3); font-size: 0.83rem; }
+.proposed-kpi { color: var(--accent); font-weight: 500; }
+
+/* 연계 질문 */
+.link-qs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.link-q {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow);
+}
+.link-q blockquote {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 1rem; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+.link-q-meta { font-size: 0.78rem; color: var(--text3); }
+
+/* 시즌 타임라인 */
+.season-timeline {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.season-tl-item {
+  background: var(--surface);
+  padding: 1.5rem;
+}
+.season-tl-num {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--text3); margin-bottom: 0.4rem;
+}
+.season-tl-name { font-family: 'Nanum Myeongjo', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+.season-tl-period { font-size: 0.8rem; color: var(--text3); margin-bottom: 0.75rem; }
+.season-tl-pos {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 700;
+  padding: 0.2rem 0.55rem; border-radius: 20px;
+  margin-bottom: 0.75rem;
+}
+.season-tl-item:nth-child(1) .season-tl-pos { background: var(--alea-light); color: var(--alea); }
+.season-tl-item:nth-child(2) .season-tl-pos { background: var(--agon-light); color: var(--agon); }
+.season-tl-item:nth-child(3) .season-tl-pos { background: var(--mimicry-light); color: var(--mimicry); }
+.season-tl-goal { font-size: 0.85rem; color: var(--text2); }
+
+/* ===== 섹션 7: 체크리스트 ===== */
+#s7 { background: var(--bg2); }
+.checklist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.checklist-group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.checklist-group h3 {
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.checklist-group h3 i { color: var(--accent); }
+.check-item {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.1s;
+  border-radius: 4px;
+  padding-left: 0.25rem;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item:hover { background: var(--surface2); }
+.check-box {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  margin-top: 2px;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.check-item.done .check-box {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.check-item.done .check-box::after { content: '✓'; color: white; font-size: 0.7rem; }
+.check-item.done .check-text { text-decoration: line-through; color: var(--text3); }
+.check-text { font-size: 0.88rem; color: var(--text2); line-height: 1.5; }
+
+/* ===== 푸터 ===== */
+footer {
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  padding: 3rem 2rem;
+}
+footer .inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+}
+@media (max-width: 600px) { footer .inner { grid-template-columns: 1fr; } }
+footer h4 { font-size: 0.82rem; font-weight: 700; color: var(--text3); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
+footer ul { list-style: none; }
+footer li { font-size: 0.82rem; color: var(--text2); padding: 0.25rem 0; display: flex; align-items: center; gap: 0.4rem; }
+footer li::before { content: '·'; color: var(--accent); }
+footer .footer-meta {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem; color: var(--text3);
+  grid-column: 1 / -1;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+}
+
+/* ===== 인쇄 ===== */
+@media print {
+  #nav { display: none !important; }
+  main { padding-top: 0; }
+  .accordion-body { display: block !important; }
+  .floor-detail { display: block !important; }
+  .persona-panel { display: block !important; }
+  .biz-card.hidden { display: block !important; }
+}
+
+/* ===== 유틸리티 ===== */
+.label-sm {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+.block-title {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 1.25rem; font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.block-sub { font-size: 0.88rem; color: var(--text3); margin-bottom: 1.25rem; }
+</style>
+</head>
+<body>
+
+<!-- 네비게이션 -->
+<nav id="nav">
+  <div class="nav-logo">청도상상마루</div>
+  <div class="nav-links">
+    <a href="#s0">히어로</a>
+    <a href="#s1">진단</a>
+    <a href="#s2">이론</a>
+    <a href="#s3">공간 설계</a>
+    <a href="#s4">사업 구조</a>
+    <a href="#s5">보충 사업</a>
+    <a href="#s6">성과 지표</a>
+    <a href="#s7">다음 단계</a>
+  </div>
+  <div class="nav-right">
+    <button id="theme-toggle" onclick="toggleTheme()">🌙 다크</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===== 섹션 0: 히어로 ===== -->
+<section id="s0">
+  <div class="hero-inner">
+    <div class="hero-badge">호모 루덴스 프레임 · 청도혁신센터 운영팀 내부 검토용</div>
+    <h1 class="hero-title">
+      청도상상마루는<br>시설이 아니라<br><em>마법의 원</em>이다
+    </h1>
+    <p class="hero-sub">
+      호모 루덴스(Homo Ludens) 프레임으로 재설계하는<br>소통협력공간 운영 기획서 — 청도혁신센터 경북시민재단
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong>작성일</strong>2026년 5월 6일</div>
+      <div class="hero-meta-item"><strong>버전</strong>v1.1</div>
+      <div class="hero-meta-item"><strong>대상</strong>청도혁신센터 운영팀 (비공개)</div>
+      <div class="hero-meta-item"><strong>이론 기반</strong>요한 하위징아, 『호모 루덴스』(1938)</div>
+    </div>
+    <div class="hero-claims">
+      <div class="claim-card">
+        <div class="claim-num">WHY</div>
+        <div class="claim-text">공간이 아니라 사람이 먼저다. 놀이 욕구가 있을 때 문화가 발생한다.</div>
+      </div>
+      <div class="claim-card">
+        <div class="claim-num">HOW</div>
+        <div class="claim-text">4층 공간을 카이와의 4분류로 설계하고, 계절 리듬으로 운영한다.</div>
+      </div>
+      <div class="claim-card">
+        <div class="claim-num">WHAT</div>
+        <div class="claim-text">참여자 수가 아닌 관계의 깊이와 자생적 문화 발생으로 성과를 측정한다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 섹션 1: 진단 ===== -->
+<section id="s1" class="section-full">
+  <div class="inner">
+    <div class="section-label">섹션 1 — 진단</div>
+    <h2 class="section-title">무엇이 문제인가</h2>
+    <p class="section-sub">청도상상마루의 현재 운영 구조에는 세 가지 구조적 공백이 있다. 각각을 호모 루덴스 프레임으로 재번역한다.</p>
+    <div class="diag-grid">
+      <div class="diag-card">
+        <div class="diag-icon"><i class="ti ti-building-community"></i></div>
+        <div class="diag-gap">공백 1</div>
+        <div class="diag-title">공간은 있고 사람은 없다</div>
+        <p class="diag-body">9,133㎡의 청도상상마루가 완공되었다. 그러나 완공된 공간이 자동으로 사람을 불러오지 않는다. 청도군 인구는 지속적으로 감소하고 있으며, 기존 사업들의 공간 활용 현황과 기대 사이에 큰 간극이 존재한다.</p>
+        <div class="diag-hl">마법의 원(공간)은 만들어졌지만 그 안에서 놀이하려는 호모 루덴스가 없다. 공간이 아니라 놀이 욕구가 먼저 와야 한다.</div>
+      </div>
+      <div class="diag-card">
+        <div class="diag-icon"><i class="ti ti-link-off"></i></div>
+        <div class="diag-gap">공백 2</div>
+        <div class="diag-title">사업은 많고 연결은 없다</div>
+        <p class="diag-body">DMO, 농촌신활력, 청년창업인큐베이팅, 도시재생 등 30개 이상의 중앙부처·지자체 사업이 각각 운영된다. 단기·중장기·장기 사업의 연속성이 단절되어 있으며, 사업 간 시너지가 발생하지 않는다.</p>
+        <div class="diag-hl">분절된 사업들은 각각의 규칙으로 작동하는 닫힌 원들이다. 상상마루가 메타-마법의 원이 되어야 한다.</div>
+      </div>
+      <div class="diag-card">
+        <div class="diag-icon"><i class="ti ti-chart-bar-off"></i></div>
+        <div class="diag-gap">공백 3</div>
+        <div class="diag-title">참여는 있고 변화는 없다</div>
+        <p class="diag-body">현재 성과지표는 참여자 수, 운영 횟수, 만족도라는 OUTPUT 중심이다. "800명이 왔다"는 "8명이 남았다"를 의미하지 않는다. 참여자가 변했는지, 공동체가 생겼는지, 문화가 발생했는지를 측정하지 않는다.</p>
+        <div class="diag-hl">숫자 달성만을 위한 프로그램은 참여자를 지표의 부품으로 만든다. 진짜 놀이가 일어났는가?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 섹션 2: 이론 ===== -->
+<section id="s2" class="section">
+  <div class="section-label">섹션 2 — 이론</div>
+  <h2 class="section-title">호모 루덴스 프레임</h2>
+  <p class="section-sub">요한 하위징아(1938)의 핵심 개념과 로제 카이와(1958)의 분류가 상상마루 운영의 이론적 기반이다.</p>
+
+  <div class="theory-blocks">
+
+    <!-- 블록 A: 놀이 특성 -->
+    <div>
+      <div class="label-sm">블록 A</div>
+      <div class="block-title">놀이의 5가지 특성</div>
+      <div class="block-sub">하위징아가 정의한 진정한 놀이의 조건 — 상상마루 운영의 판단 기준</div>
+      <div class="accordion" id="trait-acc">
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAcc(this)">
+            <div class="accordion-header-left">
+              <div class="accordion-num">1</div>
+              <span class="accordion-label">자유성 <span class="accordion-en">(Freedom)</span></span>
+            </div>
+            <i class="ti ti-chevron-down accordion-icon"></i>
+          </div>
+          <div class="accordion-body">
+            <p>놀이는 강제할 수 없다. 명령받은 놀이는 이미 놀이가 아니다. 진정한 참여는 자발적 선택에서만 나온다.</p>
+            <div class="example"><strong>상상마루 적용:</strong> 오픈라운지 타임 — 아무 프로그램도 없는 자유 시간을 의도적으로 확보. 헬씨모닝 강제 참석 없이 자발 참여만.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAcc(this)">
+            <div class="accordion-header-left">
+              <div class="accordion-num">2</div>
+              <span class="accordion-label">비일상성 <span class="accordion-en">(Non-ordinariness)</span></span>
+            </div>
+            <i class="ti ti-chevron-down accordion-icon"></i>
+          </div>
+          <div class="accordion-body">
+            <p>놀이는 일상적 삶의 바깥에 있다. "가짜(as if)"의 세계이지만 그 안에서는 완전히 진지하다.</p>
+            <div class="example"><strong>상상마루 적용:</strong> 마운틴영화제 — 청도 일상의 밖에서 다른 시공간을 경험. 심야책바의 밤 문화는 일상과 다른 규칙.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAcc(this)">
+            <div class="accordion-header-left">
+              <div class="accordion-num">3</div>
+              <span class="accordion-label">시공간 한정성 <span class="accordion-en">(Spatial-temporal Limits)</span></span>
+            </div>
+            <i class="ti ti-chevron-down accordion-icon"></i>
+          </div>
+          <div class="accordion-body">
+            <p>놀이에는 명확한 시작과 끝이 있다. 경기장, 체스판, 무대 — 모두 물리적으로 한정된 마법의 원이다.</p>
+            <div class="example"><strong>상상마루 적용:</strong> 계절별 리듬 — 봄/여름/가을/겨울의 명확한 시작과 마무리. 소통협력주간의 집중된 기간이 에너지를 만든다.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAcc(this)">
+            <div class="accordion-header-left">
+              <div class="accordion-num">4</div>
+              <span class="accordion-label">질서 창출성 <span class="accordion-en">(Order-creating)</span></span>
+            </div>
+            <i class="ti ti-chevron-down accordion-icon"></i>
+          </div>
+          <div class="accordion-body">
+            <p>놀이는 내부에 완전한 질서를 만든다. 규칙을 어기면 놀이는 무너진다. 규칙 자체가 놀이의 아름다움이다.</p>
+            <div class="example"><strong>상상마루 적용:</strong> 창업지원의 심사 기준, IR피칭데이의 공정한 진행 규칙. 규칙이 명확해야 경쟁이 즐겁다.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAcc(this)">
+            <div class="accordion-header-left">
+              <div class="accordion-num">5</div>
+              <span class="accordion-label">무관심성 <span class="accordion-en">(Disinterestedness)</span></span>
+            </div>
+            <i class="ti ti-chevron-down accordion-icon"></i>
+          </div>
+          <div class="accordion-body">
+            <p>진정한 놀이는 물질적 이익과 무관하다. 이익이 목적이 되는 순간 놀이는 일로 전락한다.</p>
+            <div class="example"><strong>상상마루 적용:</strong> 임대 수익(1억원 목표)이 공간 운영을 지배하면 안 된다. 수익은 놀이를 지속시키는 수단이지, 목적이 아니다. 수익의 20%를 자유사용기금으로 적립.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 블록 B: 카이와 4분류 -->
+    <div>
+      <div class="label-sm">블록 B</div>
+      <div class="block-title">카이와의 4분류 — 상상마루 프로그램 대응</div>
+      <div class="block-sub">로제 카이와(Roger Caillois, 1958)의 놀이 유형분류와 상상마루 프로그램 매핑</div>
+      <div class="kaio-grid">
+        <div class="kaio-cell agon">
+          <div class="kaio-type">
+            <span class="kaio-badge">아곤 (Agôn)</span>
+          </div>
+          <div class="kaio-name">경쟁</div>
+          <p class="kaio-def">공정한 규칙 하의 경쟁. 능력으로 승부가 결정된다. 문명화된 아곤은 협력을 낳는다.</p>
+          <div class="kaio-tags">
+            <span class="kaio-tag">창업지원</span>
+            <span class="kaio-tag">소통협력주간</span>
+            <span class="kaio-tag">IR피칭데이</span>
+            <span class="kaio-tag">세대기술교류</span>
+          </div>
+        </div>
+        <div class="kaio-cell alea">
+          <div class="kaio-type">
+            <span class="kaio-badge">알레아 (Alea)</span>
+          </div>
+          <div class="kaio-name">우연</div>
+          <p class="kaio-def">결과를 통제할 수 없는 활동. 우연한 만남이 예측불가능한 가치를 만든다.</p>
+          <div class="kaio-tags">
+            <span class="kaio-tag">오픈라운지</span>
+            <span class="kaio-tag">관계안내소</span>
+            <span class="kaio-tag">로컬마켓</span>
+            <span class="kaio-tag">버스환승 진입</span>
+          </div>
+        </div>
+        <div class="kaio-cell mimicry">
+          <div class="kaio-type">
+            <span class="kaio-badge">미미크리 (Mimicry)</span>
+          </div>
+          <div class="kaio-name">모방·역할</div>
+          <p class="kaio-def">역할을 맡아 다른 세계를 상상한다. 공연, 토론, 스토리텔링이 여기서 발생.</p>
+          <div class="kaio-tags">
+            <span class="kaio-tag">심야책바</span>
+            <span class="kaio-tag">마운틴영화제</span>
+            <span class="kaio-tag">로컬아카이브</span>
+            <span class="kaio-tag">리빙랩 발표</span>
+          </div>
+        </div>
+        <div class="kaio-cell ilinx">
+          <div class="kaio-type">
+            <span class="kaio-badge">일링크스 (Ilinx)</span>
+          </div>
+          <div class="kaio-name">현기증·몰입</div>
+          <p class="kaio-def">신체적 몰입과 감각 경험. 몸을 함께 움직임으로써 공동체가 형성된다.</p>
+          <div class="kaio-tags">
+            <span class="kaio-tag">헬씨모닝</span>
+            <span class="kaio-tag">마운틴영화제 야외</span>
+            <span class="kaio-tag">GX룸</span>
+            <span class="kaio-tag">요가</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 블록 C: 파이디아-루두스 -->
+    <div>
+      <div class="label-sm">블록 C</div>
+      <div class="block-title">파이디아 ↔ 루두스 스펙트럼</div>
+      <div class="block-sub">현재 계획서는 루두스(규율·구조) 편향 — 파이디아(자발성·즉흥)의 의도적 보호가 필요하다</div>
+      <div class="spectrum-box">
+        <div class="spectrum-labels">
+          <span class="spectrum-label left">파이디아 (Paidia)</span>
+          <span class="spectrum-label right">루두스 (Ludus)</span>
+        </div>
+        <div class="spectrum-bar">
+          <div class="spectrum-marker current" style="left: 75%;">
+            <div class="dot"></div>
+            <div class="dot-label">현재</div>
+          </div>
+          <div class="spectrum-marker proposed" style="left: 45%;">
+            <div class="dot"></div>
+            <div class="dot-label">제안</div>
+          </div>
+        </div>
+        <div class="spectrum-desc">
+          <span>즉흥·자유·소란·창조</span>
+          <span>규율·기교·경쟁·완성</span>
+        </div>
+        <hr class="divider">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:0.85rem;">
+          <div>
+            <strong style="color:var(--warn);font-size:0.8rem;">현재 — 루두스 편향 (75%)</strong>
+            <ul style="list-style:none;margin-top:0.5rem;color:var(--text2);">
+              <li>· 모든 프로그램이 정형화된 일정</li>
+              <li>· 자유로운 체류·탐색 시간 없음</li>
+              <li>· 성과 측정 압박이 자발성 억압</li>
+            </ul>
+          </div>
+          <div>
+            <strong style="color:var(--accent);font-size:0.8rem;">제안 — 균형점 (45%)</strong>
+            <ul style="list-style:none;margin-top:0.5rem;color:var(--text2);">
+              <li>· 오픈라운지 타임 주 3회 확보</li>
+              <li>· 게시판 프로젝트로 자발 기획 허용</li>
+              <li>· 파이디아 지표 별도 추적</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 블록 D: Puerilism 경고 -->
+    <div>
+      <div class="label-sm">블록 D</div>
+      <div class="block-title">Puerilism 경고</div>
+      <div class="block-sub">하위징아 12장의 핵심 경고 — 형식만 남고 정신이 사라진 놀이의 위험</div>
+      <div class="warn-box">
+        <h4><i class="ti ti-alert-triangle"></i> Puerilism(유치주의)이란</h4>
+        <p>놀이의 외형(행사·이벤트·참여)은 있지만 놀이의 정신(자유성·자발성·진지함)이 사라진 상태. 하위징아는 1930년대 유럽 파시즘 문화를 이 개념으로 비판했다. 소통협력공간 사업에도 동일한 위험이 존재한다.</p>
+        <p><strong>판별 질문:</strong> "이 프로그램이 없어지면 참여자는 어떻게 할 것인가? 스스로 모임을 만들 것인가, 사라질 것인가?"</p>
+        <div class="warn-compare">
+          <div class="warn-col bad">
+            <h5>PUERILISM 신호</h5>
+            <ul>
+              <li>참여자가 수동적 소비자</li>
+              <li>담당자가 없으면 행사 불가</li>
+              <li>종료 후 자생 모임 없음</li>
+              <li>숫자 채우기 위한 동원</li>
+              <li>형식적 만족도 응답</li>
+            </ul>
+          </div>
+          <div class="warn-col good">
+            <h5>진정한 놀이 징표</h5>
+            <ul>
+              <li>참여자가 자체 기획 시작</li>
+              <li>담당자 없이도 모임 지속</li>
+              <li>프로그램 종료 후 관계 남음</li>
+              <li>자발적 재참여와 권유</li>
+              <li>예상치 못한 파생 활동 발생</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 섹션 3: 공간 설계 ===== -->
+<section id="s3" class="section-full">
+  <div class="inner">
+    <div class="section-label">섹션 3 — 공간 설계</div>
+    <h2 class="section-title">층별 놀이 구조</h2>
+    <p class="section-sub">청도상상마루 4개 층은 카이와의 4분류와 정확히 대응한다. 층간 이동이 자연스럽게 일어날 때 마법의 원이 살아난다.</p>
+
+    <div class="floor-container">
+      <!-- SVG 단면도 -->
+      <div class="floor-svg-wrap">
+        <h3>상상마루 4층 단면도 — 카이와 분류 대응</h3>
+        <svg viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:320px;display:block;margin:0 auto;">
+          <!-- 4층 -->
+          <rect x="20" y="20" width="280" height="70" rx="6" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="1.5"/>
+          <text x="36" y="44" font-family="'Nanum Myeongjo',serif" font-size="13" font-weight="bold" fill="#581c87">4층</text>
+          <text x="36" y="62" font-family="Pretendard,sans-serif" font-size="11" fill="#7c3aed">헬스장 · GX룸 · 요가 · 심리상담</text>
+          <rect x="220" y="28" width="68" height="20" rx="10" fill="#581c87"/>
+          <text x="254" y="42" font-family="Pretendard,sans-serif" font-size="9.5" fill="white" text-anchor="middle" font-weight="bold">일링크스</text>
+          <text x="36" y="78" font-family="Pretendard,sans-serif" font-size="10" fill="#7c3aed">몸을 통한 공동체 형성</text>
+          <!-- 화살표 3→4 -->
+          <text x="155" y="100" font-family="Pretendard,sans-serif" font-size="11" fill="#9ca3af" text-anchor="middle">↑ 미미크리 → 일링크스</text>
+          <!-- 3층 -->
+          <rect x="20" y="105" width="280" height="70" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+          <text x="36" y="129" font-family="'Nanum Myeongjo',serif" font-size="13" font-weight="bold" fill="#166534">3층</text>
+          <text x="36" y="147" font-family="Pretendard,sans-serif" font-size="11" fill="#15803d">다목적홀 · 회의실 · 소통협력주간</text>
+          <rect x="220" y="113" width="68" height="20" rx="10" fill="#166534"/>
+          <text x="254" y="127" font-family="Pretendard,sans-serif" font-size="9.5" fill="white" text-anchor="middle" font-weight="bold">미미크리</text>
+          <text x="36" y="163" font-family="Pretendard,sans-serif" font-size="10" fill="#15803d">공연·토론·역할·신화가 발생하는 층</text>
+          <!-- 화살표 2→3 -->
+          <text x="155" y="184" font-family="Pretendard,sans-serif" font-size="11" fill="#9ca3af" text-anchor="middle">↑ 아곤 → 미미크리</text>
+          <!-- 2층 -->
+          <rect x="20" y="190" width="280" height="70" rx="6" fill="#dce9f7" stroke="#1d4e89" stroke-width="1.5"/>
+          <text x="36" y="214" font-family="'Nanum Myeongjo',serif" font-size="13" font-weight="bold" fill="#1d4e89">2층</text>
+          <text x="36" y="232" font-family="Pretendard,sans-serif" font-size="11" fill="#1e40af">공유오피스 · 오픈라운지 · 카페</text>
+          <rect x="220" y="198" width="68" height="20" rx="10" fill="#1d4e89"/>
+          <text x="254" y="212" font-family="Pretendard,sans-serif" font-size="9.5" fill="white" text-anchor="middle" font-weight="bold">아곤</text>
+          <text x="36" y="248" font-family="Pretendard,sans-serif" font-size="10" fill="#1e40af">창업·경쟁·협력의 문명화된 장</text>
+          <!-- 화살표 1→2 -->
+          <text x="155" y="269" font-family="Pretendard,sans-serif" font-size="11" fill="#9ca3af" text-anchor="middle">↑ 알레아 → 아곤</text>
+          <!-- 1층 -->
+          <rect x="20" y="275" width="280" height="70" rx="6" fill="#fef3c7" stroke="#b45309" stroke-width="1.5"/>
+          <text x="36" y="299" font-family="'Nanum Myeongjo',serif" font-size="13" font-weight="bold" fill="#92400e">1층</text>
+          <text x="36" y="317" font-family="Pretendard,sans-serif" font-size="11" fill="#b45309">상가 · 버스환승정류장 · 관계안내소</text>
+          <rect x="220" y="283" width="68" height="20" rx="10" fill="#b45309"/>
+          <text x="254" y="297" font-family="Pretendard,sans-serif" font-size="9.5" fill="white" text-anchor="middle" font-weight="bold">알레아</text>
+          <text x="36" y="333" font-family="Pretendard,sans-serif" font-size="10" fill="#b45309">우연한 만남 · 마법의 원의 문지방</text>
+        </svg>
+      </div>
+
+      <!-- 층별 아코디언 -->
+      <div class="floor-accordion">
+        <div class="floor-item">
+          <div class="floor-header" onclick="toggleFloor(this)">
+            <div class="floor-num f4">4F</div>
+            <div class="floor-info">
+              <div class="floor-name">헬스장 · GX룸 · 요가 · 심리상담</div>
+              <div class="floor-type">일링크스(Ilinx) — 신체적 몰입·현기증</div>
+            </div>
+            <i class="ti ti-chevron-down floor-chevron"></i>
+          </div>
+          <div class="floor-detail">
+            <div class="floor-row">
+              <div class="floor-col">
+                <h5>현재 프로그램</h5>
+                <p>헬씨모닝(오전 7시 아침운동), GX룸, 요가, 심리상담</p>
+              </div>
+              <div class="floor-col">
+                <h5>이론적 의미</h5>
+                <p>가장 사적인 공간(자기 몸)이 가장 공동체적 결속을 만든다. 하루 시작의 의례화.</p>
+              </div>
+            </div>
+            <div class="floor-proposal">
+              <strong>보완 제안</strong>
+              4층 아침 요가 참여자 → 2층 카페에서 아침 식사 연결. 몸을 통한 공동체 형성 후 자연스러운 교류.
+            </div>
+          </div>
+        </div>
+        <div class="floor-item">
+          <div class="floor-header" onclick="toggleFloor(this)">
+            <div class="floor-num f3">3F</div>
+            <div class="floor-info">
+              <div class="floor-name">다목적홀 · 회의실 · 소통협력주간</div>
+              <div class="floor-type">미미크리(Mimicry) — 역할·공연·상상</div>
+            </div>
+            <i class="ti ti-chevron-down floor-chevron"></i>
+          </div>
+          <div class="floor-detail">
+            <div class="floor-row">
+              <div class="floor-col">
+                <h5>현재 프로그램</h5>
+                <p>마운틴영화제, 소통협력주간(포럼·강연), 리빙랩 발표, 성과 공유 행사</p>
+              </div>
+              <div class="floor-col">
+                <h5>이론적 의미</h5>
+                <p>단순 보고가 아닌 공연으로서의 성과 공유. 지역민이 "청도 사람"이라는 정체성을 수행하는 층.</p>
+              </div>
+            </div>
+            <div class="floor-proposal">
+              <strong>보완 제안</strong>
+              2층 창업팀 → 3층 영화제 공동 기획. 아곤에서 미미크리로의 자연스러운 전환. 리빙랩 결과 발표를 축제 형식으로.
+            </div>
+          </div>
+        </div>
+        <div class="floor-item">
+          <div class="floor-header" onclick="toggleFloor(this)">
+            <div class="floor-num f2">2F</div>
+            <div class="floor-info">
+              <div class="floor-name">공유오피스 · 오픈라운지 · 카페</div>
+              <div class="floor-type">아곤(Agôn) — 경쟁·협력·창업</div>
+            </div>
+            <i class="ti ti-chevron-down floor-chevron"></i>
+          </div>
+          <div class="floor-detail">
+            <div class="floor-row">
+              <div class="floor-col">
+                <h5>현재 프로그램</h5>
+                <p>창업지원, IR피칭데이, 공유오피스(고정석/자유석), 심야책바(카페 공간)</p>
+              </div>
+              <div class="floor-col">
+                <h5>주의 사항</h5>
+                <p>요금체계(고정석 9만원)가 진입 장벽. 하위징아의 "자유성" 원칙과 충돌 가능성.</p>
+              </div>
+            </div>
+            <div class="floor-proposal">
+              <strong>보완 제안</strong>
+              오픈라운지 타임(무료·자유)을 주 3회 확보. 아곤에서 잠시 벗어나 알레아적 만남이 발생하는 완충 공간 유지.
+            </div>
+          </div>
+        </div>
+        <div class="floor-item">
+          <div class="floor-header" onclick="toggleFloor(this)">
+            <div class="floor-num f1">1F</div>
+            <div class="floor-info">
+              <div class="floor-name">상가 · 버스환승 · 관계안내소</div>
+              <div class="floor-type">알레아(Alea) — 우연한 만남·역치 공간</div>
+            </div>
+            <i class="ti ti-chevron-down floor-chevron"></i>
+          </div>
+          <div class="floor-detail">
+            <div class="floor-row">
+              <div class="floor-col">
+                <h5>현재 프로그램</h5>
+                <p>관계안내소, 로컬마켓, 게시판 프로젝트, 지역 안내 및 연결</p>
+              </div>
+              <div class="floor-col">
+                <h5>이론적 의미</h5>
+                <p>일상(청도 거리)과 마법의 원(상상마루) 사이의 역치 공간(liminal space). 위계가 처음 해소되는 층.</p>
+              </div>
+            </div>
+            <div class="floor-proposal">
+              <strong>보완 제안</strong>
+              "오늘의 상상마루" 안내판 설치 — 들어서는 순간 "여기는 다른 규칙이 작동한다"는 신호. 마법의 원 진입 의례 설계.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 순환 다이어그램 -->
+    <div class="cycle-wrap" style="margin-top:2rem;">
+      <h3>층간 순환 흐름도 — 자연스러운 이동 설계</h3>
+      <svg viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;display:block;margin:0 auto;">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#9ca3af"/>
+          </marker>
+        </defs>
+        <!-- 노드: 4층 일링크스 -->
+        <ellipse cx="250" cy="40" rx="80" ry="28" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="1.5"/>
+        <text x="250" y="36" font-family="Pretendard,sans-serif" font-size="11" font-weight="bold" fill="#581c87" text-anchor="middle">4층 일링크스</text>
+        <text x="250" y="52" font-family="Pretendard,sans-serif" font-size="9" fill="#7c3aed" text-anchor="middle">헬씨모닝·GX룸</text>
+        <!-- 노드: 2층 아곤 -->
+        <ellipse cx="80" cy="150" rx="72" ry="28" fill="#dce9f7" stroke="#1d4e89" stroke-width="1.5"/>
+        <text x="80" y="146" font-family="Pretendard,sans-serif" font-size="11" font-weight="bold" fill="#1d4e89" text-anchor="middle">2층 아곤</text>
+        <text x="80" y="162" font-family="Pretendard,sans-serif" font-size="9" fill="#1e40af" text-anchor="middle">창업·협력·카페</text>
+        <!-- 노드: 3층 미미크리 -->
+        <ellipse cx="420" cy="150" rx="72" ry="28" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="420" y="146" font-family="Pretendard,sans-serif" font-size="11" font-weight="bold" fill="#166534" text-anchor="middle">3층 미미크리</text>
+        <text x="420" y="162" font-family="Pretendard,sans-serif" font-size="9" fill="#15803d" text-anchor="middle">영화제·포럼·발표</text>
+        <!-- 노드: 1층 알레아 -->
+        <ellipse cx="250" cy="230" rx="80" ry="24" fill="#fef3c7" stroke="#b45309" stroke-width="1.5"/>
+        <text x="250" y="226" font-family="Pretendard,sans-serif" font-size="11" font-weight="bold" fill="#92400e" text-anchor="middle">1층 알레아</text>
+        <text x="250" y="242" font-family="Pretendard,sans-serif" font-size="9" fill="#b45309" text-anchor="middle">우연한 만남·관계안내소</text>
+        <!-- 화살표들 -->
+        <path d="M175,55 Q110,80 110,122" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <text x="115" y="88" font-family="Pretendard,sans-serif" font-size="8.5" fill="#6b7280" transform="rotate(-35,115,88)">아침요가→카페</text>
+        <path d="M143,162 Q190,200 175,215" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <text x="135" y="195" font-family="Pretendard,sans-serif" font-size="8.5" fill="#6b7280">오픈라운지→마켓</text>
+        <path d="M325,220 Q380,200 355,170" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <text x="340" y="205" font-family="Pretendard,sans-serif" font-size="8.5" fill="#6b7280">마켓→영화제</text>
+        <path d="M390,125 Q340,70 325,55" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <text x="368" y="85" font-family="Pretendard,sans-serif" font-size="8.5" fill="#6b7280" transform="rotate(35,368,85)">포럼→헬씨</text>
+        <!-- 중앙 라벨 -->
+        <circle cx="250" cy="140" r="30" fill="var(--surface,#fff)" stroke="#d1d5db" stroke-width="1"/>
+        <text x="250" y="136" font-family="'Nanum Myeongjo',serif" font-size="10" font-weight="bold" fill="#374151" text-anchor="middle">마법의</text>
+        <text x="250" y="150" font-family="'Nanum Myeongjo',serif" font-size="10" font-weight="bold" fill="#374151" text-anchor="middle">원</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 섹션 4: 사업 구조 ===== -->
+<section id="s4" class="section">
+  <div class="section-label">섹션 4 — 사업 구조</div>
+  <h2 class="section-title">계절 리듬 + 참여자 여정</h2>
+  <p class="section-sub">1년을 4계절의 서사로 재구성하고, 참여자가 정주까지 이르는 5단계 경로를 설계한다.</p>
+
+  <div class="biz-blocks">
+    <!-- 계절 달력 -->
+    <div>
+      <div class="label-sm">블록 A</div>
+      <div class="block-title">계절별 리듬 — 씨앗·성장·수확·연결</div>
+      <div class="block-sub">하위징아의 축제 주기와 동일한 구조 — 상상마루의 1년을 4계절 서사로</div>
+      <div class="season-wrap">
+        <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" style="width:260px;min-width:200px;">
+          <defs>
+            <clipPath id="circle-clip">
+              <circle cx="130" cy="130" r="120"/>
+            </clipPath>
+          </defs>
+          <!-- 봄 (상단우) -->
+          <path d="M130,130 L130,10 A120,120 0 0,1 250,130 Z" fill="#86efac" opacity="0.85"/>
+          <!-- 여름 (하단우) -->
+          <path d="M130,130 L250,130 A120,120 0 0,1 130,250 Z" fill="#93c5fd" opacity="0.85"/>
+          <!-- 가을 (하단좌) -->
+          <path d="M130,130 L130,250 A120,120 0 0,1 10,130 Z" fill="#fdba74" opacity="0.85"/>
+          <!-- 겨울 (상단좌) -->
+          <path d="M130,130 L10,130 A120,120 0 0,1 130,10 Z" fill="#a5b4fc" opacity="0.85"/>
+          <!-- 경계선 -->
+          <line x1="130" y1="10" x2="130" y2="250" stroke="white" stroke-width="2"/>
+          <line x1="10" y1="130" x2="250" y2="130" stroke="white" stroke-width="2"/>
+          <!-- 중심 원 -->
+          <circle cx="130" cy="130" r="38" fill="white" opacity="0.92"/>
+          <text x="130" y="126" font-family="'Nanum Myeongjo',serif" font-size="13" font-weight="bold" fill="#374151" text-anchor="middle">상상마루</text>
+          <text x="130" y="142" font-family="Pretendard,sans-serif" font-size="10" fill="#6b7280" text-anchor="middle">1년 리듬</text>
+          <!-- 레이블 -->
+          <text x="185" y="75" font-family="Pretendard,sans-serif" font-size="11" font-weight="bold" fill="#14532d" text-anchor="middle">봄</text>
+          <text x="185" y="88" font-family="Pretendard,sans-serif" font-size="9" fill="#15803d" text-anchor="middle">3~4월</text>
+          <text x="195" y="185" font-family="Pretendard,sans-serif" font-size="11" font-weight="bold" fill="#1e3a5f" text-anchor="middle">여름</text>
+          <text x="195" y="198" font-family="Pretendard,sans-serif" font-size="9" fill="#1e40af" text-anchor="middle">5~8월</text>
+          <text x="68" y="195" font-family="Pretendard,sans-serif" font-size="11" font-weight="bold" fill="#7c2d12" text-anchor="middle">가을</text>
+          <text x="68" y="208" font-family="Pretendard,sans-serif" font-size="9" fill="#c2410c" text-anchor="middle">9~11월</text>
+          <text x="68" y="75" font-family="Pretendard,sans-serif" font-size="11" font-weight="bold" fill="#312e81" text-anchor="middle">겨울</text>
+          <text x="68" y="88" font-family="Pretendard,sans-serif" font-size="9" fill="#4338ca" text-anchor="middle">12월</text>
+        </svg>
+        <div class="season-legend">
+          <div class="season-legend-item">
+            <div class="season-dot" style="background:#86efac;"></div>
+            <div class="season-legend-text">
+              <h5>봄 — 씨앗·파이디아 (3~4월)</h5>
+              <p>오픈라운지, 로컬마켓 1회, 창업팀 모집</p>
+            </div>
+          </div>
+          <div class="season-legend-item">
+            <div class="season-dot" style="background:#93c5fd;"></div>
+            <div class="season-legend-text">
+              <h5>여름 — 성장·루두스 (5~8월)</h5>
+              <p>헬씨모닝, 심야책바, 창업교육, 세대교류</p>
+            </div>
+          </div>
+          <div class="season-legend-item">
+            <div class="season-dot" style="background:#fdba74;"></div>
+            <div class="season-legend-text">
+              <h5>가을 — 수확·미미크리 (9~11월)</h5>
+              <p>마운틴영화제, 리빙랩 발표, 로컬마켓 2회</p>
+            </div>
+          </div>
+          <div class="season-legend-item">
+            <div class="season-dot" style="background:#a5b4fc;"></div>
+            <div class="season-legend-text">
+              <h5>겨울 — 연결·communitas (12월)</h5>
+              <p>소통협력주간, 스토리북 발행, 결산 축제</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 페르소나 토글 -->
+    <div>
+      <div class="label-sm">블록 B</div>
+      <div class="block-title">참여자 여정 5단계 — 페르소나별 시나리오</div>
+      <div class="block-sub">진입에서 정주까지 — 3개 페르소나의 상상마루 경험 경로</div>
+      <div class="persona-wrap">
+        <div class="persona-tabs">
+          <button class="persona-tab active" onclick="switchPersona(0, this)">귀농 30대</button>
+          <button class="persona-tab" onclick="switchPersona(1, this)">원주민 60대</button>
+          <button class="persona-tab" onclick="switchPersona(2, this)">외국인 노동자</button>
+        </div>
+        <div class="persona-body">
+          <!-- 페르소나 0: 귀농 30대 -->
+          <div class="persona-panel active" id="p0">
+            <p style="font-size:0.85rem;color:var(--text3);margin-bottom:1.25rem;">청도로 귀농을 희망하는 30대 — 정보 탐색에서 창업·정주까지</p>
+            <div class="journey-steps">
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 1</div>
+                  <div class="step-name">진입</div>
+                  <div class="step-prog">관계안내소</div>
+                  <div class="step-cond">청도 정보 수집</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 2</div>
+                  <div class="step-name">탐색</div>
+                  <div class="step-prog">헬씨모닝</div>
+                  <div class="step-cond">주민과 첫 접촉</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 3</div>
+                  <div class="step-name">관계 형성</div>
+                  <div class="step-prog">심야책바</div>
+                  <div class="step-cond">네트워크 형성</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 4</div>
+                  <div class="step-name">역할 전환</div>
+                  <div class="step-prog">창업지원 입주</div>
+                  <div class="step-cond">당사자로 변화</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 5</div>
+                  <div class="step-name">정주</div>
+                  <div class="step-prog">로컬마켓 참여</div>
+                  <div class="step-cond">청도에서 사업 운영</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 페르소나 1: 원주민 60대 -->
+          <div class="persona-panel" id="p1">
+            <p style="font-size:0.85rem;color:var(--text3);margin-bottom:1.25rem;">청도 원주민 60대 — 지역 앵커 조직으로 성장하는 여정</p>
+            <div class="journey-steps">
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 1</div>
+                  <div class="step-name">진입</div>
+                  <div class="step-prog">오픈라운지</div>
+                  <div class="step-cond">자연스러운 방문</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 2</div>
+                  <div class="step-name">탐색</div>
+                  <div class="step-prog">세대기술교류</div>
+                  <div class="step-cond">청년과 지식 교환</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 3</div>
+                  <div class="step-name">관계 형성</div>
+                  <div class="step-prog">소통협력주간</div>
+                  <div class="step-cond">세대간 협업 기획</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 4</div>
+                  <div class="step-name">역할 전환</div>
+                  <div class="step-prog">로컬아카이브</div>
+                  <div class="step-cond">지역 지식 제공자</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 5</div>
+                  <div class="step-name">정주</div>
+                  <div class="step-prog">공동 기획</div>
+                  <div class="step-cond">지역 앵커 조직화</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 페르소나 2: 외국인 노동자 -->
+          <div class="persona-panel" id="p2">
+            <p style="font-size:0.85rem;color:var(--text3);margin-bottom:1.25rem;">청도 거주 외국인 노동자 — 지역 사회 구성원으로 정착하는 경로</p>
+            <div class="journey-steps">
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 1</div>
+                  <div class="step-name">진입</div>
+                  <div class="step-prog">이주민 프로그램</div>
+                  <div class="step-cond">제도적 첫 접촉</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 2</div>
+                  <div class="step-name">탐색</div>
+                  <div class="step-prog">오픈라운지</div>
+                  <div class="step-cond">주민과 자연스러운 만남</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 3</div>
+                  <div class="step-name">관계 형성</div>
+                  <div class="step-prog">로컬마켓</div>
+                  <div class="step-cond">음식·문화 교류</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 4</div>
+                  <div class="step-name">역할 전환</div>
+                  <div class="step-prog">관계안내소</div>
+                  <div class="step-cond">지역 정보 접근</div>
+                </div>
+              </div>
+              <div class="journey-step">
+                <div class="step-box">
+                  <div class="step-num">STEP 5</div>
+                  <div class="step-name">정주</div>
+                  <div class="step-prog">지역사회 구성원</div>
+                  <div class="step-cond">청도 문화 공동 생산</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 섹션 5: 보충 사업 ===== -->
+<section id="s5" class="section-full">
+  <div class="inner">
+    <div class="section-label">섹션 5 — 보충 사업</div>
+    <h2 class="section-title">9개 보충 사업 제안</h2>
+    <p class="section-sub">현재 계획의 구조적 공백(층간 이동 없음·파이디아 부재·시간적 분절)을 채우는 신규·보강 사업</p>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterBiz('all', this)">전체</button>
+      <button class="filter-btn" onclick="filterBiz('now', this)">즉시 도입</button>
+      <button class="filter-btn" onclick="filterBiz('y1', this)">1년차</button>
+      <button class="filter-btn" onclick="filterBiz('y2', this)">2년차</button>
+    </div>
+    <div class="biz-grid" id="biz-grid">
+      <div class="biz-card" data-time="now">
+        <div class="biz-card-top">
+          <div class="biz-num">사업 01</div>
+          <div class="biz-badge now">즉시 도입</div>
+        </div>
+        <div class="biz-name">오픈 라운지 타임</div>
+        <div class="biz-type"><span class="kaio-badge" style="background:var(--alea-light);color:var(--alea);">알레아</span></div>
+        <div class="biz-desc">프로그램 없는 자유 체류 시간 주 3회 확보. 예약 없이 공간을 즐길 수 있는 파이디아 보호 장치.</div>
+        <div class="biz-footer"><span class="biz-budget">예산: 소규모</span></div>
+      </div>
+      <div class="biz-card" data-time="now">
+        <div class="biz-card-top">
+          <div class="biz-num">사업 02</div>
+          <div class="biz-badge now">즉시 도입</div>
+        </div>
+        <div class="biz-name">로컬 게시판 프로젝트</div>
+        <div class="biz-type"><span class="kaio-badge" style="background:var(--alea-light);color:var(--alea);">파이디아</span></div>
+        <div class="biz-desc">누구나 아이디어를 붙이고 팀원을 모집할 수 있는 물리적·디지털 게시판. 자발적 기획의 시작점.</div>
+        <div class="biz-footer"><span class="biz-budget">예산: 소규모</span></div>
+      </div>
+      <div class="biz-card" data-time="y1">
+        <div class="biz-card-top">
+          <div class="biz-num">사업 03</div>
+          <div class="biz-badge y1">1년차</div>
+        </div>
+        <div class="biz-name">세대 기술 교류</div>
+        <div class="biz-type"><span class="kaio-badge" style="background:var(--agon-light);color:var(--agon);">아곤</span></div>
+        <div class="biz-desc">청도 원주민(60대)의 지역 지식 × 귀농 청년(30대)의 디지털 역량이 충돌하는 로컬브랜딩 프로젝트.</div>
+        <div class="biz-footer"><span class="biz-budget">예산: 중간</span></div>
+      </div>
+      <div class="biz-card" data-time="y2">
+        <div class="biz-card-top">
+          <div class="biz-num">사업 04</div>
+          <div class="biz-badge y2">2년차</div>
+        </div>
+        <div class="biz-name">이주민·외국인 참여</div>
+        <div class="biz-type"><span class="kaio-badge" style="background:var(--mimicry-light);color:var(--mimicry);">미미크리</span></div>
+        <div class="biz-desc">청도 거주 외국인 노동자가 자국 음식·문화를 나누는 로컬마켓 특별 섹션. 다문화 공동체 형성.</div>
+        <div class="biz-footer"><span class="biz-budget">예산: 소규모</span></div>
+      </div>
+      <div class="biz-card" data-time="y1">
+        <div class="biz-card-top">
+          <div class="biz-num">사업 05</div>
+          <div class="biz-badge y1">1년차</div>
+        </div>
+        <div class="biz-name">청도 실험 기록단</div>
+        <div class="biz-type"><span class="kaio-badge" style="background:var(--mimicry-light);color:var(--mimicry);">미미크리</span></div>
+        <div class="biz-desc">상상마루에서 일어난 실험과 만남을 기록하는 시민 기록단. 연간 스토리북 발행. 로컬아카이브 구축.</div>
+        <div class="biz-footer"><span class="biz-budget">예산: 소규모</span></div>
+      </div>
+      <div class="biz-card" data-time="y1">
+        <div class="biz-card-top">
+          <div class="biz-num">사업 06</div>
+          <div class="biz-badge y1">1년차</div>
+        </div>
+        <div class="biz-name">연간 성과 스토리북</div>
+        <div class="biz-type"><span class="kaio-badge" style="background:var(--mimicry-light);color:var(--mimicry);">미미크리</span></div>
+        <div class="biz-desc">숫자 보고서가 아닌 사람 이야기로 만드는 연간 리뷰. "올해 상상마루에서 일어난 일들" 편집·발행.</div>
+        <div class="biz-footer"><span class="biz-budget">예산: 소규모</span></div>
+      </div>
+      <div class="biz-card" data-time="y1">
+        <div class="biz-card-top">
+          <div class="biz-num">사업 07</div>
+          <div class="biz-badge y1">1년차</div>
+        </div>
+        <div class="biz-name">상상마루 로컬마켓</div>
+        <div class="biz-type"><span class="kaio-badge" style="background:var(--alea-light);color:var(--alea);">알레아</span></div>
+        <div class="biz-desc">청도 생산자·창작자·주민이 모이는 정기 마켓. 연 2회(봄·가을). 상상마루 1층을 알레아 공간으로 활성화.</div>
+        <div class="biz-footer"><span class="biz-budget">예산: 소규모</span></div>
+      </div>
+      <div class="biz-card" data-time="y2">
+        <div class="biz-card-top">
+          <div class="biz-num">사업 08</div>
+          <div class="biz-badge y2">2년차</div>
+        </div>
+        <div class="biz-name">리빙랩 시즌제</div>
+        <div class="biz-type"><span class="kaio-badge" style="background:var(--agon-light);color:var(--agon);">아곤</span></div>
+        <div class="biz-desc">지역 문제를 팀으로 해결하는 리빙랩을 시즌제로 운영. 참가팀 선발·멘토링·발표를 연간 아곤으로 구조화.</div>
+        <div class="biz-footer"><span class="biz-budget">예산: 중간</span></div>
+      </div>
+      <div class="biz-card" data-time="y2">
+        <div class="biz-card-top">
+          <div class="biz-num">사업 09</div>
+          <div class="biz-badge y2">2년차</div>
+        </div>
+        <div class="biz-name">청소년 탐구 클럽</div>
+        <div class="biz-type"><span class="kaio-badge" style="background:var(--ilinx-light);color:var(--ilinx);">파이디아</span></div>
+        <div class="biz-desc">청도 청소년이 스스로 관심사를 탐구하는 자율 동아리. 어른 주도 없이 청소년이 직접 운영.</div>
+        <div class="biz-footer"><span class="biz-budget">예산: 중간</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 섹션 6: 성과 지표 ===== -->
+<section id="s6" class="section">
+  <div class="section-label">섹션 6 — 성과 지표</div>
+  <h2 class="section-title">이중 측정 체계</h2>
+  <p class="section-sub">행안부·청도군에 보고하는 정량 지표와 내부에서 추적하는 연계·질적 지표의 이중 구조</p>
+
+  <!-- 현재 vs 제안 지표 -->
+  <div class="label-sm">블록 A</div>
+  <div class="block-title" style="margin-bottom:0.4rem;">현재 지표 vs 추가 제안 지표</div>
+  <div class="block-sub">회색: 현재 지표 / 초록: 추가 제안 지표</div>
+  <div class="kpi-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>프로그램</th>
+          <th>현재 지표</th>
+          <th>추가 제안 지표</th>
+          <th>측정 방법</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>심야책바</strong></td>
+          <td class="current-kpi">참여자 800명, 40회</td>
+          <td class="proposed-kpi">자발적 재참여율<br>자생 모임 수</td>
+          <td>6개월 후 추적 인터뷰</td>
+        </tr>
+        <tr>
+          <td><strong>창업지원</strong></td>
+          <td class="current-kpi">10팀, 컨설팅 10회</td>
+          <td class="proposed-kpi">1년 후 청도 내 사업 지속 여부</td>
+          <td>1년 후 사업 현황 조사</td>
+        </tr>
+        <tr>
+          <td><strong>소통협력주간</strong></td>
+          <td class="current-kpi">참여 1,500명</td>
+          <td class="proposed-kpi">협업 약속 수 및 이행률</td>
+          <td>3개월 후 팔로업 설문</td>
+        </tr>
+        <tr>
+          <td><strong>관계안내소</strong></td>
+          <td class="current-kpi">관계인구 300명</td>
+          <td class="proposed-kpi">정주인구 전환 사례 수</td>
+          <td>연간 정주 사례 기록</td>
+        </tr>
+        <tr>
+          <td><strong>헬씨모닝</strong></td>
+          <td class="current-kpi">동아리 5개, 만족도 80%</td>
+          <td class="proposed-kpi">종료 후 자생 운영 동아리 수</td>
+          <td>2년차 자생 여부 확인</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 연계 질문 -->
+  <div class="label-sm">블록 B</div>
+  <div class="block-title" style="margin-bottom:0.4rem;">연계 지표 3개 핵심 질문</div>
+  <div class="block-sub" style="margin-bottom:1.25rem;">숫자가 아니라 관계의 질을 추적하는 질문들</div>
+  <div class="link-qs">
+    <div class="link-q">
+      <blockquote>"이번 달 새로 만난 두 사람이 다음 달에도 함께 왔는가?"</blockquote>
+      <div class="link-q-meta">측정: 월별 신규 관계 형성 추적 · 주기: 매월</div>
+    </div>
+    <div class="link-q">
+      <blockquote>"한 프로그램에서 시작한 사람이 다른 프로그램으로 이동했는가?"</blockquote>
+      <div class="link-q-meta">측정: 참여자 프로그램 간 이동 경로 기록 · 주기: 분기</div>
+    </div>
+    <div class="link-q">
+      <blockquote>"오픈 라운지에서 나온 아이디어가 정형 프로그램으로 발전했는가?"</blockquote>
+      <div class="link-q-meta">측정: 파이디아→루두스 전환 사례 수 · 주기: 반기</div>
+    </div>
+  </div>
+
+  <!-- 시즌별 타임라인 -->
+  <div class="label-sm">블록 C</div>
+  <div class="block-title" style="margin-bottom:0.4rem;">시즌별 파이디아-루두스 포지셔닝</div>
+  <div class="block-sub" style="margin-bottom:1.25rem;">3단계 전환 — 파이디아 우선 → 루두스 전환 → 파이디아 복원</div>
+  <div class="season-timeline">
+    <div class="season-tl-item">
+      <div class="season-tl-num">시즌 1</div>
+      <div class="season-tl-name">기반 구축</div>
+      <div class="season-tl-period">2022~2024년</div>
+      <div class="season-tl-pos">파이디아 우선</div>
+      <div class="season-tl-goal">자유로운 진입 · 규칙 최소화 · 자생 패턴 관찰 · "예기치 않은 만남의 횟수"가 핵심 지표</div>
+    </div>
+    <div class="season-tl-item">
+      <div class="season-tl-num">시즌 2</div>
+      <div class="season-tl-name">확장·성장</div>
+      <div class="season-tl-period">2025~2027년</div>
+      <div class="season-tl-pos">루두스 전환</div>
+      <div class="season-tl-goal">자생 놀이 패턴 정례화 · 멤버십·성과측정 도입 · 루두스가 파이디아를 소멸시키지 않도록 주의</div>
+    </div>
+    <div class="season-tl-item">
+      <div class="season-tl-num">시즌 3</div>
+      <div class="season-tl-name">심화·확산</div>
+      <div class="season-tl-period">2028년~</div>
+      <div class="season-tl-pos">파이디아 복원</div>
+      <div class="season-tl-goal">주민이 직접 기획하는 심야책바·영화제 발생 · 청도혁신센터가 기획자이기를 멈추는 단계</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 섹션 7: 다음 단계 ===== -->
+<section id="s7" class="section-full">
+  <div class="inner">
+    <div class="section-label">섹션 7 — 다음 단계</div>
+    <h2 class="section-title">확인 및 보강 체크리스트</h2>
+    <p class="section-sub">기획서 작성 전 확인 필요 사항 · 클릭하여 완료 표시</p>
+    <div class="checklist-grid">
+      <div class="checklist-group">
+        <h3><i class="ti ti-clipboard-check"></i> 의사결정 필요 항목</h3>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">기획서 주체 확인 — 청도혁신센터 vs 경북시민재단 중 누가 사용하는가</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">제출 대상 확정 — 행안부 제출용 / 내부 운영 가이드 / 외부 강의 자료</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">예산·인력 계획 포함 여부 결정</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">시즌 3(2028~) 내용 포함 여부 — 현재(2026) 운영 집중 vs 장기 비전 포함</div>
+        </div>
+      </div>
+      <div class="checklist-group">
+        <h3><i class="ti ti-books"></i> 보강 필요 내용</h3>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">일본 가미야마(神山) 사례 조사 — 계획서에서 직접 언급된 벤치마크</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">청도혁신센터 2023~2025년 실제 성과 데이터 확보</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">층별 공간 도면·사진 자료 수집</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">상상마루 위탁계획서 요금 체계 재검토 — 자유성 원칙과 충돌 지점</div>
+        </div>
+      </div>
+      <div class="checklist-group">
+        <h3><i class="ti ti-photo"></i> 시각 자료 제작</h3>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">층별 놀이 유형 인포그래픽 — 상상마루 실제 도면 기반 재제작</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">참여자 여정 5단계 사다리 — 실제 사례 기반 검증</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">Puerilism 판별 매트릭스 — 5개 프로그램 × 위험신호 대응표</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">연간 계절 리듬 — 실제 프로그램 일정 기반 업데이트</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- 푸터 -->
+<footer>
+  <div class="inner">
+    <div>
+      <h4>원본 계획서</h4>
+      <ul>
+        <li>청도혁신센터 2026년 사업운영계획서 (행안부 소통협력공간사업)</li>
+        <li>청도상상마루 운영 및 관리 위탁 사업계획서 (사단법인 경북시민재단)</li>
+      </ul>
+    </div>
+    <div>
+      <h4>볼트 내 원천 문서</h4>
+      <ul>
+        <li>책기획/호모루덴스/PRD_청도상상마루_HTML_설명자료.md</li>
+        <li>책기획/호모루덴스/호모 루덴스 심층 분석 - 강의발표 준비.md</li>
+        <li>책기획/호모루덴스/호모 루덴스 × 청도상상마루 공간 분석.md</li>
+        <li>책기획/호모루덴스/청도혁신센터 사업 보충 및 연계 구조 제안.md</li>
+        <li>책기획/호모루덴스/청도상상마루 운영 기획서 구조 초안.md</li>
+      </ul>
+    </div>
+    <div>
+      <h4>핵심 참고 문헌</h4>
+      <ul>
+        <li>요한 하위징아, 『호모 루덴스』 (이종인 역, 연암서가, 2018)</li>
+        <li>로제 카이와, 『놀이와 인간』 (1958)</li>
+        <li>케이티 살렌·에릭 짐머만, Rules of Play (2003)</li>
+        <li>빅터 터너, The Ritual Process (1969)</li>
+      </ul>
+    </div>
+    <div>
+      <h4>파일 정보</h4>
+      <ul>
+        <li>파일명: cheongdo_sangsangmaru_proposal.html</li>
+        <li>볼트 경로: 책기획/호모루덴스/</li>
+        <li>작성일: 2026-05-06 / 버전 v1.1</li>
+        <li>대상: 청도혁신센터 운영팀 (비공개·내부용)</li>
+      </ul>
+    </div>
+    <div class="footer-meta">
+      <span>청도상상마루 운영 기획서 HTML 설명자료 · v1.1 · 2026-05-06</span>
+      <span>호모 루덴스(Homo Ludens) 프레임 · 경북시민재단 청도혁신센터</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// 다크모드 토글
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-toggle').textContent = isDark ? '🌙 다크' : '☀️ 라이트';
+}
+
+// 아코디언
+function toggleAcc(header) {
+  const item = header.parentElement;
+  item.classList.toggle('open');
+}
+
+// 층별 아코디언
+function toggleFloor(header) {
+  const item = header.parentElement;
+  item.classList.toggle('open');
+}
+
+// 페르소나 토글
+function switchPersona(idx, btn) {
+  document.querySelectorAll('.persona-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.persona-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === idx);
+  });
+}
+
+// 보충 사업 필터
+function filterBiz(time, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.biz-card').forEach(card => {
+    if (time === 'all' || card.dataset.time === time) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+// 체크리스트
+function toggleCheck(item) {
+  item.classList.toggle('done');
+}
+
+// 네비게이션 활성화
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('#nav .nav-links a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
