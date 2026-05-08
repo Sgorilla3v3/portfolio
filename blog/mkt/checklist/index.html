@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기업별 개별 안내문서 작성 전 체크리스트</title>
+<link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  :root {
+    --bg: #F8F7F4;
+    --surface: #FFFFFF;
+    --surface2: #F2F1EE;
+    --border: rgba(0,0,0,0.10);
+    --border-strong: rgba(0,0,0,0.18);
+    --text: #1A1A18;
+    --text-muted: #6B6B67;
+    --text-hint: #9B9B96;
+    --accent: #185FA5;
+    --accent-bg: #E6F1FB;
+    --accent-text: #0C447C;
+    --success: #3B6D11;
+    --success-bg: #EAF3DE;
+    --success-text: #27500A;
+    --warn: #854F0B;
+    --warn-bg: #FAEEDA;
+    --warn-text: #633806;
+    --danger: #A32D2D;
+    --danger-bg: #FCEBEB;
+    --danger-text: #791F1F;
+    --grade-a: #0F6E56;
+    --grade-a-bg: #E1F5EE;
+    --grade-b: #185FA5;
+    --grade-b-bg: #E6F1FB;
+    --grade-c: #854F0B;
+    --grade-c-bg: #FAEEDA;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1C1C1A;
+      --surface: #252523;
+      --surface2: #2E2E2B;
+      --border: rgba(255,255,255,0.10);
+      --border-strong: rgba(255,255,255,0.18);
+      --text: #EEEEE8;
+      --text-muted: #A0A09A;
+      --text-hint: #6B6B65;
+      --accent-bg: #0C2A44;
+      --accent-text: #B5D4F4;
+      --success-bg: #1A2E0A;
+      --success-text: #C0DD97;
+      --warn-bg: #2E1F08;
+      --warn-text: #FAC775;
+      --danger-bg: #2E0E0E;
+      --danger-text: #F7C1C1;
+      --grade-a-bg: #083428;
+      --grade-b-bg: #0C2A44;
+      --grade-c-bg: #2E1F08;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 32px 24px 64px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  .page-header .label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-hint);
+    margin-bottom: 8px;
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .page-header .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--surface2);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border);
+  }
+
+  .meta-pill i { font-size: 13px; }
+
+  .progress-bar-wrapper {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .progress-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-count {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  .section {
+    margin-bottom: 28px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .section-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .section-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+  }
+
+  .badge-common {
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 0.5px solid var(--border);
+  }
+
+  .badge-info {
+    background: var(--accent-bg);
+    color: var(--accent-text);
+  }
+
+  .badge-warn {
+    background: var(--warn-bg);
+    color: var(--warn-text);
+  }
+
+  .badge-danger {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+  }
+
+  .check-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--border);
+    transition: background 0.15s;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-item:hover { background: var(--surface2); }
+
+  .check-item.checked {
+    background: var(--success-bg);
+  }
+
+  .check-item.checked .check-text { color: var(--text-muted); text-decoration: line-through; }
+
+  .check-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border-strong);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: var(--surface);
+  }
+
+  .check-item.checked .check-box {
+    background: var(--grade-a);
+    border-color: var(--grade-a);
+  }
+
+  .check-box i {
+    font-size: 12px;
+    color: white;
+    display: none;
+  }
+
+  .check-item.checked .check-box i { display: block; }
+
+  .check-body { flex: 1; }
+
+  .check-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .check-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  .check-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+
+  .tag-a { background: var(--grade-a-bg); color: var(--grade-a); }
+  .tag-b { background: var(--grade-b-bg); color: var(--grade-b); }
+  .tag-c { background: var(--grade-c-bg); color: var(--grade-c); }
+  .tag-all { background: var(--surface2); color: var(--text-muted); border: 0.5px solid var(--border); }
+  .tag-warn { background: var(--warn-bg); color: var(--warn-text); }
+  .tag-danger { background: var(--danger-bg); color: var(--danger-text); }
+
+  .companies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .company-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .company-card:hover { border-color: var(--accent); }
+
+  .company-card.selected {
+    border-color: var(--accent);
+    border-width: 1.5px;
+    background: var(--accent-bg);
+  }
+
+  .company-card.selected .company-name { color: var(--accent-text); }
+
+  .company-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .company-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .grade-badge {
+    font-size: 11px;
+    font-weight: 600;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .grade-a { background: var(--grade-a-bg); color: var(--grade-a); }
+  .grade-b { background: var(--grade-b-bg); color: var(--grade-b); }
+  .grade-c { background: var(--grade-c-bg); color: var(--grade-c); }
+
+  .company-amount {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .check-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--grade-a);
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .check-indicator i {
+    font-size: 9px;
+    color: white;
+  }
+
+  .company-card.done .check-indicator {
+    display: flex;
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  @media (max-width: 600px) {
+    .summary-cards { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .summary-card {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    text-align: center;
+  }
+
+  .summary-card .val {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .summary-card .lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .blocker-section {
+    background: var(--danger-bg);
+    border: 0.5px solid rgba(162,45,45,0.20);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 28px;
+  }
+
+  .blocker-section .blocker-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--danger-text);
+    margin-bottom: 10px;
+  }
+
+  .blocker-item {
+    display: flex;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 0.5px solid rgba(162,45,45,0.12);
+    font-size: 12px;
+    color: var(--danger-text);
+  }
+
+  .blocker-item:last-child { border-bottom: none; }
+
+  .print-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: 0.5px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-left: auto;
+  }
+
+  .print-btn:hover { background: var(--surface2); }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .reset-btn {
+    font-size: 12px;
+    color: var(--text-hint);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 0.5px solid var(--border);
+    background: none;
+    transition: all 0.15s;
+  }
+
+  .reset-btn:hover { color: var(--text-muted); border-color: var(--border-strong); }
+
+  .collapse-toggle {
+    font-size: 12px;
+    color: var(--text-hint);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+    background: none;
+    border: none;
+  }
+
+  .collapse-toggle i { font-size: 13px; transition: transform 0.2s; }
+  .collapse-toggle.collapsed i { transform: rotate(-90deg); }
+
+  .section-body { display: block; }
+  .section-body.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">기업별 개별 안내문서 작성 전 담당자 체크리스트 — 소협공 마케팅 지원사업</h2>
+
+<div class="page-header">
+  <div class="label">경북시민재단 소협공팀</div>
+  <h1>기업별 개별 안내문서 작성 전 체크리스트</h1>
+  <div class="subtitle">협약 전 보완 요청 안내문 배포 준비 / 기업별 확인 및 작성 착수 전 사전 점검용</div>
+  <div class="header-meta">
+    <div class="meta-pill"><i class="ti ti-calendar" aria-hidden="true"></i> 2026-05-08</div>
+    <div class="meta-pill"><i class="ti ti-building-store" aria-hidden="true"></i> 배포 대상 12개사</div>
+    <div class="meta-pill"><i class="ti ti-alert-circle" aria-hidden="true"></i> F등급 2개사 제외</div>
+  </div>
+</div>
+
+<div class="summary-cards">
+  <div class="summary-card">
+    <div class="val" id="total-count">12</div>
+    <div class="lbl">배포 대상 기업</div>
+  </div>
+  <div class="summary-card">
+    <div class="val" id="checked-count">0</div>
+    <div class="lbl">체크 완료 항목</div>
+  </div>
+  <div class="summary-card">
+    <div class="val" id="company-done-count">0</div>
+    <div class="lbl">작성 완료 기업</div>
+  </div>
+  <div class="summary-card">
+    <div class="val" id="remaining-count">—</div>
+    <div class="lbl">잔여 항목</div>
+  </div>
+</div>
+
+<div class="progress-bar-wrapper">
+  <span class="progress-label">전체 진행률</span>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+  <span class="progress-count" id="progress-text">0 / 0</span>
+</div>
+
+<div class="blocker-section">
+  <div class="blocker-header">
+    <i class="ti ti-ban" aria-hidden="true"></i>
+    집행 불가 항목 — 사전 내부 협의 필요 (공통)
+  </div>
+  <div class="blocker-item"><span>굿즈</span><span style="flex:1">현물성 자산형성으로 구분 어려움. 제품 생산비용 사용으로 판단될 수 있음 → 대안 항목 협의 후 집행계획 수정 (나지나)</span></div>
+  <div class="blocker-item"><span>CPC 광고</span><span style="flex:1">네이버·구글 등 검색형 광고는 사업에 증빙이 어려움 → 기업 안내 시 명시</span></div>
+  <div class="blocker-item"><span>인건비</span><span style="flex:1">박람회 세팅 등 인건비성 항목 → 지원 가능 범위 사전 확인 후 집행계획 수정 (보름·지상농원)</span></div>
+  <div class="blocker-item"><span>카카오 오픈채팅방</span><span style="flex:1">개설 무료 → 해당 예산 삭제 또는 적합 항목으로 대체 (지상농원·농부점뷰)</span></div>
+</div>
+
+<div class="toolbar">
+  <div style="font-size:13px; font-weight:500; color:var(--text);">공통 사전 확인 항목</div>
+  <button class="reset-btn" id="reset-btn"><i class="ti ti-refresh" style="font-size:11px"></i> 초기화</button>
+  <button class="print-btn" onclick="window.print()"><i class="ti ti-printer" aria-hidden="true"></i> 인쇄</button>
+</div>
+
+<div class="section" id="section-common">
+  <div class="section-header">
+    <button class="collapse-toggle" data-target="body-common">
+      <i class="ti ti-chevron-down"></i>
+    </button>
+    <h2>A. 기업 공통 — 협약 전 반드시 확인</h2>
+    <span class="section-badge badge-common" id="badge-common">0 / 6</span>
+  </div>
+  <div class="section-body" id="body-common">
+    <div class="check-list" data-section="common">
+      <div class="check-item" data-id="c1">
+        <div class="check-box"><i class="ti ti-check"></i></div>
+        <div class="check-body">
+          <div class="check-text">수행기업(공급사) 계약 완료 여부 확인</div>
+          <div class="check-note">수행사가 명시된 기업은 협약 전 계약서 또는 견적서 제출 요청</div>
+          <div class="check-tags">
+            <span class="tag tag-all">전체 기업</span>
+            <span class="tag tag-warn">청도원감 · 이로움 · 다잇식품</span>
+          </div>
+        </div>
+      </div>
+      <div class="check-item" data-id="c2">
+        <div class="check-box"><i class="ti ti-check"></i></div>
+        <div class="check-body">
+          <div class="check-text">감액 기업 수정 집행계획서 재제출 요청 확인</div>
+          <div class="check-note">신청금 대비 확정금 감액된 8개사 — 확정 지원금 기준 수정본 필수</div>
+          <div class="check-tags">
+            <span class="tag tag-warn">갤러리이서 · 이로움 · 좋은예감 · 나지나 · 지상농원 · 보름 · 로프티팩토리 · 다잇식품</span>
+          </div>
+        </div>
+      </div>
+      <div class="check-item" data-id="c3">
+        <div class="check-box"><i class="ti ti-check"></i></div>
+        <div class="check-body">
+          <div class="check-text">개인정보 수집 계획 있는 기업 — 개인정보처리방침 수립 확인</div>
+          <div class="check-note">DB 수집 계획 기업(생생초·영은베리)은 협약 전 방침 수립 여부 확인</div>
+          <div class="check-tags">
+            <span class="tag tag-b">생생초 · 영은베리</span>
+          </div>
+        </div>
+      </div>
+      <div class="check-item" data-id="c4">
+        <div class="check-box"><i class="ti ti-check"></i></div>
+        <div class="check-body">
+          <div class="check-text">정산 증빙 방법 사전 안내 완료</div>
+          <div class="check-note">비목별 정산 시 필요 증빙서류(세금계산서·계약서·결과물 납품확인서) 유형 기업별 안내</div>
+          <div class="check-tags"><span class="tag tag-all">전체 기업</span></div>
+        </div>
+      </div>
+      <div class="check-item" data-id="c5">
+        <div class="check-box"><i class="ti ti-check"></i></div>
+        <div class="check-body">
+          <div class="check-text">사업 종료 후 유지관리 계획 협약 조건 명시 검토</div>
+          <div class="check-note">홈페이지·영상 구축 기업은 사업 후 유지관리 주체 및 방법 협약 조건 명시 검토</div>
+          <div class="check-tags">
+            <span class="tag tag-all">홈페이지/영상 구축 기업</span>
+          </div>
+        </div>
+      </div>
+      <div class="check-item" data-id="c6">
+        <div class="check-box"><i class="ti ti-check"></i></div>
+        <div class="check-body">
+          <div class="check-text">지원금 반려 케이스 1줄 요약 안내 포함 여부 확인</div>
+          <div class="check-note">집행 불가 항목 사용 또는 성과 측정 미비 시 지원금 지급 반려될 수 있음 — 안내문 포함 필수</div>
+          <div class="check-tags"><span class="tag tag-all">전체 기업</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="font-size:13px; font-weight:500; color:var(--text); margin-bottom:12px; margin-top:8px;">기업별 개별 확인 항목</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">전체</button>
+  <button class="filter-btn" data-filter="A">A등급</button>
+  <button class="filter-btn" data-filter="B">B등급</button>
+  <button class="filter-btn" data-filter="C">C등급</button>
+  <button class="filter-btn" data-filter="감액">감액기업</button>
+</div>
+
+<div class="companies-grid" id="companies-grid"></div>
+
+<div id="company-sections"></div>
+
+<script>
+const companies = [
+  { id: 1, name: '갤러리이서', grade: 'C', amount: 700, items: [
+    { id: 'e1-1', text: '사업비 재조정 (감액 700만원 기준 집행계획 수정)', note: '개발사 견적서 제출 요청 — 금액 적정성 검증 필요', tags: ['C','감액'] },
+    { id: 'e1-2', text: '전시작가 저작권 동의 절차 마련 여부 확인', note: '아카이브 등록 전 작가 동의서 양식 및 수집 범위 기준 수립', tags: ['C'] },
+    { id: 'e1-3', text: '홈페이지 → 매출 연결 로직 구체화 요청', note: '온라인 방문객 유입→아트에디션/출판물 판매→매출 전환 실행계획 보완', tags: ['C'] },
+    { id: 'e1-4', text: '사업화 목표 현실화 수정 요청', note: '2027년 200백만원→2029년 500백만원 목표 근거 없음. 현재 매출 130백만원 기반 현실적 시나리오로 수정', tags: ['C'] },
+  ]},
+  { id: 2, name: '생생초', grade: 'A', amount: 1000, items: [
+    { id: 'e2-1', text: '사업비 불일치 수정 필수', note: '계획서 본문 10,000천원 vs 집행계획표 합계 9,900천원 — 협약서 오류로 이어질 수 있음', tags: ['A','감액'] },
+    { id: 'e2-2', text: '광고 집행 채널별 배분 계획 확인', note: '5,000천원 광고비의 네이버·메타·카카오 등 채널별 배분 계획 확인 후 집행 관리 기준 수립', tags: ['A'] },
+    { id: 'e2-3', text: '광고 성과 목표 산출 근거 서면 확인', note: '월 방문자 3,000명·전환율 2~3%·신규DB 500건 달성 근거 협약 전 서면 확인', tags: ['A'] },
+    { id: 'e2-4', text: '수행 대행사 계약 확인', note: '랜딩페이지·광고·데이터분석 각 단계 수행사 계약 여부 확인 및 계약서 사본 제출 요청', tags: ['A'] },
+  ]},
+  { id: 3, name: '청도원감', grade: 'A', amount: 1000, items: [
+    { id: 'e3-1', text: '전시회 참가 일정 특정 요청', note: '족자봉 홍보물 활용 대상 전시회 — 박람회명·일정·규모 협약 전 확정하여 제출 (사업비 집행 기간 내 박람회 일정인지 확인 필수)', tags: ['A'] },
+    { id: 'e3-2', text: '숏폼 영상 채널 및 콘셉트 기획서 제출', note: '3건 영상의 채널(유튜브 쇼츠·인스타그램 릴스)·주제·업로드 시기 사전 기획안 제출 요청', tags: ['A'] },
+    { id: 'e3-3', text: '상세페이지 적용 채널 확정', note: '스마트스토어·자사몰 등 우선 적용 채널 및 포맷 기준 명확화', tags: ['A'] },
+    { id: 'e3-4', text: '수행사(브랜딩샵) 숏폼 제작 실적 확인', note: '영상 제작 포트폴리오 확인 및 계약서 제출', tags: ['A'] },
+  ]},
+  { id: 4, name: '영은베리', grade: 'A', amount: 1000, items: [
+    { id: 'e4-1', text: '사업비 표 오류 수정 필수', note: '리플릿 단가 3천원×2,500개=7,500천원이나 집행금액 2,500천원 기재 — 수량·단가·금액 재산정 후 수정본 제출', tags: ['A','감액'] },
+    { id: 'e4-2', text: 'GAP 인증 마케팅 활용 계획 구체화', note: '상세페이지·카드뉴스 핵심 소구점으로 GAP 인증 활용하는 콘텐츠 방향 협의', tags: ['A'] },
+    { id: 'e4-3', text: '리플릿 배포 계획 제출', note: '1,000부(또는 2,500장) 배포 대상 채널 및 장소(농장 방문객·로컬푸드 매장·체험 행사) 명시', tags: ['A'] },
+    { id: 'e4-4', text: '수확 체험 연계 CTA 설계 확인', note: '카드뉴스·리플릿에 체험 예약 연결 구조(QR코드 등) 반영 여부 확인', tags: ['A'] },
+  ]},
+  { id: 5, name: '이로움', grade: 'B', amount: 800, items: [
+    { id: 'e5-1', text: '유럽 출장비·샘플 키트 제작비 재원 출처 확인 필수 (협약 전 해소)', note: '현지 방문(2건 이상) 목표 달성을 위한 자부담·KOTRA 연계 등 재원 확인 요청 — 미해소 시 집행 불가', tags: ['B','감액'] },
+    { id: 'e5-2', text: '매출·고용 하락세 원인 및 반전 계획 서면 제출', note: '심사위원 라의 매출·고용 하락세 우려에 대해 현황 설명 및 이번 사업과의 연계 계획 서면 요청', tags: ['B'] },
+    { id: 'e5-3', text: '유럽 협업 업장 사전 접촉 현황 자료 제출', note: '단순 탐방이 아닌 실질 협업 준비임을 입증하는 자료(이메일·미팅 기록 등) 제출 요청', tags: ['B'] },
+    { id: 'e5-4', text: '홈페이지 B2B 기능 설계 확인', note: 'B2B 문의 폼·카탈로그 다운로드 등 B2B 영업 창구 기능이 실제 설계에 포함되는지 개발사 계약 범위 확인', tags: ['B'] },
+  ]},
+  { id: 6, name: '좋은예감', grade: 'A', amount: 1000, items: [
+    { id: 'e6-1', text: '사업비 재조정 (감액 1,000만원 기준) 및 특허 출원 별도 지원 안내', note: '마케팅 해당 항목(홍보영상 8,000천원 + 홈페이지 2,000천원) 지원. 특허 출원(10,000천원)은 별도 인증 지원 채널 연계 안내', tags: ['A','감액'] },
+    { id: 'e6-2', text: '홍보영상 용도·러닝타임 사전 확정', note: '인서트·뷰티·합본 3종의 방송사 납품 기준 충족 여부 확인. 홈쇼핑 방송사(홈앤쇼핑) 영상 제작 스펙 사전 협의 여부 확인', tags: ['A'] },
+    { id: 'e6-3', text: '홈페이지 기능 범위 확정 (자사몰 결제 포함 여부)', note: '자사몰(결제 포함) 여부 재확인. 2,000천원(지원금) 예산으로 결제 기능 포함 구현 가능 여부 검토', tags: ['A'] },
+    { id: 'e6-4', text: '가점 요건 재확인', note: '여성기업·사회적기업·녹색기업 인증 해당 여부 확인 후 미반영분 정정', tags: ['A'] },
+  ]},
+  { id: 7, name: '나지나', grade: 'B', amount: 800, items: [
+    { id: 'e7-1', text: '굿즈 대안 항목 협의 및 집행계획 수정 제출 필수', note: '심사위원 3인 굿즈 불가 명시 지적 — 집행 가능 항목(비건가죽 소품을 활용한 전시·배포용 브랜드 샘플 키트 형태)으로 재구성 협의', tags: ['B','감액'] },
+    { id: 'e7-2', text: '소품 종류·수량·단가 세부 명세 제출 필수', note: '현재 "홍보물(소품) 1식"으로만 기재 — 금액 적정성 검증 불가. 협약 전 품목별 명세 및 견적서 제출 요청', tags: ['B'] },
+    { id: 'e7-3', text: '우대가점 확인', note: '여성기업·신생기업 가점 반영 여부 재확인. 미반영 시 정정 필요', tags: ['B'] },
+    { id: 'e7-4', text: '매출 목표 현실화 요청', note: '58→500백만원(886%) 근거 협약 전 서면 확인하거나 현실적 목표로 수정 요청', tags: ['B'] },
+  ]},
+  { id: 9, name: '지상농원', grade: 'C', amount: 700, items: [
+    { id: 'e9-1', text: '사업비 재조정 (700만원 기준) 및 카카오 오픈채팅방 예산 처리', note: '홍보영상(500만원) + 박람회(200만원) 구조 유지 또는 비율 재설정. 카카오 오픈채팅방 개설은 무료 → 해당 예산 삭제 또는 적합 항목 대체', tags: ['C','감액'] },
+    { id: 'e9-2', text: '박람회 특정 및 집행계획 재작성', note: '참가 박람회명·일정·부스 규모·세부 비용(참가비·부스조성비·홍보물 인쇄비 구분) 명시한 수정 집행계획 제출 요청. 현재 6,000천원 일괄 기재는 지원 범위 판단 불가', tags: ['C'] },
+    { id: 'e9-3', text: '사업화 목표표 0원 기재 수정', note: '연구개발결과물 관련 항목 전체 0원 기재 — 의미 없음. 마케팅 기여 매출 개념으로 재기재 또는 해당 항목 삭제 후 별도 성과 지표 설정', tags: ['C'] },
+  ]},
+  { id: 11, name: '보름(주)', grade: 'C', amount: 700, items: [
+    { id: 'e11-1', text: '사업비 재조정 (700만원 기준) — 박람회 비용 항목 분리', note: '박람회 부스(4,200천원) + 사인물(6,300천원) = 10,500천원 → 700만원 범위 내 재조정. 지원 가능 항목 사전 확인 후 수정 집행계획 제출', tags: ['C','감액'] },
+    { id: 'e11-2', text: '박람회 비용 항목별 분리 제출 필수', note: '심사위원 3인 인건비성 항목 가능성 지적 — 부스 임차비·홍보물 인쇄비·장치비 항목별 분리하여 지원 가능 여부 사전 확인 후 수정 집행계획 제출', tags: ['C'] },
+    { id: 'e11-3', text: '농장 사인물 지원 범위 적합성 확인', note: '사인물 설치가 마케팅 직접지원 대상 항목인지 담당자 검토 필요. 해당 안 될 경우 홍보물·인쇄물 형태로 대체 구성 협의', tags: ['C'] },
+    { id: 'e11-4', text: '가점 요건 재확인', note: '여성기업·사회적기업·녹색기업 인증 해당 여부 확인 후 미반영분 정정', tags: ['C'] },
+  ]},
+  { id: 12, name: '로프티팩토리(주)', grade: 'B', amount: 800, items: [
+    { id: 'e12-1', text: '사업 범위 재설정 (800만원 기준) 안내', note: '6,000만원 신청 중 800만원 확정. 마케팅 해당 항목(광고선비 1,000만원) 중 800만원만 지원. 비마케팅 항목(원료비·가공비·디자인·인증)은 별도 지원사업 연계 안내 필요', tags: ['B','감액'] },
+    { id: 'e12-2', text: '광고선비 800만원 세부 집행계획 제출', note: '홍보 영상 제작비·와디즈 수수료·인플루언서 협업비·기타 디지털 광고비 항목별 구분한 세부 집행계획 제출 요청', tags: ['B'] },
+    { id: 'e12-3', text: '시제품 완성 시점 확인', note: '광고 집행 전 시제품 완성(성분분석·품질검증) 선행 필요. 8월 온라인 론칭 일정이 현실적인지 시제품 개발 타임라인 확인', tags: ['B'] },
+    { id: 'e12-4', text: '사료 등록·인허가 계획 확인 필수', note: '반려동물 사료 판매를 위한 농림축산검역본부 사료 등록 절차 이행 계획 및 시점 확인 — 미이행 시 광고 집행 후 판매 자체가 불가', tags: ['B'] },
+  ]},
+  { id: 13, name: '다잇식품', grade: 'C', amount: 700, items: [
+    { id: 'e13-1', text: '수행기업명 오류 수정 필수', note: '심사위원 마 명시 지적 — 계획서·협약서 상 기업명 정확성 재점검 후 수정본 제출', tags: ['C','감액'] },
+    { id: 'e13-2', text: '사업비 재조정 (700만원 기준) 협의', note: '자사몰 기획·UI/UX(400만원) + 관리자·결제 개발(450만원) + 상세페이지(200만원) = 1,050만원 → 700만원 범위 내 기능 범위 재조정 협의', tags: ['C'] },
+    { id: 'e13-3', text: 'PG 연동 및 결제 시스템 계획 확인', note: 'PG사 선정, 결제 수단 범위, 연동 방식 확인 필수', tags: ['C'] },
+    { id: 'e13-4', text: '식품 온라인 판매 인허가 확인', note: '순대 D2C 판매 시 통신판매업 신고, 식품 표시기준 준수, 냉장·냉동 배송 체계 구축 여부 확인 후 집행 가능 여부 판단', tags: ['C'] },
+  ]},
+  { id: 14, name: '농부점뷰', grade: 'B', amount: 800, items: [
+    { id: 'e14-1', text: '사업비 재조정 (800만원 기준) 및 카카오 오픈채팅방 예산 처리', note: '배너(525천원)+리플릿(3,150천원)+카드뉴스(6,300천원)+채팅방(525천원) = 10,500천원 → 8,000천원 범위 내 항목 우선순위 재조정 협의. 채팅방 개설 무료 → 예산 삭제 또는 카드뉴스 추가 제작·SNS 광고비 대체', tags: ['B','감액'] },
+    { id: 'e14-2', text: '카드뉴스 단가 적정성 확인', note: '종당 545천원(6,000천원/11종) 수준이 시장 단가(명함형 카드뉴스 기준)와 부합하는지 견적서로 확인', tags: ['B'] },
+    { id: 'e14-3', text: '꾸러미 30건 목표 수립 근거 확인', note: '현재 직거래 판매 실적 파악 후 달성 가능성 검토', tags: ['B'] },
+  ]},
+];
+
+const state = {
+  checked: new Set(),
+  selectedCompany: null,
+  filter: 'all',
+};
+
+function renderSummary() {
+  const commonItems = document.querySelectorAll('[data-section="common"] .check-item');
+  const allItems = document.querySelectorAll('.check-item');
+  const total = allItems.length;
+  const done = state.checked.size;
+  document.getElementById('checked-count').textContent = done;
+  document.getElementById('remaining-count').textContent = total - done;
+  document.getElementById('progress-text').textContent = `${done} / ${total}`;
+  document.getElementById('progress-fill').style.width = total ? `${Math.round(done/total*100)}%` : '0%';
+
+  const commonDone = [...state.checked].filter(id => id.startsWith('c')).length;
+  document.getElementById('badge-common').textContent = `${commonDone} / ${commonItems.length}`;
+
+  let companyDone = 0;
+  companies.forEach(c => {
+    const allChecked = c.items.every(item => state.checked.has(item.id));
+    if (allChecked && c.items.length > 0) companyDone++;
+    const card = document.querySelector(`.company-card[data-company="${c.id}"]`);
+    if (card) {
+      card.classList.toggle('done', allChecked);
+    }
+    const badge = document.getElementById(`badge-${c.id}`);
+    if (badge) {
+      const doneCnt = c.items.filter(item => state.checked.has(item.id)).length;
+      badge.textContent = `${doneCnt} / ${c.items.length}`;
+    }
+  });
+  document.getElementById('company-done-count').textContent = companyDone;
+}
+
+function buildCompanyGrid() {
+  const grid = document.getElementById('companies-grid');
+  grid.innerHTML = '';
+  const filtered = companies.filter(c => {
+    if (state.filter === 'all') return true;
+    if (['A','B','C'].includes(state.filter)) return c.grade === state.filter;
+    if (state.filter === '감액') return c.amount < 1000;
+    return true;
+  });
+  filtered.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'company-card' + (state.selectedCompany === c.id ? ' selected' : '');
+    card.dataset.company = c.id;
+    const allChecked = c.items.every(item => state.checked.has(item.id));
+    if (allChecked && c.items.length > 0) card.classList.add('done');
+    card.innerHTML = `
+      <div class="check-indicator"><i class="ti ti-check"></i></div>
+      <div class="company-name">${c.name}</div>
+      <div class="company-meta">
+        <span class="grade-badge grade-${c.grade.toLowerCase()}">${c.grade}</span>
+        <span class="company-amount">${c.amount}만원</span>
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      state.selectedCompany = (state.selectedCompany === c.id) ? null : c.id;
+      renderAll();
+      if (state.selectedCompany) {
+        const section = document.getElementById(`section-co-${c.id}`);
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+    grid.appendChild(card);
+  });
+}
+
+function buildCompanySections() {
+  const container = document.getElementById('company-sections');
+  container.innerHTML = '';
+  const filtered = companies.filter(c => {
+    if (state.filter === 'all') return true;
+    if (['A','B','C'].includes(state.filter)) return c.grade === state.filter;
+    if (state.filter === '감액') return c.amount < 1000;
+    return true;
+  });
+  filtered.forEach(c => {
+    const gradeColors = { A: 'badge-info', B: 'badge-warn', C: 'badge-warn' };
+    const section = document.createElement('div');
+    section.className = 'section';
+    section.id = `section-co-${c.id}`;
+    const isOpen = state.selectedCompany === c.id || state.selectedCompany === null;
+    const doneCnt = c.items.filter(item => state.checked.has(item.id)).length;
+    section.innerHTML = `
+      <div class="section-header">
+        <button class="collapse-toggle ${isOpen ? '' : 'collapsed'}" data-target="body-co-${c.id}">
+          <i class="ti ti-chevron-down"></i>
+        </button>
+        <h2>
+          <span class="grade-badge grade-${c.grade.toLowerCase()}" style="display:inline-flex;margin-right:6px;">${c.grade}</span>
+          ${c.name} <span style="font-weight:400;font-size:12px;color:var(--text-muted);margin-left:4px;">확정 ${c.amount}만원</span>
+        </h2>
+        <span class="section-badge badge-common" id="badge-${c.id}">${doneCnt} / ${c.items.length}</span>
+      </div>
+      <div class="section-body ${isOpen ? '' : 'hidden'}" id="body-co-${c.id}">
+        <div class="check-list" data-section="co-${c.id}">
+          ${c.items.map(item => `
+            <div class="check-item ${state.checked.has(item.id) ? 'checked' : ''}" data-id="${item.id}">
+              <div class="check-box"><i class="ti ti-check"></i></div>
+              <div class="check-body">
+                <div class="check-text">${item.text}</div>
+                ${item.note ? `<div class="check-note">${item.note}</div>` : ''}
+                <div class="check-tags">${item.tags.map(t => `<span class="tag tag-${t === 'A' ? 'a' : t === 'B' ? 'b' : t === 'C' ? 'c' : t === '감액' ? 'warn' : 'all'}">${t === '감액' ? '감액기업' : t + '등급'}</span>`).join('')}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    container.appendChild(section);
+  });
+  attachCheckHandlers();
+  attachCollapseHandlers();
+}
+
+function attachCheckHandlers() {
+  document.querySelectorAll('.check-item').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const id = el.dataset.id;
+      if (state.checked.has(id)) state.checked.delete(id);
+      else state.checked.add(id);
+      el.classList.toggle('checked', state.checked.has(id));
+      renderSummary();
+    });
+  });
+}
+
+function attachCollapseHandlers() {
+  document.querySelectorAll('.collapse-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetId = btn.dataset.target;
+      const body = document.getElementById(targetId);
+      if (!body) return;
+      const hidden = body.classList.toggle('hidden');
+      btn.classList.toggle('collapsed', hidden);
+    });
+  });
+}
+
+function renderAll() {
+  buildCompanyGrid();
+  buildCompanySections();
+  renderSummary();
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.filter = btn.dataset.filter;
+    renderAll();
+  });
+});
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if (confirm('체크 항목을 모두 초기화할까요?')) {
+    state.checked.clear();
+    state.selectedCompany = null;
+    renderAll();
+  }
+});
+
+document.getElementById('total-count').textContent = companies.length;
+
+document.querySelector('[data-section="common"]').querySelectorAll('.check-item').forEach(el => {
+  el.addEventListener('click', () => {
+    const id = el.dataset.id;
+    if (state.checked.has(id)) state.checked.delete(id);
+    else state.checked.add(id);
+    el.classList.toggle('checked', state.checked.has(id));
+    renderSummary();
+  });
+});
+
+attachCollapseHandlers();
+
+renderAll();
+</script>
+
+</body>
+</html>
