@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마케팅 지원사업 실행계획서 보완 및 협약 안내</title>
+<link rel="icon" type="image/png" href="cmz_logo.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+
+:root {
+  --bg-body:    #F2F4F8;
+  --bg-slide:   #FFFFFF;
+  --bg-card:    #F7F8FC;
+  --bg-card-2:  #EEF0F6;
+  --txt-primary:   #1A1E2E;
+  --txt-secondary: #4B5270;
+  --txt-muted:     #8B93AD;
+  --blue:       #2563EB;
+  --blue-light: #EEF3FF;
+  --blue-mid:   #DBEAFE;
+  --red:        #DC2626;
+  --red-light:  #FEF2F2;
+  --red-mid:    #FECACA;
+  --green:      #059669;
+  --green-light:#ECFDF5;
+  --green-mid:  #A7F3D0;
+  --amber:      #D97706;
+  --amber-light:#FFFBEB;
+  --border:     #E2E5EF;
+  --border-dk:  #C9CEDF;
+  --font: 'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --mono: 'JetBrains Mono','Consolas',monospace;
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:var(--bg-body);
+  font-family:var(--font);
+  color:var(--txt-primary);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  min-height:100vh;overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── 덱 ── */
+#deck{
+  width:1280px;height:720px;
+  position:relative;overflow:hidden;
+  border-radius:12px;
+  box-shadow:0 8px 48px rgba(0,0,0,.13);
+}
+.slide{
+  position:absolute;inset:0;
+  background:var(--bg-slide);
+  padding:44px 56px 52px;
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .28s ease;
+}
+.slide.active{opacity:1;pointer-events:all;}
+
+/* ── 진행 바 ── */
+#progress-bar{width:1280px;height:3px;background:var(--border);}
+#progress-fill{height:100%;background:var(--blue);transition:width .28s ease;}
+
+/* ── 네비 ── */
+#nav{display:flex;align-items:center;gap:10px;margin-top:14px;}
+.nbtn{
+  background:#fff;border:1px solid var(--border-dk);
+  color:var(--txt-secondary);
+  width:38px;height:38px;border-radius:8px;font-size:15px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.nbtn:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
+#ctr{font-family:var(--mono);font-size:12px;color:var(--txt-muted);padding:0 4px;}
+
+/* ── 공통 타이포 ── */
+.tag{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.13em;text-transform:uppercase;
+  color:var(--blue);background:var(--blue-light);
+  border:1px solid var(--blue-mid);border-radius:4px;
+  padding:3px 9px;display:inline-block;margin-bottom:12px;
+}
+.stitle{font-size:30px;font-weight:900;letter-spacing:-.02em;margin-bottom:6px;}
+.ssub{font-size:13px;color:var(--txt-secondary);line-height:1.65;margin-bottom:20px;}
+.rule{width:100%;height:1px;background:var(--border);margin-bottom:20px;}
+.mono{font-family:var(--mono);}
+
+/* ════ S1 표지 ════ */
+#s1{
+  background:linear-gradient(135deg,#1E3A8A 0%,#2563EB 55%,#3B82F6 100%);
+  padding:0;flex-direction:row;
+}
+.cv-l{
+  flex:0 0 62%;padding:52px 60px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.cv-eye{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:rgba(255,255,255,.6);margin-bottom:18px;text-transform:uppercase;}
+.cv-title{font-size:44px;font-weight:900;line-height:1.14;letter-spacing:-.03em;color:#fff;margin-bottom:20px;}
+.cv-title em{font-style:normal;color:#93C5FD;}
+.cv-desc{font-size:14.5px;color:rgba(255,255,255,.72);line-height:1.75;margin-bottom:36px;max-width:480px;}
+.cv-pills{display:flex;gap:9px;flex-wrap:wrap;}
+.cv-pill{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;padding:5px 15px;font-size:12px;color:rgba(255,255,255,.88);
+}
+.cv-r{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.06);position:relative;overflow:hidden;
+}
+.cv-r::before,.cv-r::after{content:'';position:absolute;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);}
+.cv-r::before{width:340px;height:340px;border:1px solid rgba(255,255,255,.1);}
+.cv-r::after{width:220px;height:220px;border:1px solid rgba(255,255,255,.16);}
+.cv-icon{
+  width:112px;height:112px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.28);border-radius:26px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;position:relative;z-index:1;
+}
+.cv-meta{position:absolute;bottom:28px;left:60px;display:flex;gap:26px;}
+.cv-meta-item{font-size:12px;color:rgba(255,255,255,.5);}
+.cv-meta-item strong{display:block;font-size:13px;color:rgba(255,255,255,.88);font-weight:600;margin-bottom:2px;}
+
+/* ════ S2 사업 개요 ════ */
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr auto;gap:12px;flex:1;}
+.ov-card{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:18px 20px;}
+.ov-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.11em;color:var(--blue);text-transform:uppercase;margin-bottom:8px;}
+.ov-ttl{font-size:13.5px;font-weight:700;color:var(--txt-primary);margin-bottom:11px;}
+.ov-txt{font-size:12.5px;color:var(--txt-secondary);line-height:1.75;}
+.ov-txt strong{color:var(--txt-primary);font-weight:700;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.chip{background:#fff;border:1px solid var(--border-dk);border-radius:6px;padding:3px 10px;font-size:11.5px;color:var(--txt-secondary);}
+.chip.hi{background:var(--blue-light);border-color:var(--blue-mid);color:var(--blue);font-weight:600;}
+.step-row{display:flex;align-items:center;}
+.sbox{flex:1;background:#fff;border:1px solid var(--border-dk);border-radius:7px;padding:9px 10px;text-align:center;font-size:12px;font-weight:600;line-height:1.4;}
+.sbox small{display:block;font-size:10px;color:var(--txt-muted);font-weight:400;margin-top:2px;}
+.sarr{color:var(--blue);font-size:12px;padding:0 5px;flex-shrink:0;}
+.ov-wide{grid-column:1/-1;}
+.pp-row{display:flex;align-items:center;gap:5px;margin-top:9px;}
+.pp{background:var(--green-light);border:1px solid var(--green-mid);border-radius:6px;padding:5px 13px;font-size:12px;font-weight:600;color:var(--green);}
+.pa{color:var(--green);font-size:12px;}
+.pp-desc{font-size:11.5px;color:var(--txt-muted);line-height:1.7;margin-top:9px;}
+
+/* ════ S3 불가 ════ */
+.f-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1;}
+.fcard{background:var(--red-light);border:1px solid var(--red-mid);border-radius:13px;padding:22px 20px;display:flex;flex-direction:column;position:relative;}
+.fbadge{position:absolute;top:16px;right:16px;width:26px;height:26px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:900;}
+.fico{font-size:26px;margin-bottom:10px;}
+.fname{font-size:18px;font-weight:900;color:var(--red);margin-bottom:9px;letter-spacing:-.01em;}
+.freason{font-size:12px;color:var(--txt-secondary);line-height:1.72;flex:1;}
+.freason strong{color:var(--txt-primary);font-weight:600;}
+.falt{margin-top:13px;padding-top:13px;border-top:1px solid var(--red-mid);}
+.falt-lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--green);margin-bottom:5px;text-transform:uppercase;}
+.falt-txt{font-size:11.5px;color:var(--green);line-height:1.6;}
+.warnbox{margin-top:14px;padding:11px 17px;background:#FFFBEB;border:1px solid #FDE68A;border-left:3px solid var(--amber);border-radius:7px;font-size:12px;color:#78350F;line-height:1.65;}
+.warnbox strong{font-weight:700;color:#7C2D12;}
+
+/* ════ S4 가능 ════ */
+.a-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1;}
+.acard{background:var(--green-light);border:1px solid var(--green-mid);border-radius:13px;padding:20px 18px;display:flex;flex-direction:column;}
+.aico{font-size:24px;margin-bottom:9px;}
+.aname{font-size:14.5px;font-weight:900;color:var(--green);margin-bottom:12px;letter-spacing:-.01em;}
+.aconds{flex:1;}
+.acond{display:block;margin-bottom:8px;font-size:11.5px;color:var(--txt-secondary);line-height:1.65;padding-left:14px;position:relative;}
+.acond::before{content:'→';color:var(--green);font-size:10.5px;position:absolute;left:0;top:1px;}
+.acond strong{color:var(--txt-primary);font-weight:700;}
+.anote{font-size:10.5px;color:var(--txt-muted);margin-top:2px;margin-left:12px;line-height:1.5;display:block;}
+
+/* ════ S5 체크리스트 ════ */
+.ck-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;flex:1;align-content:start;}
+.ckitem{display:flex;align-items:flex-start;gap:13px;background:var(--bg-card);border:1.5px solid var(--border);border-radius:10px;padding:14px 17px;cursor:pointer;transition:all .15s;user-select:none;}
+.ckitem:hover{border-color:var(--blue);background:var(--blue-light);}
+.ckitem.on{border-color:var(--green);background:var(--green-light);}
+.ckbox{width:21px;height:21px;border:2px solid var(--border-dk);border-radius:5px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .15s;}
+.ckitem.on .ckbox{background:var(--green);border-color:var(--green);}
+.ckv{display:none;font-size:12px;font-weight:900;color:#fff;}
+.ckitem.on .ckv{display:block;}
+.ckno{font-family:var(--mono);font-size:9.5px;color:var(--blue);letter-spacing:.1em;margin-bottom:3px;}
+.ckitem.on .ckno{color:var(--green);}
+.cktitle{font-size:13px;font-weight:700;margin-bottom:3px;}
+.ckdesc{font-size:11.5px;color:var(--txt-secondary);line-height:1.6;}
+
+/* ════ S6 정산 ════ */
+.st-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;}
+.st-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;margin-bottom:11px;}
+.st-lbl.b{color:var(--blue);}
+.st-lbl.r{color:var(--red);}
+.stitem{display:flex;align-items:flex-start;gap:11px;background:var(--bg-card);border:1px solid var(--border);border-radius:9px;padding:12px 14px;margin-bottom:9px;}
+.stico{font-size:16px;flex-shrink:0;margin-top:1px;}
+.sttitle{font-size:12.5px;font-weight:700;margin-bottom:2px;}
+.stdesc{font-size:11.5px;color:var(--txt-secondary);line-height:1.65;}
+.rfitem{display:flex;align-items:flex-start;gap:10px;background:var(--red-light);border:1px solid var(--red-mid);border-radius:9px;padding:11px 14px;margin-bottom:8px;}
+.rfx{font-size:13px;color:var(--red);flex-shrink:0;font-weight:900;margin-top:1px;}
+.rftitle{font-size:12px;font-weight:700;color:var(--red);margin-bottom:2px;}
+.rfdesc{font-size:11px;color:#7F1D1D;line-height:1.6;}
+
+/* ════ S7 마무리 ════ */
+.cl-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;align-content:start;}
+.clcard{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:20px;}
+.cllbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;color:var(--blue);text-transform:uppercase;margin-bottom:7px;}
+.cltitle{font-size:14.5px;font-weight:700;margin-bottom:12px;}
+.cllist{list-style:none;}
+.cllist li{font-size:12px;color:var(--txt-secondary);padding:6px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:7px;line-height:1.55;}
+.cllist li:last-child{border-bottom:none;}
+.cllist li::before{content:'▸';color:var(--blue);font-size:9px;flex-shrink:0;margin-top:2px;}
+.cl-contact{
+  grid-column:1/-1;
+  background:linear-gradient(135deg,#1E3A8A,#2563EB);
+  border-radius:11px;padding:22px 26px;
+  display:flex;align-items:center;justify-content:space-between;color:#fff;
+}
+.cl-contact-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.13em;color:rgba(255,255,255,.6);margin-bottom:5px;text-transform:uppercase;}
+.cl-contact-title{font-size:16px;font-weight:700;margin-bottom:3px;}
+.cl-contact-sub{font-size:12px;color:rgba(255,255,255,.6);}
+.cl-qa{font-family:var(--mono);font-size:38px;font-weight:700;color:rgba(255,255,255,.18);letter-spacing:-.04em;}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill" style="width:14.28%"></div></div>
+
+<div id="deck">
+
+<!-- S1 표지 -->
+<div class="slide active" id="s1">
+  <div class="cv-l">
+    <div class="cv-eye">경북시민재단 · 소상공인협업지원공간</div>
+    <div class="cv-title">마케팅 지원사업<br><em>실행계획서 보완</em><br>및 협약 안내</div>
+    <div class="cv-desc">선정 기업 공통 안내사항 | 협약 전 필수 확인<br>집행 기준·불가 항목·공통 확인사항을 함께 검토합니다.</div>
+    <div class="cv-pills">
+      <span class="cv-pill">집행 기준 안내</span>
+      <span class="cv-pill">불가 항목 정리</span>
+      <span class="cv-pill">협약 전 체크리스트</span>
+      <span class="cv-pill">정산 안내</span>
+    </div>
+  </div>
+  <div class="cv-r">
+    <div class="cv-icon">📋</div>
+  </div>
+  <div class="cv-meta">
+    <div class="cv-meta-item"><strong>지원기관</strong>경북시민재단</div>
+    <div class="cv-meta-item"><strong>대상</strong>시군구 마케팅 선정 기업</div>
+    <div class="cv-meta-item"><strong>일자</strong>2026. 05</div>
+  </div>
+</div>
+
+<!-- S2 사업 개요 -->
+<div class="slide" id="s2">
+  <div class="tag">SECTION 01</div>
+  <div class="stitle">사업 개요</div>
+  <div class="rule"></div>
+  <div class="ov-grid">
+    <div class="ov-card">
+      <div class="ov-lbl">GOAL — 최종 목표</div>
+      <div class="ov-txt">기업 제품의 <strong>온·오프라인 판로 다변화</strong> 및 <strong>신규 매출 창출</strong>을 통해 지속 성장 기반을 마련합니다.</div>
+      <div class="ov-lbl" style="margin-top:14px;margin-bottom:6px;">지원 채널</div>
+      <div class="chips">
+        <span class="chip hi">전시·상담회</span><span class="chip hi">홍보물</span><span class="chip hi">영상광고</span>
+        <span class="chip">홈페이지</span><span class="chip">스마트스토어</span><span class="chip">글로벌 마켓플레이스</span>
+      </div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-lbl">PROCESS — 3단계 지원 절차</div>
+      <div class="ov-ttl">지원 흐름</div>
+      <div class="step-row">
+        <div class="sbox">1단계<small>기업 모집·공고</small></div>
+        <div class="sarr">→</div>
+        <div class="sbox">2단계<small>계획수립·사전교육</small></div>
+        <div class="sarr">→</div>
+        <div class="sbox">3단계<small>지원 실행·성과측정</small></div>
+      </div>
+    </div>
+    <div class="ov-card ov-wide">
+      <div class="ov-lbl">POST MANAGEMENT — 사후관리 파이프라인</div>
+      <div class="ov-ttl" style="margin-bottom:4px;">리드 → 매출 전환 관리</div>
+      <div class="pp-row">
+        <div class="pp">리드 확보</div><div class="pa">→</div>
+        <div class="pp">미팅</div><div class="pa">→</div>
+        <div class="pp">PO</div><div class="pa">→</div>
+        <div class="pp">매출 전환</div>
+      </div>
+      <div class="pp-desc">판로 개척 성과 검증 · 브랜딩·CRM 코칭 · 후속 매칭 지원을 통해 사업 종료 후에도 지속 가능한 성장 구조를 만들어갑니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S3 집행 불가 -->
+<div class="slide" id="s3">
+  <div class="tag">SECTION 02</div>
+  <div class="stitle">집행 불가 항목</div>
+  <div class="ssub">아래 항목은 지원금으로 집행할 수 없습니다. 계획서에 포함된 경우 반드시 수정이 필요합니다.</div>
+  <div class="rule" style="margin-bottom:12px;"></div>
+  <div class="f-grid">
+    <div class="fcard">
+      <div class="fbadge">✕</div>
+      <div class="fico">🎁</div>
+      <div class="fname">굿즈</div>
+      <div class="freason"><strong>현물성 자산형성</strong>과 구분이 어려우며, 제품 생산비용으로 판단될 수 있어 지원 불가 항목으로 분류됩니다.</div>
+      <div class="falt">
+        <div class="falt-lbl">대안 가능 방향</div>
+        <div class="falt-txt">전시·배포용 브랜드 샘플키트(홍보물 형태)로 재구성 가능 — 담당자 확인 후 진행</div>
+      </div>
+    </div>
+    <div class="fcard">
+      <div class="fbadge">✕</div>
+      <div class="fico">🔍</div>
+      <div class="fname">CPC 광고</div>
+      <div class="freason"><strong>네이버·구글 검색형 광고(키워드 광고)</strong>는 사업 증빙이 어렵습니다. 클릭 기반 광고는 결과물 납품 확인이 불가합니다.</div>
+      <div class="falt">
+        <div class="falt-lbl">대안 가능 방향</div>
+        <div class="falt-txt">SNS 콘텐츠 광고, 인플루언서 협업비, 디지털 배너 광고 등 납품 증빙 가능한 형태로 대체</div>
+      </div>
+    </div>
+    <div class="fcard">
+      <div class="fbadge">✕</div>
+      <div class="fico">👤</div>
+      <div class="fname">인건비</div>
+      <div class="freason">박람회 부스 세팅 등 <strong>직접 인건비</strong>는 집행 불가입니다. 단, 일부 범위에 한해 예외적으로 허용됩니다.</div>
+      <div class="falt">
+        <div class="falt-lbl">집행 가능 범위</div>
+        <div class="falt-txt">홍보 리플릿 제작 / 홍보용 오브제 개발 / 콘텐츠 개발에 한해 가능 — 담당자 확인 필수</div>
+      </div>
+    </div>
+  </div>
+  <div class="warnbox"><strong>주의:</strong> 지원이 불가한 다른 항목으로 사용하거나, 결과물과 성과측정이 제대로 이루어지지 않을 경우 <strong>지원금 지급이 반려될 수 있습니다.</strong></div>
+</div>
+
+<!-- S4 집행 가능 -->
+<div class="slide" id="s4">
+  <div class="tag">SECTION 03</div>
+  <div class="stitle">집행 가능 항목 및 조건</div>
+  <div class="ssub">아래 3가지 항목에서 집행이 가능하며, 각 항목별 조건을 반드시 계획서에 반영해야 합니다.</div>
+  <div class="rule" style="margin-bottom:12px;"></div>
+  <div class="a-grid">
+    <div class="acard">
+      <div class="aico">🌐</div>
+      <div class="aname">온라인 홈페이지 제작</div>
+      <div class="aconds">
+        <div class="acond"><strong>단순 사이트 개발·브랜드 전시</strong> 목적은 불가</div>
+        <div class="acond"><strong>리드 창출 → 매출 전환 로직</strong> 필수<span class="anote">광고 → 랜딩 → 구매제안 → 상향/재구매</span></div>
+        <div class="acond"><strong>유입 고객 정보 관리</strong> + <strong>리텐션 채널 연계</strong><span class="anote">카카오톡 · 네이버쇼핑 · 인스타그램 등</span></div>
+        <div class="acond">홈페이지 ↔ 채널이 순환적·유기적으로 연결된 <strong>파이프라인 구성 필수</strong></div>
+      </div>
+    </div>
+    <div class="acard">
+      <div class="aico">📄</div>
+      <div class="aname">리플릿 등 홍보물·콘텐츠</div>
+      <div class="aconds">
+        <div class="acond">온·오프라인 <strong>정보 제공형</strong> 홍보물 및 콘텐츠 제작 지원</div>
+        <div class="acond"><strong>대상 고객군</strong> 및 <strong>배치 장소</strong> 명시 필요</div>
+        <div class="acond">예상 <strong>리드 창출·구매 전환율</strong>에 대한 구체적 기술 필수</div>
+        <div class="acond">홍보물: 타깃 고객군 중심 기획 / 콘텐츠: 기존·이후 콘텐츠와 <strong>일관된 메시지</strong> 연계</div>
+      </div>
+    </div>
+    <div class="acard">
+      <div class="aico">🏪</div>
+      <div class="aname">박람회 참석</div>
+      <div class="aconds">
+        <div class="acond">내 고객의 <strong>페르소나 또는 코호트 분석</strong> 필수</div>
+        <div class="acond">어떤 채널로 유입시켜 <strong>지속적 리텐션</strong>이 가능한지 구체적 명시</div>
+        <div class="acond">리드→미팅→PO→매출 <strong>단계별 예상 전환율</strong> 기반 목표액 명시</div>
+        <div class="acond">사전 컨택 가능한 <strong>B2B 업체 리스트</strong> 및 미팅·PO 성사 여부 체크</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S5 체크리스트 -->
+<div class="slide" id="s5">
+  <div class="tag">SECTION 04</div>
+  <div class="stitle">협약 전 공통 확인사항</div>
+  <div class="ssub">협약 전 모든 기업이 확인하고 제출해야 하는 공통 사항입니다. 항목을 클릭하여 체크할 수 있습니다.</div>
+  <div class="rule" style="margin-bottom:12px;"></div>
+  <div class="ck-grid">
+    <div class="ckitem" onclick="this.classList.toggle('on')">
+      <div class="ckbox"><div class="ckv">✓</div></div>
+      <div><div class="ckno">CHECK 01</div><div class="cktitle">수행기업(공급사) 계약 완료 확인</div><div class="ckdesc">수행사가 명시된 기업은 협약 전 계약서 또는 견적서를 제출해야 합니다.</div></div>
+    </div>
+    <div class="ckitem" onclick="this.classList.toggle('on')">
+      <div class="ckbox"><div class="ckv">✓</div></div>
+      <div><div class="ckno">CHECK 02</div><div class="cktitle">감액 기업 수정 집행계획서 제출</div><div class="ckdesc">확정 지원금 기준으로 사업비를 재조정한 수정 집행계획서 제출이 필수입니다.</div></div>
+    </div>
+    <div class="ckitem" onclick="this.classList.toggle('on')">
+      <div class="ckbox"><div class="ckv">✓</div></div>
+      <div><div class="ckno">CHECK 03</div><div class="cktitle">굿즈·인건비성 항목 검토</div><div class="ckdesc">해당 항목 계획이 있는 기업은 지원 가능 범위를 사전 확인 후 수정 계획서를 제출해야 합니다.</div></div>
+    </div>
+    <div class="ckitem" onclick="this.classList.toggle('on')">
+      <div class="ckbox"><div class="ckv">✓</div></div>
+      <div><div class="ckno">CHECK 04</div><div class="cktitle">정산 증빙 방법 사전 확인</div><div class="ckdesc">비목별 정산 시 필요한 증빙서류(세금계산서·계약서·납품확인서 등) 유형을 미리 확인하세요.</div></div>
+    </div>
+    <div class="ckitem" onclick="this.classList.toggle('on')">
+      <div class="ckbox"><div class="ckv">✓</div></div>
+      <div><div class="ckno">CHECK 05</div><div class="cktitle">개인정보 수집 관련 방침 수립</div><div class="ckdesc">고객 DB 수집 계획이 있는 기업은 개인정보처리방침 수립 여부를 확인해야 합니다.</div></div>
+    </div>
+    <div class="ckitem" onclick="this.classList.toggle('on')">
+      <div class="ckbox"><div class="ckv">✓</div></div>
+      <div><div class="ckno">CHECK 06</div><div class="cktitle">사업 종료 후 유지관리 계획</div><div class="ckdesc">홈페이지·영상 구축 기업은 사업 종료 후 유지관리 주체 및 방법을 협약 조건에 명시해야 합니다.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 정산 -->
+<div class="slide" id="s6">
+  <div class="tag">SECTION 05</div>
+  <div class="stitle">정산 안내</div>
+  <div class="ssub">비목별 정산 방법과 지원금 반려 케이스를 확인하세요.</div>
+  <div class="rule" style="margin-bottom:12px;"></div>
+  <div class="st-grid">
+    <div>
+      <div class="st-lbl b">비목별 정산 방법</div>
+      <div class="stitem"><div class="stico">🧾</div><div><div class="sttitle">세금계산서</div><div class="stdesc">용역·물품 구매 등 일반 거래 시 발행. 공급자 사업자등록증 사본 함께 제출</div></div></div>
+      <div class="stitem"><div class="stico">📝</div><div><div class="sttitle">계약서</div><div class="stdesc">수행기업과의 계약 내용 명시. 사업 내용·금액·납기일 포함 필수</div></div></div>
+      <div class="stitem"><div class="stico">✅</div><div><div class="sttitle">결과물 납품확인서</div><div class="stdesc">홈페이지·영상·홍보물 등 결과물 완료 후 납품확인서 수령 필수</div></div></div>
+    </div>
+    <div>
+      <div class="st-lbl r">지원금 반려 케이스</div>
+      <div class="rfitem"><div class="rfx">✕</div><div><div class="rftitle">집행 불가 항목 사용</div><div class="rfdesc">굿즈, CPC 광고, 직접 인건비 등 불가 항목에 지원금을 사용한 경우</div></div></div>
+      <div class="rfitem"><div class="rfx">✕</div><div><div class="rftitle">성과측정 미달</div><div class="rfdesc">결과물과 성과측정이 제대로 이루어지지 않은 경우</div></div></div>
+      <div class="rfitem"><div class="rfx">✕</div><div><div class="rftitle">증빙서류 불비</div><div class="rfdesc">세금계산서·계약서·납품확인서 등 필수 증빙 미제출</div></div></div>
+      <div class="rfitem"><div class="rfx">✕</div><div><div class="rftitle">계획서 미수정</div><div class="rfdesc">감액된 지원금에 맞게 집행계획서를 수정하지 않은 경우</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S7 마무리 -->
+<div class="slide" id="s7">
+  <div class="tag">SECTION 06</div>
+  <div class="stitle">다음 단계 및 문의</div>
+  <div class="rule"></div>
+  <div class="cl-grid">
+    <div class="clcard">
+      <div class="cllbl">NEXT STEPS</div>
+      <div class="cltitle">협약 전 제출 서류</div>
+      <ul class="cllist">
+        <li>수정 집행계획서 (감액 해당 기업)</li>
+        <li>수행기업 계약서 또는 견적서 (수행사 명시 기업)</li>
+        <li>개인정보처리방침 수립 확인서 (DB 수집 기업)</li>
+        <li>굿즈·인건비성 항목 대체 수정 계획서 (해당 기업)</li>
+      </ul>
+    </div>
+    <div class="clcard">
+      <div class="cllbl">SCHEDULE</div>
+      <div class="cltitle">진행 일정</div>
+      <ul class="cllist">
+        <li>수정 집행계획서 제출 기한 — 담당자 별도 안내</li>
+        <li>협약 체결 일정 — 서류 확인 완료 후 개별 통보</li>
+        <li>사업 실행 기간 — 협약 후 담당자 협의</li>
+        <li>사후관리 및 성과 보고 — 사업 종료 후 진행</li>
+      </ul>
+    </div>
+    <div class="cl-contact">
+      <div>
+        <div class="cl-contact-lbl">CONTACT</div>
+        <div class="cl-contact-title">궁금한 사항은 담당자에게 문의해 주세요</div>
+        <div class="cl-contact-sub">경북시민재단 소상공인협업지원공간 담당자</div>
+      </div>
+      <div class="cl-qa">Q&A</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div id="nav">
+  <button class="nbtn" onclick="move(-1)">&#8592;</button>
+  <span id="ctr">1 / 7</span>
+  <button class="nbtn" onclick="move(1)">&#8594;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const fill=document.getElementById('progress-fill');
+const ctr=document.getElementById('ctr');
+let cur=0;
+function go(n){
+  slides[cur].classList.remove('active');
+  cur=Math.max(0,Math.min(slides.length-1,n));
+  slides[cur].classList.add('active');
+  fill.style.width=((cur+1)/slides.length*100)+'%';
+  ctr.textContent=(cur+1)+' / '+slides.length;
+}
+function move(d){go(cur+d);}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')move(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')move(-1);
+  if(e.key==='f'||e.key==='F'){
+    if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+</script>
+</body>
+</html>
