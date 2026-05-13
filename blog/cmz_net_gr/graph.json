@@ -38,7 +38,7 @@
     },
     {
       "id": "N개의_공론장",
-      "type": "project",
+      "type": "program",
       "label": "N개의 공론장",
       "org_host": "cheongdo_center",
       "role": "",
@@ -52,11 +52,11 @@
         "주민"
       ],
       "note": "퍼실리테이터 6인·공론장 6회",
-      "r": 16
+      "r": 18
     },
     {
       "id": "경북청도_브랜딩_지역자원발굴",
-      "type": "project",
+      "type": "program",
       "label": "경북-청도 브랜딩 지역자원발굴",
       "org_host": "cheongdo_center",
       "role": "",
@@ -71,11 +71,11 @@
         "지역자원"
       ],
       "note": "시민취타대·할:배스트 굿즈 4종",
-      "r": 16
+      "r": 18
     },
     {
       "id": "경북지속가능캠프",
-      "type": "project",
+      "type": "program",
       "label": "경북지속가능캠프",
       "org_host": "cheongdo_center",
       "role": "",
@@ -90,11 +90,11 @@
         "창업"
       ],
       "note": "5회 100명 참여",
-      "r": 16
+      "r": 18
     },
     {
       "id": "경북지속가능포럼",
-      "type": "project",
+      "type": "program",
       "label": "경북지속가능포럼",
       "org_host": "cheongdo_center",
       "role": "",
@@ -109,11 +109,11 @@
         "농촌"
       ],
       "note": "120명 강연11회",
-      "r": 16
+      "r": 18
     },
     {
       "id": "관계안내소_운영",
-      "type": "project",
+      "type": "program",
       "label": "관계안내소 운영",
       "org_host": "cheongdo_center",
       "role": "",
@@ -127,11 +127,11 @@
         "깃털클럽"
       ],
       "note": "45명 간담회 깃털클럽 결성",
-      "r": 16
+      "r": 18
     },
     {
       "id": "로컬_소셜비즈니스_창업가_양성과정",
-      "type": "project",
+      "type": "program",
       "label": "로컬 소셜비즈니스 창업가 양성과정",
       "org_host": "cheongdo_center",
       "role": "",
@@ -145,11 +145,11 @@
         "임팩트빌더"
       ],
       "note": "14개 기업 29회 교육",
-      "r": 16
+      "r": 18
     },
     {
       "id": "로컬브랜딩_생활실험팀_공모",
-      "type": "project",
+      "type": "program",
       "label": "로컬브랜딩 생활실험팀 공모",
       "org_host": "cheongdo_center",
       "role": "",
@@ -164,11 +164,11 @@
         "의제"
       ],
       "note": "61팀 1099명",
-      "r": 16
+      "r": 18
     },
     {
       "id": "로컬임팩트랩_운영",
-      "type": "project",
+      "type": "program",
       "label": "로컬임팩트랩 운영",
       "org_host": "cheongdo_center",
       "role": "",
@@ -183,11 +183,11 @@
         "주민"
       ],
       "note": "방문 2852명 대관 290회",
-      "r": 16
+      "r": 18
     },
     {
       "id": "모두의_마을",
-      "type": "project",
+      "type": "program",
       "label": "모두의 마을",
       "org_host": "cheongdo_center",
       "role": "",
@@ -202,11 +202,11 @@
         "영상"
       ],
       "note": "영상19개 주민86명+학생20명",
-      "r": 16
+      "r": 18
     },
     {
       "id": "미리맛보는_소통협력공간",
-      "type": "project",
+      "type": "program",
       "label": "미리맛보는 소통협력공간",
       "org_host": "cheongdo_center",
       "role": "",
@@ -220,11 +220,11 @@
         "프로그램"
       ],
       "note": "방문2767명 대관291회",
-      "r": 16
+      "r": 18
     },
     {
       "id": "소통협력공간_브랜딩",
-      "type": "project",
+      "type": "program",
       "label": "소통협력공간 브랜딩",
       "org_host": "cheongdo_center",
       "role": "",
@@ -239,11 +239,11 @@
         "카카오"
       ],
       "note": "정월대보름 900명",
-      "r": 16
+      "r": 18
     },
     {
       "id": "소통협력공간_주간",
-      "type": "project",
+      "type": "program",
       "label": "소통협력공간 주간",
       "org_host": "cheongdo_center",
       "role": "",
@@ -258,11 +258,11 @@
         "네트워킹"
       ],
       "note": "2000명 41팀 체험183명",
-      "r": 16
+      "r": 18
     },
     {
       "id": "스테이_in_로컬",
-      "type": "project",
+      "type": "program",
       "label": "스테이 in 로컬",
       "org_host": "cheongdo_center",
       "role": "",
@@ -277,11 +277,11 @@
         "청년"
       ],
       "note": "7회 참여자 101명",
-      "r": 16
+      "r": 18
     },
     {
       "id": "청소년_로컬창업가_양성과정",
-      "type": "project",
+      "type": "program",
       "label": "청소년 로컬창업가 양성과정",
       "org_host": "cheongdo_center",
       "role": "",
@@ -296,11 +296,11 @@
         "교육"
       ],
       "note": "학생24명 4팀 창업브랜드",
-      "r": 16
+      "r": 18
     },
     {
       "id": "1시군_1생활",
-      "type": "project",
+      "type": "program",
       "label": "1시군 1생활 (갭먼스@청도)",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -315,11 +315,11 @@
         "창업"
       ],
       "note": "예산1.4억",
-      "r": 16
+      "r": 18
     },
     {
       "id": "DMO",
-      "type": "project",
+      "type": "program",
       "label": "지역관광추진조직(DMO) 육성",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -334,11 +334,11 @@
         "생활인구"
       ],
       "note": "2억 집행95.7%",
-      "r": 16
+      "r": 18
     },
     {
       "id": "경북지역문제해결플랫폼",
-      "type": "project",
+      "type": "program",
       "label": "경북지역문제해결플랫폼",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -353,11 +353,11 @@
         "시니어"
       ],
       "note": "320건 수렴 2의제 실행",
-      "r": 16
+      "r": 18
     },
     {
       "id": "고향올래",
-      "type": "project",
+      "type": "program",
       "label": "054스페이스(고향올래)",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -372,11 +372,11 @@
         "스테이"
       ],
       "note": "건축기획 29.8억 추정",
-      "r": 16
+      "r": 18
     },
     {
       "id": "드림e",
-      "type": "project",
+      "type": "program",
       "label": "드림e (청년행복뉴딜)",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -391,11 +391,11 @@
         "소모임"
       ],
       "note": "예산7천만 참여45명",
-      "r": 16
+      "r": 18
     },
     {
       "id": "라이콘펀드",
-      "type": "project",
+      "type": "program",
       "label": "라이콘펀드 (스타트업밸리)",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -410,11 +410,11 @@
         "창업"
       ],
       "note": "시그널케어 17억 투자",
-      "r": 16
+      "r": 18
     },
     {
       "id": "로컬브랜딩_귀촌지원체계",
-      "type": "project",
+      "type": "program",
       "label": "로컬브랜딩 귀촌지원체계 수립",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -429,11 +429,11 @@
         "브랜딩"
       ],
       "note": "대구경산 180명 조사",
-      "r": 16
+      "r": 18
     },
     {
       "id": "상상마루",
-      "type": "project",
+      "type": "program",
       "label": "청도상상마루 운영",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -448,11 +448,11 @@
         "입주"
       ],
       "note": "2026~2028 운영",
-      "r": 16
+      "r": 18
     },
     {
       "id": "시군구",
-      "type": "project",
+      "type": "program",
       "label": "시군구연고산업육성 (스마트산업)",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -466,11 +466,11 @@
         "문화관광"
       ],
       "note": "총 25.7억",
-      "r": 16
+      "r": 18
     },
     {
       "id": "영주시_인구활력센터",
-      "type": "project",
+      "type": "program",
       "label": "영주시 인구활력센터 연구용역",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -484,11 +484,11 @@
         "영주"
       ],
       "note": "예산 1980만",
-      "r": 16
+      "r": 18
     },
     {
       "id": "청년성장프로젝트",
-      "type": "project",
+      "type": "program",
       "label": "청년성장프로젝트 (직장적응지원)",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -502,11 +502,11 @@
         "온보딩"
       ],
       "note": "5천만 집행7.1%",
-      "r": 16
+      "r": 18
     },
     {
       "id": "칠곡군_로컬브랜딩",
-      "type": "project",
+      "type": "program",
       "label": "칠곡군 로컬브랜딩 (페달스테이션)",
       "org_host": "gbsm_foundation",
       "role": "",
@@ -521,7 +521,7 @@
         "관광"
       ],
       "note": "예산 6억",
-      "r": 16
+      "r": 18
     },
     {
       "id": "아울러사회적협동조합",
@@ -913,7 +913,7 @@
         "퍼실리테이터"
       ],
       "note": "N개의 공론장",
-      "r": 10
+      "r": 9
     },
     {
       "id": "구승희",
@@ -929,7 +929,7 @@
         "퍼실리테이터"
       ],
       "note": "N개의 공론장",
-      "r": 10
+      "r": 9
     },
     {
       "id": "박수민",
@@ -945,7 +945,7 @@
         "퍼실리테이터"
       ],
       "note": "N개의 공론장",
-      "r": 10
+      "r": 9
     },
     {
       "id": "배정란",
@@ -961,7 +961,7 @@
         "퍼실리테이터"
       ],
       "note": "N개의 공론장",
-      "r": 10
+      "r": 9
     },
     {
       "id": "서삼열",
@@ -977,7 +977,7 @@
         "퍼실리테이터"
       ],
       "note": "N개의 공론장",
-      "r": 10
+      "r": 9
     },
     {
       "id": "양혜진",
@@ -993,7 +993,7 @@
         "퍼실리테이터"
       ],
       "note": "N개의 공론장",
-      "r": 10
+      "r": 9
     },
     {
       "id": "공론장_참가자25명",
@@ -1009,7 +1009,7 @@
         "참가자"
       ],
       "note": "N개의 공론장",
-      "r": 10
+      "r": 9
     },
     {
       "id": "청소년기록팀9팀",
@@ -1025,7 +1025,7 @@
         "청소년"
       ],
       "note": "모두의 마을",
-      "r": 10
+      "r": 9
     },
     {
       "id": "창업학생24명",
@@ -1042,7 +1042,7 @@
         "학생"
       ],
       "note": "청소년 로컬창업가 양성",
-      "r": 10
+      "r": 9
     },
     {
       "id": "로컬크리에이터간담회45명",
@@ -1058,7 +1058,974 @@
         "참가자"
       ],
       "note": "관계안내소 간담회",
+      "r": 9
+    },
+    {
+      "id": "일상소모임_32팀",
+      "type": "project",
+      "label": "일**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "소모임",
+        "주민",
+        "생활실험"
+      ],
+      "note": "32개 주민 소모임 (농구·줌바·달리기 등)",
       "r": 10
+    },
+    {
+      "id": "찾아가는새참모임_29회차",
+      "type": "project",
+      "label": "찾**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "소모임",
+        "마을",
+        "새참"
+      ],
+      "note": "29개 마을·기관 방문 새참모임",
+      "r": 10
+    },
+    {
+      "id": "지금결실의계절",
+      "type": "project",
+      "label": "지금결실의계절",
+      "org_host": "cheongdo_center",
+      "role": "입주팀",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "입주",
+        "공간",
+        "창업"
+      ],
+      "note": "미맛소 입주팀",
+      "r": 10
+    },
+    {
+      "id": "노는엄마들_입주",
+      "type": "project",
+      "label": "노는엄마들(미맛소입주)",
+      "org_host": "cheongdo_center",
+      "role": "입주팀",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "입주",
+        "공간",
+        "커뮤니티"
+      ],
+      "note": "미맛소 입주팀",
+      "r": 10
+    },
+    {
+      "id": "브릭분교",
+      "type": "project",
+      "label": "브릭분교",
+      "org_host": "cheongdo_center",
+      "role": "입주팀",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "입주",
+        "공간",
+        "교육"
+      ],
+      "note": "미맛소 입주팀",
+      "r": 10
+    },
+    {
+      "id": "원더_입주",
+      "type": "project",
+      "label": "원더",
+      "org_host": "cheongdo_center",
+      "role": "입주팀",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "입주",
+        "공간"
+      ],
+      "note": "미맛소 입주팀",
+      "r": 10
+    },
+    {
+      "id": "이젠_입주",
+      "type": "project",
+      "label": "이젠",
+      "org_host": "cheongdo_center",
+      "role": "입주팀",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "입주",
+        "공간"
+      ],
+      "note": "미맛소 입주팀",
+      "r": 10
+    },
+    {
+      "id": "청도여성CEO클럽",
+      "type": "project",
+      "label": "청도 여성CEO클럽(CWC)",
+      "org_host": "cheongdo_center",
+      "role": "입주팀",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "입주",
+        "공간",
+        "여성창업"
+      ],
+      "note": "미맛소 입주팀",
+      "r": 10
+    },
+    {
+      "id": "원데이클래스_청도고",
+      "type": "project",
+      "label": "원데이클래스 청도고 4팀",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "원데이클래스",
+        "교육"
+      ],
+      "note": "그림책·티테라피·별자리·글라스아트",
+      "r": 10
+    },
+    {
+      "id": "원데이클래스_이서중",
+      "type": "project",
+      "label": "원데이클래스 이서중 2팀",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "원데이클래스",
+        "교육"
+      ],
+      "note": "라탄공예·제로웨이스트",
+      "r": 10
+    },
+    {
+      "id": "모두의마을_진라1리",
+      "type": "project",
+      "label": "진라1리 — 김이박",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "이서중",
+      "r": 10
+    },
+    {
+      "id": "모두의마을_지슬1리",
+      "type": "project",
+      "label": "지슬1리 — 이김조",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "이서중",
+      "r": 10
+    },
+    {
+      "id": "모두의마을_원정1리",
+      "type": "project",
+      "label": "원정1리 — 이기장",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "이서중",
+      "r": 10
+    },
+    {
+      "id": "모두의마을_대천리",
+      "type": "project",
+      "label": "대천리 — 운문 핫 라인",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "이서중",
+      "r": 10
+    },
+    {
+      "id": "모두의마을_임당1리",
+      "type": "project",
+      "label": "임당1리 — 금천탐험대",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "금천중·초",
+      "r": 10
+    },
+    {
+      "id": "모두의마을_예전2리",
+      "type": "project",
+      "label": "예전2리 — 푸팟퐁커리",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "청도중",
+      "r": 10
+    },
+    {
+      "id": "모두의마을_녹명1리",
+      "type": "project",
+      "label": "녹명1리 — 푸팟퐁커리",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "청도중",
+      "r": 10
+    },
+    {
+      "id": "모두의마을_대곡1리",
+      "type": "project",
+      "label": "대곡1리 — 고라니와헌터들",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "모계중",
+      "r": 10
+    },
+    {
+      "id": "모두의마을_금곡리",
+      "type": "project",
+      "label": "금곡리 — 고라니와헌터들",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "모계중",
+      "r": 10
+    },
+    {
+      "id": "감다살",
+      "type": "project",
+      "label": "감다살",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "창업",
+        "브랜드"
+      ],
+      "note": "청도고 팀",
+      "r": 10
+    },
+    {
+      "id": "모모글앤",
+      "type": "project",
+      "label": "모모글앤",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "창업",
+        "브랜드"
+      ],
+      "note": "청도고 팀",
+      "r": 10
+    },
+    {
+      "id": "달빛소원성곽길",
+      "type": "project",
+      "label": "달빛 소원 성곽길",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "창업",
+        "관광"
+      ],
+      "note": "이서중 팀",
+      "r": 10
+    },
+    {
+      "id": "화랑메이크오버스냅투어",
+      "type": "project",
+      "label": "화랑 메이크오버 스냅투어",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "창업",
+        "관광"
+      ],
+      "note": "이서중 팀",
+      "r": 10
+    },
+    {
+      "id": "한국국제보건안전교육원",
+      "type": "project",
+      "label": "한국국제보건안전교육원",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "비영리스타트업",
+        "창업",
+        "교육"
+      ],
+      "note": "비영리스타트업 양성과정",
+      "r": 10
+    },
+    {
+      "id": "협동조합온누리_창업",
+      "type": "project",
+      "label": "협동조합 온누리(창업과정)",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "비영리스타트업",
+        "창업"
+      ],
+      "note": "비영리스타트업 양성과정",
+      "r": 10
+    },
+    {
+      "id": "다시초록",
+      "type": "project",
+      "label": "다시 초록",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "비영리스타트업",
+        "환경",
+        "창업"
+      ],
+      "note": "비영리스타트업 양성과정",
+      "r": 10
+    },
+    {
+      "id": "이창건_스타트업",
+      "type": "project",
+      "label": "이창건",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "비영리스타트업",
+        "창업"
+      ],
+      "note": "비영리스타트업 양성과정",
+      "r": 10
+    },
+    {
+      "id": "노는엄마들_창업",
+      "type": "project",
+      "label": "노는엄마들(창업과정)",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "비영리스타트업",
+        "창업",
+        "커뮤니티"
+      ],
+      "note": "비영리스타트업 양성과정",
+      "r": 10
+    },
+    {
+      "id": "포럼_DMO",
+      "type": "project",
+      "label": "DMO 포럼(한일국제살롱)",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "포럼",
+        "관광",
+        "DMO"
+      ],
+      "note": "청도혁신센터·노는엄마들",
+      "r": 10
+    },
+    {
+      "id": "포럼_농촌활성화",
+      "type": "project",
+      "label": "농촌 활성화 포럼",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "포럼",
+        "농촌",
+        "거버넌스"
+      ],
+      "note": "",
+      "r": 10
+    },
+    {
+      "id": "포럼_지역활성화",
+      "type": "project",
+      "label": "지역 활성화 포럼",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "포럼",
+        "지역",
+        "공동체경제"
+      ],
+      "note": "",
+      "r": 10
+    },
+    {
+      "id": "포럼_지역재생",
+      "type": "project",
+      "label": "지역재생 포럼",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "포럼",
+        "지역재생"
+      ],
+      "note": "",
+      "r": 10
+    },
+    {
+      "id": "포럼_국제사회혁신",
+      "type": "project",
+      "label": "국제사회혁신 포럼",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "포럼",
+        "국제",
+        "사회혁신"
+      ],
+      "note": "",
+      "r": 10
+    },
+    {
+      "id": "공론장_라운드테이블",
+      "type": "project",
+      "label": "공론장 라운드테이블 6회",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "공론장",
+        "거버넌스",
+        "라운드테이블"
+      ],
+      "note": "퍼실리테이터 6인",
+      "r": 10
+    },
+    {
+      "id": "스테이_여성로컬크리에이터",
+      "type": "project",
+      "label": "스**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "스테이",
+        "관계인구",
+        "여성창업"
+      ],
+      "note": "11명",
+      "r": 10
+    },
+    {
+      "id": "스테이_대구청년",
+      "type": "project",
+      "label": "스**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "스테이",
+        "관계인구",
+        "청년"
+      ],
+      "note": "6명",
+      "r": 10
+    },
+    {
+      "id": "스테이_소셜로컬살롱",
+      "type": "project",
+      "label": "스**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "스테이",
+        "관계인구",
+        "사회혁신"
+      ],
+      "note": "24명",
+      "r": 10
+    },
+    {
+      "id": "스테이_타지역중간지원",
+      "type": "project",
+      "label": "스**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "스테이",
+        "관계인구",
+        "중간지원"
+      ],
+      "note": "18명",
+      "r": 10
+    },
+    {
+      "id": "스테이_춘천사회혁신",
+      "type": "project",
+      "label": "스**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "스테이",
+        "관계인구",
+        "사회혁신"
+      ],
+      "note": "11명",
+      "r": 10
+    },
+    {
+      "id": "캠프_경주",
+      "type": "project",
+      "label": "캠프 1회차 — 경주",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "캠프",
+        "탐방",
+        "로컬콘텐츠",
+        "경주"
+      ],
+      "note": "협동조합 온누리",
+      "r": 10
+    },
+    {
+      "id": "캠프_강화",
+      "type": "project",
+      "label": "캠프 2회차 — 강화",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "캠프",
+        "탐방",
+        "지역재생",
+        "강화"
+      ],
+      "note": "협동조합 온누리",
+      "r": 10
+    },
+    {
+      "id": "캠프_군산",
+      "type": "project",
+      "label": "캠프 3회차 — 군산",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "캠프",
+        "탐방",
+        "창업",
+        "군산"
+      ],
+      "note": "다로리인",
+      "r": 10
+    },
+    {
+      "id": "캠프_충주",
+      "type": "project",
+      "label": "캠프 4회차 — 충주",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "캠프",
+        "탐방",
+        "창업",
+        "충주"
+      ],
+      "note": "다로리인",
+      "r": 10
+    },
+    {
+      "id": "캠프_청도",
+      "type": "project",
+      "label": "캠프 5회차 — 청도",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "캠프",
+        "탐방",
+        "창업",
+        "청도"
+      ],
+      "note": "다로리인",
+      "r": 10
+    },
+    {
+      "id": "관계안내소_거점기획",
+      "type": "project",
+      "label": "거점공간 기획 및 운영전략",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "관계인구",
+        "공간",
+        "기획"
+      ],
+      "note": "블랭크건축사무소",
+      "r": 10
+    },
+    {
+      "id": "관계안내소_크리에이터간담회",
+      "type": "project",
+      "label": "로**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "관계인구",
+        "로컬크리에이터"
+      ],
+      "note": "45명",
+      "r": 10
+    },
+    {
+      "id": "주간_마켓셀러",
+      "type": "project",
+      "label": "소**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "행사",
+        "마켓",
+        "셀러"
+      ],
+      "note": "19팀",
+      "r": 10
+    },
+    {
+      "id": "주간_체험셀러",
+      "type": "project",
+      "label": "소**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "행사",
+        "체험",
+        "셀러"
+      ],
+      "note": "7팀",
+      "r": 10
+    },
+    {
+      "id": "주간_기관홍보",
+      "type": "project",
+      "label": "소**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "행사",
+        "기관",
+        "홍보"
+      ],
+      "note": "6팀",
+      "r": 10
+    },
+    {
+      "id": "주간_공연전시",
+      "type": "project",
+      "label": "소**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "행사",
+        "공연",
+        "전시"
+      ],
+      "note": "9팀",
+      "r": 10
+    },
+    {
+      "id": "블랭크건축사무소",
+      "type": "org_partner",
+      "label": "블랭크건축사무소",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "건축",
+        "공간기획"
+      ],
+      "note": "관계안내소 거점공간 기획 용역",
+      "r": 14
+    },
+    {
+      "id": "춘천사회혁신센터",
+      "type": "org_partner",
+      "label": "춘천사회혁신센터",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "중간지원",
+        "사회혁신"
+      ],
+      "note": "스테이 6회차 참여",
+      "r": 14
+    },
+    {
+      "id": "대구청년센터",
+      "type": "org_partner",
+      "label": "대구청년센터",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "중간지원",
+        "청년"
+      ],
+      "note": "스테이 2회차·찾아가는새참모임 참여",
+      "r": 14
+    },
+    {
+      "id": "할:배스트",
+      "type": "org_partner",
+      "label": "할:배스트",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "브랜딩",
+        "문화예술"
+      ],
+      "note": "경북-청도 브랜딩 지역자원발굴 수행",
+      "r": 14
     }
   ],
   "links": [
@@ -1895,7 +2862,7 @@
       "target": "N개의_공론장",
       "relation": "참여",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": ""
     },
@@ -1904,7 +2871,7 @@
       "target": "모두의_마을",
       "relation": "참여",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": ""
     },
@@ -1913,7 +2880,7 @@
       "target": "청소년_로컬창업가_양성과정",
       "relation": "참여",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": ""
     },
@@ -1922,7 +2889,7 @@
       "target": "관계안내소_운영",
       "relation": "참여",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": ""
     },
@@ -1940,7 +2907,7 @@
       "target": "청소년_로컬창업가_양성과정",
       "relation": "연계",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": "퍼실리테이터 네트워크 공유"
     },
@@ -1949,7 +2916,7 @@
       "target": "미리맛보는_소통협력공간",
       "relation": "연계",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": "동일 공간 운영 연계"
     },
@@ -1958,7 +2925,7 @@
       "target": "경북지속가능포럼",
       "relation": "연계",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": ""
     },
@@ -1967,7 +2934,7 @@
       "target": "소통협력공간_주간",
       "relation": "연계",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": "포트리스 페스티벌 연계"
     },
@@ -1976,7 +2943,7 @@
       "target": "1시군_1생활",
       "relation": "연계",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": "갭먼스-DMO 관계인구 연계"
     },
@@ -1985,7 +2952,7 @@
       "target": "소통협력공간_주간",
       "relation": "연계",
       "weight": 1,
-      "distance": 120,
+      "distance": 130,
       "year": 2025,
       "note": "행사장 동일"
     },
@@ -2006,6 +2973,564 @@
       "distance": 90,
       "year": 2025,
       "note": "예산 미기재·청도군 추정"
+    },
+    {
+      "source": "미리맛보는_소통협력공간",
+      "target": "지금결실의계절",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "미맛소 입주팀"
+    },
+    {
+      "source": "미리맛보는_소통협력공간",
+      "target": "노는엄마들_입주",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "미맛소 입주팀"
+    },
+    {
+      "source": "미리맛보는_소통협력공간",
+      "target": "브릭분교",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "미맛소 입주팀"
+    },
+    {
+      "source": "미리맛보는_소통협력공간",
+      "target": "원더_입주",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "미맛소 입주팀"
+    },
+    {
+      "source": "미리맛보는_소통협력공간",
+      "target": "이젠_입주",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "미맛소 입주팀"
+    },
+    {
+      "source": "미리맛보는_소통협력공간",
+      "target": "청도여성CEO클럽",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "미맛소 입주팀"
+    },
+    {
+      "source": "로컬임팩트랩_운영",
+      "target": "원데이클래스_청도고",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "원데이클래스 4회"
+    },
+    {
+      "source": "로컬임팩트랩_운영",
+      "target": "원데이클래스_이서중",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "원데이클래스 2회"
+    },
+    {
+      "source": "로컬브랜딩_생활실험팀_공모",
+      "target": "일상소모임_32팀",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "일상 소모임 32팀"
+    },
+    {
+      "source": "로컬브랜딩_생활실험팀_공모",
+      "target": "찾아가는새참모임_29회차",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "찾아가는 새참모임 29회차"
+    },
+    {
+      "source": "모두의_마을",
+      "target": "모두의마을_진라1리",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "마을영상 제작"
+    },
+    {
+      "source": "모두의_마을",
+      "target": "모두의마을_지슬1리",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "마을영상 제작"
+    },
+    {
+      "source": "모두의_마을",
+      "target": "모두의마을_원정1리",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "마을영상 제작"
+    },
+    {
+      "source": "모두의_마을",
+      "target": "모두의마을_대천리",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "마을영상 제작"
+    },
+    {
+      "source": "모두의_마을",
+      "target": "모두의마을_임당1리",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "마을영상 제작"
+    },
+    {
+      "source": "모두의_마을",
+      "target": "모두의마을_예전2리",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "마을영상 제작"
+    },
+    {
+      "source": "모두의_마을",
+      "target": "모두의마을_녹명1리",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "마을영상 제작"
+    },
+    {
+      "source": "모두의_마을",
+      "target": "모두의마을_대곡1리",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "마을영상 제작"
+    },
+    {
+      "source": "모두의_마을",
+      "target": "모두의마을_금곡리",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "마을영상 제작"
+    },
+    {
+      "source": "소통협력공간_주간",
+      "target": "주간_마켓셀러",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "19팀"
+    },
+    {
+      "source": "소통협력공간_주간",
+      "target": "주간_체험셀러",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "7팀"
+    },
+    {
+      "source": "소통협력공간_주간",
+      "target": "주간_기관홍보",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "6팀"
+    },
+    {
+      "source": "소통협력공간_주간",
+      "target": "주간_공연전시",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "9팀"
+    },
+    {
+      "source": "경북지속가능캠프",
+      "target": "캠프_경주",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "1회차"
+    },
+    {
+      "source": "경북지속가능캠프",
+      "target": "캠프_강화",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "2회차"
+    },
+    {
+      "source": "경북지속가능캠프",
+      "target": "캠프_군산",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "3회차"
+    },
+    {
+      "source": "경북지속가능캠프",
+      "target": "캠프_충주",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "4회차"
+    },
+    {
+      "source": "경북지속가능캠프",
+      "target": "캠프_청도",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "5회차"
+    },
+    {
+      "source": "경북지속가능포럼",
+      "target": "포럼_DMO",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "DMO 포럼"
+    },
+    {
+      "source": "경북지속가능포럼",
+      "target": "포럼_농촌활성화",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "농촌활성화 포럼"
+    },
+    {
+      "source": "경북지속가능포럼",
+      "target": "포럼_지역활성화",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "지역활성화 포럼"
+    },
+    {
+      "source": "경북지속가능포럼",
+      "target": "포럼_지역재생",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "지역재생 포럼"
+    },
+    {
+      "source": "경북지속가능포럼",
+      "target": "포럼_국제사회혁신",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "국제사회혁신 포럼"
+    },
+    {
+      "source": "N개의_공론장",
+      "target": "공론장_라운드테이블",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "6회 운영"
+    },
+    {
+      "source": "청소년_로컬창업가_양성과정",
+      "target": "감다살",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "청도고"
+    },
+    {
+      "source": "청소년_로컬창업가_양성과정",
+      "target": "모모글앤",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "청도고"
+    },
+    {
+      "source": "청소년_로컬창업가_양성과정",
+      "target": "달빛소원성곽길",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "이서중"
+    },
+    {
+      "source": "청소년_로컬창업가_양성과정",
+      "target": "화랑메이크오버스냅투어",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "이서중"
+    },
+    {
+      "source": "로컬_소셜비즈니스_창업가_양성과정",
+      "target": "한국국제보건안전교육원",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "비영리스타트업"
+    },
+    {
+      "source": "로컬_소셜비즈니스_창업가_양성과정",
+      "target": "협동조합온누리_창업",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "비영리스타트업"
+    },
+    {
+      "source": "로컬_소셜비즈니스_창업가_양성과정",
+      "target": "다시초록",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "비영리스타트업"
+    },
+    {
+      "source": "로컬_소셜비즈니스_창업가_양성과정",
+      "target": "이창건_스타트업",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "비영리스타트업"
+    },
+    {
+      "source": "로컬_소셜비즈니스_창업가_양성과정",
+      "target": "노는엄마들_창업",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "비영리스타트업"
+    },
+    {
+      "source": "스테이_in_로컬",
+      "target": "스테이_여성로컬크리에이터",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "1회차 11명"
+    },
+    {
+      "source": "스테이_in_로컬",
+      "target": "스테이_대구청년",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "2회차 6명"
+    },
+    {
+      "source": "스테이_in_로컬",
+      "target": "스테이_소셜로컬살롱",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "3회차 24명"
+    },
+    {
+      "source": "스테이_in_로컬",
+      "target": "스테이_타지역중간지원",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "5회차 18명"
+    },
+    {
+      "source": "스테이_in_로컬",
+      "target": "스테이_춘천사회혁신",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "6회차 11명"
+    },
+    {
+      "source": "관계안내소_운영",
+      "target": "관계안내소_거점기획",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "블랭크건축사무소 용역"
+    },
+    {
+      "source": "관계안내소_운영",
+      "target": "관계안내소_크리에이터간담회",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "45명"
+    },
+    {
+      "source": "블랭크건축사무소",
+      "target": "관계안내소_거점기획",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "거점공간 기획 용역"
+    },
+    {
+      "source": "춘천사회혁신센터",
+      "target": "스테이_춘천사회혁신",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "6회차 참여"
+    },
+    {
+      "source": "대구청년센터",
+      "target": "스테이_대구청년",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "2회차 참여"
+    },
+    {
+      "source": "대구청년센터",
+      "target": "찾아가는새참모임_29회차",
+      "relation": "참여",
+      "weight": 1,
+      "distance": 130,
+      "year": 2025,
+      "note": "대구청년센터 새참모임 2회차"
+    },
+    {
+      "source": "할:배스트",
+      "target": "경북청도_브랜딩_지역자원발굴",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2024,
+      "note": "브랜딩 수행"
+    },
+    {
+      "source": "협동조합_온누리",
+      "target": "캠프_경주",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "1회차 운영"
+    },
+    {
+      "source": "협동조합_온누리",
+      "target": "캠프_강화",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "2회차 운영"
+    },
+    {
+      "source": "다로리인",
+      "target": "캠프_군산",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "3회차 운영"
+    },
+    {
+      "source": "다로리인",
+      "target": "캠프_충주",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "4회차 운영"
+    },
+    {
+      "source": "다로리인",
+      "target": "캠프_청도",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "5회차 운영"
+    },
+    {
+      "source": "노는엄마들",
+      "target": "포럼_DMO",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "한일국제살롱 공동"
+    },
+    {
+      "source": "아울러사회적협동조합",
+      "target": "공론장_라운드테이블",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "퍼실리테이션 용역"
     }
   ]
 }
