@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사업 네트워크 그래프</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+  :root {
+    --bg:     #0f1117;
+    --bg2:    #181c27;
+    --panel:  #1e2333;
+    --border: rgba(255,255,255,0.08);
+    --text:   #e2e8f0;
+    --text2:  #94a3b8;
+    --teal:   #2dd4bf;
+    --teal-dim:   rgba(45,212,191,0.18);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.18);
+    --coral:  #fb7185;
+    --amber:  #fbbf24;
+    --blue:   #60a5fa;
+    --gray:   #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── 로딩 ── */
+  #loading {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px; z-index: 999;
+  }
+  #loading p { color: var(--text2); font-size: 13px; }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #error-msg {
+    display: none;
+    color: var(--coral); font-size: 13px; text-align: center; line-height: 1.8;
+  }
+
+  /* ── 툴바 ── */
+  #toolbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0; flex-wrap: wrap;
+  }
+  #toolbar h1 { font-size: 14px; font-weight: 600; white-space: nowrap; margin-right: 4px; }
+  .sep { width: 1px; height: 20px; background: var(--border); }
+  .filter-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .filter-label { font-size: 11px; color: var(--text2); white-space: nowrap; }
+  .btn {
+    padding: 4px 10px; border-radius: 20px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text2); font-size: 11px; cursor: pointer; transition: all .15s;
+  }
+  .btn:hover { border-color: rgba(255,255,255,0.3); color: var(--text); }
+  .btn.active { color: #fff; border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); }
+  .btn[data-val="cheongdo_center"].active { background: var(--teal-dim); border-color: var(--teal); color: var(--teal); }
+  .btn[data-val="gbsm_foundation"].active { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+  #search {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text); font-size: 12px; padding: 4px 10px; width: 160px; outline: none;
+  }
+  #search:focus { border-color: rgba(255,255,255,0.3); }
+  #search::placeholder { color: var(--text2); }
+
+  /* ── 레이아웃 ── */
+  #main { display: flex; flex: 1; overflow: hidden; }
+  #graph-wrap { flex: 1; position: relative; overflow: hidden; }
+  svg { width: 100%; height: 100%; }
+
+  /* ── 사이드 패널 ── */
+  #panel {
+    width: 240px; background: var(--bg2);
+    border-left: 1px solid var(--border);
+    padding: 16px; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 12px; flex-shrink: 0;
+  }
+  #panel h2 { font-size: 13px; color: var(--text2); font-weight: 500; }
+  .detail-empty { font-size: 12px; color: var(--text2); line-height: 1.7; }
+  .detail-name { font-size: 15px; font-weight: 600; line-height: 1.4; }
+  .detail-type {
+    display: inline-block; font-size: 10px; padding: 2px 8px;
+    border-radius: 10px; font-weight: 500;
+  }
+  .detail-row { display: flex; flex-direction: column; gap: 2px; }
+  .detail-row label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; }
+  .detail-row span { font-size: 12px; }
+  .detail-note { font-size: 11px; color: var(--text2); line-height: 1.5; }
+  .conn-list { display: flex; flex-direction: column; gap: 4px; }
+  .conn-item {
+    font-size: 11px; color: var(--text2);
+    padding: 4px 8px; background: var(--panel); border-radius: 4px; line-height: 1.4;
+  }
+  .conn-item strong { color: var(--text); display: block; }
+
+  /* ── 범례 ── */
+  #legend {
+    position: absolute; bottom: 16px; left: 16px;
+    background: rgba(15,17,23,0.88); backdrop-filter: blur(8px);
+    border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .leg-title { font-size: 10px; color: var(--text2); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+  .leg-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text2); }
+  .leg-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .leg-line { width: 24px; height: 2px; border-radius: 1px; flex-shrink: 0; }
+
+  /* ── 줌 컨트롤 ── */
+  #zoom-ctrl { position: absolute; bottom: 16px; right: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .zoom-btn {
+    width: 28px; height: 28px; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text2); font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all .15s;
+  }
+  .zoom-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+
+  /* ── D3 스타일 ── */
+  .link { stroke-opacity: 0.4; fill: none; }
+  .node circle { cursor: pointer; stroke-width: 1.5; }
+  .node text { pointer-events: none; }
+  .node.dimmed circle, .node.dimmed text { opacity: 0.08; }
+  .node.highlighted circle { stroke-width: 3; }
+  .link.dimmed { stroke-opacity: 0.03; }
+  .link.highlighted { stroke-opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<!-- 로딩 화면 -->
+<div id="loading">
+  <div class="spinner"></div>
+  <p id="load-msg">graph.json 불러오는 중…</p>
+  <p id="error-msg"></p>
+</div>
+
+<div id="toolbar" style="display:none">
+  <h1>사업 네트워크</h1>
+  <div class="sep"></div>
+  <div class="filter-group">
+    <span class="filter-label">기관</span>
+    <button class="btn active" data-filter="org" data-val="all">전체</button>
+    <button class="btn" data-filter="org" data-val="cheongdo_center">청도혁신센터</button>
+    <button class="btn" data-filter="org" data-val="gbsm_foundation">경북시민재단</button>
+  </div>
+  <div class="sep"></div>
+  <div class="filter-group">
+    <span class="filter-label">유형</span>
+    <button class="btn active" data-filter="type" data-val="all">전체</button>
+    <button class="btn" data-filter="type" data-val="project">사업</button>
+    <button class="btn" data-filter="type" data-val="org_partner">협력기관</button>
+    <button class="btn" data-filter="type" data-val="funder">발주·재원</button>
+    <button class="btn" data-filter="type" data-val="person">인물</button>
+    <button class="btn" data-filter="type" data-val="space">공간</button>
+  </div>
+  <div class="sep"></div>
+  <input id="search" type="text" placeholder="노드 검색…" autocomplete="off">
+  <div class="sep"></div>
+  <span id="stats" style="font-size:11px;color:var(--text2)"></span>
+</div>
+
+<div id="main" style="display:none">
+  <div id="graph-wrap">
+    <svg id="svg"></svg>
+    <div id="legend">
+      <div class="leg-title">노드 유형</div>
+      <div class="leg-row"><div class="leg-dot" style="background:var(--teal);width:14px;height:14px"></div>운영기관</div>
+      <div class="leg-row"><div class="leg-dot" style="background:var(--teal);opacity:.5"></div>사업 (청도)</div>
+      <div class="leg-row"><div class="leg-dot" style="background:var(--purple);opacity:.5"></div>사업 (경북재단)</div>
+      <div class="leg-row"><div class="leg-dot" style="background:var(--coral)"></div>협력기관</div>
+      <div class="leg-row"><div class="leg-dot" style="background:var(--amber)"></div>발주·재원</div>
+      <div class="leg-row"><div class="leg-dot" style="background:var(--blue)"></div>공간</div>
+      <div class="leg-row"><div class="leg-dot" style="background:var(--gray)"></div>인물/그룹</div>
+      <div class="leg-title" style="margin-top:6px">관계</div>
+      <div class="leg-row"><div class="leg-line" style="background:var(--teal)"></div>운영</div>
+      <div class="leg-row"><div class="leg-line" style="background:var(--coral)"></div>수행</div>
+      <div class="leg-row"><div class="leg-line" style="background:var(--amber)"></div>투자·지원</div>
+      <div class="leg-row"><div class="leg-line" style="background:var(--blue)"></div>거점</div>
+      <div class="leg-row"><div class="leg-line" style="background:var(--gray)"></div>참여/연계</div>
+    </div>
+    <div id="zoom-ctrl">
+      <button class="zoom-btn" id="zIn">+</button>
+      <button class="zoom-btn" id="zOut">−</button>
+      <button class="zoom-btn" id="zReset" style="font-size:11px">⟲</button>
+    </div>
+  </div>
+  <div id="panel">
+    <h2>노드 정보</h2>
+    <div id="panel-content">
+      <p class="detail-empty">노드를 클릭하면<br>상세 정보와 연결된<br>사업을 확인합니다.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ──────────────────────────────────────────────
+   1. 색상 / 유틸
+────────────────────────────────────────────── */
+const COLOR = {
+  org_host:    { cheongdo_center: '#2dd4bf', gbsm_foundation: '#a78bfa' },
+  project:     { cheongdo_center: 'rgba(45,212,191,0.55)', gbsm_foundation: 'rgba(167,139,250,0.55)' },
+  org_partner: '#fb7185',
+  funder:      '#fbbf24',
+  space:       '#60a5fa',
+  person:      '#64748b',
+  person_group:'#64748b'
+};
+const LINK_COLOR = {
+  '운영':'#2dd4bf', '수행':'#fb7185', '투자·지원':'#fbbf24',
+  '거점':'#60a5fa', '참여':'#94a3b8', '연계':'#64748b'
+};
+const TYPE_LABEL = {
+  org_host:'운영기관', project:'사업', org_partner:'협력기관',
+  funder:'발주·재원', space:'공간', person:'인물', person_group:'그룹'
+};
+
+function nodeColor(d) {
+  if (d.type === 'org_host') return COLOR.org_host[d.org_host] || '#fff';
+  if (d.type === 'project')  return COLOR.project[d.org_host]  || '#888';
+  return COLOR[d.type] || '#888';
+}
+
+/* ──────────────────────────────────────────────
+   2. graph.json fetch → 그래프 초기화
+────────────────────────────────────────────── */
+fetch('graph.json')
+  .then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}: graph.json을 불러올 수 없습니다.`);
+    return r.json();
+  })
+  .then(data => {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('toolbar').style.display = 'flex';
+    document.getElementById('main').style.display    = 'flex';
+    document.getElementById('stats').textContent =
+      `노드 ${data.nodes.length}개 · 엣지 ${data.links.length}개`;
+    initGraph(data);
+  })
+  .catch(err => {
+    document.querySelector('.spinner').style.display = 'none';
+    document.getElementById('load-msg').style.display = 'none';
+    const em = document.getElementById('error-msg');
+    em.style.display = 'block';
+    em.innerHTML = `⚠ 데이터 로드 실패<br>${err.message}<br><br>
+      <small>HTML과 같은 폴더에 graph.json이 있어야 합니다.<br>
+      로컬에서는 웹 서버를 통해 열거나<br>
+      python3 -m http.server 8000 으로 실행하세요.</small>`;
+  });
+
+/* ──────────────────────────────────────────────
+   3. 그래프 초기화
+────────────────────────────────────────────── */
+function initGraph(raw) {
+  /* D3에 넘기기 전에 복사본 */
+  const nodes = raw.nodes.map(d => ({ ...d }));
+  const links = raw.links.map(d => ({ ...d }));
+
+  /* ── SVG 설정 ── */
+  const wrap = document.getElementById('graph-wrap');
+  const W = () => wrap.clientWidth;
+  const H = () => wrap.clientHeight;
+
+  const svg = d3.select('#svg');
+  const g   = svg.append('g');
+
+  /* ── 줌 ── */
+  const zoom = d3.zoom()
+    .scaleExtent([0.1, 5])
+    .on('zoom', e => g.attr('transform', e.transform));
+  svg.call(zoom).on('dblclick.zoom', null);
+
+  /* ── Force simulation ── */
+  const sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links)
+      .id(d => d.id)
+      .distance(d => d.distance)
+      .strength(0.6))
+    .force('charge', d3.forceManyBody()
+      .strength(d => d.type === 'org_host' ? -700 : -200))
+    .force('center', d3.forceCenter(0, 0))
+    .force('collision', d3.forceCollide(d => d.r + 8));
+
+  /* ── 링크 ── */
+  const linkSel = g.append('g').selectAll('line')
+    .data(links).join('line')
+    .attr('class', 'link')
+    .attr('stroke', d => LINK_COLOR[d.relation] || '#666')
+    .attr('stroke-width', d => d.weight * 0.8);
+
+  /* ── 노드 ── */
+  const nodeSel = g.append('g').selectAll('g')
+    .data(nodes).join('g')
+    .attr('class', 'node')
+    .call(d3.drag()
+      .on('start', (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on('drag',  (e, d) => { d.fx = e.x; d.fy = e.y; })
+      .on('end',   (e, d) => { if (!e.active) sim.alphaTarget(0); }))
+    .on('click', onNodeClick)
+    .on('mouseenter', (e, d) => { if (!activeNode) highlightNode(d); })
+    .on('mouseleave', ()     => { if (!activeNode) resetHighlight(); });
+
+  nodeSel.append('circle')
+    .attr('r', d => d.r)
+    .attr('fill', d => nodeColor(d))
+    .attr('stroke', d => d.type === 'org_host' ? '#fff' : nodeColor(d))
+    .attr('stroke-width', d => d.type === 'org_host' ? 2 : 1);
+
+  nodeSel.append('text')
+    .attr('text-anchor', 'middle')
+    .attr('dy', d => d.r + 13)
+    .attr('font-size', d => d.type === 'org_host' ? 11 : 9)
+    .attr('font-weight', d => d.type === 'org_host' ? 600 : 400)
+    .attr('fill', d => d.type === 'org_host' ? '#e2e8f0' : '#94a3b8')
+    .text(d => d.label.length > 13 ? d.label.slice(0, 12) + '…' : d.label);
+
+  /* ── 틱 ── */
+  sim.on('tick', () => {
+    linkSel
+      .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+  sim.on('end', () => fitView());
+
+  /* ── 빈 공간 클릭 → 초기화 ── */
+  svg.on('click', () => { activeNode = null; resetHighlight(); applyFilter(); showEmpty(); });
+
+  /* ──────────────────────────────────────────
+     하이라이트
+  ────────────────────────────────────────── */
+  let activeNode = null;
+
+  function highlightNode(d) {
+    const nbrs = new Set([d.id]);
+    links.forEach(l => {
+      const s = l.source.id ?? l.source, t = l.target.id ?? l.target;
+      if (s === d.id || t === d.id) { nbrs.add(s); nbrs.add(t); }
+    });
+    nodeSel.classed('dimmed', n => !nbrs.has(n.id));
+    nodeSel.classed('highlighted', n => n.id === d.id);
+    linkSel.classed('dimmed',      l => { const s = l.source.id??l.source, t = l.target.id??l.target; return s !== d.id && t !== d.id; });
+    linkSel.classed('highlighted', l => { const s = l.source.id??l.source, t = l.target.id??l.target; return s === d.id || t === d.id; });
+  }
+
+  function resetHighlight() {
+    nodeSel.classed('dimmed', false).classed('highlighted', false);
+    linkSel.classed('dimmed', false).classed('highlighted', false);
+  }
+
+  /* ──────────────────────────────────────────
+     필터
+  ────────────────────────────────────────── */
+  let filterOrg = 'all', filterType = 'all', searchQ = '';
+
+  function applyFilter() {
+    const vis = new Set();
+    nodes.forEach(d => {
+      let ok = true;
+      if (filterOrg  !== 'all' && d.org_host !== filterOrg) ok = false;
+      if (filterType !== 'all') {
+        if (filterType === 'person') ok = ok && (d.type === 'person' || d.type === 'person_group');
+        else ok = ok && d.type === filterType;
+      }
+      if (searchQ) ok = ok && (d.label.includes(searchQ) || d.id.includes(searchQ) || (d.note && d.note.includes(searchQ)));
+      if (ok) vis.add(d.id);
+    });
+    nodeSel.classed('dimmed', d => !vis.has(d.id));
+    linkSel.classed('dimmed', l => { const s = l.source.id??l.source, t = l.target.id??l.target; return !vis.has(s) || !vis.has(t); });
+    linkSel.classed('highlighted', false);
+  }
+
+  /* ──────────────────────────────────────────
+     노드 클릭
+  ────────────────────────────────────────── */
+  function onNodeClick(e, d) {
+    e.stopPropagation();
+    activeNode = d;
+    highlightNode(d);
+    showDetail(d);
+  }
+
+  /* ──────────────────────────────────────────
+     상세 패널
+  ────────────────────────────────────────── */
+  function showEmpty() {
+    document.getElementById('panel-content').innerHTML =
+      '<p class="detail-empty">노드를 클릭하면<br>상세 정보와 연결된<br>사업을 확인합니다.</p>';
+  }
+
+  function showDetail(d) {
+    const color = nodeColor(d);
+    const conns = [];
+    links.forEach(l => {
+      const s = l.source.id ?? l.source, t = l.target.id ?? l.target;
+      if (s === d.id) { const n = nodes.find(x => x.id === t); if (n) conns.push({ dir: '→', node: n, rel: l.relation }); }
+      else if (t === d.id) { const n = nodes.find(x => x.id === s); if (n) conns.push({ dir: '←', node: n, rel: l.relation }); }
+    });
+
+    const hostLabel = { cheongdo_center: '청도혁신센터', gbsm_foundation: '경북시민재단' }[d.org_host] || '';
+    const MAX = 15;
+    const connHTML = conns.slice(0, MAX).map(c =>
+      `<div class="conn-item"><strong>${c.dir} ${c.node.label}</strong>${c.rel}</div>`
+    ).join('') + (conns.length > MAX ? `<div class="conn-item" style="opacity:.6">외 ${conns.length - MAX}개</div>` : '');
+
+    document.getElementById('panel-content').innerHTML = `
+      <div class="detail-name">${d.label}</div>
+      <span class="detail-type" style="background:${color}22;color:${color};border:1px solid ${color}44">${TYPE_LABEL[d.type] || d.type}</span>
+      ${hostLabel ? `<div class="detail-row"><label>소속</label><span>${hostLabel}</span></div>` : ''}
+      ${d.role    ? `<div class="detail-row"><label>역할</label><span>${d.role}</span></div>`    : ''}
+      ${d.year    ? `<div class="detail-row"><label>연도</label><span>${d.year}</span></div>`    : ''}
+      ${d.note    ? `<div class="detail-note">${d.note}</div>` : ''}
+      <div class="detail-row"><label>연결 (${conns.length})</label></div>
+      <div class="conn-list">${connHTML}</div>
+    `;
+  }
+
+  /* ──────────────────────────────────────────
+     필터 버튼 이벤트
+  ────────────────────────────────────────── */
+  document.querySelectorAll('[data-filter="org"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter="org"]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterOrg = btn.dataset.val;
+      resetHighlight(); activeNode = null; applyFilter(); showEmpty();
+    });
+  });
+  document.querySelectorAll('[data-filter="type"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter="type"]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterType = btn.dataset.val;
+      resetHighlight(); activeNode = null; applyFilter(); showEmpty();
+    });
+  });
+  document.getElementById('search').addEventListener('input', e => {
+    searchQ = e.target.value.trim();
+    resetHighlight(); activeNode = null; applyFilter(); showEmpty();
+  });
+
+  /* ──────────────────────────────────────────
+     줌 버튼
+  ────────────────────────────────────────── */
+  function fitView() {
+    const b = g.node().getBBox();
+    if (!b.width || !b.height) return;
+    const pad = 60;
+    const s = Math.min((W() - pad * 2) / b.width, (H() - pad * 2) / b.height, 1.2);
+    const tx = W() / 2 - s * (b.x + b.width  / 2);
+    const ty = H() / 2 - s * (b.y + b.height / 2);
+    svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(s));
+  }
+  document.getElementById('zIn').addEventListener('click',    () => svg.transition().duration(200).call(zoom.scaleBy, 1.4));
+  document.getElementById('zOut').addEventListener('click',   () => svg.transition().duration(200).call(zoom.scaleBy, 0.7));
+  document.getElementById('zReset').addEventListener('click', fitView);
+}
+</script>
+</body>
+</html>
