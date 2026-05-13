@@ -1,0 +1,2011 @@
+{
+  "nodes": [
+    {
+      "id": "청도혁신센터",
+      "type": "org_host",
+      "label": "청도혁신센터",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청도",
+        "혁신",
+        "소통협력"
+      ],
+      "note": "소통협력공간 수탁 운영",
+      "r": 28
+    },
+    {
+      "id": "경북시민재단",
+      "type": "org_host",
+      "label": "경북시민재단",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "경북",
+        "재단",
+        "법인"
+      ],
+      "note": "법인 자체사업 수행",
+      "r": 28
+    },
+    {
+      "id": "N개의_공론장",
+      "type": "project",
+      "label": "N개의 공론장",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "행정안전부",
+      "year": 2025,
+      "tags": [
+        "공론장",
+        "거버넌스",
+        "주민"
+      ],
+      "note": "퍼실리테이터 6인·공론장 6회",
+      "r": 16
+    },
+    {
+      "id": "경북청도_브랜딩_지역자원발굴",
+      "type": "project",
+      "label": "경북-청도 브랜딩 지역자원발굴",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "행정안전부 경상북도 청도군",
+      "year": 2024,
+      "tags": [
+        "브랜딩",
+        "세대",
+        "굿즈",
+        "지역자원"
+      ],
+      "note": "시민취타대·할:배스트 굿즈 4종",
+      "r": 16
+    },
+    {
+      "id": "경북지속가능캠프",
+      "type": "project",
+      "label": "경북지속가능캠프",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "행정안전부",
+      "year": 2025,
+      "tags": [
+        "캠프",
+        "탐방",
+        "로컬",
+        "창업"
+      ],
+      "note": "5회 100명 참여",
+      "r": 16
+    },
+    {
+      "id": "경북지속가능포럼",
+      "type": "project",
+      "label": "경북지속가능포럼",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "청도상상마루",
+      "funder": "행정안전부",
+      "year": 2025,
+      "tags": [
+        "포럼",
+        "청년",
+        "DMO",
+        "농촌"
+      ],
+      "note": "120명 강연11회",
+      "r": 16
+    },
+    {
+      "id": "관계안내소_운영",
+      "type": "project",
+      "label": "관계안내소 운영",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "행정안전부",
+      "year": 2025,
+      "tags": [
+        "관계인구",
+        "로컬크리에이터",
+        "깃털클럽"
+      ],
+      "note": "45명 간담회 깃털클럽 결성",
+      "r": 16
+    },
+    {
+      "id": "로컬_소셜비즈니스_창업가_양성과정",
+      "type": "project",
+      "label": "로컬 소셜비즈니스 창업가 양성과정",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "창업",
+        "비영리",
+        "임팩트빌더"
+      ],
+      "note": "14개 기업 29회 교육",
+      "r": 16
+    },
+    {
+      "id": "로컬브랜딩_생활실험팀_공모",
+      "type": "project",
+      "label": "로컬브랜딩 생활실험팀 공모",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "행정안전부",
+      "year": 2025,
+      "tags": [
+        "주민",
+        "소모임",
+        "정책",
+        "의제"
+      ],
+      "note": "61팀 1099명",
+      "r": 16
+    },
+    {
+      "id": "로컬임팩트랩_운영",
+      "type": "project",
+      "label": "로컬임팩트랩 운영",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "공간",
+        "대관",
+        "프로그램",
+        "주민"
+      ],
+      "note": "방문 2852명 대관 290회",
+      "r": 16
+    },
+    {
+      "id": "모두의_마을",
+      "type": "project",
+      "label": "모두의 마을",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "행정안전부",
+      "year": 2025,
+      "tags": [
+        "아카이브",
+        "청소년",
+        "마을",
+        "영상"
+      ],
+      "note": "영상19개 주민86명+학생20명",
+      "r": 16
+    },
+    {
+      "id": "미리맛보는_소통협력공간",
+      "type": "project",
+      "label": "미리맛보는 소통협력공간",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "공간",
+        "대관",
+        "프로그램"
+      ],
+      "note": "방문2767명 대관291회",
+      "r": 16
+    },
+    {
+      "id": "소통협력공간_브랜딩",
+      "type": "project",
+      "label": "소통협력공간 브랜딩",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "행정안전부",
+      "year": 2024,
+      "tags": [
+        "브랜딩",
+        "SNS",
+        "홍보",
+        "카카오"
+      ],
+      "note": "정월대보름 900명",
+      "r": 16
+    },
+    {
+      "id": "소통협력공간_주간",
+      "type": "project",
+      "label": "소통협력공간 주간",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "청도상상마루",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "행사",
+        "마켓",
+        "체험",
+        "네트워킹"
+      ],
+      "note": "2000명 41팀 체험183명",
+      "r": 16
+    },
+    {
+      "id": "스테이_in_로컬",
+      "type": "project",
+      "label": "스테이 in 로컬",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "관계인구",
+        "체류",
+        "네트워크",
+        "청년"
+      ],
+      "note": "7회 참여자 101명",
+      "r": 16
+    },
+    {
+      "id": "청소년_로컬창업가_양성과정",
+      "type": "project",
+      "label": "청소년 로컬창업가 양성과정",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "로컬임팩트랩",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "창업",
+        "브랜드",
+        "교육"
+      ],
+      "note": "학생24명 4팀 창업브랜드",
+      "r": 16
+    },
+    {
+      "id": "1시군_1생활",
+      "type": "project",
+      "label": "1시군 1생활 (갭먼스@청도)",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "카페다로리 쉐어하우스",
+      "funder": "경상북도 청도군",
+      "year": 2025,
+      "tags": [
+        "생활인구",
+        "관계인구",
+        "체류",
+        "창업"
+      ],
+      "note": "예산1.4억",
+      "r": 16
+    },
+    {
+      "id": "DMO",
+      "type": "project",
+      "label": "지역관광추진조직(DMO) 육성",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "문화체육관광부 한국관광공사",
+      "year": 2025,
+      "tags": [
+        "관광",
+        "DMO",
+        "거버넌스",
+        "생활인구"
+      ],
+      "note": "2억 집행95.7%",
+      "r": 16
+    },
+    {
+      "id": "경북지역문제해결플랫폼",
+      "type": "project",
+      "label": "경북지역문제해결플랫폼",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "경북도 지방비",
+      "year": 2025,
+      "tags": [
+        "지역문제",
+        "의제",
+        "거버넌스",
+        "시니어"
+      ],
+      "note": "320건 수렴 2의제 실행",
+      "r": 16
+    },
+    {
+      "id": "고향올래",
+      "type": "project",
+      "label": "054스페이스(고향올래)",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "청도군",
+      "year": 2025,
+      "tags": [
+        "청년",
+        "창업",
+        "공간",
+        "스테이"
+      ],
+      "note": "건축기획 29.8억 추정",
+      "r": 16
+    },
+    {
+      "id": "드림e",
+      "type": "project",
+      "label": "드림e (청년행복뉴딜)",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "경상북도 청도군",
+      "year": 2025,
+      "tags": [
+        "청년",
+        "커뮤니티",
+        "로그아웃",
+        "소모임"
+      ],
+      "note": "예산7천만 참여45명",
+      "r": 16
+    },
+    {
+      "id": "라이콘펀드",
+      "type": "project",
+      "label": "라이콘펀드 (스타트업밸리)",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "중소벤처기업부",
+      "year": 2025,
+      "tags": [
+        "스타트업",
+        "투자",
+        "임팩트",
+        "창업"
+      ],
+      "note": "시그널케어 17억 투자",
+      "r": 16
+    },
+    {
+      "id": "로컬브랜딩_귀촌지원체계",
+      "type": "project",
+      "label": "로컬브랜딩 귀촌지원체계 수립",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "청도군",
+      "year": 2025,
+      "tags": [
+        "귀촌",
+        "생활인구",
+        "이주",
+        "브랜딩"
+      ],
+      "note": "대구경산 180명 조사",
+      "r": 16
+    },
+    {
+      "id": "상상마루",
+      "type": "project",
+      "label": "청도상상마루 운영",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "청도상상마루",
+      "funder": "청도군",
+      "year": 2025,
+      "tags": [
+        "공간",
+        "문화",
+        "거버넌스",
+        "입주"
+      ],
+      "note": "2026~2028 운영",
+      "r": 16
+    },
+    {
+      "id": "시군구",
+      "type": "project",
+      "label": "시군구연고산업육성 (스마트산업)",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "중소벤처기업부 행정안전부 농식품부",
+      "year": 2026,
+      "tags": [
+        "스마트농업",
+        "푸드테크",
+        "문화관광"
+      ],
+      "note": "총 25.7억",
+      "r": 16
+    },
+    {
+      "id": "영주시_인구활력센터",
+      "type": "project",
+      "label": "영주시 인구활력센터 연구용역",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "영주시",
+      "year": 2025,
+      "tags": [
+        "인구",
+        "연구용역",
+        "영주"
+      ],
+      "note": "예산 1980만",
+      "r": 16
+    },
+    {
+      "id": "청년성장프로젝트",
+      "type": "project",
+      "label": "청년성장프로젝트 (직장적응지원)",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "경상북도 청도군",
+      "year": 2025,
+      "tags": [
+        "청년",
+        "직장",
+        "온보딩"
+      ],
+      "note": "5천만 집행7.1%",
+      "r": 16
+    },
+    {
+      "id": "칠곡군_로컬브랜딩",
+      "type": "project",
+      "label": "칠곡군 로컬브랜딩 (페달스테이션)",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "칠곡군청",
+      "year": 2025,
+      "tags": [
+        "로컬브랜딩",
+        "자전거",
+        "체류",
+        "관광"
+      ],
+      "note": "예산 6억",
+      "r": 16
+    },
+    {
+      "id": "아울러사회적협동조합",
+      "type": "org_partner",
+      "label": "아울러사회적협동조합",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "협동조합",
+        "퍼실리테이션"
+      ],
+      "note": "N개의 공론장 퍼실리테이션 용역",
+      "r": 14
+    },
+    {
+      "id": "MYSC",
+      "type": "org_partner",
+      "label": "MYSC",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "컨설팅",
+        "임팩트"
+      ],
+      "note": "브랜딩+DMO+라이콘펀드",
+      "r": 14
+    },
+    {
+      "id": "띵스베럴",
+      "type": "org_partner",
+      "label": "띵스베럴",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2024,
+      "tags": [
+        "컨설팅",
+        "브랜딩"
+      ],
+      "note": "브랜딩 지역자원발굴",
+      "r": 14
+    },
+    {
+      "id": "협동조합_온누리",
+      "type": "org_partner",
+      "label": "협동조합 온누리",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "문화예술",
+        "국악",
+        "브랜딩"
+      ],
+      "note": "캠프·포럼·브랜딩·칠곡군",
+      "r": 14
+    },
+    {
+      "id": "다로리인",
+      "type": "org_partner",
+      "label": "다로리인",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "지역",
+        "파트너"
+      ],
+      "note": "캠프·포럼·소통주간",
+      "r": 14
+    },
+    {
+      "id": "다음세대재단",
+      "type": "org_partner",
+      "label": "다음세대재단",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "비영리",
+        "교육"
+      ],
+      "note": "로컬소셜비즈니스 창업가 양성",
+      "r": 14
+    },
+    {
+      "id": "비커넥트랩",
+      "type": "org_partner",
+      "label": "비커넥트랩",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "액셀러레이팅"
+      ],
+      "note": "로컬소셜비즈니스 창업가 양성",
+      "r": 14
+    },
+    {
+      "id": "찰나의_순간",
+      "type": "org_partner",
+      "label": "찰나의 순간",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "영상제작"
+      ],
+      "note": "모두의 마을 콘텐츠 제작",
+      "r": 14
+    },
+    {
+      "id": "노는엄마들",
+      "type": "org_partner",
+      "label": "노는엄마들",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "운영",
+        "공간"
+      ],
+      "note": "로컬임팩트랩·소통협력공간 운영",
+      "r": 14
+    },
+    {
+      "id": "주식회사_비피",
+      "type": "org_partner",
+      "label": "(주)비피",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "교육",
+        "창업"
+      ],
+      "note": "청소년 로컬창업가 양성 용역",
+      "r": 14
+    },
+    {
+      "id": "시그널케어",
+      "type": "org_partner",
+      "label": "시그널케어",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "스타트업",
+        "반려동물"
+      ],
+      "note": "라이콘펀드 17억 투자 대상",
+      "r": 14
+    },
+    {
+      "id": "한국관광공사",
+      "type": "funder",
+      "label": "한국관광공사",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "관광",
+        "공사",
+        "발주"
+      ],
+      "note": "DMO 발주처",
+      "r": 12
+    },
+    {
+      "id": "문화체육관광부",
+      "type": "funder",
+      "label": "문화체육관광부",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "정부부처",
+        "문화"
+      ],
+      "note": "DMO 국비",
+      "r": 12
+    },
+    {
+      "id": "행정안전부",
+      "type": "funder",
+      "label": "행정안전부",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "정부부처",
+        "행안부"
+      ],
+      "note": "소통협력공간 주요 발주처",
+      "r": 12
+    },
+    {
+      "id": "경상북도",
+      "type": "funder",
+      "label": "경상북도",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "지방정부",
+        "경북"
+      ],
+      "note": "도비 지원",
+      "r": 12
+    },
+    {
+      "id": "청도군",
+      "type": "funder",
+      "label": "청도군",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "기초지자체",
+        "군비"
+      ],
+      "note": "청도 사업 발주·군비",
+      "r": 12
+    },
+    {
+      "id": "중소벤처기업부",
+      "type": "funder",
+      "label": "중소벤처기업부",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "정부부처",
+        "중기부"
+      ],
+      "note": "시군구연고·라이콘펀드",
+      "r": 12
+    },
+    {
+      "id": "영주시",
+      "type": "funder",
+      "label": "영주시",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "기초지자체",
+        "영주"
+      ],
+      "note": "인구활력센터 용역",
+      "r": 12
+    },
+    {
+      "id": "칠곡군청",
+      "type": "funder",
+      "label": "칠곡군청",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "기초지자체",
+        "칠곡"
+      ],
+      "note": "로컬브랜딩 발주",
+      "r": 12
+    },
+    {
+      "id": "로컬임팩트랩",
+      "type": "space",
+      "label": "로컬임팩트랩",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "공간",
+        "거점",
+        "대관"
+      ],
+      "note": "청도 소통협력공간 핵심 거점",
+      "r": 10
+    },
+    {
+      "id": "청도상상마루",
+      "type": "space",
+      "label": "청도상상마루",
+      "org_host": "cheongdo_center",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "공간",
+        "거점",
+        "홀"
+      ],
+      "note": "소통협력주간·포럼 행사장",
+      "r": 10
+    },
+    {
+      "id": "카페_다로리",
+      "type": "space",
+      "label": "카페 다로리",
+      "org_host": "gbsm_foundation",
+      "role": "",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "공간",
+        "커뮤니티"
+      ],
+      "note": "DMO·갭먼스 거점",
+      "r": 10
+    },
+    {
+      "id": "강민구",
+      "type": "person",
+      "label": "강민구",
+      "org_host": "cheongdo_center",
+      "role": "퍼실리테이터",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "퍼실리테이터"
+      ],
+      "note": "N개의 공론장",
+      "r": 10
+    },
+    {
+      "id": "구승희",
+      "type": "person",
+      "label": "구승희",
+      "org_host": "cheongdo_center",
+      "role": "퍼실리테이터",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "퍼실리테이터"
+      ],
+      "note": "N개의 공론장",
+      "r": 10
+    },
+    {
+      "id": "박수민",
+      "type": "person",
+      "label": "박수민",
+      "org_host": "cheongdo_center",
+      "role": "퍼실리테이터",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "퍼실리테이터"
+      ],
+      "note": "N개의 공론장",
+      "r": 10
+    },
+    {
+      "id": "배정란",
+      "type": "person",
+      "label": "배정란",
+      "org_host": "cheongdo_center",
+      "role": "퍼실리테이터",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "퍼실리테이터"
+      ],
+      "note": "N개의 공론장",
+      "r": 10
+    },
+    {
+      "id": "서삼열",
+      "type": "person",
+      "label": "서삼열",
+      "org_host": "cheongdo_center",
+      "role": "퍼실리테이터",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "퍼실리테이터"
+      ],
+      "note": "N개의 공론장",
+      "r": 10
+    },
+    {
+      "id": "양혜진",
+      "type": "person",
+      "label": "양혜진",
+      "org_host": "cheongdo_center",
+      "role": "퍼실리테이터",
+      "anon": false,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "퍼실리테이터"
+      ],
+      "note": "N개의 공론장",
+      "r": 10
+    },
+    {
+      "id": "공론장_참가자25명",
+      "type": "person_group",
+      "label": "공**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "참가자"
+      ],
+      "note": "N개의 공론장",
+      "r": 10
+    },
+    {
+      "id": "청소년기록팀9팀",
+      "type": "person_group",
+      "label": "청**",
+      "org_host": "cheongdo_center",
+      "role": "청소년",
+      "anon": true,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년"
+      ],
+      "note": "모두의 마을",
+      "r": 10
+    },
+    {
+      "id": "창업학생24명",
+      "type": "person_group",
+      "label": "창**",
+      "org_host": "cheongdo_center",
+      "role": "수료생",
+      "anon": true,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "청소년",
+        "학생"
+      ],
+      "note": "청소년 로컬창업가 양성",
+      "r": 10
+    },
+    {
+      "id": "로컬크리에이터간담회45명",
+      "type": "person_group",
+      "label": "로**",
+      "org_host": "cheongdo_center",
+      "role": "참가자",
+      "anon": true,
+      "space": "",
+      "funder": "",
+      "year": 2025,
+      "tags": [
+        "참가자"
+      ],
+      "note": "관계안내소 간담회",
+      "r": 10
+    }
+  ],
+  "links": [
+    {
+      "source": "청도혁신센터",
+      "target": "N개의_공론장",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "소통협력공간 수탁 운영"
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "경북청도_브랜딩_지역자원발굴",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2024,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "경북지속가능캠프",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "경북지속가능포럼",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "관계안내소_운영",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "로컬_소셜비즈니스_창업가_양성과정",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "로컬브랜딩_생활실험팀_공모",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "로컬임팩트랩_운영",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "모두의_마을",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "미리맛보는_소통협력공간",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "소통협력공간_브랜딩",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2024,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "소통협력공간_주간",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "스테이_in_로컬",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도혁신센터",
+      "target": "청소년_로컬창업가_양성과정",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "1시군_1생활",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "DMO",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "경북지역문제해결플랫폼",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "고향올래",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "드림e",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "라이콘펀드",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "로컬브랜딩_귀촌지원체계",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "상상마루",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "시군구",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2026,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "영주시_인구활력센터",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "청년성장프로젝트",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경북시민재단",
+      "target": "칠곡군_로컬브랜딩",
+      "relation": "운영",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "아울러사회적협동조합",
+      "target": "N개의_공론장",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "퍼실리테이션 용역"
+    },
+    {
+      "source": "MYSC",
+      "target": "경북청도_브랜딩_지역자원발굴",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2024,
+      "note": "컨설팅"
+    },
+    {
+      "source": "띵스베럴",
+      "target": "경북청도_브랜딩_지역자원발굴",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2024,
+      "note": "브랜딩 수행"
+    },
+    {
+      "source": "협동조합_온누리",
+      "target": "경북지속가능캠프",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "협동조합_온누리",
+      "target": "경북지속가능포럼",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "협동조합_온누리",
+      "target": "소통협력공간_주간",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "공연 참여"
+    },
+    {
+      "source": "협동조합_온누리",
+      "target": "경북청도_브랜딩_지역자원발굴",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2024,
+      "note": "시민취타대 운영"
+    },
+    {
+      "source": "협동조합_온누리",
+      "target": "칠곡군_로컬브랜딩",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "다로리인",
+      "target": "경북지속가능캠프",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "다로리인",
+      "target": "경북지속가능포럼",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "다로리인",
+      "target": "소통협력공간_주간",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "다음세대재단",
+      "target": "로컬_소셜비즈니스_창업가_양성과정",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "비영리 교육 파트너"
+    },
+    {
+      "source": "비커넥트랩",
+      "target": "로컬_소셜비즈니스_창업가_양성과정",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "액셀러레이팅 파트너"
+    },
+    {
+      "source": "찰나의_순간",
+      "target": "모두의_마을",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "영상 제작 용역"
+    },
+    {
+      "source": "노는엄마들",
+      "target": "로컬임팩트랩_운영",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "공간 운영 용역"
+    },
+    {
+      "source": "노는엄마들",
+      "target": "미리맛보는_소통협력공간",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "공간 운영 용역"
+    },
+    {
+      "source": "노는엄마들",
+      "target": "소통협력공간_브랜딩",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2024,
+      "note": ""
+    },
+    {
+      "source": "노는엄마들",
+      "target": "소통협력공간_주간",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "주식회사_비피",
+      "target": "청소년_로컬창업가_양성과정",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "교육 용역"
+    },
+    {
+      "source": "MYSC",
+      "target": "DMO",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "DMO 컨설팅"
+    },
+    {
+      "source": "MYSC",
+      "target": "라이콘펀드",
+      "relation": "수행",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "투자 파트너"
+    },
+    {
+      "source": "협동조합_온누리",
+      "target": "1시군_1생활",
+      "relation": "수행",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "N개의_공론장",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "경북청도_브랜딩_지역자원발굴",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2024,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "경북지속가능캠프",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "경북지속가능포럼",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "관계안내소_운영",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "로컬_소셜비즈니스_창업가_양성과정",
+      "relation": "투자·지원",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "로컬브랜딩_생활실험팀_공모",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "로컬임팩트랩_운영",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "모두의_마을",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "소통협력공간_브랜딩",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2024,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "소통협력공간_주간",
+      "relation": "투자·지원",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "행정안전부",
+      "target": "상상마루",
+      "relation": "투자·지원",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "연계 사업"
+    },
+    {
+      "source": "경상북도",
+      "target": "1시군_1생활",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "도비 70백만"
+    },
+    {
+      "source": "경상북도",
+      "target": "드림e",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "경상북도",
+      "target": "경북지역문제해결플랫폼",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "지방보조금"
+    },
+    {
+      "source": "경상북도",
+      "target": "청년성장프로젝트",
+      "relation": "투자·지원",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "도비"
+    },
+    {
+      "source": "청도군",
+      "target": "1시군_1생활",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "군비 70백만"
+    },
+    {
+      "source": "청도군",
+      "target": "관계안내소_운영",
+      "relation": "투자·지원",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도군",
+      "target": "드림e",
+      "relation": "투자·지원",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "군비"
+    },
+    {
+      "source": "청도군",
+      "target": "로컬브랜딩_귀촌지원체계",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도군",
+      "target": "상상마루",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도군",
+      "target": "청년성장프로젝트",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "군비"
+    },
+    {
+      "source": "청도군",
+      "target": "고향올래",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도군",
+      "target": "청소년_로컬창업가_양성과정",
+      "relation": "투자·지원",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "한국관광공사",
+      "target": "DMO",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "국고보조금 1억"
+    },
+    {
+      "source": "문화체육관광부",
+      "target": "DMO",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "국비 1억"
+    },
+    {
+      "source": "중소벤처기업부",
+      "target": "라이콘펀드",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "모태펀드 연계"
+    },
+    {
+      "source": "중소벤처기업부",
+      "target": "시군구",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2026,
+      "note": "국비 18억"
+    },
+    {
+      "source": "영주시",
+      "target": "영주시_인구활력센터",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "용역 발주 1980만"
+    },
+    {
+      "source": "칠곡군청",
+      "target": "칠곡군_로컬브랜딩",
+      "relation": "투자·지원",
+      "weight": 3,
+      "distance": 60,
+      "year": 2025,
+      "note": "용역 발주"
+    },
+    {
+      "source": "로컬임팩트랩",
+      "target": "로컬임팩트랩_운영",
+      "relation": "거점",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "로컬임팩트랩",
+      "target": "미리맛보는_소통협력공간",
+      "relation": "거점",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "로컬임팩트랩",
+      "target": "스테이_in_로컬",
+      "relation": "거점",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "로컬임팩트랩",
+      "target": "청소년_로컬창업가_양성과정",
+      "relation": "거점",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "로컬임팩트랩",
+      "target": "로컬_소셜비즈니스_창업가_양성과정",
+      "relation": "거점",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도상상마루",
+      "target": "소통협력공간_주간",
+      "relation": "거점",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청도상상마루",
+      "target": "경북지속가능포럼",
+      "relation": "거점",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "농촌활성화 포럼"
+    },
+    {
+      "source": "카페_다로리",
+      "target": "1시군_1생활",
+      "relation": "거점",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "갭먼스 거점"
+    },
+    {
+      "source": "강민구",
+      "target": "N개의_공론장",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "퍼실리테이터"
+    },
+    {
+      "source": "구승희",
+      "target": "N개의_공론장",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "퍼실리테이터"
+    },
+    {
+      "source": "박수민",
+      "target": "N개의_공론장",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "퍼실리테이터"
+    },
+    {
+      "source": "배정란",
+      "target": "N개의_공론장",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "퍼실리테이터"
+    },
+    {
+      "source": "서삼열",
+      "target": "N개의_공론장",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "퍼실리테이터"
+    },
+    {
+      "source": "양혜진",
+      "target": "N개의_공론장",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "퍼실리테이터"
+    },
+    {
+      "source": "공론장_참가자25명",
+      "target": "N개의_공론장",
+      "relation": "참여",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "청소년기록팀9팀",
+      "target": "모두의_마을",
+      "relation": "참여",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "창업학생24명",
+      "target": "청소년_로컬창업가_양성과정",
+      "relation": "참여",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "로컬크리에이터간담회45명",
+      "target": "관계안내소_운영",
+      "relation": "참여",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "시그널케어",
+      "target": "라이콘펀드",
+      "relation": "참여",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "투자 유치 대상 기업"
+    },
+    {
+      "source": "N개의_공론장",
+      "target": "청소년_로컬창업가_양성과정",
+      "relation": "연계",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": "퍼실리테이터 네트워크 공유"
+    },
+    {
+      "source": "로컬임팩트랩_운영",
+      "target": "미리맛보는_소통협력공간",
+      "relation": "연계",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": "동일 공간 운영 연계"
+    },
+    {
+      "source": "경북지속가능캠프",
+      "target": "경북지속가능포럼",
+      "relation": "연계",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": ""
+    },
+    {
+      "source": "DMO",
+      "target": "소통협력공간_주간",
+      "relation": "연계",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": "포트리스 페스티벌 연계"
+    },
+    {
+      "source": "DMO",
+      "target": "1시군_1생활",
+      "relation": "연계",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": "갭먼스-DMO 관계인구 연계"
+    },
+    {
+      "source": "상상마루",
+      "target": "소통협력공간_주간",
+      "relation": "연계",
+      "weight": 1,
+      "distance": 120,
+      "year": 2025,
+      "note": "행사장 동일"
+    },
+    {
+      "source": "청도군",
+      "target": "미리맛보는_소통협력공간",
+      "relation": "투자·지원",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "예산 미기재·청도군 추정"
+    },
+    {
+      "source": "청도군",
+      "target": "스테이_in_로컬",
+      "relation": "투자·지원",
+      "weight": 2,
+      "distance": 90,
+      "year": 2025,
+      "note": "예산 미기재·청도군 추정"
+    }
+  ]
+}
