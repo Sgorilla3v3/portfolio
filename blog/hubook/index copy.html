@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>청도 지역혁신가 아카이브</title>
+<link rel="icon" type="image/png" href="cmz_logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ── 공통 리셋 & 변수 ─────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:        #0d0d0d;
+  --ink-mid:    #404040;
+  --ink-light:  #888888;
+  --ink-xlight: #bbbbbb;
+  --bg:         #ffffff;
+  --bg-2:       #f5f5f5;
+  --bg-3:       #ebebeb;
+  --rule:       #d8d8d8;
+  --white:      #ffffff;
+
+  --serif:  'Noto Serif KR', Georgia, serif;
+  --sans:   'Noto Sans KR', system-ui, sans-serif;
+  --display:'IM Fell English', Georgia, serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── 노이즈 텍스처 ───────────────────────────── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ══════════════════════════════════════════════
+   공통 네비게이션
+══════════════════════════════════════════════ */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  padding: 24px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+.site-nav.scrolled { border-color: var(--rule); }
+
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.nav-logo span {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  margin-left: 8px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-link {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--ink); }
+.nav-link.active { color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 1px; }
+
+.nav-search-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--ink-mid);
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 7px 14px;
+  cursor: pointer;
+  font-family: var(--sans);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.nav-search-btn:hover {
+  background: var(--ink);
+  color: var(--white);
+  border-color: var(--ink);
+}
+
+/* ══════════════════════════════════════════════
+   히어로 섹션
+══════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 80px;
+}
+
+/* 왼쪽 텍스트 블록 */
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 60px 80px 60px;
+  border-right: 1px solid var(--rule);
+}
+.hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--ink-xlight);
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(42px, 5vw, 72px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.hero-title-en {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(16px, 2vw, 26px);
+  font-weight: 400;
+  color: var(--ink-light);
+  margin-bottom: 40px;
+  line-height: 1.4;
+}
+.hero-desc {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--ink-mid);
+  max-width: 400px;
+  margin-bottom: 56px;
+  word-break: keep-all;
+}
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--rule);
+}
+.stat-item {}
+.stat-num {
+  font-family: var(--display);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1;
+  display: block;
+}
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  display: block;
+  margin-top: 4px;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.btn-primary {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 14px 28px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s var(--ease-out-expo);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--ink);
+}
+.btn-primary svg { transition: transform 0.25s; }
+.btn-primary:hover svg { transform: translateX(3px); }
+
+.btn-secondary {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-secondary:hover { color: var(--ink); border-color: var(--ink); }
+
+/* 오른쪽 책 진열 */
+.hero-shelf {
+  background: var(--bg-2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 60px;
+  gap: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 선반 라인 */
+.hero-shelf::before {
+  content: '';
+  position: absolute;
+  bottom: 38%;
+  left: 0; right: 0;
+  height: 1px;
+  background: var(--rule);
+}
+
+.shelf-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  position: relative;
+}
+.shelf-row-label {
+  position: absolute;
+  left: -24px;
+  bottom: 0;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 10px;
+  color: var(--ink-xlight);
+  letter-spacing: 0.1em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* 책 카드 */
+.book-card {
+  cursor: pointer;
+  position: relative;
+}
+.book-card:nth-child(2) { animation-delay: 0.08s; }
+.book-card:nth-child(3) { animation-delay: 0.16s; }
+.book-card:nth-child(4) { animation-delay: 0.24s; }
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.book-card { animation: riseIn 0.6s var(--ease-out-expo) both; }
+
+/* 3D 책 표지 */
+.book-3d {
+  width: 110px;
+  height: 160px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(600px) rotateY(-12deg);
+  transition: transform 0.5s var(--ease-out-expo), filter 0.3s;
+  filter: drop-shadow(4px 8px 20px rgba(0,0,0,0.25));
+}
+.book-card:hover .book-3d {
+  transform: perspective(600px) rotateY(-22deg) translateY(-6px);
+  filter: drop-shadow(8px 16px 32px rgba(0,0,0,0.3));
+}
+
+.book-face {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  border-radius: 1px 3px 3px 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14px 12px;
+  overflow: hidden;
+}
+.book-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
+  border-radius: inherit;
+}
+.book-spine {
+  position: absolute;
+  left: -8px; top: 0; bottom: 0;
+  width: 8px;
+  background: rgba(0,0,0,0.6);
+  transform-origin: right center;
+  transform: rotateY(90deg) translateX(-4px);
+  border-radius: 1px 0 0 1px;
+}
+.book-vol {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 9px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.15em;
+  position: relative; z-index: 1;
+}
+.book-name {
+  font-family: var(--serif);
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.4;
+  position: relative; z-index: 1;
+}
+.book-count {
+  font-size: 8px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.1em;
+  position: relative; z-index: 1;
+}
+
+.book-card-label {
+  margin-top: 12px;
+  text-align: center;
+}
+.book-card-title {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.book-card-sub {
+  font-size: 10px;
+  color: var(--ink-light);
+  margin-top: 2px;
+}
+
+/* ══════════════════════════════════════════════
+   서재 전체 섹션 (스크롤 아래)
+══════════════════════════════════════════════ */
+.archive-section {
+  padding: 120px 60px;
+  border-top: 1px solid var(--rule);
+}
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 72px;
+}
+.section-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.section-link {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.section-link:hover { color: var(--ink); border-color: var(--ink); }
+
+/* 전체 권호 그리드 */
+.volumes-shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+  align-items: flex-end;
+}
+
+.vol-item {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@keyframes bookRise {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.vol-item { animation: bookRise 0.7s var(--ease-out-expo) both; }
+.vol-item:nth-child(1) { animation-delay: 0.05s; }
+.vol-item:nth-child(2) { animation-delay: 0.12s; }
+.vol-item:nth-child(3) { animation-delay: 0.19s; }
+.vol-item:nth-child(4) { animation-delay: 0.26s; }
+.vol-item:nth-child(5) { animation-delay: 0.33s; }
+.vol-item:nth-child(6) { animation-delay: 0.40s; }
+.vol-item:nth-child(7) { animation-delay: 0.47s; }
+.vol-item:nth-child(8) { animation-delay: 0.54s; }
+
+.vol-book-wrap {
+  perspective: 700px;
+}
+.vol-book-3d {
+  width: 130px;
+  height: 185px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateY(-10deg);
+  transition: transform 0.5s var(--ease-out-expo), filter 0.3s;
+  filter: drop-shadow(4px 10px 24px rgba(0,0,0,0.22));
+}
+.vol-item:hover .vol-book-3d {
+  transform: rotateY(-20deg) translateY(-8px);
+  filter: drop-shadow(8px 18px 36px rgba(0,0,0,0.3));
+}
+.vol-book-face {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  border-radius: 1px 3px 3px 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 14px;
+  overflow: hidden;
+}
+.vol-book-face::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.12);
+}
+.vol-book-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, rgba(255,255,255,0.07) 0%, transparent 55%);
+}
+.vol-book-spine {
+  position: absolute;
+  left: -9px; top: 0; bottom: 0;
+  width: 9px;
+  background: rgba(0,0,0,0.55);
+  border-radius: 1px 0 0 1px;
+  transform-origin: right center;
+  transform: rotateY(90deg) translateX(-4.5px);
+}
+.vol-book-vol {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.2em;
+  position: relative; z-index: 1;
+}
+.vol-book-title {
+  position: relative; z-index: 1;
+}
+.vol-book-title-kr {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.vol-book-count {
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.12em;
+  position: relative; z-index: 1;
+}
+.vol-meta {
+  width: 130px;
+}
+.vol-meta-name {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.vol-meta-info {
+  font-size: 11px;
+  color: var(--ink-light);
+  letter-spacing: 0.03em;
+}
+
+/* ── 푸터 ─────────────────────────────────── */
+.site-footer {
+  padding: 40px 60px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-2);
+}
+.footer-left {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.footer-right {
+  font-size: 11px;
+  color: var(--ink-light);
+  letter-spacing: 0.08em;
+}
+
+/* ── 반응형 ─────────────────────────────── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-text { padding: 100px 32px 60px; border-right: none; border-bottom: 1px solid var(--rule); }
+  .hero-shelf { padding: 60px 32px; }
+  .site-nav { padding: 20px 32px; }
+  .archive-section { padding: 80px 32px; }
+  .site-footer { padding: 32px; flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (max-width: 600px) {
+  .nav-links { gap: 16px; }
+  .hero-stats { gap: 24px; }
+  .volumes-shelf { gap: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── 네비게이션 ───────────────────────── -->
+<nav class="site-nav" id="site-nav">
+  <a href="index.html" class="nav-logo">
+    청도 지역혁신가
+    <span>Archive</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link active">서재</a>
+    <a href="search.html" class="nav-link">검색</a>
+    <a href="search.html" class="nav-search-btn">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="6" cy="6" r="4"/><path d="M10 10l2.5 2.5"/>
+      </svg>
+      혁신가 찾기
+    </a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+   히어로
+══════════════════════════════════════════ -->
+<section class="hero">
+  <!-- 왼쪽: 텍스트 -->
+  <div class="hero-text">
+    <div class="hero-eyebrow">Cheongdo Local Innovators</div>
+    <h1 class="hero-title">청도<br>지역혁신가</h1>
+    <div class="hero-title-en">People who make<br>Cheongdo different</div>
+    <p class="hero-desc">
+      청도에서 자신만의 방식으로 새로운 길을 만들어가는 사람들의 이야기.<br>
+      땅에 뿌리내린 삶, 연결을 만드는 실험, 지역을 바꾸는 작은 혁신들을 기록합니다.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num" id="hero-total">—</span>
+        <span class="stat-label">Innovators</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" id="hero-vols">—</span>
+        <span class="stat-label">Volumes</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">9</span>
+        <span class="stat-label">Regions</span>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a href="#archive" class="btn-primary">
+        전체 보기
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7h8M7 3l4 4-4 4"/>
+        </svg>
+      </a>
+      <a href="search.html" class="btn-secondary">혁신가 검색 →</a>
+    </div>
+  </div>
+
+  <!-- 오른쪽: 책 진열 -->
+  <div class="hero-shelf" id="hero-shelf">
+    <!-- JS 생성 -->
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   아카이브 전체 섹션
+══════════════════════════════════════════ -->
+<section class="archive-section" id="archive">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Archive</div>
+      <div class="section-title">수록 권호</div>
+    </div>
+    <a href="search.html" class="section-link">
+      전체 혁신가 검색
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 6h8M6 2l4 4-4 4"/>
+      </svg>
+    </a>
+  </div>
+  <div class="volumes-shelf" id="volumes-shelf">
+    <!-- JS 생성 -->
+  </div>
+</section>
+
+<!-- ── 푸터 ───────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-left">청도혁신센터</div>
+  <div class="footer-right">Cheongdo Innovation Center · <span id="footer-year"></span></div>
+</footer>
+
+<script>
+const DATA_BASE = './data';
+
+async function fetchJSON(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${url} (${res.status})`);
+  return res.json();
+}
+
+// 네비 스크롤 효과
+window.addEventListener('scroll', () => {
+  document.getElementById('site-nav').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// 날짜
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+// 책 카드 HTML 생성 (히어로용 소형)
+function makeHeroBookCard(vol, idx) {
+  const delay = idx * 0.1;
+  return `
+    <div class="book-card" style="animation-delay:${delay}s" onclick="location.href='book.html?vol=${vol.vol}'">
+      <div class="book-3d">
+        <div class="book-spine"></div>
+        <div class="book-face">
+          <div class="book-vol">Vol.${vol.vol}</div>
+          <div>
+            <div class="book-name">청도<br>지역혁신가</div>
+          </div>
+          <div class="book-count">${vol.count}인 수록</div>
+        </div>
+      </div>
+      <div class="book-card-label">
+        <div class="book-card-title">Vol.${vol.vol}</div>
+        <div class="book-card-sub">${vol.count}인</div>
+      </div>
+    </div>`;
+}
+
+// 볼륨 아이템 HTML (아카이브 섹션용)
+function makeVolItem(vol, idx) {
+  return `
+    <div class="vol-item" style="animation-delay:${idx * 0.07}s" onclick="location.href='book.html?vol=${vol.vol}'">
+      <div class="vol-book-wrap">
+        <div class="vol-book-3d">
+          <div class="vol-book-spine"></div>
+          <div class="vol-book-face">
+            <div class="vol-book-vol">Vol.${vol.vol}</div>
+            <div class="vol-book-title">
+              <div class="vol-book-title-kr">청도<br>지역혁신가</div>
+            </div>
+            <div class="vol-book-count">${vol.count}인 수록</div>
+          </div>
+        </div>
+      </div>
+      <div class="vol-meta">
+        <div class="vol-meta-name">${vol.title}</div>
+        <div class="vol-meta-info">${vol.subtitle} · ${vol.published}</div>
+      </div>
+    </div>`;
+}
+
+async function init() {
+  try {
+    const data = await fetchJSON(`${DATA_BASE}/volumes.json`);
+    const vols  = data.volumes;
+
+    // 통계
+    const total = vols.reduce((s, v) => s + v.count, 0);
+    document.getElementById('hero-total').textContent = total;
+    document.getElementById('hero-vols').textContent  = vols.length;
+
+    // 히어로 책 진열 (최대 4권, 2열 배치)
+    const heroShelf = document.getElementById('hero-shelf');
+    const row1 = vols.slice(0, 2);
+    const row2 = vols.slice(2, 4);
+    let heroHTML = `<div class="shelf-row">${row1.map((v,i) => makeHeroBookCard(v, i)).join('')}</div>`;
+    if (row2.length) heroHTML += `<div class="shelf-row">${row2.map((v,i) => makeHeroBookCard(v, i+2)).join('')}</div>`;
+    heroShelf.innerHTML = heroHTML;
+
+    // 아카이브 전체 그리드
+    document.getElementById('volumes-shelf').innerHTML =
+      vols.map((v, i) => makeVolItem(v, i)).join('');
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById('hero-shelf').innerHTML =
+      `<p style="font-size:12px;color:#999">데이터를 불러오지 못했습니다.<br><small>${err.message}</small></p>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
