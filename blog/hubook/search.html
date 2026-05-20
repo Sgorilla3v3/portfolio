@@ -293,14 +293,25 @@ body::after {
   margin-bottom: 8px;
 }
 .rc-tagline {
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--ink-light);
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.01em;
+}
+.rc-short-bio {
   font-size: 11px;
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--ink-mid);
   margin-bottom: 10px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: keep-all;
 }
 
 .rc-tags {
@@ -590,7 +601,7 @@ function filtered() {
     // 텍스트 검색: 이름, 조직, 지역, 활동, 프로젝트, 도메인
     if (queryText) {
       const haystack = [p.name, p.org, p.region, p.activity, p.projects,
-        ...(p.domains||[])].join(' ').toLowerCase();
+        p.tagline, p.short_bio, ...(p.domains||[])].join(' ').toLowerCase();
       if (!haystack.includes(queryText)) return false;
     }
     // 도메인 필터 (OR)
@@ -658,6 +669,7 @@ function makeCard(p, idx) {
       <div class="rc-name">${highlight(p.name)}</div>
       <div class="rc-org">${highlight(p.org)}</div>
       ${p.tagline ? `<div class="rc-tagline">${highlight(p.tagline)}</div>` : ''}
+      ${p.short_bio ? `<div class="rc-short-bio">${highlight(p.short_bio)}</div>` : ''}
       <div class="rc-tags">${tagsHTML}</div>
     </div>
     <div class="rc-footer">

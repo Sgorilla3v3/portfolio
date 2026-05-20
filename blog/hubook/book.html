@@ -605,6 +605,17 @@ body::after {
 }
 .p-sns-link:hover { color: var(--ink); border-color: var(--ink); }
 
+/* ── 인물 왼쪽 short_bio ─────────────────── */
+.p-short-bio {
+  font-size: 11px;
+  line-height: 1.85;
+  color: var(--ink-mid);
+  word-break: keep-all;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+
 /* ── 인물 오른쪽 (스토리) ─────────────────── */
 .pg-person-r {
   width: 100%; height: 100%;
@@ -641,6 +652,51 @@ body::after {
   flex: 1;
   overflow: hidden;
   word-break: keep-all;
+}
+/* story 섹션 블록 */
+.p-story-sections {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.p-story-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.p-section-key {
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-xlight);
+}
+.p-section-val {
+  font-size: 11.5px;
+  line-height: 1.85;
+  color: var(--ink-mid);
+  word-break: keep-all;
+}
+.p-quote-block {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+.p-quote-label {
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-xlight);
+  margin-bottom: 4px;
+}
+.p-quote-text {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--ink);
+  font-style: italic;
 }
 .p-activity-block {
   margin-top: 16px;
@@ -1105,6 +1161,7 @@ function makePersonL(p) {
       <div class="p-name">${p.name}</div>
       <div class="p-org">${p.org}</div>
       <div class="p-divider"></div>
+      ${p.short_bio ? `<div class="p-short-bio">${p.short_bio}</div>` : ''}
       ${p.region ? `<div class="p-meta-row"><span class="p-meta-key">지역</span><span class="p-meta-val">${p.region}</span></div>` : ''}
       ${p.group  ? `<div class="p-meta-row"><span class="p-meta-key">구분</span><span class="p-meta-val">${p.group}</span></div>` : ''}
       <div class="p-domains">${(p.domains||[]).map(d=>`<span class="p-domain-tag">${d}</span>`).join('')}</div>
@@ -1113,11 +1170,61 @@ function makePersonL(p) {
   </div>`;
 }
 
+/* story 필드 파싱: "레이블: 내용" 패턴 → 섹션 배열 */
+const STORY_KEYS = [
+  { key: '귀촌 계기',   label: 'Background' },
+  { key: '정착 어려움', label: 'Challenge'  },
+  { key: '도움 가능',   label: 'Offering'   },
+  { key: '비전',        label: 'Vision'     },
+];
+const QUOTE_KEY = '청도란';
+
+function parseStory(raw) {
+  if (!raw) return { sections: [], quote: '' };
+  const sections = [];
+  let quote = '';
+  const allKeys = [...STORY_KEYS.map(s => s.key), QUOTE_KEY];
+  allKeys.forEach((key, i) => {
+    const start = raw.indexOf(key + ':');
+    if (start < 0) return;
+    const after = start + key.length + 1;
+    let end = raw.length;
+    for (let j = i + 1; j < allKeys.length; j++) {
+      const nx = raw.indexOf(allKeys[j] + ':');
+      if (nx > start) { end = nx; break; }
+    }
+    const val = raw.slice(after, end).trim().replace(/\.$/, '');
+    if (key === QUOTE_KEY) {
+      quote = val;
+    } else {
+      const meta = STORY_KEYS.find(s => s.key === key);
+      if (meta) sections.push({ label: meta.label, key, val });
+    }
+  });
+  if (sections.length === 0 && raw.trim()) {
+    sections.push({ label: 'Story', key: '', val: raw.trim() });
+  }
+  return { sections, quote };
+}
+
 function makePersonR(p) {
+  const { sections, quote } = parseStory(p.story);
+  const sectionsHTML = sections.map(s => `
+    <div class="p-story-section">
+      <span class="p-section-key">${s.label}</span>
+      <span class="p-section-val">${s.val}</span>
+    </div>`).join('');
+
   return `<div class="pg-person-r">
     <div class="p-story-label">Story</div>
     ${p.tagline ? `<div class="p-tagline">"${p.tagline}"</div>` : ''}
-    <div class="p-story">${p.story || '스토리가 준비 중입니다.'}</div>
+    <div class="p-story-sections">
+      ${sectionsHTML || `<div class="p-section-val">스토리가 준비 중입니다.</div>`}
+    </div>
+    ${quote ? `<div class="p-quote-block">
+      <div class="p-quote-label">나에게 청도란</div>
+      <div class="p-quote-text">"${quote}"</div>
+    </div>` : ''}
     ${p.activity ? `<div class="p-activity-block">
       <div class="p-activity-label">주요 활동</div>
       <div class="p-activity-text">${p.activity}</div>
