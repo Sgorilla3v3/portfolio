@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>청도 지역혁신가 — 책 뷰어</title>
+<link rel="icon" type="image/png" href="cmz_logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -24,8 +25,8 @@
   --sans:   'Noto Sans KR', system-ui, sans-serif;
   --display:'IM Fell English', Georgia, serif;
 
-  --ease-flip: cubic-bezier(0.77, 0, 0.175, 1);
-  --flip-dur:  0.75s;
+  --ease-flip: cubic-bezier(0.4, 0, 0.2, 1);
+  --flip-dur:  0.55s;
 
   --page-w: 400px;
   --page-h: 560px;
@@ -202,80 +203,56 @@ body::after {
   z-index: 2; pointer-events: none;
 }
 
-/* ── 페이지 넘김 애니메이션 레이어 ─────────── */
+/* ── 페이지 넘김 — 모션 전용 레이어 ────────── */
 /*
-  방향 = 'next' (앞으로): 오른쪽 페이지가 왼쪽으로 넘어감
-    - 플립 레이어는 오른쪽 절반에 위치
-    - transform-origin: left center (책등 기준)
-    - 시작: rotateY(0) → 끝: rotateY(-180deg)
-    - front: 현재 오른쪽 페이지 콘텐츠
-    - back:  다음 왼쪽 페이지 콘텐츠 (scaleX(-1)로 좌우 보정)
+  콘텐츠 없는 순수 모션 레이어.
+  새 페이지는 슬롯에 미리 세팅해두고
+  레이어가 접히며 그 아래가 드러나는 방식.
 
-  방향 = 'prev' (뒤로): 왼쪽 페이지가 오른쪽으로 넘어감
-    - 플립 레이어는 왼쪽 절반에 위치
-    - transform-origin: right center
-    - 시작: rotateY(0) → 끝: rotateY(180deg)
-    - front: 현재 왼쪽 페이지 콘텐츠
-    - back:  이전 오른쪽 페이지 콘텐츠
+  next: 오른쪽→왼쪽 접힘, origin = left
+  prev: 왼쪽→오른쪽 접힘, origin = right
 */
 .flip-layer {
   position: absolute;
   top: 0;
   width: var(--page-w);
   height: var(--page-h);
-  transform-style: preserve-3d;
   z-index: 40;
   pointer-events: none;
   will-change: transform;
+  /* 페이지 색 + 미세 그라디언트로 종이 느낌 */
+  background: linear-gradient(to bottom, #fafafa, #f2f2f2);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
+  backface-visibility: hidden;
 }
 .flip-layer.dir-next {
   right: 0;
   transform-origin: left center;
+  /* 접힘 진행 시 오른쪽 가장자리에 그림자 */
+  box-shadow: -4px 0 16px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05);
 }
 .flip-layer.dir-prev {
   left: 0;
   transform-origin: right center;
+  box-shadow: 4px 0 16px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05);
 }
 
-.flip-face {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.flip-face-front { /* 기본 — 앞면 */ }
-.flip-face-back  {
-  transform: rotateY(180deg);
-  /* 좌우 반전: back face는 뒤집혀 보이므로 scaleX로 보정 */
-}
-.flip-face-back .flip-inner {
-  transform: scaleX(-1);
-  width: 100%;
-  height: 100%;
-}
-
-/* 페이지 넘김 중 진행 방향의 그림자 오버레이 */
-.flip-shadow {
+/* 접히는 동안 레이어 위에 얹히는 그림자 (입체감) */
+.flip-layer::after {
+  content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 3;
   opacity: 0;
-  transition: opacity var(--flip-dur) ease;
+  transition: opacity 0.15s ease;
 }
-.flip-layer.dir-next .flip-face-front .flip-shadow {
-  background: linear-gradient(to left, rgba(0,0,0,0.22) 0%, transparent 60%);
+.flip-layer.dir-next::after {
+  background: linear-gradient(to left, rgba(0,0,0,0.18) 0%, transparent 55%);
 }
-.flip-layer.dir-next .flip-face-back .flip-shadow {
-  background: linear-gradient(to right, rgba(0,0,0,0.16) 0%, transparent 60%);
+.flip-layer.dir-prev::after {
+  background: linear-gradient(to right, rgba(0,0,0,0.18) 0%, transparent 55%);
 }
-.flip-layer.dir-prev .flip-face-front .flip-shadow {
-  background: linear-gradient(to right, rgba(0,0,0,0.22) 0%, transparent 60%);
-}
-.flip-layer.dir-prev .flip-face-back .flip-shadow {
-  background: linear-gradient(to left, rgba(0,0,0,0.16) 0%, transparent 60%);
-}
+.flip-layer.animating::after { opacity: 1; }
 
 /* ── 하단 바 ─────────────────────────────────── */
 .bv-footer {
@@ -986,20 +963,12 @@ function addPageNums(idx) {
 }
 
 /* ══════════════════════════════════════════════
-   페이지 넘김 애니메이션 (완전 재작성)
+   페이지 넘김 — 모션 전용 방식
 
-   핵심 원리:
-   next: 오른쪽 페이지(R)가 왼쪽으로 넘어감
-     → 플립 레이어를 오른쪽에 올려놓고
-       front = 현재 R 콘텐츠
-       back  = 다음 spread의 L 콘텐츠 (scaleX(-1))
-       rotateY(0→-180deg), origin = left
-
-   prev: 왼쪽 페이지(L)가 오른쪽으로 넘어감
-     → 플립 레이어를 왼쪽에 올려놓고
-       front = 현재 L 콘텐츠
-       back  = 이전 spread의 R 콘텐츠 (scaleX(-1))
-       rotateY(0→+180deg), origin = right
+   1. 새 spread 콘텐츠를 슬롯에 즉시 세팅 (레이어 뒤에 숨겨짐)
+   2. 빈 레이어가 현재 페이지처럼 올라와 fold
+   3. 레이어가 접히면서 아래의 새 페이지가 드러남
+   4. 애니메이션 완료 후 레이어 제거
 ══════════════════════════════════════════════ */
 function flipAnimate(toIdx, dir) {
   if (flipping) return;
@@ -1012,58 +981,30 @@ function flipAnimate(toIdx, dir) {
   const DUR      = parseFloat(getComputedStyle(document.documentElement)
                     .getPropertyValue('--flip-dur')) * 1000 || 750;
 
-  /* 1. 플립 레이어 생성 */
+  /* 1. 새 페이지를 슬롯에 즉시 세팅 — 레이어 뒤에 가려져 있음 */
+  lEl.innerHTML = sp.L();
+  rEl.innerHTML = sp.R();
+  addPageNums(toIdx);
+
+  /* 2. 모션 전용 빈 레이어 생성 */
   const layer = document.createElement('div');
   layer.className = `flip-layer dir-${dir}`;
-
-  /* 앞면 */
-  const front = document.createElement('div');
-  front.className = 'flip-face flip-face-front';
-  front.innerHTML = (dir === 'next' ? rEl.innerHTML : lEl.innerHTML);
-
-  /* 그림자 */
-  const fShadow = document.createElement('div');
-  fShadow.className = 'flip-shadow';
-  front.appendChild(fShadow);
-
-  /* 뒷면 */
-  const back  = document.createElement('div');
-  back.className = 'flip-face flip-face-back';
-  const inner = document.createElement('div');
-  inner.className = 'flip-inner';
-  inner.innerHTML = (dir === 'next' ? sp.L() : sp.R());
-  back.appendChild(inner);
-
-  const bShadow = document.createElement('div');
-  bShadow.className = 'flip-shadow';
-  back.appendChild(bShadow);
-
-  layer.appendChild(front);
-  layer.appendChild(back);
   bookBody.appendChild(layer);
 
-  /* 2. 뒤에 깔릴 새 페이지 즉시 세팅 */
-  if (dir === 'next') {
-    lEl.innerHTML = sp.L();
-  } else {
-    rEl.innerHTML = sp.R();
-  }
-
-  /* 3. RAF 두 번으로 transition 시작 (레이아웃 플러시 보장) */
+  /* 3. RAF 두 번 — 레이아웃 플러시 후 transition 시작 */
   requestAnimationFrame(() => requestAnimationFrame(() => {
+    layer.classList.add('animating');
     layer.style.transition = `transform ${DUR}ms var(--ease-flip)`;
-    layer.style.transform  = dir === 'next' ? 'rotateY(-180deg)' : 'rotateY(180deg)';
-    fShadow.style.opacity  = '0.9';
-    bShadow.style.opacity  = '0.6';
+    layer.style.transform  = dir === 'next' ? 'rotateY(-90deg)' : 'rotateY(90deg)';
 
+    /* 절반 지점에서 레이어 opacity fade-out — 완전히 접힌 시점에 사라짐 */
     setTimeout(() => {
-      /* 4. 완료: 나머지 면 세팅 후 레이어 제거 */
-      if (dir === 'next') {
-        rEl.innerHTML = sp.R();
-      } else {
-        lEl.innerHTML = sp.L();
-      }
-      addPageNums(toIdx);
+      layer.style.transition += `, opacity ${DUR * 0.25}ms ease`;
+      layer.style.opacity = '0';
+    }, DUR * 0.55);
+
+    /* 4. 완료 후 레이어 제거 */
+    setTimeout(() => {
       layer.remove();
       flipping = false;
       updateNav();
