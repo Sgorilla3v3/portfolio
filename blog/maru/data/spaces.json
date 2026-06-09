@@ -11,9 +11,18 @@
       "pricePerHour": 60000,
       "minHours": 3,
       "desc": "최대 120명을 수용하는 대형 다목적 홀. 공연, 강연, 포럼, 전시 등 대규모 행사에 최적입니다. 무대, 음향, 빔 프로젝터 구비.",
-      "features": ["무대", "전문 음향", "빔 프로젝터", "냉난방"],
+      "features": [
+        "무대",
+        "전문 음향",
+        "빔 프로젝터",
+        "냉난방"
+      ],
       "image": "data/images/hall-main.png",
-      "imageFallback": "상상마루홀"
+      "imageFallback": "상상마루홀",
+      "linkedSpaces": [
+        "hall-sangsang",
+        "hall-maru"
+      ]
     },
     {
       "id": "hall-sangsang",
@@ -26,9 +35,17 @@
       "pricePerHour": 40000,
       "minHours": 3,
       "desc": "전시와 공연에 특화된 중형 홀. 60명 규모의 행사에 적합하며 자연광이 풍부합니다.",
-      "features": ["자연채광", "음향", "프로젝터", "냉난방"],
+      "features": [
+        "자연채광",
+        "음향",
+        "프로젝터",
+        "냉난방"
+      ],
       "image": "data/images/hall-sangsang.png",
-      "imageFallback": "상상홀"
+      "imageFallback": "상상홀",
+      "linkedSpaces": [
+        "hall-main"
+      ]
     },
     {
       "id": "hall-maru",
@@ -41,9 +58,17 @@
       "pricePerHour": 20000,
       "minHours": 3,
       "desc": "고급 프로젝터가 구비된 소형 홀. 40명 규모 강의, 세미나, 소규모 행사에 적합합니다.",
-      "features": ["HD 프로젝터", "마이크", "화이트보드", "냉난방"],
+      "features": [
+        "HD 프로젝터",
+        "마이크",
+        "화이트보드",
+        "냉난방"
+      ],
       "image": "data/images/hall-maru.png",
-      "imageFallback": "마루홀"
+      "imageFallback": "마루홀",
+      "linkedSpaces": [
+        "hall-main"
+      ]
     },
     {
       "id": "seminar",
@@ -56,9 +81,14 @@
       "pricePerHour": 10000,
       "minHours": 2,
       "desc": "20명 규모의 세미나 및 교육 프로그램에 적합한 공간. 화이트보드, 모니터 구비.",
-      "features": ["모니터", "화이트보드", "냉난방"],
+      "features": [
+        "모니터",
+        "화이트보드",
+        "냉난방"
+      ],
       "image": "data/images/seminar.png",
-      "imageFallback": "세미나실"
+      "imageFallback": "세미나실",
+      "linkedSpaces": []
     },
     {
       "id": "gx",
@@ -71,9 +101,15 @@
       "pricePerHour": 25000,
       "minHours": 2,
       "desc": "댄스 연습실 및 필라테스실로 사용 가능한 GX실. 소도구 구비. 최대 20명.",
-      "features": ["거울", "음향", "소도구", "냉난방"],
+      "features": [
+        "거울",
+        "음향",
+        "소도구",
+        "냉난방"
+      ],
       "image": "data/images/gx.png",
-      "imageFallback": "GX실"
+      "imageFallback": "GX실",
+      "linkedSpaces": []
     },
     {
       "id": "meeting-a",
@@ -83,12 +119,17 @@
       "typeLabel": "회의실",
       "capacity": 12,
       "maxCapacity": 16,
-      "pricePerHour": 4000,
-      "minHours": 3,
+      "pricePerHour": 8000,
+      "minHours": 1,
       "desc": "기본 12명(최대 16명) 수용 가능한 회의실. 모니터, 화이트보드 구비. 소규모 미팅과 워크숍에 적합합니다.",
-      "features": ["모니터", "화이트보드", "냉난방"],
+      "features": [
+        "모니터",
+        "화이트보드",
+        "냉난방"
+      ],
       "image": "data/images/meeting-a.png",
-      "imageFallback": "회의실 A"
+      "imageFallback": "회의실 A",
+      "linkedSpaces": []
     },
     {
       "id": "meeting-b",
@@ -101,15 +142,32 @@
       "pricePerHour": 4000,
       "minHours": 3,
       "desc": "기본 12명(최대 16명) 수용 가능한 회의실. 모니터, 화이트보드 구비.",
-      "features": ["모니터", "화이트보드", "냉난방"],
+      "features": [
+        "모니터",
+        "화이트보드",
+        "냉난방"
+      ],
       "image": "data/images/meeting-b.png",
-      "imageFallback": "회의실 B"
+      "imageFallback": "회의실 B",
+      "linkedSpaces": []
     }
   ],
   "filters": [
-    { "key": "all",     "label": "전체" },
-    { "key": "hall",    "label": "홀" },
-    { "key": "meeting", "label": "회의실" },
-    { "key": "seminar", "label": "세미나 · 기타" }
+    {
+      "key": "all",
+      "label": "전체"
+    },
+    {
+      "key": "hall",
+      "label": "홀"
+    },
+    {
+      "key": "meeting",
+      "label": "회의실"
+    },
+    {
+      "key": "seminar",
+      "label": "세미나 · 기타"
+    }
   ]
 }

@@ -29,7 +29,7 @@ const ICONS = {
 };
 
 const $ = id => document.getElementById(id);
-const fmt = n => n.toLocaleString('ko-KR');
+const fmt = n => { const v = Number(n); return isNaN(v) ? '0' : v.toLocaleString('ko-KR'); };
 
 /* ── 입력 검증 규칙 ── */
 const RULES = {
@@ -339,23 +339,27 @@ async function selectCalDay(dateStr) {
   $('modalApplyBtn').disabled = true;
   $('modalFooterSummary').textContent = '시간을 선택해 주세요.';
 
-  renderCalendar(); // selected 상태 갱신
+  renderCalendar();
 
-  // 시간 패널 노출 + 로딩
   const tp = $('calTimePanel');
   tp.style.display = 'block';
   $('calTimeHeader').textContent = `${dateStr} 시작 시간`;
   $('calTimeGrid').innerHTML = '<div class="cal-time-empty">조회 중…</div>';
 
-  // 캘린더 슬롯 조회
   const s = SPACES.find(x => x.id === _modalSpaceId);
-  if (s && SITE.appsScriptUrl) {
-    const result = await fetchAvailableSlots(s.name, dateStr);
-    if (result && result.ok) {
-      _calOccupied = result.occupied || [];
-    } else {
-      _calOccupied = [];
-    }
+  if (!s) { _calOccupied = []; renderCalTimeGrid(); return; }
+
+  // 연결 공간 포함 슬롯 조회
+  // ex) 상상마루홀 선택 시 상상홀·마루홀 예약도 함께 확인
+  const linkedIds = s.linkedSpaces || [];
+  const targets   = [s, ...linkedIds.map(id => SPACES.find(x => x.id === id)).filter(Boolean)];
+
+  if (SITE.appsScriptUrl) {
+    const results = await Promise.all(
+      targets.map(sp => fetchAvailableSlots(sp.name, dateStr))
+    );
+    // 모든 공간의 occupied 슬롯을 병합 — 어느 하나라도 예약되면 불가
+    _calOccupied = results.flatMap(r => (r && r.ok) ? (r.occupied || []) : []);
   } else {
     _calOccupied = [];
   }
@@ -637,17 +641,20 @@ function handleDiscount(cb) {
 /* ── 요금 계산 ── */
 function updatePrice() {
   const spaceId  = $('fSpace')?.value;
-  const duration = parseInt($('fDuration')?.value)||1;
+  const duration = parseInt($('fDuration')?.value) || 1;
   const priceEl  = $('priceDisplay');
   const noteEl   = $('priceNote');
-  if(!priceEl) return;
-  if(!spaceId) { priceEl.textContent='—'; if(noteEl) noteEl.textContent=''; return; }
-  const s    = SPACES.find(x=>x.id===spaceId);
-  const base = s.pricePerHour*duration;
-  const fin  = currentDiscountRate===100 ? 0 : Math.round(base*(1-currentDiscountRate/100));
-  priceEl.textContent = fin===0 ? '무료' : `${fmt(fin)}원`;
-  if(noteEl) noteEl.textContent = currentDiscountRate>0
-    ? `(${fmt(base)}원 → ${currentDiscountRate}% 감면)` : `(${duration}시간 기준)`;
+  if (!priceEl) return;
+  if (!spaceId) { priceEl.textContent='—'; if(noteEl) noteEl.textContent=''; return; }
+  const s = SPACES.find(x => x.id === spaceId);
+  if (!s || !s.pricePerHour) { priceEl.textContent='—'; return; }
+  const base = Number(s.pricePerHour) * duration;
+  const disc = Number(currentDiscountRate) || 0;
+  const fin  = disc === 100 ? 0 : Math.round(base * (1 - disc / 100));
+  if (isNaN(fin)) { priceEl.textContent='—'; return; }
+  priceEl.textContent = fin === 0 ? '무료' : `${fmt(fin)}원`;
+  if (noteEl) noteEl.textContent = disc > 0
+    ? `(${fmt(base)}원 → ${disc}% 감면)` : `(${duration}시간 기준)`;
   updateSlotSummary();
 }
 
@@ -683,7 +690,7 @@ async function submitApply() {
 
   const spaceId  = $('fSpace')?.value;
   const date     = $('fDate')?.value;
-  const duration = parseInt($('fDuration')?.value)||0;
+  const duration = parseInt($('fDuration')?.value) || 1;
   const countVal = parseInt($('fCount')?.value)||0;
   const name      = $('fName')?.value.trim();
   const phone     = $('fPhone')?.value.trim();
@@ -711,9 +718,11 @@ async function submitApply() {
     return;
   }
 
-  const s     = SPACES.find(x=>x.id===spaceId);
-  const base  = s.pricePerHour*duration;
-  const final = currentDiscountRate===100 ? 0 : Math.round(base*(1-currentDiscountRate/100));
+  const s     = SPACES.find(x => x.id === spaceId);
+  if (!s) { showFormError('공간 정보를 찾을 수 없습니다. 다시 시도해 주세요.'); return; }
+  const base  = Number(s.pricePerHour) * duration;
+  const disc  = Number(currentDiscountRate) || 0;
+  const final = disc === 100 ? 0 : Math.round(base * (1 - disc / 100));
 
   const btn = $('submitBtn');
   if (btn) { btn.disabled=true; btn.textContent='처리 중…'; }
@@ -756,7 +765,8 @@ async function submitApply() {
 }
 
 function showSuccess({name, depositor, final}) {
-  const finalStr = final===0?'무료':`${fmt(final)}원`;
+  const safeVal  = isNaN(Number(final)) ? 0 : Number(final);
+  const finalStr = safeVal === 0 ? '무료' : `${fmt(safeVal)}원`;
   $('successAmountBox').textContent     = finalStr;
   $('successAmountInline').textContent  = finalStr;
   $('successDepositorName').textContent = depositor||name;
