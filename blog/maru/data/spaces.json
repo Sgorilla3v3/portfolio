@@ -119,8 +119,8 @@
       "typeLabel": "회의실",
       "capacity": 12,
       "maxCapacity": 16,
-      "pricePerHour": 8000,
-      "minHours": 1,
+      "pricePerHour": 4000,
+      "minHours": 3,
       "desc": "기본 12명(최대 16명) 수용 가능한 회의실. 모니터, 화이트보드 구비. 소규모 미팅과 워크숍에 적합합니다.",
       "features": [
         "모니터",
