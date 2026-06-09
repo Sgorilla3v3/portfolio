@@ -39,9 +39,9 @@
   --brand-스카이-20: rgba(135,166,215,0.20);
 
   /* 3. 레이아웃 배경 */
-  --c-bg:          #faf9f7;
-  --c-surface:     #f3f1ed;
-  --c-surface-alt: #e8e4dc;
+  --c-bg:          #ffffff;
+  --c-surface:     #f5f5f5;
+  --c-surface-alt: #ebebeb;
   --c-card:        #ffffff;
   --c-border:      rgba(0,0,0,0.07);
   --c-border-md:   rgba(0,0,0,0.12);
@@ -57,18 +57,18 @@
   --c-subtle: #b0aa9f;
 
   /* 6. 인버트 (다크 배경 위) */
-  --c-invert:    #faf9f7;
+  --c-invert:    #ffffff;
   --c-invert-6:  rgba(255,255,255,0.06);
   --c-invert-8:  rgba(255,255,255,0.08);
   --c-invert-15: rgba(255,255,255,0.15);
   --c-invert-35: rgba(255,255,255,0.35);
-  --c-invert-40: rgba(250,249,247,0.40);
-  --c-invert-45: rgba(250,249,247,0.45);
-  --c-invert-50: rgba(250,249,247,0.50);
-  --c-invert-60: rgba(250,249,247,0.60);
+  --c-invert-40: rgba(255,255,255,0.40);
+  --c-invert-45: rgba(255,255,255,0.45);
+  --c-invert-50: rgba(255,255,255,0.50);
+  --c-invert-60: rgba(255,255,255,0.60);
   --c-invert-88: rgba(255,255,255,0.88);
   --c-invert-90: rgba(255,255,255,0.90);
-  --c-invert-92: rgba(250,249,247,0.92);
+  --c-invert-92: rgba(255,255,255,0.92);
 
   /* 7. 오버레이 */
   --c-overlay:       rgba(26,24,22,0.70);
@@ -92,9 +92,9 @@
   --f-sans:  'Noto Sans KR', sans-serif;
 
   /* 12. 형태 */
-  --r-card: 14px;
-  --r-btn:  7px;
-  --r-pill: 40px;
+  --r-card: 4px;
+  --r-btn:  3px;
+  --r-pill: 4px;
 
   /* 13. 이징 */
   --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
@@ -337,7 +337,7 @@ nav {
 .hero-notice-icon {
   width: 32px; height: 32px; flex-shrink: 0;
   background: var(--c-border-md);
-  border-radius: 8px;
+  border-radius: var(--r-card);
   display: flex; align-items: center; justify-content: center;
   font-size: 1rem;
 }
@@ -419,7 +419,7 @@ section { padding: 96px var(--pad-x); }
 
 .step-accent-line {
   width: 32px; height: 3px;
-  border-radius: 2px;
+  border-radius: var(--r-btn);
   margin-bottom: 28px;
 }
 .step:nth-child(1) .step-accent-line { background: var(--brand-홍시); }
@@ -690,7 +690,7 @@ section { padding: 96px var(--pad-x); }
   content: '';
   width: 4px; height: 18px;
   background: var(--c-accent);
-  border-radius: 2px;
+  border-radius: var(--r-btn);
   display: block;
   flex-shrink: 0;
 }
@@ -852,7 +852,7 @@ footer {
 .modal {
   background: var(--c-card);
   border: 1px solid var(--c-border);
-  border-radius: 18px;
+  border-radius: var(--r-card);
   width: 100%; max-width: 640px;
   max-height: 88vh;
   overflow-y: auto;
@@ -900,7 +900,7 @@ footer {
 .modal-specs {
   display: grid; grid-template-columns: repeat(3,1fr);
   gap: 1px; background: var(--c-border);
-  border-radius: 10px; overflow: hidden; margin-bottom: 20px;
+  border-radius: var(--r-card); overflow: hidden; margin-bottom: 20px;
 }
 .spec-item {
   background: var(--c-surface);
@@ -946,18 +946,19 @@ footer {
   background: var(--c-overlay-heavy);
   backdrop-filter: blur(12px);
   z-index: 300;
-  display: flex; align-items: center; justify-content: center;
-  padding: 24px;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 40px 24px;
   opacity: 0; pointer-events: none;
   transition: opacity 0.3s;
   overflow-y: auto;
+  /* align-items: flex-start 필수 — center 사용 시 폼이 뷰포트보다 길면 최상단이 잘림 */
 }
 .apply-overlay.open { opacity: 1; pointer-events: auto; }
 
 .apply-modal {
   background: var(--c-card);
   border: 1px solid var(--c-border);
-  border-radius: 18px;
+  border-radius: var(--r-card);
   width: 100%; max-width: 580px;
   padding: 48px;
   transform: translateY(24px);
