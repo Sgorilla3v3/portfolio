@@ -105,7 +105,7 @@ function applyMeta(data) {
     navLinks.innerHTML = nav.map(n =>
       `<li><a href="${n.href}">${n.label}</a></li>`
     ).join('') +
-    `<li><a href="#" id="navApplyBtn" style="color:var(--c-gold);">대관 신청</a></li>`;
+    `<li class="nav-cta"><a href="#" id="navApplyBtn">대관 신청</a></li>`;
     $('navApplyBtn')?.addEventListener('click', e => { e.preventDefault(); openApply(null); });
   }
 
@@ -117,13 +117,13 @@ function applyMeta(data) {
     ).join('');
   }
 
-  /* hero stats */
-  const statsEl = document.querySelector('.hero-stats');
+  /* hero stats — hero-stat-card 그리드 */
+  const statsEl = document.getElementById('heroStats');
   if (statsEl) {
     statsEl.innerHTML = data.stats.map(s => `
-      <div class="stat-item">
-        <div class="stat-num">${s.num}</div>
-        <div class="stat-label">${s.label}</div>
+      <div class="hero-stat-card">
+        <div class="hero-stat-num">${s.num}</div>
+        <div class="hero-stat-label">${s.label}</div>
       </div>
     `).join('');
   }
