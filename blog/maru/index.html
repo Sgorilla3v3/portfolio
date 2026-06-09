@@ -1048,6 +1048,49 @@ textarea { resize: vertical; min-height: 88px; }
 .price-discount-note { font-size: 0.7rem; color: var(--c-subtle); text-align: right; margin-top: 2px; }
 .price-amount      { font-family: var(--f-serif); font-size: 1.55rem; font-weight: 600; color: var(--c-accent); }
 
+/* 슬롯 상태 색상 */
+.slot-status[data-type="ok"]   { border-left-color: var(--brand-올리브); color: #3d3c00; background: rgba(177,174,52,0.06); }
+.slot-status[data-type="full"] { border-left-color: var(--c-accent); color: var(--c-accent); background: rgba(240,105,51,0.06); }
+.slot-status[data-type="warn"] { border-left-color: var(--brand-스카이); color: #2a4a7a; background: rgba(135,166,215,0.07); }
+
+/* 필드 오류 */
+.field-error { border-color: var(--c-accent) !important; box-shadow: 0 0 0 3px rgba(240,105,51,0.12) !important; }
+.field-error-msg {
+  font-size: 0.72rem; color: var(--c-accent);
+  margin-top: 5px; display: flex; align-items: center; gap: 4px;
+}
+.field-error-msg::before { content: "!"; font-weight: 700; }
+
+/* 폼 에러 배너 */
+.form-error-banner {
+  background: rgba(240,105,51,0.08);
+  border: 1px solid var(--c-accent-border);
+  border-radius: var(--r);
+  color: var(--c-accent);
+  font-size: 0.82rem;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: none;
+}
+
+/* 단계 레이블 */
+.step-label {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--c-accent);
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 18px;
+}
+.step-label::before {
+  content: attr(data-step);
+  width: 20px; height: 20px;
+  background: var(--c-accent); color: var(--c-invert);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 700; flex-shrink: 0;
+}
+#step2Fields { transition: opacity 0.3s; }
+
 /* 완료 화면 */
 .success-state { text-align: center; padding: 16px 0; display: none; }
 .success-icon {
@@ -1280,21 +1323,8 @@ textarea { resize: vertical; min-height: 88px; }
         </svg>
         <span id="selectedSpaceName"></span>
       </div>
-      <div class="form-section-label">신청자 정보</div>
-      <div class="form-row">
-        <div><label for="fName">성명</label><input type="text" id="fName" placeholder="홍길동"></div>
-        <div><label for="fPhone">연락처</label><input type="tel" id="fPhone" placeholder="010-0000-0000"></div>
-      </div>
-      <div class="form-group">
-        <label for="fEmail">이메일 (확정 안내 수신)</label>
-        <input type="email" id="fEmail" placeholder="example@email.com">
-      </div>
-      <div class="form-group">
-        <label for="fOrg">단체명 (개인 신청 시 생략 가능)</label>
-        <input type="text" id="fOrg" placeholder="단체 또는 기관명">
-      </div>
-      <div class="form-divider"></div>
-      <div class="form-section-label">예약 정보</div>
+      <!-- Step 1: 공간·날짜·시간 선택 (슬롯 확인) -->
+      <div class="step-label" data-step="1">공간 및 날짜 선택</div>
       <div class="form-group">
         <label for="fSpace">공간 선택</label>
         <select id="fSpace"></select>
@@ -1303,27 +1333,54 @@ textarea { resize: vertical; min-height: 88px; }
         <div><label for="fDate">사용 날짜</label><input type="date" id="fDate"></div>
         <div><label for="fTime">시작 시간</label><select id="fTime"></select></div>
       </div>
+      <div class="slot-status" id="slotStatus" data-type="idle">공간과 날짜를 선택하면 가능한 시간을 표시합니다.</div>
       <div class="form-row">
         <div><label for="fDuration">사용 시간</label><select id="fDuration"></select></div>
-        <div><label for="fCount">예상 인원</label><input type="number" id="fCount" placeholder="명" min="1"></div>
+        <div><label for="fCount">예상 인원</label><input type="number" id="fCount" placeholder="명" min="1" max="500"></div>
       </div>
-      <div class="form-group">
-        <label for="fPurpose">사용 목적</label>
-        <textarea id="fPurpose" placeholder="행사 또는 사용 목적을 간략히 작성해 주세요."></textarea>
-      </div>
+
       <div class="form-divider"></div>
-      <div class="form-section-label">감면 해당 여부 (중복 불가)</div>
-      <div class="checkbox-group" id="discountCheckboxes"></div>
-      <div class="price-preview">
-        <div>
-          <div class="price-label">예상 대관료</div>
-          <div class="price-discount-note" id="priceNote"></div>
+
+      <!-- Step 2: 신청자 정보 (슬롯 확인 전 잠금) -->
+      <div id="step2Fields">
+        <div class="step-label" data-step="2">신청자 정보</div>
+        <div class="form-row">
+          <div><label for="fName">성명 <span style="color:var(--c-accent)">*</span></label><input type="text" id="fName" placeholder="홍길동" maxlength="30" autocomplete="name"></div>
+          <div><label for="fPhone">연락처 <span style="color:var(--c-accent)">*</span></label><input type="tel" id="fPhone" placeholder="010-0000-0000" maxlength="20" autocomplete="tel"></div>
         </div>
-        <div id="priceDisplay" class="price-amount">—</div>
+        <div class="form-group">
+          <label for="fEmail">이메일 <span style="color:var(--c-accent)">*</span> <span style="font-weight:300;text-transform:none;letter-spacing:0">(확정 안내 수신)</span></label>
+          <input type="email" id="fEmail" placeholder="example@email.com" maxlength="100" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="fOrg">단체명 <span style="font-weight:300;text-transform:none;letter-spacing:0">(개인 신청 시 생략 가능)</span></label>
+          <input type="text" id="fOrg" placeholder="단체 또는 기관명" maxlength="60">
+        </div>
+        <div class="form-group">
+          <label for="fDepositor">입금자명 <span style="font-weight:300;text-transform:none;letter-spacing:0">(통장에 표시될 이름, 신청자명과 다를 경우)</span></label>
+          <input type="text" id="fDepositor" placeholder="비워두면 신청자명으로 자동 설정됩니다" maxlength="30">
+        </div>
+        <div class="form-group">
+          <label for="fPurpose">사용 목적 <span style="color:var(--c-accent)">*</span></label>
+          <textarea id="fPurpose" placeholder="행사 또는 사용 목적을 간략히 작성해 주세요. (300자 이내)" maxlength="300"></textarea>
+        </div>
+
+        <div class="form-divider"></div>
+        <div class="form-section-label">감면 해당 여부 (중복 불가)</div>
+        <div class="checkbox-group" id="discountCheckboxes"></div>
+
+        <div class="price-preview">
+          <div>
+            <div class="price-label">예상 대관료</div>
+            <div class="price-discount-note" id="priceNote"></div>
+          </div>
+          <div id="priceDisplay" class="price-amount">—</div>
+        </div>
+
+        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="submitApply()">
+          신청 완료하기
+        </button>
       </div>
-      <button class="btn-primary" style="width:100%;justify-content:center;" onclick="submitApply()">
-        신청 완료하기
-      </button>
     </div>
     <div class="success-state" id="successState">
       <div class="success-icon">✓</div>

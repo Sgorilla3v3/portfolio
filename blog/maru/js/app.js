@@ -1,15 +1,17 @@
 /* ============================================================
    app.js — 상상마루 대관 홈페이지
-   데이터는 data/spaces.json, data/site.json 에서 fetch
+   데이터: data/spaces.json, data/site.json
 ============================================================ */
 
-/* ── 전역 상태 ─────────────────────────────────────────── */
+/* ── 전역 상태 ── */
 let SPACES  = [];
 let SITE    = {};
 let ACCOUNT = {};
 let currentDiscountRate = 0;
+let occupiedSlots       = [];
+let _timeSlots          = [];   // site.json 시간 슬롯 캐시
 
-/* ── 아이콘 SVG 맵 ─────────────────────────────────────── */
+/* ── 아이콘 SVG 맵 ── */
 const ICONS = {
   grid: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
     <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -33,109 +35,147 @@ const ICONS = {
   </svg>`
 };
 
-/* ── 유틸 ───────────────────────────────────────────────── */
+/* ── 유틸 ── */
 const $ = id => document.getElementById(id);
 const fmt = n => n.toLocaleString('ko-KR');
 
-function setHTML(id, html) {
-  const el = $(id);
-  if (el) el.innerHTML = html;
+/* XSS 방지 — DOM 삽입 전 모든 사용자 입력값 이스케이프 */
+function esc(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
 }
 
-/* ── 데이터 로드 ────────────────────────────────────────── */
+/* ── 입력 검증 규칙 ── */
+const RULES = {
+  name:      { maxLen: 30,  pattern: /^[가-힣a-zA-Z\s]{1,30}$/,            msg: '성명은 한글 또는 영문 1~30자로 입력해 주세요.' },
+  phone:     { maxLen: 20,  pattern: /^(010|011|016|017|018|019)-?\d{3,4}-?\d{4}$/, msg: '올바른 휴대폰 번호를 입력해 주세요. (예: 010-1234-5678)' },
+  email:     { maxLen: 100, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,          msg: '올바른 이메일 주소를 입력해 주세요.' },
+  org:       { maxLen: 60,  pattern: null,                                   msg: '' },
+  depositor: { maxLen: 30,  pattern: /^[가-힣a-zA-Z\s]{0,30}$/,            msg: '입금자명은 한글 또는 영문 30자 이내로 입력해 주세요.' },
+  count:     { min: 1, max: 500 },
+  purpose:   { maxLen: 300, pattern: null,                                   msg: '' },
+};
+
+function validateField(id, rule) {
+  const el  = $(id);
+  if (!el) return true;
+  const val = el.value.trim();
+
+  if (rule.pattern && val !== '') {
+    if (!rule.pattern.test(val)) return rule.msg;
+  }
+  if (rule.maxLen && val.length > rule.maxLen) {
+    return `${rule.maxLen}자 이내로 입력해 주세요.`;
+  }
+  return null; // 통과
+}
+
+function showFieldError(id, msg) {
+  clearFieldError(id);
+  const el = $(id);
+  if (!el) return;
+  el.classList.add('field-error');
+  const errEl = document.createElement('div');
+  errEl.className = 'field-error-msg';
+  errEl.id = id + '_err';
+  errEl.textContent = msg;
+  el.parentNode.appendChild(errEl);
+}
+
+function clearFieldError(id) {
+  const el  = $(id);
+  const err = $(id + '_err');
+  if (el)  el.classList.remove('field-error');
+  if (err) err.remove();
+}
+
+function clearAllErrors() {
+  document.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
+  document.querySelectorAll('.field-error-msg').forEach(el => el.remove());
+}
+
+/* ============================================================
+   데이터 로드
+============================================================ */
 async function loadData() {
   const [spacesRes, siteRes] = await Promise.all([
     fetch('data/spaces.json'),
-    fetch('data/site.json')
+    fetch('data/site.json'),
   ]);
   const spacesData = await spacesRes.json();
   const siteData   = await siteRes.json();
 
-  SPACES  = spacesData.spaces;
-  SITE    = siteData.site;
-  ACCOUNT = siteData.account;
+  SPACES      = spacesData.spaces;
+  SITE        = siteData.site;
+  ACCOUNT     = siteData.account;
+  _timeSlots  = siteData.timeSlots;
+  window._bookingWindow = siteData.bookingWindow;
 
   applyMeta(siteData);
   renderAll(spacesData, siteData);
 }
 
-/* ── 메타 / 전역 텍스트 적용 ────────────────────────────── */
+/* ── 메타 ── */
 function applyMeta(data) {
   const { site, nav, footer } = data;
-
   document.title = `${site.name} | 공간 대관`;
 
-  /* 로고 */
   const logoText = site.name.replace(
-    site.nameHighlight,
-    `<span>${site.nameHighlight}</span>`
+    site.nameHighlight, `<span>${site.nameHighlight}</span>`
   );
   document.querySelectorAll('.nav-logo').forEach(el => el.innerHTML = logoText);
   document.querySelectorAll('.footer-logo').forEach(el => el.innerHTML = logoText);
 
-  /* hero */
   const heroTag = document.querySelector('.hero-tag');
   if (heroTag) heroTag.textContent = site.subtitle;
 
   const heroTitle = document.querySelector('.hero-title');
   if (heroTitle) {
-    const lines = site.heroTitle.split('\n').map(line =>
-      line === site.heroTitleHighlight
-        ? `<em>${line}</em>`
-        : line
+    heroTitle.innerHTML = site.heroTitle.split('\n').map(line =>
+      line === site.heroTitleHighlight ? `<em>${line}</em>` : line
     ).join('<br>');
-    heroTitle.innerHTML = lines;
   }
 
   const heroDesc = document.querySelector('.hero-desc');
   if (heroDesc) heroDesc.innerHTML = site.heroDesc.replace('\n', '<br>');
 
-  /* 푸터 */
   const footerInfo = document.querySelector('.footer-info');
-  if (footerInfo) {
-    footerInfo.innerHTML = `
-      ${site.address}<br>
-      대관 문의 : ${site.phone} &nbsp;|&nbsp; ${site.officeHours}
-    `;
-  }
+  if (footerInfo) footerInfo.innerHTML =
+    `${esc(site.address)}<br>대관 문의 : ${esc(site.phone)} &nbsp;|&nbsp; ${esc(site.officeHours)}`;
 
-  /* nav 링크 */
   const navLinks = document.querySelector('.nav-links');
   if (navLinks) {
     navLinks.innerHTML = nav.map(n =>
-      `<li><a href="${n.href}">${n.label}</a></li>`
+      `<li><a href="${esc(n.href)}">${esc(n.label)}</a></li>`
     ).join('') +
     `<li class="nav-cta"><a href="#" id="navApplyBtn">대관 신청</a></li>`;
     $('navApplyBtn')?.addEventListener('click', e => { e.preventDefault(); openApply(null); });
   }
 
-  /* footer 링크 */
   const footerLinks = document.querySelector('.footer-links');
-  if (footerLinks) {
-    footerLinks.innerHTML = data.footer.map(f =>
-      `<li><a href="${f.href}">${f.label}</a></li>`
-    ).join('');
-  }
+  if (footerLinks) footerLinks.innerHTML = data.footer.map(f =>
+    `<li><a href="${esc(f.href)}">${esc(f.label)}</a></li>`
+  ).join('');
 
-  /* hero stats — hero-stat-card 그리드 */
-  const statsEl = document.getElementById('heroStats');
-  if (statsEl) {
-    statsEl.innerHTML = data.stats.map(s => `
-      <div class="hero-stat-card">
-        <div class="hero-stat-num">${s.num}</div>
-        <div class="hero-stat-label">${s.label}</div>
-      </div>
-    `).join('');
-  }
+  const statsEl = $('heroStats');
+  if (statsEl) statsEl.innerHTML = data.stats.map(s => `
+    <div class="hero-stat-card">
+      <div class="hero-stat-num">${esc(s.num)}</div>
+      <div class="hero-stat-label">${esc(s.label)}</div>
+    </div>
+  `).join('');
 
-  /* CTA 전화버튼 */
   document.querySelectorAll('.btn-tel').forEach(el => {
     el.href = `tel:${site.phone}`;
     el.textContent = '전화 문의';
   });
 }
 
-/* ── 전체 렌더 ──────────────────────────────────────────── */
+/* ── 전체 렌더 ── */
 function renderAll(spacesData, siteData) {
   renderFilters(spacesData.filters);
   renderCards('all');
@@ -143,19 +183,18 @@ function renderAll(spacesData, siteData) {
   renderDiscounts(siteData.discounts);
   renderRules(siteData.rules);
   renderApplySpaceSelect();
-  renderTimeSlots(siteData.timeSlots);
+  renderTimeSlots(siteData.timeSlots, []);
   renderDurationOptions(siteData.durationOptions);
   renderDiscountCheckboxes(siteData.discounts);
   observeFadeUp();
 }
 
-/* ── 필터 탭 ────────────────────────────────────────────── */
+/* ── 필터 탭 ── */
 function renderFilters(filters) {
   const el = document.querySelector('.filter-tabs');
   if (!el) return;
   el.innerHTML = filters.map((f, i) => `
-    <button class="filter-btn${i === 0 ? ' active' : ''}"
-      data-filter="${f.key}">${f.label}</button>
+    <button class="filter-btn${i === 0 ? ' active' : ''}" data-filter="${esc(f.key)}">${esc(f.label)}</button>
   `).join('');
   el.addEventListener('click', e => {
     const btn = e.target.closest('.filter-btn');
@@ -166,7 +205,7 @@ function renderFilters(filters) {
   });
 }
 
-/* ── 공간 카드 ──────────────────────────────────────────── */
+/* ── 공간 카드 ── */
 function renderCards(filter = 'all') {
   const grid = $('spaceGrid');
   if (!grid) return;
@@ -174,16 +213,15 @@ function renderCards(filter = 'all') {
 
   grid.innerHTML = list.map(s => {
     const cap = s.maxCapacity || s.capacity;
-    const basePrice = fmt(s.pricePerHour * s.minHours);
     return `
-      <div class="space-card fade-up" data-id="${s.id}" role="button" tabindex="0">
+      <div class="space-card fade-up" data-id="${esc(s.id)}" role="button" tabindex="0">
         <div class="card-thumb">
           ${buildThumb(s)}
-          <span class="card-floor-badge">${s.floor}</span>
-          <span class="card-type-badge">${s.typeLabel}</span>
+          <span class="card-floor-badge">${esc(s.floor)}</span>
+          <span class="card-type-badge">${esc(s.typeLabel)}</span>
         </div>
         <div class="card-body">
-          <div class="card-name">${s.name}</div>
+          <div class="card-name">${esc(s.name)}</div>
           <div class="card-capacity">최대 <strong>${cap}명</strong> 수용</div>
           <div class="card-meta">
             <div class="card-meta-item">
@@ -196,7 +234,7 @@ function renderCards(filter = 'all') {
             </div>
             <div class="card-meta-item">
               <span class="meta-label">기본 요금</span>
-              <span class="meta-value">${basePrice}원</span>
+              <span class="meta-value">${fmt(s.pricePerHour * s.minHours)}원</span>
             </div>
             <button class="card-cta">신청하기</button>
           </div>
@@ -205,89 +243,88 @@ function renderCards(filter = 'all') {
     `;
   }).join('');
 
-  /* 이벤트 위임 */
   grid.addEventListener('click', e => {
     const card = e.target.closest('.space-card');
     if (!card) return;
     openModal(card.dataset.id);
   });
-
   observeFadeUp();
 }
 
-/* 썸네일: PNG가 있으면 <img>, 없으면 텍스트 플레이스홀더 */
 function buildThumb(s) {
-  if (s.image) {
-    return `
-      <img
-        src="${s.image}"
-        alt="${s.name}"
-        class="card-thumb-img"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-        loading="lazy"
-      >
-      <div class="card-thumb-fallback" style="display:none;">${s.imageFallback}</div>
-    `;
-  }
-  return `<div class="card-thumb-fallback">${s.imageFallback}</div>`;
+  if (s.image) return `
+    <img src="${esc(s.image)}" alt="${esc(s.name)}" class="card-thumb-img"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" loading="lazy">
+    <div class="card-thumb-fallback" style="display:none;">${esc(s.imageFallback)}</div>`;
+  return `<div class="card-thumb-fallback">${esc(s.imageFallback)}</div>`;
 }
 
-/* ── 프로세스 ───────────────────────────────────────────── */
 function renderProcess(steps) {
   const el = document.querySelector('.steps');
   if (!el) return;
   el.innerHTML = steps.map(s => `
     <div class="step">
+      <div class="step-accent-line"></div>
       <div class="step-icon">${ICONS[s.icon] || ''}</div>
-      <div class="step-num" data-n="${s.num}">${s.num}</div>
-      <div class="step-title">${s.title}</div>
-      <div class="step-desc">${s.desc}</div>
+      <div class="step-num">${esc(s.num)}</div>
+      <div class="step-title">${esc(s.title)}</div>
+      <div class="step-desc">${esc(s.desc)}</div>
     </div>
   `).join('');
 }
 
-/* ── 감면 기준 ──────────────────────────────────────────── */
 function renderDiscounts(discounts) {
   const el = document.querySelector('.discount-grid');
   if (!el) return;
   el.innerHTML = discounts.map(d => `
     <div class="discount-item fade-up">
-      <div class="discount-rate">${d.rate}<small>${d.unit}</small></div>
+      <div class="discount-rate">${esc(d.rate)}<small>${esc(d.unit)}</small></div>
       <div>
-        <div class="discount-info-title">${d.title}</div>
-        <div class="discount-info-desc">${d.desc}</div>
+        <div class="discount-info-title">${esc(d.title)}</div>
+        <div class="discount-info-desc">${esc(d.desc)}</div>
       </div>
     </div>
   `).join('');
 }
 
-/* ── 이용 안내 ──────────────────────────────────────────── */
 function renderRules(rules) {
   const el = document.querySelector('.rules-grid');
   if (!el) return;
   el.innerHTML = rules.map(r => `
     <div class="rules-card fade-up">
-      <div class="rules-card-title">${r.title}</div>
+      <div class="rules-card-title">${esc(r.title)}</div>
       <ul class="rules-list">
-        ${r.items.map(item => `<li>${item}</li>`).join('')}
+        ${r.items.map(item => `<li>${esc(item)}</li>`).join('')}
       </ul>
     </div>
   `).join('');
 }
 
-/* ── 신청 폼 셀렉트/옵션 렌더 ───────────────────────────── */
 function renderApplySpaceSelect() {
   const sel = $('fSpace');
   if (!sel) return;
   sel.innerHTML = '<option value="">공간을 선택해 주세요</option>' +
-    SPACES.map(s => `<option value="${s.id}">${s.name} (${s.floor})</option>`).join('');
+    SPACES.map(s =>
+      `<option value="${esc(s.id)}">${esc(s.name)} (${esc(s.floor)})</option>`
+    ).join('');
 }
 
-function renderTimeSlots(slots) {
+/* ── 시간 슬롯 (occupied → disabled) ── */
+function renderTimeSlots(slots, occupied = []) {
   const sel = $('fTime');
   if (!sel) return;
-  sel.innerHTML = '<option value="">선택</option>' +
-    slots.map(t => `<option>${t}</option>`).join('');
+  sel.innerHTML = '<option value="">시간 선택</option>' +
+    slots.map(t => {
+      const h = parseInt(t);
+      const isOccupied = occupied.some(oc => {
+        const s = parseInt(oc.start);
+        const e = parseInt(oc.end);
+        return h >= s && h < e;
+      });
+      return `<option value="${esc(t)}"${isOccupied ? ' disabled' : ''}>
+        ${esc(t)}${isOccupied ? ' (예약됨)' : ''}
+      </option>`;
+    }).join('');
 }
 
 function renderDurationOptions(opts) {
@@ -303,8 +340,8 @@ function renderDiscountCheckboxes(discounts) {
   if (!el) return;
   el.innerHTML = discounts.map(d => `
     <label class="checkbox-item">
-      <input type="checkbox" name="discount" value="${d.value}">
-      <span>${d.title} (${d.rate} ${d.unit})</span>
+      <input type="checkbox" name="discount" value="${Number(d.value)}">
+      <span>${esc(d.title)} (${esc(d.rate)} ${esc(d.unit)})</span>
     </label>
   `).join('');
   el.addEventListener('change', e => {
@@ -314,7 +351,104 @@ function renderDiscountCheckboxes(discounts) {
   });
 }
 
-/* ── 모달 (공간 상세) ───────────────────────────────────── */
+/* ============================================================
+   캘린더 슬롯 조회
+============================================================ */
+async function fetchAvailableSlots(spaceName, date) {
+  const url = SITE.appsScriptUrl;
+  if (!url || !spaceName || !date) return null;
+
+  setSlotLoading(true);
+  try {
+    const res = await fetch(
+      `${url}?action=getAvailableSlots` +
+      `&spaceName=${encodeURIComponent(spaceName)}` +
+      `&date=${encodeURIComponent(date)}`
+    );
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  } catch(e) {
+    console.warn('슬롯 조회 실패:', e);
+    return null;
+  } finally {
+    setSlotLoading(false);
+  }
+}
+
+function setSlotLoading(loading) {
+  const sel  = $('fTime');
+  const btn  = $('slotFetchBtn');
+  if (!sel) return;
+  if (loading) {
+    sel.innerHTML = '<option value="">조회 중…</option>';
+    sel.disabled = true;
+    if (btn) { btn.disabled = true; btn.textContent = '조회 중…'; }
+  } else {
+    sel.disabled = false;
+    if (btn) { btn.disabled = false; btn.textContent = '시간 확인'; }
+  }
+}
+
+async function onSpaceOrDateChange() {
+  const spaceId = $('fSpace')?.value;
+  const date    = $('fDate')?.value;
+
+  if (!spaceId || !date) {
+    occupiedSlots = [];
+    renderTimeSlots(_timeSlots, []);
+    setSlotStatus('공간과 날짜를 모두 선택하면 가능한 시간을 표시합니다.', 'idle');
+    lockStep2(true);
+    return;
+  }
+
+  const space  = SPACES.find(s => s.id === spaceId);
+  if (!space) return;
+
+  const result = await fetchAvailableSlots(space.name, date);
+
+  if (result && result.ok) {
+    occupiedSlots = result.occupied || [];
+    renderTimeSlots(_timeSlots, occupiedSlots);
+    const avail = result.available?.length || 0;
+    const occ   = result.occupied?.length  || 0;
+    if (avail === 0) {
+      setSlotStatus(`${date} ${space.name}은 예약이 꽉 찼습니다. 다른 날짜를 선택해 주세요.`, 'full');
+      lockStep2(true);
+    } else {
+      setSlotStatus(`${avail}개 시간대 신청 가능 (${occ > 0 ? occ + '개 예약됨' : '전체 가능'})`, 'ok');
+      lockStep2(false);
+    }
+  } else {
+    occupiedSlots = [];
+    renderTimeSlots(_timeSlots, []);
+    setSlotStatus('시간 조회를 건너뜁니다. 시간 선택 후 신청 시 재확인됩니다.', 'warn');
+    lockStep2(false); // 조회 실패 시 사용자가 진행할 수 있도록 허용
+  }
+
+  clearFieldError('fTime');
+  updatePrice();
+}
+
+function setSlotStatus(msg, type) {
+  const el = $('slotStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.dataset.type = type; // CSS로 색상 구분
+}
+
+/* step2 (신청자 정보 영역) 잠금 제어 */
+function lockStep2(locked) {
+  const step2 = $('step2Fields');
+  if (!step2) return;
+  step2.style.opacity  = locked ? '0.35' : '1';
+  step2.style.pointerEvents = locked ? 'none' : '';
+  const btn = document.querySelector('#formState .btn-primary');
+  if (btn) btn.disabled = locked;
+}
+
+/* ============================================================
+   모달 — 공간 상세
+============================================================ */
 function openModal(id) {
   const s = SPACES.find(x => x.id === id);
   if (!s) return;
@@ -341,8 +475,7 @@ function openModal(id) {
 
   if (s.features?.length) {
     $('modalFeatures').innerHTML = s.features.map(f =>
-      `<span class="feature-tag">${f}</span>`
-    ).join('');
+      `<span class="feature-tag">${esc(f)}</span>`).join('');
     $('modalFeatures').style.display = 'flex';
   } else {
     $('modalFeatures').style.display = 'none';
@@ -359,42 +492,64 @@ function closeModal(e) {
   document.body.style.overflow = '';
 }
 
-/* ── 신청 모달 ──────────────────────────────────────────── */
+/* ============================================================
+   신청 모달 — 2단계 UX
+   Step1: 공간·날짜·시간 선택 (슬롯 확인)
+   Step2: 신청자 정보 + 신청 내용 입력
+============================================================ */
 function openApply(spaceId) {
+  clearAllErrors();
+
+  /* 공간 사전 선택 */
   if (spaceId) {
     $('fSpace').value = spaceId;
     const s = SPACES.find(x => x.id === spaceId);
     $('selectedSpaceBadge').style.display = 'inline-flex';
-    $('selectedSpaceName').textContent = s.name;
+    $('selectedSpaceName').textContent = esc(s.name);
   } else {
+    $('fSpace').value = '';
     $('selectedSpaceBadge').style.display = 'none';
   }
 
-  /* 예약 가능 날짜 범위 */
-  const { minDaysAhead, maxDaysAhead } = (window._bookingWindow || { minDaysAhead: 7, maxDaysAhead: 30 });
+  /* 날짜 범위 설정 */
+  const { minDaysAhead = 7, maxDaysAhead = 30 } = window._bookingWindow || {};
   const today = new Date();
   const min = new Date(today); min.setDate(today.getDate() + minDaysAhead);
   const max = new Date(today); max.setDate(today.getDate() + maxDaysAhead);
-  $('fDate').min = min.toISOString().split('T')[0];
-  $('fDate').max = max.toISOString().split('T')[0];
+  $('fDate').min   = min.toISOString().split('T')[0];
+  $('fDate').max   = max.toISOString().split('T')[0];
+  $('fDate').value = '';
 
-  $('formState').style.display   = 'block';
+  /* 폼 초기화 */
+  $('formState').style.display    = 'block';
   $('successState').style.display = 'none';
   currentDiscountRate = 0;
+  occupiedSlots = [];
   document.querySelectorAll('#discountCheckboxes input[type="checkbox"]')
     .forEach(c => c.checked = false);
+  document.querySelectorAll('#step2Fields input, #step2Fields textarea')
+    .forEach(el => { el.value = ''; });
 
+  /* Step2 잠금 — 슬롯 확인 전까지 신청 불가 */
+  lockStep2(true);
+  setSlotStatus('공간과 날짜를 선택하면 가능한 시간을 표시합니다.', 'idle');
+  renderTimeSlots(_timeSlots, []);
   updatePrice();
+
   $('applyOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  /* 공간이 이미 선택된 경우 날짜만 선택하면 바로 조회되도록 포커스 */
+  if (spaceId) setTimeout(() => $('fDate')?.focus(), 300);
 }
 
 function closeApply() {
   $('applyOverlay').classList.remove('open');
   document.body.style.overflow = '';
+  clearAllErrors();
 }
 
-/* ── 감면 처리 ──────────────────────────────────────────── */
+/* ── 감면 ── */
 function handleDiscount(cb) {
   document.querySelectorAll('#discountCheckboxes input[type="checkbox"]')
     .forEach(c => { if (c !== cb) c.checked = false; });
@@ -402,7 +557,7 @@ function handleDiscount(cb) {
   updatePrice();
 }
 
-/* ── 요금 실시간 계산 ────────────────────────────────────── */
+/* ── 요금 계산 ── */
 function updatePrice() {
   const spaceId  = $('fSpace')?.value;
   const duration = parseInt($('fDuration')?.value) || 1;
@@ -410,74 +565,212 @@ function updatePrice() {
   const noteEl   = $('priceNote');
   if (!priceEl) return;
 
-  if (!spaceId) { priceEl.textContent = '—'; noteEl.textContent = ''; return; }
+  if (!spaceId) {
+    priceEl.textContent = '—';
+    if (noteEl) noteEl.textContent = '';
+    return;
+  }
 
   const s     = SPACES.find(x => x.id === spaceId);
   const base  = s.pricePerHour * duration;
-  const final = currentDiscountRate === 100 ? 0 : Math.round(base * (1 - currentDiscountRate / 100));
+  const final = currentDiscountRate === 100 ? 0
+    : Math.round(base * (1 - currentDiscountRate / 100));
 
   priceEl.textContent = final === 0 ? '무료' : `${fmt(final)}원`;
-  noteEl.textContent  = currentDiscountRate > 0
+  if (noteEl) noteEl.textContent = currentDiscountRate > 0
     ? `(${fmt(base)}원 → ${currentDiscountRate}% 감면)`
     : `(${duration}시간 기준)`;
 }
 
-/* ── 신청 제출 ──────────────────────────────────────────── */
+/* ============================================================
+   신청 제출 — 클라이언트 검증 → 서버 전송 → 완료
+============================================================ */
 async function submitApply() {
-  const fields = {
-    name:    $('fName')?.value.trim(),
-    phone:   $('fPhone')?.value.trim(),
-    email:   $('fEmail')?.value.trim(),
-    org:     $('fOrg')?.value.trim(),
-    spaceId: $('fSpace')?.value,
-    date:    $('fDate')?.value,
-    time:    $('fTime')?.value,
-    duration: parseInt($('fDuration')?.value) || 1,
-    count:   $('fCount')?.value,
-    purpose: $('fPurpose')?.value.trim()
-  };
+  clearAllErrors();
 
-  if (!fields.name || !fields.phone || !fields.email || !fields.spaceId || !fields.date || !fields.time) {
-    alert('성명, 연락처, 이메일, 공간, 날짜, 시간은 필수 항목입니다.');
+  /* ── 1단계: 예약 정보 검증 ── */
+  const spaceId = $('fSpace')?.value;
+  const date    = $('fDate')?.value;
+  const time    = $('fTime')?.value;
+  const duration = parseInt($('fDuration')?.value) || 0;
+
+  let hasError = false;
+
+  if (!spaceId) {
+    showFieldError('fSpace', '공간을 선택해 주세요.');
+    hasError = true;
+  }
+  if (!date) {
+    showFieldError('fDate', '날짜를 선택해 주세요.');
+    hasError = true;
+  }
+  if (!time) {
+    showFieldError('fTime', '시작 시간을 선택해 주세요.');
+    hasError = true;
+  }
+  if (!duration || duration < 1) {
+    showFieldError('fDuration', '사용 시간을 선택해 주세요.');
+    hasError = true;
+  }
+
+  /* ── 2단계: 신청자 정보 검증 ── */
+  const name  = $('fName')?.value.trim();
+  const phone = $('fPhone')?.value.trim();
+  const email = $('fEmail')?.value.trim();
+  const org   = $('fOrg')?.value.trim();
+  const depositor = $('fDepositor')?.value.trim();
+  const countVal  = parseInt($('fCount')?.value);
+  const purpose   = $('fPurpose')?.value.trim();
+
+  if (!name) {
+    showFieldError('fName', '성명을 입력해 주세요.');
+    hasError = true;
+  } else {
+    const err = validateField('fName', RULES.name);
+    if (err) { showFieldError('fName', err); hasError = true; }
+  }
+
+  if (!phone) {
+    showFieldError('fPhone', '연락처를 입력해 주세요.');
+    hasError = true;
+  } else {
+    const err = validateField('fPhone', RULES.phone);
+    if (err) { showFieldError('fPhone', err); hasError = true; }
+  }
+
+  if (!email) {
+    showFieldError('fEmail', '이메일을 입력해 주세요.');
+    hasError = true;
+  } else {
+    const err = validateField('fEmail', RULES.email);
+    if (err) { showFieldError('fEmail', err); hasError = true; }
+  }
+
+  if (org) {
+    const err = validateField('fOrg', RULES.org);
+    if (err) { showFieldError('fOrg', err); hasError = true; }
+  }
+
+  if (depositor) {
+    const err = validateField('fDepositor', RULES.depositor);
+    if (err) { showFieldError('fDepositor', err); hasError = true; }
+  }
+
+  if (!countVal || countVal < 1 || countVal > 500) {
+    showFieldError('fCount', '예상 인원을 1~500 사이로 입력해 주세요.');
+    hasError = true;
+  }
+
+  if (!purpose) {
+    showFieldError('fPurpose', '사용 목적을 입력해 주세요.');
+    hasError = true;
+  } else if (purpose.length > 300) {
+    showFieldError('fPurpose', '300자 이내로 입력해 주세요.');
+    hasError = true;
+  }
+
+  if (hasError) {
+    /* 첫 번째 오류 필드로 스크롤 */
+    document.querySelector('.field-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
 
-  const s     = SPACES.find(x => x.id === fields.spaceId);
-  const base  = s.pricePerHour * fields.duration;
-  const final = currentDiscountRate === 100 ? 0 : Math.round(base * (1 - currentDiscountRate / 100));
-  const finalStr = final === 0 ? '무료' : `${fmt(final)}원`;
+  /* ── 3단계: 서버 전송 ── */
+  const s     = SPACES.find(x => x.id === spaceId);
+  const base  = s.pricePerHour * duration;
+  const final = currentDiscountRate === 100 ? 0
+    : Math.round(base * (1 - currentDiscountRate / 100));
 
-  /* Apps Script 연동 */
-  if (SITE.appsScriptUrl) {
-    try {
-      await fetch(SITE.appsScriptUrl, {
-        method: 'POST',
-        body: JSON.stringify({
-          ...fields,
-          spaceName: s.name,
-          discountRate: currentDiscountRate,
-          basePrice: base,
-          finalPrice: final
-        })
-      });
-    } catch (err) {
-      console.error('신청 전송 실패:', err);
-    }
+  const submitBtn = document.querySelector('#formState .btn-primary');
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '신청 처리 중…'; }
+
+  if (!SITE.appsScriptUrl) {
+    /* 개발 환경: URL 미설정 시 완료 화면 바로 표시 (테스트용) */
+    console.warn('[개발모드] appsScriptUrl 미설정 — 완료 화면만 표시합니다.');
+    showSuccess({ name, depositor, final });
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '신청 완료하기'; }
+    return;
   }
 
-  /* 완료 화면 */
-  $('successAmountBox').textContent    = finalStr;
-  $('successDepositorName').textContent = fields.name;
-  $('successBankName').textContent     = ACCOUNT.bank;
-  $('successAccountNum').textContent   = ACCOUNT.number;
-  $('successAccountHolder').textContent = ACCOUNT.holder;
-  $('successDeadline').textContent     = ACCOUNT.deadline;
+  try {
+    const res = await fetch(SITE.appsScriptUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+        name, phone, email, org,
+        depositor: depositor || name,
+        spaceId,
+        spaceName:     s.name,
+        date, time, duration,
+        count:         countVal,
+        purpose,
+        discountRate:  currentDiscountRate,
+        discountLabel: $('discountCheckboxes')?.querySelector('input:checked')
+          ?.closest('label')?.querySelector('span')?.textContent?.trim() || '',
+        basePrice:  base,
+        finalPrice: final,
+      }),
+    });
+
+    if (!res.ok) throw new Error('서버 응답 오류 (HTTP ' + res.status + ')');
+
+    const result = await res.json();
+
+    if (!result.ok) {
+      const errMsg = result.error || '신청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+      showFormError(errMsg);
+      if (result.code === 'SLOT_OCCUPIED') {
+        await onSpaceOrDateChange(); // 시간 목록 갱신
+      }
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '신청 완료하기'; }
+      return;
+    }
+
+    /* 서버 정상 응답 시에만 완료 화면 */
+    showSuccess({ name, depositor, final });
+
+  } catch(err) {
+    /* 네트워크 오류 등 — 완료 처리하지 않고 오류 안내 */
+    console.error('신청 전송 실패:', err);
+    showFormError('네트워크 오류가 발생했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.');
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '신청 완료하기'; }
+  }
+}
+
+function showSuccess({ name, depositor, final }) {
+  const depositorName = depositor || name;
+  const finalStr      = final === 0 ? '무료' : `${fmt(final)}원`;
+
+  /* textContent 사용 — XSS 방지 */
+  $('successAmountBox').textContent      = finalStr;
+  $('successAmountInline').textContent   = finalStr;
+  $('successDepositorName').textContent  = depositorName;
+  $('successBankName').textContent       = ACCOUNT.bank;
+  $('successAccountNum').textContent     = ACCOUNT.number;
+  $('successAccountHolder').textContent  = ACCOUNT.holder;
+  $('successDeadline').textContent       = ACCOUNT.deadline;
 
   $('formState').style.display    = 'none';
   $('successState').style.display = 'block';
 }
 
-/* ── Intersection Observer (fade-up) ───────────────────── */
+function showFormError(msg) {
+  let errEl = $('formErrorMsg');
+  if (!errEl) {
+    errEl = document.createElement('div');
+    errEl.id = 'formErrorMsg';
+    errEl.className = 'form-error-banner';
+    const btn = document.querySelector('#formState .btn-primary');
+    btn?.parentNode.insertBefore(errEl, btn);
+  }
+  errEl.textContent = msg;
+  errEl.style.display = 'block';
+  errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => { if (errEl) errEl.style.display = 'none'; }, 6000);
+}
+
+/* ============================================================
+   Intersection Observer
+============================================================ */
 function observeFadeUp() {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
@@ -490,18 +783,24 @@ function observeFadeUp() {
   document.querySelectorAll('.fade-up:not(.visible)').forEach(el => io.observe(el));
 }
 
-/* ── 초기화 ─────────────────────────────────────────────── */
+/* ============================================================
+   초기화
+============================================================ */
 document.addEventListener('DOMContentLoaded', async () => {
   await loadData();
 
-  /* bookingWindow 저장 */
-  const siteRes = await fetch('data/site.json');
-  const siteData = await siteRes.json();
-  window._bookingWindow = siteData.bookingWindow;
-
-  /* 공통 이벤트 */
-  $('fSpace')?.addEventListener('change', updatePrice);
+  /* 공간 + 날짜 변경 → 슬롯 조회 트리거 */
+  $('fSpace')?.addEventListener('change', () => {
+    onSpaceOrDateChange();
+    updatePrice();
+  });
+  $('fDate')?.addEventListener('change', onSpaceOrDateChange);
   $('fDuration')?.addEventListener('change', updatePrice);
+
+  /* 입력 중 오류 메시지 즉시 제거 */
+  ['fName','fPhone','fEmail','fOrg','fDepositor','fCount','fPurpose'].forEach(id => {
+    $(id)?.addEventListener('input', () => clearFieldError(id));
+  });
 
   $('modalOverlay')?.addEventListener('click', closeModal);
   $('applyOverlay')?.addEventListener('click', e => {
@@ -512,12 +811,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     e.preventDefault();
     document.querySelector('#spaces')?.scrollIntoView({ behavior: 'smooth' });
   });
-
   document.querySelector('.cta-apply-btn')?.addEventListener('click', () => openApply(null));
 
-  /* 전역 접근용 (HTML onclick 최소화) */
-  window.openApply  = openApply;
-  window.closeApply = closeApply;
-  window.closeModal = closeModal;
+  window.openApply   = openApply;
+  window.closeApply  = closeApply;
+  window.closeModal  = closeModal;
   window.submitApply = submitApply;
 });
