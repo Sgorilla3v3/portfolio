@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상상마루 | 관리자 대시보드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS — index.html과 동일한 브랜드 기준
+============================================================ */
+:root {
+  --brand-홍시:   #f06933;
+  --brand-복숭아: #f79e93;
+  --brand-옐로우: #f8f083;
+  --brand-올리브: #b1ae34;
+  --brand-스카이: #87a6d7;
+  --brand-그린:   #b7ddf3;
+  --brand-밤:     #000000;
+
+  --c-bg:        #ffffff;
+  --c-surface:   #f5f5f5;
+  --c-card:      #ffffff;
+  --c-border:    rgba(0,0,0,0.08);
+  --c-border-md: rgba(0,0,0,0.14);
+
+  --c-text:   #1a1816;
+  --c-muted:  #6b6560;
+  --c-subtle: #b0aa9f;
+
+  --c-accent:       var(--brand-홍시);
+  --c-accent-hover: #d95a26;
+  --c-accent-dim:   rgba(240,105,51,0.08);
+
+  /* 상태 컬러 */
+  --c-pending:    #f8f083;   /* 옐로우 — 입금 대기 */
+  --c-pending-fg: #7a6e00;
+  --c-confirm:    #b1ae34;   /* 올리브 — 확정 */
+  --c-confirm-fg: #3d3c00;
+  --c-cancel:     rgba(0,0,0,0.06);
+  --c-cancel-fg:  #888;
+
+  --c-shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+  --c-shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+
+  --f-sans:  'Noto Sans KR', sans-serif;
+  --f-serif: 'Noto Serif KR', serif;
+
+  --r:      3px;
+  --nav-w:  0px;
+  --nav-h:  56px;
+}
+
+/* ============================================================
+   RESET
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-family: var(--f-sans);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: var(--f-sans); cursor: pointer; }
+input, select, textarea { font-family: var(--f-sans); }
+
+/* ============================================================
+   LAYOUT — Sidebar + Main
+============================================================ */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── 사이드바 ── */
+.sidebar {
+  width: var(--nav-w);
+  background: var(--brand-밤);
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  z-index: 50;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: var(--f-serif);
+  font-size: 1rem;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.sidebar-logo span { color: var(--brand-홍시); }
+.sidebar-logo small {
+  display: block;
+  font-family: var(--f-sans);
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.35);
+  margin-top: 3px;
+  letter-spacing: 0.06em;
+}
+
+.sidebar-nav { padding: 12px 0; flex: 1; }
+
+.nav-section-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  padding: 14px 20px 6px;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 20px;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.nav-item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.04); }
+.nav-item.active {
+  color: #fff;
+  background: rgba(240,105,51,0.12);
+  border-left-color: var(--brand-홍시);
+}
+.nav-item svg { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.7; }
+.nav-item.active svg { opacity: 1; }
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.25);
+}
+
+/* ── 메인 영역 ── */
+.main {
+  flex: 1;
+  display: flex; flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 상단 헤더 바 */
+.topbar {
+  background: var(--c-card);
+  border-bottom: 1px solid var(--c-border);
+  height: var(--nav-h);
+  display: flex; align-items: center; gap: 0;
+  padding: 0 24px;
+  position: sticky; top: 0; z-index: 40;
+}
+.topbar-logo {
+  font-family: var(--f-serif, serif);
+  font-size: 1rem; font-weight: 700;
+  color: var(--c-text);
+  white-space: nowrap;
+  margin-right: 28px;
+  flex-shrink: 0;
+}
+.topbar-logo span { color: var(--brand-홍시); }
+.topbar-logo small {
+  font-family: var(--f-sans, sans-serif);
+  font-size: 0.62rem; font-weight: 400;
+  color: var(--c-muted);
+  margin-left: 6px; letter-spacing: 0.08em;
+}
+.topbar-nav {
+  display: flex; align-items: center; gap: 2px;
+  flex: 1;
+}
+.topbar-nav-btn {
+  background: none; border: none;
+  font-family: var(--f-sans, sans-serif);
+  font-size: 0.82rem; font-weight: 400;
+  color: var(--c-muted);
+  padding: 6px 14px;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.topbar-nav-btn:hover { color: var(--c-text); background: var(--c-surface); }
+.topbar-nav-btn.active {
+  color: var(--c-text); font-weight: 600;
+  background: var(--c-surface);
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.topbar-date {
+  font-size: 0.75rem;
+  color: var(--c-muted);
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.78rem; font-weight: 500;
+  padding: 7px 14px;
+  border-radius: var(--r);
+  border: none; cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-primary {
+  background: var(--c-accent); color: #fff;
+}
+.btn-primary:hover { background: var(--c-accent-hover); }
+.btn-ghost {
+  background: transparent;
+  color: var(--c-muted);
+  border: 1px solid var(--c-border-md);
+}
+.btn-ghost:hover { color: var(--c-text); border-color: rgba(0,0,0,0.25); }
+.btn svg { width: 13px; height: 13px; }
+
+/* 콘텐츠 패딩 */
+.content { padding: 28px 32px; flex: 1; }
+
+/* ============================================================
+   섹션 — page 단위 show/hide
+============================================================ */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ============================================================
+   KPI 카드 그리드
+============================================================ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.kpi-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-top: 3px solid var(--c-border);
+  padding: 20px 22px;
+  box-shadow: var(--c-shadow-sm);
+}
+.kpi-card:nth-child(1) { border-top-color: var(--brand-홍시); }
+.kpi-card:nth-child(2) { border-top-color: var(--brand-올리브); }
+.kpi-card:nth-child(3) { border-top-color: var(--brand-스카이); }
+.kpi-card:nth-child(4) { border-top-color: var(--brand-복숭아); }
+
+.kpi-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 8px;
+}
+.kpi-value {
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--c-text);
+  font-variant-numeric: tabular-nums;
+}
+.kpi-value small {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--c-muted);
+  margin-left: 4px;
+}
+.kpi-sub {
+  font-size: 0.72rem;
+  color: var(--c-subtle);
+  margin-top: 6px;
+}
+.kpi-sub b { color: var(--brand-올리브); font-weight: 600; }
+
+/* ============================================================
+   두 컬럼 그리드
+============================================================ */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.three-col { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+/* ============================================================
+   카드 (패널)
+============================================================ */
+.panel {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--c-shadow-sm);
+}
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--c-border);
+}
+.panel-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--c-text);
+  display: flex; align-items: center; gap: 8px;
+}
+.panel-title-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--c-accent); flex-shrink: 0;
+}
+.panel-body { padding: 20px; }
+.panel-body-flush { padding: 0; }
+
+/* ============================================================
+   테이블
+============================================================ */
+.table-wrap { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+thead th {
+  background: var(--c-surface);
+  padding: 9px 14px;
+  text-align: left;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  border-bottom: 1px solid var(--c-border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--c-border);
+  color: var(--c-text);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--c-surface); }
+
+/* ============================================================
+   상태 배지
+============================================================ */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.68rem; font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--r);
+  white-space: nowrap;
+}
+.badge::before {
+  content: '';
+  width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor; opacity: 0.6; flex-shrink: 0;
+}
+.badge-pending  { background: var(--c-pending);  color: var(--c-pending-fg); }
+.badge-confirm  { background: var(--c-confirm);  color: var(--c-confirm-fg); }
+.badge-cancel   { background: var(--c-cancel);   color: var(--c-cancel-fg); }
+.badge-unmatched { background: rgba(240,105,51,0.10); color: #b84400; }
+.badge-matched   { background: rgba(177,174,52,0.15); color: var(--c-confirm-fg); }
+
+/* ============================================================
+   액션 버튼 (테이블 인라인)
+============================================================ */
+.action-btn {
+  font-size: 0.72rem; font-weight: 500;
+  padding: 4px 10px;
+  border-radius: var(--r);
+  border: 1px solid var(--c-border-md);
+  background: transparent;
+  color: var(--c-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.action-btn:hover { background: var(--c-surface); color: var(--c-text); }
+.action-btn.confirm { border-color: var(--brand-올리브); color: var(--c-confirm-fg); }
+.action-btn.confirm:hover { background: rgba(177,174,52,0.1); }
+.action-btn.danger  { border-color: rgba(240,105,51,0.4); color: var(--c-accent); }
+.action-btn.danger:hover  { background: var(--c-accent-dim); }
+.action-group { display: flex; gap: 6px; }
+
+/* ============================================================
+   필터 바
+============================================================ */
+.filter-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--c-border);
+  flex-wrap: wrap;
+}
+.filter-bar input[type="text"],
+.filter-bar select {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-md);
+  border-radius: var(--r);
+  color: var(--c-text);
+  font-size: 0.78rem;
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+.filter-bar input[type="text"] { width: 200px; }
+.filter-bar input:focus,
+.filter-bar select:focus { border-color: var(--c-accent); }
+
+.filter-count {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: var(--c-muted);
+}
+
+/* ============================================================
+   미니 차트 바
+============================================================ */
+.bar-chart { display: flex; flex-direction: column; gap: 10px; }
+
+.bar-row { display: flex; align-items: center; gap: 10px; }
+.bar-label {
+  font-size: 0.75rem; color: var(--c-muted);
+  width: 72px; flex-shrink: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bar-track {
+  flex: 1; height: 8px;
+  background: var(--c-surface);
+  border-radius: 2px; overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--c-accent);
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+.bar-fill.olive  { background: var(--brand-올리브); }
+.bar-fill.sky    { background: var(--brand-스카이); }
+.bar-fill.peach  { background: var(--brand-복숭아); }
+.bar-fill.yellow { background: var(--brand-옐로우); filter: saturate(1.4) brightness(0.9); }
+.bar-val { font-size: 0.72rem; color: var(--c-muted); width: 52px; text-align: right; flex-shrink: 0; }
+
+/* ============================================================
+   월별 수입 미니 차트
+============================================================ */
+.month-bars {
+  display: flex; align-items: flex-end; gap: 6px;
+  height: 80px;
+}
+.month-bar-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+.month-bar-fill {
+  width: 100%;
+  background: var(--c-accent);
+  border-radius: 2px 2px 0 0;
+  opacity: 0.8;
+  transition: height 0.5s var(--ease-out);
+  min-height: 2px;
+}
+.month-bar-fill.this { opacity: 1; }
+.month-bar-label { font-size: 0.6rem; color: var(--c-subtle); }
+
+/* ============================================================
+   입금 매칭 섹션
+============================================================ */
+.match-zone {
+  border: 2px dashed var(--c-border-md);
+  border-radius: var(--r);
+  padding: 24px;
+  text-align: center;
+  color: var(--c-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.match-zone:hover { border-color: var(--c-accent); background: var(--c-accent-dim); }
+.match-zone svg { width: 28px; height: 28px; margin: 0 auto 10px; display: block; opacity: 0.4; }
+
+/* ============================================================
+   알림 배너
+============================================================ */
+.alert {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--r);
+  font-size: 0.78rem;
+  margin-bottom: 16px;
+}
+.alert-warn { background: rgba(248,240,131,0.3); border: 1px solid rgba(177,174,52,0.3); color: var(--c-pending-fg); }
+.alert-info { background: rgba(135,166,215,0.1); border: 1px solid rgba(135,166,215,0.25); color: #2a4a7a; }
+.alert svg  { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; }
+
+/* ============================================================
+   통계 — 스파크라인 placeholder
+============================================================ */
+.sparkline {
+  width: 100%; height: 40px;
+  background: linear-gradient(90deg,
+    var(--c-surface) 0%, var(--c-surface) 100%);
+  border-radius: var(--r);
+  position: relative; overflow: hidden;
+}
+.sparkline-svg { width: 100%; height: 100%; }
+
+/* ============================================================
+   설정 폼
+============================================================ */
+.settings-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label {
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--c-muted);
+}
+.form-field input, .form-field select {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-md);
+  border-radius: var(--r);
+  color: var(--c-text);
+  font-size: 0.85rem;
+  font-weight: 300;
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+.form-field input:focus, .form-field select:focus { border-color: var(--c-accent); }
+.form-field-full { grid-column: 1 / -1; }
+.form-hint { font-size: 0.68rem; color: var(--c-subtle); margin-top: 2px; }
+.settings-section-title {
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--c-accent);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--c-border);
+  margin-bottom: 16px;
+  grid-column: 1 / -1;
+}
+
+/* ============================================================
+   모달 (확정 / 취소 확인)
+============================================================ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal-box {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r);
+  width: 100%; max-width: 400px;
+  padding: 28px;
+  box-shadow: var(--c-shadow-md);
+  transform: translateY(12px);
+  transition: transform 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.modal-overlay.open .modal-box { transform: translateY(0); }
+.modal-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
+.modal-desc  { font-size: 0.82rem; color: var(--c-muted); margin-bottom: 22px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ============================================================
+   토스트
+============================================================ */
+.toast-wrap {
+  position: fixed; bottom: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 500;
+}
+.toast {
+  background: var(--brand-밤);
+  color: #fff;
+  font-size: 0.78rem;
+  padding: 10px 16px;
+  border-radius: var(--r);
+  box-shadow: var(--c-shadow-md);
+  display: flex; align-items: center; gap: 8px;
+  animation: toastIn 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.toast.success::before { content:'✓'; color: var(--brand-올리브); font-weight:700; }
+.toast.error::before   { content:'!'; color: var(--brand-홍시); font-weight:700; }
+@keyframes toastIn { from { opacity:0; transform: translateX(16px); } to { opacity:1; transform:translateX(0); } }
+
+/* ============================================================
+   UTIL
+============================================================ */
+.text-right { text-align: right; }
+.text-muted  { color: var(--c-muted); }
+.text-accent { color: var(--c-accent); font-weight: 600; }
+.mono        { font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.nowrap      { white-space: nowrap; }
+.gap-row     { display: flex; align-items: center; gap: 8px; }
+.divider     { height: 1px; background: var(--c-border); margin: 20px 0; }
+.empty-state {
+  text-align: center; padding: 48px 20px;
+  color: var(--c-muted); font-size: 0.82rem;
+}
+.empty-state svg { width: 36px; height: 36px; margin: 0 auto 12px; display: block; opacity: 0.25; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 960px) {
+  :root { --nav-w: 0px; }
+  .sidebar { display: none; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .two-col, .three-col { grid-template-columns: 1fr; }
+  .settings-grid { grid-template-columns: 1fr; }
+  .content { padding: 20px 16px; }
+  .topbar { padding: 0 16px; }
+}
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- ── 사이드바 ───────────────────────────────────────────── -->
+<aside class="sidebar" style="display:none">
+  <div class="sidebar-logo">
+    <a href="index.html" style="color:inherit;text-decoration:none;" title="홈페이지로 이동">
+      상상<span>마루</span>
+    </a>
+    <small>ADMIN DASHBOARD</small>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">메인</div>
+    <div class="nav-item active" data-page="overview" onclick="nav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+      </svg>
+      현황 개요
+    </div>
+
+    <div class="nav-section-label">예약 관리</div>
+    <div class="nav-item" data-page="reservations" onclick="nav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="3" y="4" width="18" height="18" rx="1"/>
+        <path d="M16 2v4M8 2v4M3 10h18"/>
+      </svg>
+      예약 목록
+    </div>
+    <div class="nav-item" data-page="payment" onclick="nav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="2" y="5" width="20" height="14" rx="1"/>
+        <path d="M2 10h20"/>
+      </svg>
+      입금 매칭
+    </div>
+
+    <div class="nav-section-label">통계</div>
+    <div class="nav-item" data-page="stats" onclick="nav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M18 20V10M12 20V4M6 20v-6"/>
+      </svg>
+      매출 통계
+    </div>
+
+    <div class="nav-section-label">바로가기</div>
+    <div class="nav-item" onclick="window.open('index.html','_blank')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      홈페이지 (새 탭)
+    </div>
+
+    <div class="nav-section-label">설정</div>
+    <div class="nav-item" data-page="settings" onclick="nav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+      </svg>
+      설정
+    </div>
+  </nav>
+
+  <div class="sidebar-footer" id="sbDate"></div>
+</aside>
+
+<!-- ── 메인 ──────────────────────────────────────────────── -->
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-logo">상상<span>마루</span> <small>관리자</small></div>
+    <nav class="topbar-nav">
+      <button class="topbar-nav-btn active" data-page="overview"   onclick="nav(this)">현황 개요</button>
+      <button class="topbar-nav-btn"        data-page="reservations" onclick="nav(this)">예약 목록</button>
+      <button class="topbar-nav-btn"        data-page="payment"    onclick="nav(this)">입금 매칭</button>
+      <button class="topbar-nav-btn"        data-page="stats"      onclick="nav(this)">매출 통계</button>
+      <button class="topbar-nav-btn"        data-page="settings"   onclick="nav(this)">설정</button>
+    </nav>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbarDate"></span>
+      <button class="btn btn-ghost" onclick="syncSheets()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 4v6h-6M1 20v-6h6"/>
+          <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+        </svg>
+        동기화
+      </button>
+      <a href="index.html" target="_blank" class="btn btn-ghost">홈페이지 ↗</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ================================================
+         PAGE: 현황 개요
+    ================================================ -->
+    <div class="page active" id="page-overview">
+
+      <div id="alertArea"></div>
+
+      <!-- KPI 카드 -->
+      <div class="kpi-grid" id="kpiGrid">
+        <div class="kpi-card">
+          <div class="kpi-label">이번달 예약</div>
+          <div class="kpi-value" id="kpi-monthly">—<small>건</small></div>
+          <div class="kpi-sub" id="kpi-monthly-sub">로딩 중</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">이번달 매출</div>
+          <div class="kpi-value" id="kpi-revenue">—<small>원</small></div>
+          <div class="kpi-sub" id="kpi-revenue-sub">로딩 중</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">입금 대기</div>
+          <div class="kpi-value" id="kpi-pending">—<small>건</small></div>
+          <div class="kpi-sub" id="kpi-pending-sub">로딩 중</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">미매칭 입금</div>
+          <div class="kpi-value" id="kpi-unmatched">—<small>건</small></div>
+          <div class="kpi-sub">수동 확인 필요</div>
+        </div>
+      </div>
+
+      <div class="three-col">
+        <!-- 최근 예약 -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-dot"></div>최근 예약</div>
+            <button class="btn btn-ghost" style="font-size:0.72rem" onclick="nav(document.querySelector('[data-page=reservations]'))">전체보기</button>
+          </div>
+          <div class="panel-body-flush">
+            <div class="table-wrap">
+              <table id="recentTable">
+                <thead>
+                  <tr>
+                    <th>공간</th><th>날짜</th><th>신청자</th><th>상태</th>
+                  </tr>
+                </thead>
+                <tbody id="recentBody">
+                  <tr><td colspan="4" class="empty-state">데이터 로딩 중…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 공간별 예약 분포 -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-dot" style="background:var(--brand-올리브)"></div>공간별 이번달</div>
+          </div>
+          <div class="panel-body">
+            <div class="bar-chart" id="spaceBarChart">
+              <div class="empty-state" style="padding:16px">로딩 중</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 월별 매출 -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-dot" style="background:var(--brand-스카이)"></div>월별 매출 추이</div>
+        </div>
+        <div class="panel-body">
+          <div style="display:flex;align-items:flex-end;gap:6px;height:100px" id="monthChart">
+            <div class="empty-state" style="padding:16px;width:100%">로딩 중</div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:6px" id="monthLabels"></div>
+        </div>
+      </div>
+
+    </div><!-- /page-overview -->
+
+
+    <!-- ================================================
+         PAGE: 예약 목록
+    ================================================ -->
+    <div class="page" id="page-reservations">
+
+      <div class="panel">
+        <div class="filter-bar">
+          <input type="text" id="searchInput" placeholder="이름·공간·목적 검색…" oninput="filterTable()">
+          <select id="statusFilter" onchange="filterTable()">
+            <option value="">전체 상태</option>
+            <option value="pending">입금 대기</option>
+            <option value="confirmed">확정</option>
+            <option value="cancelled">취소</option>
+          </select>
+          <select id="spaceFilter" onchange="filterTable()">
+            <option value="">전체 공간</option>
+          </select>
+          <select id="monthFilter" onchange="filterTable()">
+            <option value="">전체 기간</option>
+          </select>
+          <span class="filter-count" id="filterCount"></span>
+          <button class="btn btn-ghost" onclick="exportCSV()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            </svg>
+            CSV 내보내기
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>예약ID</th><th>신청일</th><th>공간</th><th>사용일시</th>
+                <th>신청자</th><th>인원</th><th>요금</th><th>실지불</th><th>차액</th><th>상태</th><th>액션</th>
+              </tr>
+            </thead>
+            <tbody id="reservationBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /page-reservations -->
+
+
+    <!-- ================================================
+         PAGE: 입금 매칭
+    ================================================ -->
+    <div class="page" id="page-payment">
+
+      <div class="alert alert-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+        </svg>
+        은행 앱 → 거래내역 내보내기 → CSV 파일을 아래에 업로드하면 자동 매칭됩니다.
+        입금자명과 금액이 일치하는 예약건이 자동으로 확정 처리됩니다.
+      </div>
+
+      <div class="two-col" style="margin-bottom:14px">
+        <!-- CSV 업로드 -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-dot"></div>통장 내역 업로드</div>
+          </div>
+          <div class="panel-body">
+            <div class="match-zone" id="dropZone" onclick="document.getElementById('csvFile').click()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+              </svg>
+              CSV 파일을 클릭하거나 드래그하여 업로드
+              <div style="margin-top:6px;font-size:0.68rem;color:var(--c-subtle)">지원 형식: .csv (UTF-8 또는 EUC-KR)</div>
+            </div>
+            <input type="file" id="csvFile" accept=".csv" style="display:none" onchange="handleCSV(this)">
+            <div id="csvPreview" style="margin-top:14px"></div>
+          </div>
+        </div>
+
+        <!-- 매칭 대기 예약 -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-dot" style="background:var(--brand-옐로우);filter:saturate(1.4) brightness(0.85)"></div>입금 대기 예약</div>
+            <span class="badge badge-pending" id="pendingCountBadge">0건</span>
+          </div>
+          <div class="panel-body-flush">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>예약ID</th><th>신청자</th><th>공간</th><th>사용일</th><th>금액</th></tr>
+                </thead>
+                <tbody id="pendingBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 매칭 결과 -->
+      <div class="panel" id="matchResultPanel" style="display:none">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-dot" style="background:var(--brand-올리브)"></div>매칭 결과</div>
+          <button class="btn btn-primary" onclick="applyMatch()">매칭 적용 (확정 처리)</button>
+        </div>
+        <div class="panel-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>입금일시</th><th>입금자</th><th>금액</th><th>매칭 예약</th><th>차액</th><th>상태</th></tr>
+              </thead>
+              <tbody id="matchBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-payment -->
+
+
+    <!-- ================================================
+         PAGE: 매출 통계
+    ================================================ -->
+    <div class="page" id="page-stats">
+
+      <div class="kpi-grid" style="margin-bottom:20px">
+        <div class="kpi-card">
+          <div class="kpi-label">올해 누적 매출</div>
+          <div class="kpi-value" id="stat-yearly">—<small>원</small></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">올해 누적 예약</div>
+          <div class="kpi-value" id="stat-yearly-count">—<small>건</small></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">평균 대관료</div>
+          <div class="kpi-value" id="stat-avg">—<small>원</small></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">감면 적용 비율</div>
+          <div class="kpi-value" id="stat-discount-rate">—<small>%</small></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-dot"></div>공간별 매출 (올해)</div>
+          </div>
+          <div class="panel-body">
+            <div class="bar-chart" id="revenueBySpace"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-dot" style="background:var(--brand-스카이)"></div>감면 유형 분포</div>
+          </div>
+          <div class="panel-body">
+            <div class="bar-chart" id="discountChart"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-dot" style="background:var(--brand-올리브)"></div>월별 예약·매출 상세</div>
+          <button class="btn btn-ghost" onclick="exportStatsCSV()">CSV 내보내기</button>
+        </div>
+        <div class="panel-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>월</th><th>예약 건수</th><th>확정</th><th>취소</th><th>총 매출</th><th>감면 건수</th><th>평균 요금</th></tr>
+              </thead>
+              <tbody id="statsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-stats -->
+
+
+    <!-- ================================================
+         PAGE: 설정
+    ================================================ -->
+    <div class="page" id="page-settings">
+
+      <div class="panel" style="margin-bottom:14px">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-dot"></div>기본 정보</div>
+          <button class="btn btn-primary" onclick="saveSettings()">저장</button>
+        </div>
+        <div class="panel-body">
+          <div class="settings-grid" id="settingsForm">
+            <div class="settings-section-title">사이트 정보</div>
+            <div class="form-field">
+              <label>기관명</label>
+              <input type="text" id="cfg-name" placeholder="청도상상마루">
+            </div>
+            <div class="form-field">
+              <label>연락처</label>
+              <input type="text" id="cfg-phone" placeholder="054-000-0000">
+            </div>
+            <div class="form-field form-field-full">
+              <label>주소</label>
+              <input type="text" id="cfg-address">
+            </div>
+            <div class="settings-section-title">계좌 정보</div>
+            <div class="form-field">
+              <label>은행</label>
+              <input type="text" id="cfg-bank">
+            </div>
+            <div class="form-field">
+              <label>계좌번호</label>
+              <input type="text" id="cfg-account">
+            </div>
+            <div class="form-field">
+              <label>예금주</label>
+              <input type="text" id="cfg-holder">
+            </div>
+            <div class="form-field">
+              <label>입금 기한</label>
+              <input type="text" id="cfg-deadline" placeholder="영업일 기준 3일 이내">
+            </div>
+            <div class="settings-section-title">Apps Script 연동</div>
+            <div class="form-field form-field-full">
+              <label>Apps Script 웹앱 URL</label>
+              <input type="text" id="cfg-scriptUrl" placeholder="https://script.google.com/macros/s/…/exec">
+              <div class="form-hint">배포된 웹앱 URL. 신청 데이터 수신 및 이메일 자동 발송에 사용됩니다.</div>
+            </div>
+            <div class="settings-section-title">예약 설정</div>
+            <div class="form-field">
+              <label>최소 신청 기간 (일)</label>
+              <input type="number" id="cfg-minDays" value="7">
+            </div>
+            <div class="form-field">
+              <label>최대 신청 기간 (일)</label>
+              <input type="number" id="cfg-maxDays" value="30">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-settings -->
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- 확정 확인 모달 -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-title" id="modalTitle">예약 확정</div>
+    <div class="modal-desc" id="modalDesc"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" id="modalConfirmBtn">확정</button>
+    </div>
+  </div>
+</div>
+
+<!-- 토스트 -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ============================================================
+   STATE
+============================================================ */
+let RESERVATIONS = [];  // Google Sheets 또는 로컬 샘플
+let PAYMENTS     = [];  // CSV 파싱 결과
+let MATCH_RESULT = [];  // 매칭 결과
+let SITE_CONFIG  = {};
+let SPACES_DATA  = [];
+let currentModal = null;
+
+/* ============================================================
+   INIT
+============================================================ */
+document.addEventListener('DOMContentLoaded', async () => {
+  setDateLabels();
+  await loadConfig();
+  await loadSpaces();
+  await loadReservations();
+  renderOverview();
+  renderReservationTable();
+  renderPendingTable();
+  populateFilters();
+  renderStats();
+  renderSettings();
+  checkAlerts();
+});
+
+/* ── 날짜 표시 ── */
+function setDateLabels() {
+  const d = new Date();
+  const str = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+  document.getElementById('topbarDate').textContent = str;
+  document.getElementById('sbDate').textContent = str;
+}
+
+/* ── 설정 로드 ── */
+async function loadConfig() {
+  try {
+    const res = await fetch('data/site.json');
+    const data = await res.json();
+    SITE_CONFIG = { ...data.site, ...data.account, ...data.bookingWindow };
+  } catch(e) {
+    SITE_CONFIG = {};
+  }
+}
+
+/* ── 공간 로드 ── */
+async function loadSpaces() {
+  try {
+    const res = await fetch('data/spaces.json');
+    const data = await res.json();
+    SPACES_DATA = data.spaces;
+  } catch(e) { SPACES_DATA = []; }
+}
+
+/* ── 예약 데이터 로드 (Apps Script 실데이터만) ── */
+async function loadReservations() {
+  const url = SITE_CONFIG.appsScriptUrl;
+
+  if (!url) {
+    RESERVATIONS = [];
+    showConfigAlert();
+    return;
+  }
+
+  try {
+    const res = await fetch(url + '?action=getReservations');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.reservations) {
+      RESERVATIONS = data.reservations;
+    } else {
+      RESERVATIONS = [];
+      showLoadError('데이터를 불러왔지만 예약 목록이 비어 있습니다.');
+    }
+  } catch(e) {
+    RESERVATIONS = [];
+    showLoadError('Apps Script 연결에 실패했습니다. URL을 확인해 주세요. (' + e.message + ')');
+  }
+}
+
+/* Apps Script URL 미설정 안내 */
+function showConfigAlert() {
+  const el = document.getElementById('alertArea');
+  if (!el) return;
+  el.innerHTML = `<div class="alert alert-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0">
+      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    <span>Apps Script URL이 설정되지 않았습니다.
+      <a href="#" onclick="nav(document.querySelector('[data-page=settings]'));return false;"
+        style="color:inherit;font-weight:600;text-decoration:underline;">설정 페이지</a>에서 입력해 주세요.
+    </span>
+  </div>`;
+}
+
+/* 로드 오류 안내 */
+function showLoadError(msg) {
+  const el = document.getElementById('alertArea');
+  if (!el) return;
+  el.innerHTML = `<div class="alert alert-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    <span>${msg}</span>
+  </div>`;
+}
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+const PAGE_TITLES = {
+  overview: '현황 개요', reservations: '예약 목록',
+  payment: '입금 매칭', stats: '매출 통계', settings: '설정'
+};
+
+function nav(el) {
+  // 사이드바 + topbar 모두 active 동기화
+  document.querySelectorAll('.nav-item, .topbar-nav-btn').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  const page = el.dataset.page;
+  document.getElementById('page-' + page).classList.add('active');
+  // topbar 버튼도 같은 page면 active
+  document.querySelectorAll(`.topbar-nav-btn[data-page="${page}"]`)
+    .forEach(b => b.classList.add('active'));
+}
+
+/* ============================================================
+   RENDER — 현황 개요
+============================================================ */
+function renderOverview() {
+  const now = new Date();
+  const thisMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const monthRows = RESERVATIONS.filter(r => r.createdAt?.startsWith(thisMonth));
+  const confirmed = monthRows.filter(r => r.status === 'confirmed');
+  const pending   = RESERVATIONS.filter(r => r.status === 'pending');
+  const revenue   = confirmed.reduce((s,r) => s+(r.finalPrice||0), 0);
+
+  setKPI('kpi-monthly', monthRows.length, '건');
+  setKPI('kpi-revenue', fmtMoney(revenue), '원');
+  setKPI('kpi-pending', pending.length, '건');
+  setKPI('kpi-unmatched', PAYMENTS.filter(p=>!p.matched).length, '건');
+
+  document.getElementById('kpi-monthly-sub').innerHTML =
+    `확정 <b>${confirmed.length}</b>건`;
+  document.getElementById('kpi-revenue-sub').innerHTML =
+    `확정 기준`;
+  document.getElementById('kpi-pending-sub').innerHTML =
+    `입금 기한 내 <b>${pending.length}</b>건`;
+
+  renderRecentTable();
+  renderSpaceBarChart(thisMonth);
+  renderMonthChart();
+}
+
+function setKPI(id, val, unit) {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = `${val}<small>${unit}</small>`;
+}
+
+/* 최근 예약 5건 */
+function renderRecentTable() {
+  const tbody = document.getElementById('recentBody');
+  const recent = RESERVATIONS.slice(0,8);
+  if (!recent.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-state">예약 없음</td></tr>';
+    return;
+  }
+  tbody.innerHTML = recent.map(r => `
+    <tr>
+      <td class="nowrap">${r.spaceName}</td>
+      <td class="nowrap text-muted">${r.useDate}</td>
+      <td>${r.name}</td>
+      <td>${statusBadge(r.status)}</td>
+    </tr>
+  `).join('');
+}
+
+/* 공간별 바 차트 */
+function renderSpaceBarChart(monthStr) {
+  const rows = RESERVATIONS.filter(r =>
+    r.createdAt?.startsWith(monthStr) && r.status !== 'cancelled');
+  const counts = {};
+  rows.forEach(r => counts[r.spaceName] = (counts[r.spaceName]||0)+1);
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const max = sorted[0]?.[1] || 1;
+  const colors = ['','olive','sky','peach','yellow','','olive','sky'];
+
+  const el = document.getElementById('spaceBarChart');
+  if (!sorted.length) { el.innerHTML = '<div class="empty-state" style="padding:16px">이번달 데이터 없음</div>'; return; }
+  el.innerHTML = sorted.map(([name, cnt], i) => `
+    <div class="bar-row">
+      <div class="bar-label" title="${name}">${name}</div>
+      <div class="bar-track">
+        <div class="bar-fill ${colors[i]}" style="width:${(cnt/max*100).toFixed(1)}%"></div>
+      </div>
+      <div class="bar-val">${cnt}건</div>
+    </div>
+  `).join('');
+}
+
+/* 월별 차트 */
+function renderMonthChart() {
+  const now = new Date();
+  const months = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+  }
+  const data = months.map(m => {
+    const rows = RESERVATIONS.filter(r => r.createdAt?.startsWith(m) && r.status==='confirmed');
+    return { m, rev: rows.reduce((s,r)=>s+(r.finalPrice||0),0) };
+  });
+  const max = Math.max(...data.map(d=>d.rev)) || 1;
+  const el = document.getElementById('monthChart');
+  const labelEl = document.getElementById('monthLabels');
+
+  el.innerHTML = data.map((d,i) => {
+    const h = Math.max((d.rev/max*90), 2);
+    const isCurrent = i === data.length-1;
+    return `
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="font-size:0.65rem;color:var(--c-muted)">${fmtMoneyShort(d.rev)}</div>
+        <div style="width:100%;background:${isCurrent?'var(--c-accent)':'var(--brand-스카이)'};
+          border-radius:2px 2px 0 0;height:${h}px;opacity:${isCurrent?1:0.5}"></div>
+      </div>
+    `;
+  }).join('');
+
+  labelEl.innerHTML = data.map(d => `
+    <div style="flex:1;text-align:center;font-size:0.6rem;color:var(--c-subtle)">${d.m.slice(5)}월</div>
+  `).join('');
+}
+
+/* ============================================================
+   RENDER — 예약 목록
+============================================================ */
+let filteredRows = [];
+
+function renderReservationTable() {
+  const search = document.getElementById('searchInput')?.value.toLowerCase()||'';
+  const status = document.getElementById('statusFilter')?.value||'';
+  const space  = document.getElementById('spaceFilter')?.value||'';
+  const month  = document.getElementById('monthFilter')?.value||'';
+
+  filteredRows = RESERVATIONS.filter(r => {
+    const matchSearch = !search ||
+      r.name?.toLowerCase().includes(search) ||
+      r.spaceName?.toLowerCase().includes(search) ||
+      r.purpose?.toLowerCase().includes(search);
+    const matchStatus = !status || r.status === status;
+    const matchSpace  = !space  || r.spaceName === space;
+    const matchMonth  = !month  || r.createdAt?.startsWith(month);
+    return matchSearch && matchStatus && matchSpace && matchMonth;
+  });
+
+  const count = document.getElementById('filterCount');
+  if (count) count.textContent = `${filteredRows.length}건`;
+
+  const tbody = document.getElementById('reservationBody');
+  if (!tbody) return;
+
+  if (!filteredRows.length) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      조건에 맞는 예약이 없습니다.
+    </div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filteredRows.map(r => `
+    <tr>
+      <td class="mono text-muted" style="font-size:0.72rem">${r.id}</td>
+      <td class="nowrap text-muted">${r.createdAt}</td>
+      <td class="nowrap">${r.spaceName}</td>
+      <td class="nowrap">${r.useDate} ${r.useTime||''}</td>
+      <td>${r.name}</td>
+      <td class="text-right">${r.count||'—'}명</td>
+      <td class="text-right mono">${fmtMoney(r.finalPrice)}원${r.discountRate?`<br><span style="font-size:0.68rem;color:var(--c-muted)">${r.discountRate}% 감면</span>`:''}</td>
+      <td class="text-right mono">${r.actualAmount ? fmtMoney(r.actualAmount)+'원' : '<span class="text-muted">—</span>'}</td>
+      <td class="text-right">${diffBadge(r.finalPrice, r.actualAmount)}</td>
+      <td>${statusBadge(r.status)}</td>
+      <td>
+        <div class="action-group">
+          ${r.status==='pending'
+            ? `<button class="action-btn confirm" onclick="confirmReservation('${r.id}')">확정</button>`
+            : ''}
+          ${r.status!=='cancelled'
+            ? `<button class="action-btn danger" onclick="cancelReservation('${r.id}')">취소</button>`
+            : ''}
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterTable() { renderReservationTable(); }
+
+function populateFilters() {
+  const spaceEl = document.getElementById('spaceFilter');
+  const monthEl = document.getElementById('monthFilter');
+  if (!spaceEl || !monthEl) return;
+
+  const spaces = [...new Set(RESERVATIONS.map(r=>r.spaceName))].sort();
+  spaceEl.innerHTML = '<option value="">전체 공간</option>' +
+    spaces.map(s=>`<option value="${s}">${s}</option>`).join('');
+
+  const months = [...new Set(RESERVATIONS.map(r=>r.createdAt?.slice(0,7)))].sort().reverse();
+  monthEl.innerHTML = '<option value="">전체 기간</option>' +
+    months.map(m=>`<option value="${m}">${m}</option>`).join('');
+}
+
+/* ============================================================
+   RENDER — 입금 대기
+============================================================ */
+function renderPendingTable() {
+  const pending = RESERVATIONS.filter(r => r.status === 'pending');
+  const el = document.getElementById('pendingCountBadge');
+  if (el) el.textContent = `${pending.length}건`;
+
+  const tbody = document.getElementById('pendingBody');
+  if (!tbody) return;
+  if (!pending.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">대기 중인 예약 없음</td></tr>';
+    return;
+  }
+  tbody.innerHTML = pending.map(r => `
+    <tr>
+      <td class="mono text-muted" style="font-size:0.72rem">${r.id}</td>
+      <td>${r.name}</td>
+      <td>${r.spaceName}</td>
+      <td class="nowrap">${r.useDate}</td>
+      <td class="text-right mono">${fmtMoney(r.finalPrice)}원</td>
+    </tr>
+  `).join('');
+}
+
+/* ============================================================
+   CSV 파싱 & 매칭
+============================================================ */
+function handleCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result;
+    parseAndMatch(text);
+  };
+  // EUC-KR 우선 시도
+  reader.readAsText(file, 'EUC-KR');
+}
+
+// 드래그앤드롭
+const dropZone = document.getElementById('dropZone');
+if (dropZone) {
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor='var(--c-accent)'; });
+  dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor=''; });
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.style.borderColor='';
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const r = new FileReader();
+      r.onload = ev => parseAndMatch(ev.target.result);
+      r.readAsText(file, 'EUC-KR');
+    }
+  });
+}
+
+function parseAndMatch(text) {
+  // CSV 파싱 (헤더 행 자동 감지)
+  const lines = text.trim().split(/\r?\n/).filter(Boolean);
+  if (lines.length < 2) { toast('CSV 형식을 확인해주세요.', 'error'); return; }
+
+  const rows = lines.slice(1).map(line => {
+    const cols = line.split(',').map(c => c.trim().replace(/^"|"$/g,''));
+    // 일반적인 은행 CSV: 날짜, 내용(입금자명), 출금, 입금, 잔액
+    return {
+      date:   cols[0] || '',
+      name:   cols[1] || '',
+      debit:  Number((cols[2]||'0').replace(/[^\d]/g,'')),
+      credit: Number((cols[3]||'0').replace(/[^\d]/g,'')),
+      raw:    line,
+    };
+  }).filter(r => r.credit > 0); // 입금 건만
+
+  PAYMENTS = rows;
+
+  // 매칭
+  const pending = RESERVATIONS.filter(r => r.status === 'pending');
+  MATCH_RESULT = rows.map(pay => {
+    // 이름 포함 여부 + 금액 허용 오차 ±500원 범위 매칭
+    const matched = pending.find(r =>
+      (r.name.includes(pay.name) || pay.name.includes(r.name) ||
+       (r.depositorActual && r.depositorActual.includes(pay.name))) &&
+      Math.abs(r.finalPrice - pay.credit) <= 500
+    );
+    const diff = matched ? Number(matched.finalPrice) - Number(pay.credit) : null;
+    return { ...pay, matched: matched || null, diff };
+  });
+
+  // 결과 렌더
+  const panel = document.getElementById('matchResultPanel');
+  panel.style.display = 'block';
+  const tbody = document.getElementById('matchBody');
+
+  tbody.innerHTML = MATCH_RESULT.map(m => `
+    <tr>
+      <td class="nowrap text-muted">${m.date}</td>
+      <td>${m.name}</td>
+      <td class="text-right mono">${fmtMoney(m.credit)}원</td>
+      <td>${m.matched
+        ? `${m.matched.spaceName} · ${m.matched.useDate} (${m.matched.id})`
+        : '<span class="text-muted">—</span>'}</td>
+      <td>${m.matched && m.diff !== null
+        ? (m.diff === 0 ? '<span class="badge badge-confirm">일치</span>'
+          : m.diff > 0 ? `<span class="badge badge-pending">부족 ${fmtMoney(m.diff)}원</span>`
+          : `<span class="badge" style="background:rgba(135,166,215,0.15);color:#1a4a7a">초과 ${fmtMoney(Math.abs(m.diff))}원</span>`)
+        : '<span class="text-muted">—</span>'}</td>
+      <td>${m.matched
+        ? '<span class="badge badge-matched">매칭됨</span>'
+        : '<span class="badge badge-unmatched">미매칭</span>'}</td>
+    </tr>
+  `).join('');
+
+  const matched = MATCH_RESULT.filter(m=>m.matched).length;
+  toast(`${rows.length}건 파싱 완료 — ${matched}건 매칭`, 'success');
+
+  // preview
+  document.getElementById('csvPreview').innerHTML = `
+    <div style="font-size:0.72rem;color:var(--c-muted)">
+      총 ${rows.length}건 입금 감지 · 매칭 ${matched}건 · 미매칭 ${rows.length-matched}건
+    </div>`;
+
+  renderPendingTable();
+  setKPI('kpi-unmatched', MATCH_RESULT.filter(m=>!m.matched).length, '건');
+}
+
+function applyMatch() {
+  const toConfirm = MATCH_RESULT.filter(m => m.matched);
+  if (!toConfirm.length) { toast('매칭된 건이 없습니다.', 'error'); return; }
+
+  toConfirm.forEach(m => {
+    const idx = RESERVATIONS.findIndex(r => r.id === m.matched.id);
+    if (idx !== -1) {
+      RESERVATIONS[idx].status       = 'confirmed';
+      RESERVATIONS[idx].actualAmount = m.credit;
+      RESERVATIONS[idx].diff         = m.diff;
+      RESERVATIONS[idx].depositorActual = m.name;
+    }
+  });
+
+  toast(`${toConfirm.length}건 확정 처리됨`, 'success');
+
+  syncToSheet(toConfirm.map(m => ({
+    reservationId:  m.matched.id,
+    action:         'confirm',
+    paymentDate:    m.date,
+    actualAmount:   m.credit,
+    depositorName:  m.name,
+    method:         'CSV매칭',
+  })));
+
+  MATCH_RESULT = [];
+  PAYMENTS = [];
+  document.getElementById('matchResultPanel').style.display = 'none';
+  document.getElementById('csvPreview').innerHTML = '';
+  renderPendingTable();
+  renderReservationTable();
+  renderOverview();
+}
+
+/* ============================================================
+   RENDER — 통계
+============================================================ */
+function renderStats() {
+  const now = new Date();
+  const yearStr = String(now.getFullYear());
+  const yearRows = RESERVATIONS.filter(r => r.createdAt?.startsWith(yearStr));
+  const confirmed = yearRows.filter(r => r.status === 'confirmed');
+  const revenue = confirmed.reduce((s,r)=>s+(r.finalPrice||0),0);
+  const avg = confirmed.length ? Math.round(revenue/confirmed.length) : 0;
+  const discounted = confirmed.filter(r=>r.discountRate>0);
+  const discountRate = confirmed.length ? Math.round(discounted.length/confirmed.length*100) : 0;
+
+  document.getElementById('stat-yearly').innerHTML = `${fmtMoney(revenue)}<small>원</small>`;
+  document.getElementById('stat-yearly-count').innerHTML = `${confirmed.length}<small>건</small>`;
+  document.getElementById('stat-avg').innerHTML = `${fmtMoney(avg)}<small>원</small>`;
+  document.getElementById('stat-discount-rate').innerHTML = `${discountRate}<small>%</small>`;
+
+  // 공간별 매출
+  const revBySpace = {};
+  confirmed.forEach(r => revBySpace[r.spaceName] = (revBySpace[r.spaceName]||0) + r.finalPrice);
+  const spaceArr = Object.entries(revBySpace).sort((a,b)=>b[1]-a[1]);
+  const maxRev = spaceArr[0]?.[1]||1;
+  const colors = ['','olive','sky','peach','yellow','','olive','sky'];
+  document.getElementById('revenueBySpace').innerHTML = spaceArr.map(([name,rev],i)=>`
+    <div class="bar-row">
+      <div class="bar-label" title="${name}">${name}</div>
+      <div class="bar-track">
+        <div class="bar-fill ${colors[i]}" style="width:${(rev/maxRev*100).toFixed(1)}%"></div>
+      </div>
+      <div class="bar-val">${fmtMoneyShort(rev)}</div>
+    </div>
+  `).join('');
+
+  // 감면 유형
+  const discountMap = {'감면없음':0,'전액감면':0,'50%감면':0};
+  confirmed.forEach(r => {
+    if (!r.discountRate) discountMap['감면없음']++;
+    else if (r.discountRate===100) discountMap['전액감면']++;
+    else discountMap['50%감면']++;
+  });
+  const discMax = Math.max(...Object.values(discountMap))||1;
+  const dcColors = ['','sky','olive'];
+  document.getElementById('discountChart').innerHTML = Object.entries(discountMap).map(([k,v],i)=>`
+    <div class="bar-row">
+      <div class="bar-label">${k}</div>
+      <div class="bar-track">
+        <div class="bar-fill ${dcColors[i]}" style="width:${(v/discMax*100).toFixed(1)}%"></div>
+      </div>
+      <div class="bar-val">${v}건</div>
+    </div>
+  `).join('');
+
+  // 월별 테이블
+  const months = [];
+  for (let i=5;i>=0;i--) {
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+  }
+  const tbody = document.getElementById('statsTableBody');
+  tbody.innerHTML = months.map(m => {
+    const rows = yearRows.filter(r=>r.createdAt?.startsWith(m));
+    const conf = rows.filter(r=>r.status==='confirmed');
+    const canc = rows.filter(r=>r.status==='cancelled');
+    const rev  = conf.reduce((s,r)=>s+(r.finalPrice||0),0);
+    const disc = conf.filter(r=>r.discountRate>0).length;
+    const avg2 = conf.length ? Math.round(rev/conf.length) : 0;
+    return `<tr>
+      <td class="nowrap">${m}</td>
+      <td class="text-right">${rows.length}</td>
+      <td class="text-right">${conf.length}</td>
+      <td class="text-right">${canc.length}</td>
+      <td class="text-right mono">${fmtMoney(rev)}원</td>
+      <td class="text-right">${disc}</td>
+      <td class="text-right mono">${fmtMoney(avg2)}원</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ============================================================
+   RENDER — 설정
+============================================================ */
+function renderSettings() {
+  const map = {
+    'cfg-name': SITE_CONFIG.name,
+    'cfg-phone': SITE_CONFIG.phone,
+    'cfg-address': SITE_CONFIG.address,
+    'cfg-bank': SITE_CONFIG.bank,
+    'cfg-account': SITE_CONFIG.number,
+    'cfg-holder': SITE_CONFIG.holder,
+    'cfg-deadline': SITE_CONFIG.deadline,
+    'cfg-scriptUrl': SITE_CONFIG.appsScriptUrl,
+    'cfg-minDays': SITE_CONFIG.minDaysAhead,
+    'cfg-maxDays': SITE_CONFIG.maxDaysAhead,
+  };
+  Object.entries(map).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el && val) el.value = val;
+  });
+}
+
+async function saveSettings() {
+  // site.json을 직접 쓸 수 없으므로 Apps Script로 전송
+  const payload = {
+    action: 'updateConfig',
+    name:        document.getElementById('cfg-name')?.value,
+    phone:       document.getElementById('cfg-phone')?.value,
+    address:     document.getElementById('cfg-address')?.value,
+    bank:        document.getElementById('cfg-bank')?.value,
+    number:      document.getElementById('cfg-account')?.value,
+    holder:      document.getElementById('cfg-holder')?.value,
+    deadline:    document.getElementById('cfg-deadline')?.value,
+    appsScriptUrl: document.getElementById('cfg-scriptUrl')?.value,
+    minDaysAhead: document.getElementById('cfg-minDays')?.value,
+    maxDaysAhead: document.getElementById('cfg-maxDays')?.value,
+  };
+  toast('설정이 저장되었습니다. (Apps Script 연동 후 실제 반영)', 'success');
+  if (SITE_CONFIG.appsScriptUrl) {
+    try {
+      await fetch(SITE_CONFIG.appsScriptUrl, { method:'POST', body: JSON.stringify(payload) });
+    } catch(e) {}
+  }
+}
+
+/* ============================================================
+   ACTIONS
+============================================================ */
+function confirmReservation(id) {
+  const r = RESERVATIONS.find(r=>r.id===id);
+  if (!r) return;
+  showModal(
+    '예약 확정',
+    `${r.name}님의 <b>${r.spaceName}</b> (${r.useDate}) 예약을 확정 처리합니다.<br>확정 이메일이 자동 발송됩니다.`,
+    () => {
+      r.status = 'confirmed';
+      syncToSheet([{ reservationId: id, action: 'confirm' }]);
+      renderReservationTable();
+      renderOverview();
+      renderPendingTable();
+      toast('예약이 확정되었습니다.', 'success');
+    }
+  );
+}
+
+function cancelReservation(id) {
+  const r = RESERVATIONS.find(r=>r.id===id);
+  if (!r) return;
+  showModal(
+    '예약 취소',
+    `${r.name}님의 <b>${r.spaceName}</b> (${r.useDate}) 예약을 취소 처리합니다.`,
+    () => {
+      r.status = 'cancelled';
+      syncToSheet([{ reservationId: id, action: 'cancel' }]);
+      renderReservationTable();
+      renderOverview();
+      renderPendingTable();
+      toast('예약이 취소되었습니다.', 'error');
+    }
+  );
+}
+
+/* Apps Script 동기화 */
+async function syncToSheet(actions) {
+  const url = SITE_CONFIG.appsScriptUrl;
+  if (!url) return;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'batchUpdate', updates: actions })
+    });
+  } catch(e) { console.warn('시트 동기화 실패:', e); }
+}
+
+async function syncSheets() {
+  toast('Google Sheets와 동기화 중…', 'success');
+  await loadReservations();
+  renderOverview();
+  renderReservationTable();
+  renderPendingTable();
+  renderStats();
+  populateFilters();
+}
+
+/* ============================================================
+   ALERTS
+============================================================ */
+function checkAlerts() {
+  const el = document.getElementById('alertArea');
+  if (!el) return;
+  const alerts = [];
+  const overdue = RESERVATIONS.filter(r => {
+    if (r.status !== 'pending') return false;
+    const created = new Date(r.createdAt);
+    const diff = (new Date()-created)/(1000*60*60*24);
+    return diff > 3;
+  });
+  if (overdue.length) {
+    alerts.push(`<div class="alert alert-warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      입금 기한 초과 예약 <b>${overdue.length}건</b>이 있습니다. 자동 취소 처리를 확인해주세요.
+    </div>`);
+  }
+  el.innerHTML = alerts.join('');
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+function showModal(title, desc, onConfirm) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalDesc').innerHTML = desc;
+  document.getElementById('modalConfirmBtn').onclick = () => { onConfirm(); closeModal(); };
+  document.getElementById('confirmModal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('confirmModal').classList.remove('open');
+}
+document.getElementById('confirmModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('confirmModal')) closeModal();
+});
+
+/* ============================================================
+   TOAST
+============================================================ */
+function toast(msg, type='success') {
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+/* ============================================================
+   EXPORT
+============================================================ */
+function exportCSV() {
+  const headers = ['예약ID','신청일','공간','사용일','시작시간','신청자','연락처','이메일','인원','사용목적','감면율','최종요금','상태'];
+  const rows = filteredRows.map(r => [
+    r.id, r.createdAt, r.spaceName, r.useDate, r.useTime||'',
+    r.name, r.phone||'', r.email||'', r.count||'',
+    r.purpose||'', r.discountRate||0, r.finalPrice||0, r.status
+  ]);
+  downloadCSV('reservations.csv', [headers, ...rows]);
+}
+
+function exportStatsCSV() {
+  toast('통계 CSV 내보내기', 'success');
+}
+
+function downloadCSV(filename, rows) {
+  const bom = '\uFEFF';
+  const content = bom + rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(content);
+  a.download = filename;
+  a.click();
+}
+
+/* ============================================================
+   UTILS
+============================================================ */
+function fmtMoney(n) {
+  if (!n) return '0';
+  return Number(n).toLocaleString('ko-KR');
+}
+
+function diffBadge(finalPrice, actualAmount) {
+  if (!actualAmount || actualAmount === '') return '<span class="text-muted">—</span>';
+  const diff = Number(finalPrice || 0) - Number(actualAmount);
+  if (diff === 0) return '<span class="badge badge-confirm">일치</span>';
+  if (diff > 0)   return `<span class="badge badge-pending">-${fmtMoney(diff)}</span>`;
+  return `<span class="badge" style="background:rgba(135,166,215,0.15);color:#1a4a7a">+${fmtMoney(Math.abs(diff))}</span>`;
+}
+function fmtMoneyShort(n) {
+  if (!n) return '0';
+  if (n >= 10000) return Math.round(n/10000)+'만';
+  return Number(n).toLocaleString('ko-KR');
+}
+function statusBadge(status) {
+  const map = {
+    pending:   ['badge-pending',  '입금 대기'],
+    confirmed: ['badge-confirm',  '확정'],
+    cancelled: ['badge-cancel',   '취소'],
+  };
+  const [cls, label] = map[status] || ['badge-cancel','알 수 없음'];
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+</script>
+</body>
+</html>
