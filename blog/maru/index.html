@@ -939,7 +939,7 @@ footer {
 }
 
 /* ============================================================
-   APPLY MODAL — 신청 폼
+   APPLY MODAL — 2패널 분리형
 ============================================================ */
 .apply-overlay {
   position: fixed; inset: 0;
@@ -951,7 +951,6 @@ footer {
   opacity: 0; pointer-events: none;
   transition: opacity 0.3s;
   overflow-y: auto;
-  /* align-items: flex-start 필수 — center 사용 시 폼이 뷰포트보다 길면 최상단이 잘림 */
 }
 .apply-overlay.open { opacity: 1; pointer-events: auto; }
 
@@ -959,14 +958,19 @@ footer {
   background: var(--c-card);
   border: 1px solid var(--c-border);
   border-radius: var(--r-card);
-  width: 100%; max-width: 580px;
-  padding: 48px;
+  width: 100%; max-width: 560px;
+  overflow: hidden;
   transform: translateY(24px);
   transition: transform 0.35s var(--ease-out);
   position: relative;
 }
 .apply-overlay.open .apply-modal { transform: translateY(0); }
 
+/* ── 상단 헤더 (항상 표시) ── */
+.apply-header {
+  padding: 24px 28px 0;
+  position: relative;
+}
 .apply-close {
   position: absolute; top: 20px; right: 20px;
   background: none; border: none;
@@ -974,19 +978,179 @@ footer {
   cursor: pointer; line-height: 1; transition: color 0.2s;
 }
 .apply-close:hover { color: var(--c-text); }
+.apply-title { font-family: var(--f-serif); font-size: 1.3rem; font-weight: 600; color: var(--c-text); margin-bottom: 20px; }
 
-.apply-title    { font-family: var(--f-serif); font-size: 1.55rem; font-weight: 600; margin-bottom: 4px; color: var(--c-text); }
-.apply-subtitle { font-size: 0.82rem; color: var(--c-muted); margin-bottom: 32px; }
+/* ── 진행 단계 인디케이터 ── */
+.apply-steps {
+  display: flex; align-items: center; gap: 0;
+  margin-bottom: 0;
+}
+.apply-step-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.72rem; font-weight: 500;
+  color: var(--c-subtle);
+  transition: color 0.3s;
+  white-space: nowrap;
+}
+.apply-step-item.active { color: var(--c-text); }
+.apply-step-item.done   { color: var(--c-accent); }
+.apply-step-dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--c-border-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 700;
+  color: var(--c-subtle);
+  background: var(--c-bg);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.apply-step-item.active .apply-step-dot {
+  border-color: var(--c-accent);
+  background: var(--c-accent);
+  color: var(--c-invert);
+}
+.apply-step-item.done .apply-step-dot {
+  border-color: var(--c-accent);
+  background: var(--c-accent-dim);
+  color: var(--c-accent);
+}
+.apply-step-line {
+  flex: 1; height: 1px;
+  background: var(--c-border);
+  margin: 0 8px;
+  transition: background 0.3s;
+  min-width: 20px;
+}
+.apply-step-line.done { background: var(--c-accent); }
+
+/* ── 패널 슬라이더 ── */
+.apply-panels {
+  display: flex;
+  transition: transform 0.4s var(--ease-out);
+  will-change: transform;
+}
+.apply-panel {
+  min-width: 100%;
+  padding: 24px 28px 28px;
+  box-sizing: border-box;
+}
+
+/* ── 패널 1: 슬롯 선택 ── */
+.slot-section-label {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--c-muted); margin-bottom: 10px;
+}
+.time-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.time-slot-btn {
+  padding: 10px 4px;
+  border-radius: var(--r);
+  border: 1px solid var(--c-border-md);
+  background: var(--c-bg);
+  font-family: var(--f-sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--c-text);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  line-height: 1.3;
+}
+.time-slot-btn:hover:not(:disabled):not(.occupied) {
+  border-color: var(--c-accent);
+  background: var(--c-accent-dim);
+  color: var(--c-accent);
+}
+.time-slot-btn.selected {
+  border-color: var(--c-accent);
+  background: var(--c-accent);
+  color: var(--c-invert);
+  font-weight: 600;
+}
+.time-slot-btn.occupied {
+  background: var(--c-surface);
+  border-color: var(--c-border);
+  color: var(--c-subtle);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+.time-slot-btn .slot-label { display: block; }
+.time-slot-btn .slot-badge {
+  font-size: 0.6rem;
+  display: block;
+  margin-top: 2px;
+  opacity: 0.7;
+}
+.slot-legend {
+  display: flex; gap: 14px;
+  margin-top: 10px; margin-bottom: 20px;
+  font-size: 0.68rem; color: var(--c-muted);
+}
+.slot-legend-item { display: flex; align-items: center; gap: 5px; }
+.slot-legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.slot-legend-dot.avail   { background: var(--c-bg); border: 1px solid var(--c-border-md); }
+.slot-legend-dot.sel     { background: var(--c-accent); }
+.slot-legend-dot.occ     { background: var(--c-surface); border: 1px solid var(--c-border); }
+
+.slot-status {
+  font-size: 0.75rem;
+  color: var(--c-muted);
+  padding: 10px 14px;
+  background: var(--c-surface);
+  border-radius: var(--r);
+  border-left: 2px solid var(--c-border-md);
+  margin-bottom: 16px;
+  transition: all 0.2s;
+  min-height: 38px;
+}
+.slot-status[data-type="ok"]   { border-left-color: var(--brand-올리브); color: #3d3c00; background: rgba(177,174,52,0.06); }
+.slot-status[data-type="full"] { border-left-color: var(--c-accent); color: var(--c-accent); background: rgba(240,105,51,0.06); }
+.slot-status[data-type="warn"] { border-left-color: var(--brand-스카이); color: #2a4a7a; background: rgba(135,166,215,0.07); }
+.slot-status[data-type="loading"] { color: var(--c-subtle); }
+
+.slot-selected-summary {
+  background: var(--c-accent-dim);
+  border: 1px solid var(--c-accent-border);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  color: var(--c-accent);
+  font-weight: 500;
+  margin-bottom: 16px;
+  display: none;
+}
+.slot-selected-summary.visible { display: block; }
+
+/* ── 패널 2: 신청 정보 ── */
+.apply-back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; color: var(--c-muted);
+  background: none; border: none;
+  cursor: pointer; padding: 0; margin-bottom: 20px;
+  transition: color 0.15s;
+}
+.apply-back-btn:hover { color: var(--c-text); }
+.apply-back-btn svg { width: 14px; height: 14px; }
 
 .apply-space-badge {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--c-accent-dim);
   border: 1px solid var(--c-accent-border);
   color: var(--c-accent);
-  font-size: 0.78rem; font-weight: 500;
-  padding: 6px 14px;
+  font-size: 0.75rem; font-weight: 500;
+  padding: 5px 12px;
   border-radius: var(--r-pill);
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .form-group  { margin-bottom: 18px; }
@@ -1310,55 +1474,124 @@ textarea { resize: vertical; min-height: 88px; }
   </div>
 </div>
 
-<!-- 신청 모달 -->
+<!-- 신청 모달 — 2패널 분리형 -->
 <div class="apply-overlay" id="applyOverlay">
   <div class="apply-modal">
-    <button class="apply-close" onclick="closeApply()">✕</button>
-    <div id="formState">
-      <h2 class="apply-title">대관 신청</h2>
-      <p class="apply-subtitle">신청서 작성 후 계좌이체로 예약이 확정됩니다.</p>
-      <div id="selectedSpaceBadge" class="apply-space-badge" style="display:none;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-        </svg>
-        <span id="selectedSpaceName"></span>
-      </div>
-      <!-- Step 1: 공간·날짜·시간 선택 (슬롯 확인) -->
-      <div class="step-label" data-step="1">공간 및 날짜 선택</div>
-      <div class="form-group">
-        <label for="fSpace">공간 선택</label>
-        <select id="fSpace"></select>
-      </div>
-      <div class="form-row">
-        <div><label for="fDate">사용 날짜</label><input type="date" id="fDate"></div>
-        <div><label for="fTime">시작 시간</label><select id="fTime"></select></div>
-      </div>
-      <div class="slot-status" id="slotStatus" data-type="idle">공간과 날짜를 선택하면 가능한 시간을 표시합니다.</div>
-      <div class="form-row">
-        <div><label for="fDuration">사용 시간</label><select id="fDuration"></select></div>
-        <div><label for="fCount">예상 인원</label><input type="number" id="fCount" placeholder="명" min="1" max="500"></div>
-      </div>
 
-      <div class="form-divider"></div>
+    <!-- 공통 헤더 -->
+    <div class="apply-header">
+      <button class="apply-close" onclick="closeApply()">✕</button>
+      <div class="apply-title" id="applyTitle">대관 신청</div>
+      <!-- 진행 단계 인디케이터 -->
+      <div class="apply-steps" id="applySteps">
+        <div class="apply-step-item active" id="stepIndicator1">
+          <div class="apply-step-dot">1</div>
+          <span>날짜·시간</span>
+        </div>
+        <div class="apply-step-line" id="stepLine1"></div>
+        <div class="apply-step-item" id="stepIndicator2">
+          <div class="apply-step-dot">2</div>
+          <span>신청 정보</span>
+        </div>
+        <div class="apply-step-line" id="stepLine2"></div>
+        <div class="apply-step-item" id="stepIndicator3">
+          <div class="apply-step-dot">3</div>
+          <span>완료</span>
+        </div>
+      </div>
+    </div>
 
-      <!-- Step 2: 신청자 정보 (슬롯 확인 전 잠금) -->
-      <div id="step2Fields">
-        <div class="step-label" data-step="2">신청자 정보</div>
-        <div class="form-row">
-          <div><label for="fName">성명 <span style="color:var(--c-accent)">*</span></label><input type="text" id="fName" placeholder="홍길동" maxlength="30" autocomplete="name"></div>
-          <div><label for="fPhone">연락처 <span style="color:var(--c-accent)">*</span></label><input type="tel" id="fPhone" placeholder="010-0000-0000" maxlength="20" autocomplete="tel"></div>
+    <!-- 패널 슬라이더 -->
+    <div class="apply-panels" id="applyPanels">
+
+      <!-- ── 패널 1: 공간·날짜·시간 선택 ── -->
+      <div class="apply-panel" id="panel1">
+        <div class="form-group" style="margin-top:8px">
+          <label for="fSpace">공간 선택</label>
+          <select id="fSpace"></select>
         </div>
         <div class="form-group">
-          <label for="fEmail">이메일 <span style="color:var(--c-accent)">*</span> <span style="font-weight:300;text-transform:none;letter-spacing:0">(확정 안내 수신)</span></label>
+          <label for="fDate">사용 날짜</label>
+          <input type="date" id="fDate">
+        </div>
+
+        <!-- 슬롯 상태 -->
+        <div class="slot-status" id="slotStatus" data-type="idle">공간과 날짜를 선택하면 가능한 시간을 표시합니다.</div>
+
+        <!-- 시간 박스 그리드 -->
+        <div id="timeSlotSection" style="display:none">
+          <div class="slot-section-label">시작 시간 선택</div>
+          <div class="time-slot-grid" id="timeSlotGrid"></div>
+          <div class="slot-legend">
+            <div class="slot-legend-item"><div class="slot-legend-dot avail"></div>선택 가능</div>
+            <div class="slot-legend-item"><div class="slot-legend-dot sel"></div>선택됨</div>
+            <div class="slot-legend-item"><div class="slot-legend-dot occ"></div>예약됨</div>
+          </div>
+        </div>
+
+        <!-- 사용 시간 (시작 시간 선택 후 노출) -->
+        <div id="durationSection" style="display:none">
+          <div class="form-row">
+            <div>
+              <label for="fDuration">사용 시간</label>
+              <select id="fDuration"></select>
+            </div>
+            <div>
+              <label for="fCount">예상 인원</label>
+              <input type="number" id="fCount" placeholder="명" min="1" max="500">
+            </div>
+          </div>
+        </div>
+
+        <!-- 선택 요약 -->
+        <div class="slot-selected-summary" id="slotSummary"></div>
+
+        <!-- 다음 버튼 -->
+        <button class="btn-primary" id="toPanel2Btn"
+          style="width:100%;justify-content:center;margin-top:8px" disabled>
+          신청 정보 입력하기
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 4l4 4-4 4"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- ── 패널 2: 신청자 정보 입력 ── -->
+      <div class="apply-panel" id="panel2">
+        <button class="apply-back-btn" onclick="goToPanel(1)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M10 4L6 8l4 4"/>
+          </svg>
+          날짜·시간 변경
+        </button>
+
+        <div id="selectedSpaceBadge" class="apply-space-badge" style="display:none;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span id="selectedSpaceName"></span>
+        </div>
+
+        <div class="form-row">
+          <div><label for="fName">성명 <span style="color:var(--c-accent)">*</span></label>
+            <input type="text" id="fName" placeholder="홍길동" maxlength="30" autocomplete="name"></div>
+          <div><label for="fPhone">연락처 <span style="color:var(--c-accent)">*</span></label>
+            <input type="tel" id="fPhone" placeholder="010-0000-0000" maxlength="20" autocomplete="tel"></div>
+        </div>
+        <div class="form-group">
+          <label for="fEmail">이메일 <span style="color:var(--c-accent)">*</span>
+            <span style="font-weight:300;text-transform:none;letter-spacing:0">(확정 안내 수신)</span></label>
           <input type="email" id="fEmail" placeholder="example@email.com" maxlength="100" autocomplete="email">
         </div>
         <div class="form-group">
-          <label for="fOrg">단체명 <span style="font-weight:300;text-transform:none;letter-spacing:0">(개인 신청 시 생략 가능)</span></label>
+          <label for="fOrg">단체명
+            <span style="font-weight:300;text-transform:none;letter-spacing:0">(개인 신청 시 생략)</span></label>
           <input type="text" id="fOrg" placeholder="단체 또는 기관명" maxlength="60">
         </div>
         <div class="form-group">
-          <label for="fDepositor">입금자명 <span style="font-weight:300;text-transform:none;letter-spacing:0">(통장에 표시될 이름, 신청자명과 다를 경우)</span></label>
-          <input type="text" id="fDepositor" placeholder="비워두면 신청자명으로 자동 설정됩니다" maxlength="30">
+          <label for="fDepositor">입금자명
+            <span style="font-weight:300;text-transform:none;letter-spacing:0">(신청자명과 다를 경우)</span></label>
+          <input type="text" id="fDepositor" placeholder="비워두면 신청자명으로 자동 설정" maxlength="30">
         </div>
         <div class="form-group">
           <label for="fPurpose">사용 목적 <span style="color:var(--c-accent)">*</span></label>
@@ -1377,29 +1610,35 @@ textarea { resize: vertical; min-height: 88px; }
           <div id="priceDisplay" class="price-amount">—</div>
         </div>
 
-        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="submitApply()">
+        <button class="btn-primary" id="submitBtn"
+          style="width:100%;justify-content:center;" onclick="submitApply()">
           신청 완료하기
         </button>
       </div>
-    </div>
-    <div class="success-state" id="successState">
-      <div class="success-icon">✓</div>
-      <div class="success-title">신청이 접수되었습니다</div>
-      <div class="success-desc">
-        아래 계좌로 <strong id="successAmountInline"></strong>을 이체해 주세요.<br>
-        입금 확인 후 이메일로 최종 확정 안내를 드립니다.<br>
-        <small style="color:var(--c-subtle)">입금 기한: <span id="successDeadline"></span></small>
+
+      <!-- ── 패널 3: 완료 ── -->
+      <div class="apply-panel" id="panel3">
+        <div class="success-state" id="successState" style="display:block">
+          <div class="success-icon">✓</div>
+          <div class="success-title">신청이 접수되었습니다</div>
+          <div class="success-desc">
+            아래 계좌로 <strong id="successAmountInline"></strong>을 이체해 주세요.<br>
+            입금 확인 후 이메일로 최종 확정 안내를 드립니다.<br>
+            <small style="color:var(--c-subtle)">입금 기한: <span id="successDeadline"></span></small>
+          </div>
+          <div class="account-box">
+            <div class="account-box-label">입금 계좌 안내</div>
+            <div class="account-row"><span class="account-row-label">은행</span><span class="account-row-value" id="successBankName"></span></div>
+            <div class="account-row"><span class="account-row-label">계좌번호</span><span class="account-row-value" id="successAccountNum"></span></div>
+            <div class="account-row"><span class="account-row-label">예금주</span><span class="account-row-value" id="successAccountHolder"></span></div>
+            <div class="account-row"><span class="account-row-label">입금 금액</span><span class="account-row-value highlight" id="successAmountBox"></span></div>
+            <div class="account-row"><span class="account-row-label">입금자명</span><span class="account-row-value" id="successDepositorName"></span></div>
+          </div>
+          <button class="btn-secondary" onclick="closeApply()" style="width:100%;justify-content:center;">닫기</button>
+        </div>
       </div>
-      <div class="account-box">
-        <div class="account-box-label">입금 계좌 안내</div>
-        <div class="account-row"><span class="account-row-label">은행</span><span class="account-row-value" id="successBankName"></span></div>
-        <div class="account-row"><span class="account-row-label">계좌번호</span><span class="account-row-value" id="successAccountNum"></span></div>
-        <div class="account-row"><span class="account-row-label">예금주</span><span class="account-row-value" id="successAccountHolder"></span></div>
-        <div class="account-row"><span class="account-row-label">입금 금액</span><span class="account-row-value highlight" id="successAmountBox"></span></div>
-        <div class="account-row"><span class="account-row-label">입금자명</span><span class="account-row-value" id="successDepositorName"></span></div>
-      </div>
-      <button class="btn-secondary" onclick="closeApply()" style="width:100%;justify-content:center;">닫기</button>
-    </div>
+
+    </div><!-- /apply-panels -->
   </div>
 </div>
 
