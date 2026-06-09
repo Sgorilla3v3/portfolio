@@ -392,6 +392,7 @@ function renderCalTimeGrid() {
 /* ── 시간 선택 ── */
 function selectCalTime(time) {
   _calTimeSelected = time;
+  renderCalTimeGrid();
 
   // 버튼 상태 갱신
   document.querySelectorAll('.cal-time-btn').forEach(btn => {
