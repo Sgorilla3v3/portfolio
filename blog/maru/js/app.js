@@ -33,8 +33,8 @@ const fmt = n => { const v = Number(n); return isNaN(v) ? '0' : v.toLocaleString
 
 /* ── 입력 검증 규칙 ── */
 const RULES = {
-  name:      { maxLen:30,  pattern:/^[가-힣a-zA-Z\s]{1,30}$/,               msg:'한글 또는 영문 1~30자로 입력해 주세요.' },
-  phone:     { maxLen:20,  pattern:/^(010|011|016|017|018|019)-?\d{3,4}-?\d{4}$/, msg:'올바른 휴대폰 번호를 입력해 주세요. (예: 010-1234-5678)' },
+  name:      { maxLen:30,  pattern:/^[가-힣a-zA-Z][가-힣a-zA-Z\s]{0,29}$/, msg:'성명은 한글 또는 영문으로만 입력해 주세요. (숫자·특수문자 불가)' },
+  phone:     { maxLen:20,  pattern:/^(010|011|016|017|018|019)[\-]?\d{3,4}[\-]?\d{4}$/, msg:'올바른 휴대폰 번호를 입력해 주세요. (예: 010-1234-5678)' },
   email:     { maxLen:100, pattern:/^[^\s@]+@[^\s@]+\.[^\s@]+$/,             msg:'올바른 이메일 주소를 입력해 주세요.' },
   org:       { maxLen:60,  pattern:null, msg:'' },
   depositor: { maxLen:30,  pattern:/^[가-힣a-zA-Z\s]{0,30}$/,               msg:'한글 또는 영문 30자 이내로 입력해 주세요.' },
@@ -189,8 +189,10 @@ function renderApplySpaceSelect() {
     SPACES.map(s=>`<option value="${esc(s.id)}">${esc(s.name)} (${esc(s.floor)})</option>`).join('');
 }
 function renderDurationOptions(opts) {
-  const sel=$('fDuration'); if(!sel) return;
-  sel.innerHTML=opts.map(h=>`<option value="${h}"${h===3?' selected':''}>${h}시간</option>`).join('');
+  const html = opts.map(h=>`<option value="${h}"${h===3?' selected':''}>${h}시간</option>`).join('');
+  // 패널1용(구버전 잔재) + 패널2용 모두 렌더
+  const sel1 = $('fDuration');  if(sel1) sel1.innerHTML = html;
+  const sel2 = $('fDuration2'); if(sel2) sel2.innerHTML = html;
 }
 function renderDiscountCheckboxes(discounts) {
   const el=$('discountCheckboxes'); if(!el) return;
@@ -427,8 +429,27 @@ function goToPanel(n) {
   $('applySteps').style.display = n === 3 ? 'none' : '';
   $('applyTitle').textContent = n === 1 ? '대관 신청' : n === 2 ? '신청 정보 입력' : '신청 완료';
 
-  // 패널2 진입 시 첫 필드 포커스
-  if (n === 2) setTimeout(() => $('fName')?.focus(), 350);
+  // 패널2 진입 시 — 선택 정보 요약 채우기 + 첫 필드 포커스
+  if (n === 2) {
+    updateSelectionSummary();
+    setTimeout(() => $('fName')?.focus(), 350);
+  }
+}
+
+/* 패널2 상단 선택 정보 요약 갱신 */
+function updateSelectionSummary() {
+  const spaceId = $('fSpace')?.value;
+  const date    = $('fDate')?.value;
+  const time    = selectedTime || _calTimeSelected;
+  const s       = SPACES.find(x => x.id === spaceId);
+
+  const sumSpace = $('sumSpace');
+  const sumDate  = $('sumDate');
+  const sumTime  = $('sumTime');
+
+  if (sumSpace) sumSpace.textContent = s ? s.name : '—';
+  if (sumDate)  sumDate.textContent  = date || '—';
+  if (sumTime)  sumTime.textContent  = time ? time + ' 시작' : '—';
 }
 
 /* ============================================================
@@ -538,7 +559,9 @@ function selectTimeSlot(time) {
 function updateSlotSummary() {
   const spaceId  = $('fSpace')?.value;
   const date     = $('fDate')?.value;
-  const duration = parseInt($('fDuration')?.value) || 1;
+  // 패널2의 fDuration2 우선, 없으면 fDuration 폴백
+  const durEl2   = $('fDuration2') || $('fDuration');
+  const duration = parseInt(durEl2?.value) || 1;
   const summary  = $('slotSummary');
   if (!summary) return;
 
@@ -589,6 +612,9 @@ function openApply(spaceId, preDate, preTime) {
   // 패널 2 초기화
   document.querySelectorAll('#panel2 input, #panel2 textarea')
     .forEach(el => { el.value = ''; });
+  // fDuration2 기본값 복원 (renderDurationOptions에서 selected 설정됐지만 초기화 후 재설정)
+  const dur2 = $('fDuration2');
+  if (dur2 && !dur2.value) dur2.value = _durationOpts.includes(3) ? '3' : (_durationOpts[0]||'1');
   document.querySelectorAll('#discountCheckboxes input[type="checkbox"]')
     .forEach(c => { c.checked = false; });
 
@@ -641,7 +667,9 @@ function handleDiscount(cb) {
 /* ── 요금 계산 ── */
 function updatePrice() {
   const spaceId  = $('fSpace')?.value;
-  const duration = parseInt($('fDuration')?.value) || 1;
+  // 패널2의 fDuration2가 있으면 우선 사용, 없으면 패널1의 fDuration
+  const durEl   = $('fDuration2') || $('fDuration');
+  const duration = parseInt(durEl?.value) || 1;
   const priceEl  = $('priceDisplay');
   const noteEl   = $('priceNote');
   if (!priceEl) return;
@@ -690,7 +718,9 @@ async function submitApply() {
 
   const spaceId  = $('fSpace')?.value;
   const date     = $('fDate')?.value;
-  const duration = parseInt($('fDuration')?.value) || 1;
+  // 패널2의 fDuration2 우선, 없으면 fDuration 폴백
+  const durEl2   = $('fDuration2') || $('fDuration');
+  const duration = parseInt(durEl2?.value) || 1;
   const countVal = parseInt($('fCount')?.value)||0;
   const name      = $('fName')?.value.trim();
   const phone     = $('fPhone')?.value.trim();
@@ -811,12 +841,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   $('fSpace')?.addEventListener('change', () => { onSpaceOrDateChange(); updatePrice(); });
   $('fDate')?.addEventListener('change', onSpaceOrDateChange);
-  $('fDuration')?.addEventListener('change', () => { updatePrice(); updateSlotSummary(); });
+  $('fDuration')?.addEventListener('change',  () => { updatePrice(); updateSlotSummary(); });
+  $('fDuration2')?.addEventListener('change', () => { updatePrice(); });
   $('fCount')?.addEventListener('input', () => clearFieldError('fCount'));
   $('toPanel2Btn')?.addEventListener('click', proceedToForm);
 
+  // 입력 중: 오류 메시지 제거
   ['fName','fPhone','fEmail','fOrg','fDepositor','fPurpose'].forEach(id=>{
     $(id)?.addEventListener('input', ()=>clearFieldError(id));
+  });
+  // 포커스 해제 시: 실시간 형식 검증
+  $('fName')?.addEventListener('blur', () => {
+    const v = $('fName')?.value.trim();
+    if (v) { const e=validateField('fName',RULES.name); if(e) showFieldError('fName',e); }
+  });
+  $('fPhone')?.addEventListener('blur', () => {
+    const v = $('fPhone')?.value.trim();
+    if (v) { const e=validateField('fPhone',RULES.phone); if(e) showFieldError('fPhone',e); }
+  });
+  $('fEmail')?.addEventListener('blur', () => {
+    const v = $('fEmail')?.value.trim();
+    if (v) { const e=validateField('fEmail',RULES.email); if(e) showFieldError('fEmail',e); }
   });
 
   $('modalOverlay')?.addEventListener('click', closeModal);
@@ -837,6 +882,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.goToPanel      = goToPanel;
   window.selectTimeSlot = selectTimeSlot;
   window.proceedToForm  = proceedToForm;
-  window.selectCalDay   = selectCalDay;
-  window.selectCalTime  = selectCalTime;
+  window.selectCalDay          = selectCalDay;
+  window.selectCalTime         = selectCalTime;
+  window.updateSelectionSummary = updateSelectionSummary;
 });

@@ -1417,6 +1417,24 @@ textarea { resize: vertical; min-height: 88px; }
   display: none;
 }
 
+/* 선택 정보 요약 박스 */
+.apply-selection-summary {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px;
+  background: var(--c-accent-dim);
+  border: 1px solid var(--c-accent-border);
+  border-radius: var(--r);
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  font-size: 0.82rem;
+}
+.apply-sel-item {
+  font-weight: 600; color: var(--c-accent);
+}
+.apply-sel-sep {
+  color: var(--c-accent-border);
+  font-weight: 400;
+}
+
 /* 단계 레이블 */
 .step-label {
   font-size: 0.68rem; font-weight: 700;
@@ -1800,6 +1818,15 @@ textarea { resize: vertical; min-height: 88px; }
           날짜·시간 변경
         </button>
 
+        <!-- 선택한 공간·날짜·시간 요약 -->
+        <div class="apply-selection-summary" id="applySelectionSummary">
+          <div class="apply-sel-item" id="sumSpace"></div>
+          <div class="apply-sel-sep">·</div>
+          <div class="apply-sel-item" id="sumDate"></div>
+          <div class="apply-sel-sep">·</div>
+          <div class="apply-sel-item" id="sumTime"></div>
+        </div>
+
         <div id="selectedSpaceBadge" class="apply-space-badge" style="display:none;">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
@@ -1831,6 +1858,20 @@ textarea { resize: vertical; min-height: 88px; }
         <div class="form-group">
           <label for="fPurpose">사용 목적 <span style="color:var(--c-accent)">*</span></label>
           <textarea id="fPurpose" placeholder="행사 또는 사용 목적을 간략히 작성해 주세요. (300자 이내)" maxlength="300"></textarea>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- 사용 시간·인원 (패널2에서 확정) -->
+        <div class="form-row">
+          <div>
+            <label for="fDuration2">사용 시간 <span style="color:var(--c-accent)">*</span></label>
+            <select id="fDuration2"></select>
+          </div>
+          <div>
+            <label for="fCount">예상 인원 <span style="color:var(--c-accent)">*</span></label>
+            <input type="number" id="fCount" placeholder="명" min="1" max="500">
+          </div>
         </div>
 
         <div class="form-divider"></div>
