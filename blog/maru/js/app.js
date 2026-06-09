@@ -203,28 +203,200 @@ function renderDiscountCheckboxes(discounts) {
 /* ============================================================
    모달 — 공간 상세
 ============================================================ */
+/* ============================================================
+   공간 상세 모달 — 캘린더 내장형
+============================================================ */
+let _modalSpaceId  = null;   // 현재 열린 공간 ID
+let _calYear       = 0;
+let _calMonth      = 0;      // 0-indexed
+let _calSelected   = null;   // 'YYYY-MM-DD'
+let _calTimeSelected = null; // 'HH:MM'
+let _calOccupied   = [];
+
 function openModal(id) {
-  const s=SPACES.find(x=>x.id===id); if(!s) return;
-  $('modalThumbWrap').innerHTML=buildThumb(s);
-  $('modalTag').textContent=`${s.floor} · ${s.typeLabel}`;
-  $('modalName').textContent=s.name;
-  $('modalDesc').textContent=s.desc;
-  $('modalSpecs').innerHTML=`
-    <div class="spec-item"><div class="spec-label">수용 인원</div><div class="spec-value"><em>${s.maxCapacity||s.capacity}</em>명</div></div>
-    <div class="spec-item"><div class="spec-label">기본 요금</div><div class="spec-value"><em>${fmt(s.pricePerHour*s.minHours)}</em>원</div></div>
-    <div class="spec-item"><div class="spec-label">최소 이용</div><div class="spec-value"><em>${s.minHours}</em>시간</div></div>`;
+  const s = SPACES.find(x => x.id === id); if (!s) return;
+  _modalSpaceId    = id;
+  _calSelected     = null;
+  _calTimeSelected = null;
+  _calOccupied     = [];
+
+  /* 좌측 정보 */
+  $('modalThumbWrap').innerHTML = buildThumb(s);
+  $('modalTag').textContent  = `${s.floor} · ${s.typeLabel}`;
+  $('modalName').textContent = s.name;
+  $('modalTopbarTitle').textContent = s.name;
+  $('modalDesc').textContent = s.desc;
+
+  $('modalSpecList').innerHTML = [
+    { key:'수용 인원', val:`<strong>${s.maxCapacity||s.capacity}</strong>명` },
+    { key:'시간당 요금', val:`<strong>${fmt(s.pricePerHour)}</strong>원` },
+    { key:'최소 이용', val:`<strong>${s.minHours}</strong>시간` },
+    { key:'기본 요금', val:`<strong>${fmt(s.pricePerHour*s.minHours)}</strong>원~` },
+  ].map(r => `
+    <div class="modal-spec-row">
+      <span class="modal-spec-key">${r.key}</span>
+      <span class="modal-spec-val">${r.val}</span>
+    </div>`).join('');
+
   if (s.features?.length) {
-    $('modalFeatures').innerHTML=s.features.map(f=>`<span class="feature-tag">${esc(f)}</span>`).join('');
-    $('modalFeatures').style.display='flex';
-  } else { $('modalFeatures').style.display='none'; }
-  $('modalApplyBtn').onclick=()=>{closeModal();openApply(s.id);};
+    $('modalFeatures').innerHTML = s.features.map(f =>
+      `<span class="feature-tag">${esc(f)}</span>`).join('');
+    $('modalFeatures').style.display = 'flex';
+  } else { $('modalFeatures').style.display = 'none'; }
+
+  /* 신청 버튼 */
+  const applyBtn = $('modalApplyBtn');
+  applyBtn.disabled = true;
+  applyBtn.onclick = () => {
+    closeModal();
+    openApply(_modalSpaceId, _calSelected, _calTimeSelected);
+  };
+
+  /* 캘린더 초기화 — 신청 가능 첫 날짜 기준 월 */
+  const { minDaysAhead = 7 } = window._bookingWindow || {};
+  const firstAvail = new Date();
+  firstAvail.setDate(firstAvail.getDate() + minDaysAhead);
+  _calYear  = firstAvail.getFullYear();
+  _calMonth = firstAvail.getMonth();
+
+  renderCalendar();
+  $('calTimePanel').style.display = 'none';
+  $('modalFooterSummary').textContent = '날짜와 시간을 선택하면 신청할 수 있습니다.';
+
+  /* 이전/다음 버튼 */
+  $('calPrevBtn').onclick = () => { _calMonth--; if(_calMonth<0){_calMonth=11;_calYear--;} renderCalendar(); };
+  $('calNextBtn').onclick = () => { _calMonth++; if(_calMonth>11){_calMonth=0;_calYear++;} renderCalendar(); };
+
   $('modalOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
+
 function closeModal(e) {
-  if(e&&e.target!==$('modalOverlay')) return;
+  if (e && e.target !== $('modalOverlay')) return;
   $('modalOverlay').classList.remove('open');
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
+}
+
+/* ── 월별 캘린더 렌더 ── */
+function renderCalendar() {
+  const { minDaysAhead=7, maxDaysAhead=30 } = window._bookingWindow || {};
+  const today    = new Date(); today.setHours(0,0,0,0);
+  const minDate  = new Date(today); minDate.setDate(today.getDate() + minDaysAhead);
+  const maxDate  = new Date(today); maxDate.setDate(today.getDate() + maxDaysAhead);
+
+  // 월 레이블
+  const MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  $('calMonthLabel').textContent = `${_calYear}년 ${MONTHS[_calMonth]}`;
+
+  // 해당 월의 1일 요일, 마지막 날
+  const firstDay  = new Date(_calYear, _calMonth, 1).getDay(); // 0=일
+  const lastDate  = new Date(_calYear, _calMonth+1, 0).getDate();
+
+  const grid = $('calGrid');
+  let cells = '';
+
+  // 앞 빈 칸
+  for (let i = 0; i < firstDay; i++) {
+    cells += '<div class="cal-day empty"></div>';
+  }
+
+  for (let d = 1; d <= lastDate; d++) {
+    const date    = new Date(_calYear, _calMonth, d);
+    const dateStr = `${_calYear}-${String(_calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dow     = date.getDay(); // 0=일, 6=토
+
+    const isPast     = date < minDate;
+    const isOverMax  = date > maxDate;
+    const isSunday   = dow === 0;
+    const isSaturday = dow === 6;
+    const isToday    = date.getTime() === today.getTime();
+    const isSelected = dateStr === _calSelected;
+    const isDisabled = isPast || isOverMax || isSunday; // 일요일 불가
+
+    let cls = 'cal-day';
+    if (isSelected) cls += ' selected';
+    else if (isToday)    cls += ' today';
+    if (isPast || isOverMax || isSunday) cls += ' disabled past';
+    if (isSaturday && !isDisabled) cls += ' sat';
+    if (isSunday) cls += ' sun';
+
+    const onclick = isDisabled ? '' : `onclick="selectCalDay('${dateStr}')"`;
+    const badge   = isDisabled ? '' : `<span class="cal-day-badge avail">가능</span>`;
+
+    cells += `<div class="${cls}" ${onclick}>
+      <span class="cal-day-num">${d}</span>
+      ${badge}
+    </div>`;
+  }
+
+  grid.innerHTML = cells;
+}
+
+/* ── 날짜 선택 ── */
+async function selectCalDay(dateStr) {
+  _calSelected     = dateStr;
+  _calTimeSelected = null;
+  $('modalApplyBtn').disabled = true;
+  $('modalFooterSummary').textContent = '시간을 선택해 주세요.';
+
+  renderCalendar(); // selected 상태 갱신
+
+  // 시간 패널 노출 + 로딩
+  const tp = $('calTimePanel');
+  tp.style.display = 'block';
+  $('calTimeHeader').textContent = `${dateStr} 시작 시간`;
+  $('calTimeGrid').innerHTML = '<div class="cal-time-empty">조회 중…</div>';
+
+  // 캘린더 슬롯 조회
+  const s = SPACES.find(x => x.id === _modalSpaceId);
+  if (s && SITE.appsScriptUrl) {
+    const result = await fetchAvailableSlots(s.name, dateStr);
+    if (result && result.ok) {
+      _calOccupied = result.occupied || [];
+    } else {
+      _calOccupied = [];
+    }
+  } else {
+    _calOccupied = [];
+  }
+
+  renderCalTimeGrid();
+}
+
+/* ── 시간 그리드 렌더 ── */
+function renderCalTimeGrid() {
+  const grid = $('calTimeGrid');
+  if (!_timeSlots.length) { grid.innerHTML = '<div class="cal-time-empty">운영 시간 정보 없음</div>'; return; }
+
+  grid.innerHTML = _timeSlots.map(t => {
+    const h = parseInt(t);
+    const isOccupied = _calOccupied.some(oc =>
+      h >= parseInt(oc.start) && h < parseInt(oc.end)
+    );
+    const isSel = t === _calTimeSelected;
+    return `<button
+      class="cal-time-btn${isOccupied?' occupied':''}${isSel?' selected':''}"
+      data-time="${esc(t)}"
+      ${isOccupied ? 'disabled' : ''}
+      onclick="selectCalTime('${esc(t)}')"
+    >${esc(t)}${isOccupied?'<br><small>예약됨</small>':''}</button>`;
+  }).join('');
+}
+
+/* ── 시간 선택 ── */
+function selectCalTime(time) {
+  _calTimeSelected = time;
+
+  // 버튼 상태 갱신
+  document.querySelectorAll('.cal-time-btn').forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.time === time);
+  });
+
+  // footer 요약
+  const s = SPACES.find(x => x.id === _modalSpaceId);
+  $('modalFooterSummary').innerHTML =
+    `<strong>${esc(s.name)}</strong> · ${esc(_calSelected)} · ${esc(time)} 시작`;
+  $('modalApplyBtn').disabled = false;
 }
 
 /* ============================================================
@@ -385,9 +557,9 @@ function updateSlotSummary() {
 /* ============================================================
    신청 모달 열기
 ============================================================ */
-function openApply(spaceId) {
+function openApply(spaceId, preDate, preTime) {
   clearAllErrors();
-  selectedTime = null;
+  selectedTime = preTime || null;
   occupiedSlots = [];
   currentDiscountRate = 0;
 
@@ -407,16 +579,8 @@ function openApply(spaceId) {
   const today = new Date();
   const minD = new Date(today); minD.setDate(today.getDate()+minDaysAhead);
   const maxD = new Date(today); maxD.setDate(today.getDate()+maxDaysAhead);
-  $('fDate').min   = minD.toISOString().split('T')[0];
-  $('fDate').max   = maxD.toISOString().split('T')[0];
-  $('fDate').value = '';
-
-  // 패널 1 초기화
-  $('timeSlotSection').style.display  = 'none';
-  $('durationSection').style.display  = 'none';
-  $('slotSummary').classList.remove('visible');
-  $('toPanel2Btn').disabled = true;
-  setSlotStatus('공간과 날짜를 선택하면 가능한 시간을 표시합니다.', 'idle');
+  $('fDate').min = minD.toISOString().split('T')[0];
+  $('fDate').max = maxD.toISOString().split('T')[0];
 
   // 패널 2 초기화
   document.querySelectorAll('#panel2 input, #panel2 textarea')
@@ -424,13 +588,36 @@ function openApply(spaceId) {
   document.querySelectorAll('#discountCheckboxes input[type="checkbox"]')
     .forEach(c => { c.checked = false; });
 
-  goToPanel(1);
-  updatePrice();
+  if (preDate && preTime) {
+    // 모달에서 날짜+시간이 이미 선택된 경우 → 패널1 건너뛰고 바로 패널2
+    $('fDate').value = preDate;
+    selectedTime = preTime;
 
+    // 패널1 상태도 채워두기 (뒤로가기 시 보여줄 수 있도록)
+    $('timeSlotSection').style.display  = 'block';
+    $('durationSection').style.display  = 'block';
+    $('slotSummary').classList.add('visible');
+    const s = SPACES.find(x=>x.id===spaceId);
+    $('slotSummary').textContent =
+      `${s?.name||''} · ${preDate} · ${preTime} 시작`;
+    $('toPanel2Btn').disabled = false;
+
+    goToPanel(2);
+  } else {
+    // 일반 진입 → 패널1
+    $('fDate').value = '';
+    $('timeSlotSection').style.display  = 'none';
+    $('durationSection').style.display  = 'none';
+    $('slotSummary').classList.remove('visible');
+    $('toPanel2Btn').disabled = true;
+    setSlotStatus('공간과 날짜를 선택하면 가능한 시간을 표시합니다.', 'idle');
+    goToPanel(1);
+    if (spaceId) setTimeout(()=>$('fDate')?.focus(), 300);
+  }
+
+  updatePrice();
   $('applyOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-
-  if (spaceId) setTimeout(()=>$('fDate')?.focus(), 300);
 }
 
 function closeApply() {
@@ -633,11 +820,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   document.querySelector('.cta-apply-btn')?.addEventListener('click', ()=>openApply(null));
 
-  window.openApply   = openApply;
-  window.closeApply  = closeApply;
-  window.closeModal  = closeModal;
-  window.submitApply = submitApply;
-  window.goToPanel   = goToPanel;
+  window.openApply      = openApply;
+  window.closeApply     = closeApply;
+  window.closeModal     = closeModal;
+  window.submitApply    = submitApply;
+  window.goToPanel      = goToPanel;
   window.selectTimeSlot = selectTimeSlot;
   window.proceedToForm  = proceedToForm;
+  window.selectCalDay   = selectCalDay;
+  window.selectCalTime  = selectCalTime;
 });
