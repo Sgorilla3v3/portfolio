@@ -44,7 +44,7 @@ const fmt = n => { const v = Number(n); return isNaN(v) ? '0' : v.toLocaleString
 
 /* ── 전화번호 자동 포맷 (숫자만 입력해도 000-0000-0000 형태로 변환) ── */
 function formatPhone(raw) {
-  const d = raw.replace(/\D/g, ''); // 숫자만 추출
+  const d = raw.replace(/\D/g, '').slice(0, 11); // 숫자만 추출, 최대 11자리
   if (d.length === 0) return '';
   // 02 지역번호: 02-XXX-XXXX (9자리) 또는 02-XXXX-XXXX (10자리)
   if (d.startsWith('02')) {
@@ -58,50 +58,43 @@ function formatPhone(raw) {
 
 /* ── 입력 검증 규칙 ── */
 const RULES = {
-  // 이름: 한글 또는 영문, 2~20자, 숫자·특수문자 불가, 앞뒤·연속 공백 불가
   name: {
     minLen: 2,
     maxLen: 20,
     pattern: /^[가-힣a-zA-Z][가-힣a-zA-Z\s]{0,18}[가-힣a-zA-Z]$|^[가-힣a-zA-Z]{2,20}$/,
-    msg: '성명은 한글 또는 영문 2~20자로 입력해 주세요. (숫자·특수문자 불가)',
-    sanitize: v => v.replace(/[^가-힣a-zA-Z\s]/g, '').replace(/\s{2,}/g, ' ').trim(),
+    msg: "성명은 한글 또는 영문 2~20자로 입력해 주세요. (숫자·특수문자 불가)",
+    sanitize: function(v) { return v.replace(/<[^>]*>/g, "").replace(/[^가-힣a-zA-Z\s]/g, "").replace(/\s{2,}/g, " ").trim(); },
   },
-  // 전화번호: 자동 포맷 적용, 유효 번호만 허용
   phone: {
     maxLen: 20,
     pattern: /^(01[016789]|02|0(3[1-3]|4[1-4]|5[1-5]|6[1-4]|70))-?\d{3,4}-?\d{4}$/,
-    msg: '올바른 전화번호를 입력해 주세요. (예: 010-1234-5678 또는 054-000-0000)',
-    sanitize: v => formatPhone(v), // 숫자만 입력해도 하이픈 자동 삽입
+    msg: "올바른 전화번호를 입력해 주세요. (예: 010-1234-5678 또는 054-000-0000)",
+    sanitize: function(v) { return formatPhone(v); },
   },
-  // 이메일: RFC 준수 형식, 공격 문자 차단
   email: {
     maxLen: 100,
     pattern: /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
-    msg: '올바른 이메일 주소를 입력해 주세요. (예: name@example.com)',
-    sanitize: v => v.replace(/[<>"'\s]/g, '').trim(),
+    msg: "올바른 이메일 주소를 입력해 주세요. (예: name@example.com)",
+    sanitize: function(v) { return v.replace(/[<>"'\s]/g, "").trim(); },
   },
-  // 단체명: 한글·영문·숫자·공백·괄호·점·하이픈만 허용
   org: {
     maxLen: 60,
     pattern: /^[가-힣a-zA-Z0-9\s()[\].\-]{0,60}$/,
-    msg: '단체명에 사용할 수 없는 문자가 포함되어 있습니다.',
-    sanitize: v => v.replace(/[<>"'&]/g, '').trim(),
+    msg: "단체명에 사용할 수 없는 문자가 포함되어 있습니다.",
+    sanitize: function(v) { return v.replace(/<[^>]*>/g, "").replace(/[<>"'&]/g, "").trim(); },
   },
-  // 입금자명: 한글·영문, 2자 이상
   depositor: {
     minLen: 2,
     maxLen: 30,
     pattern: /^[가-힣a-zA-Z][가-힣a-zA-Z\s]{0,28}[가-힣a-zA-Z]$|^[가-힣a-zA-Z]{2,30}$/,
-    msg: '입금자명은 한글 또는 영문 2자 이상으로 입력해 주세요.',
-    sanitize: v => v.replace(/[^가-힣a-zA-Z\s]/g, '').trim(),
+    msg: "입금자명은 한글 또는 영문 2자 이상으로 입력해 주세요.",
+    sanitize: function(v) { return v.replace(/[^가-힣a-zA-Z\s]/g, "").trim(); },
   },
-  // 사용목적: HTML·스크립트 인젝션 차단 (따옴표 관련 문자 제거)
   purpose: {
     maxLen: 300,
-    // 작은따옴표를 정규식 내부에서 사용하지 않도록 유니코드 이스케이프 처리
-    pattern: new RegExp('^[^<>"\\u0060\\u0027\\u0000-\\u001f]*$'),
-    msg: '사용 목적에 허용되지 않는 문자가 포함되어 있습니다. (< > " 불가)',
-    sanitize: v => v.replace(/[<>"'`\u0000-\u001f]/g, '').trim(),
+    pattern: /^[^<>"'`\u0000-\u001f]*$/,
+    msg: "사용 목적에 허용되지 않는 문자가 포함되어 있습니다. (< > \" ` 불가)",
+    sanitize: function(v) { return v.replace(/<[^>]*>/g, "").replace(/[<>"'`\u0000-\u001f]/g, "").trim(); },
   },
 };
 
@@ -231,10 +224,14 @@ function renderCards(filter='all') {
       </div>
     </div>`;
   }).join('');
-  grid.addEventListener('click', e=>{
-    const card=e.target.closest('.space-card'); if(!card) return;
-    openModal(card.dataset.id);
-  });
+  // 리스너는 초기화 시 한 번만 등록 (renderCards 최초 호출 시 표시로 관리)
+  if (!grid._clickBound) {
+    grid.addEventListener('click', e=>{
+      const card=e.target.closest('.space-card'); if(!card) return;
+      openModal(card.dataset.id);
+    });
+    grid._clickBound = true;
+  }
   observeFadeUp();
 }
 
@@ -425,16 +422,17 @@ async function selectCalDay(dateStr) {
   const s = SPACES.find(x => x.id === _modalSpaceId);
   if (!s) { _calOccupied = []; renderCalTimeGrid(); return; }
 
-  // 연결 공간 포함 슬롯 조회
-  // ex) 상상마루홀 선택 시 상상홀·마루홀 예약도 함께 확인
   const linkedIds = s.linkedSpaces || [];
   const targets   = [s, ...linkedIds.map(id => SPACES.find(x => x.id === id)).filter(Boolean)];
 
   if (SITE.appsScriptUrl) {
+    // race condition 방지: 요청 시작 시점의 날짜를 스냅샷으로 저장
+    const requestedDate = dateStr;
     const results = await Promise.all(
       targets.map(sp => fetchAvailableSlots(sp.name, dateStr))
     );
-    // 모든 공간의 occupied 슬롯을 병합 — 어느 하나라도 예약되면 불가
+    // 응답 도착 시점에 선택 날짜가 바뀌어 있으면 이전 응답 무시
+    if (_calSelected !== requestedDate) return;
     _calOccupied = results.flatMap(r => (r && r.ok) ? (r.occupied || []) : []);
   } else {
     _calOccupied = [];
@@ -855,8 +853,18 @@ async function submitApply() {
   check('fName',  name,  RULES.name,  '성명을 입력해 주세요.');
   check('fPhone', phone, RULES.phone, '연락처를 입력해 주세요.');
   check('fEmail', email, RULES.email, '이메일을 입력해 주세요.');
-  if (org)       { const e = validateField('fOrg',       RULES.org);       if(e){ showFieldError('fOrg',e);       hasError=true; } }
-  if (depositor) { const e = validateField('fDepositor', RULES.depositor); if(e){ showFieldError('fDepositor',e); hasError=true; } }
+  if (org) {
+    const orgErr = (RULES.org.maxLen && org.length > RULES.org.maxLen)
+      ? `${RULES.org.maxLen}자 이내로 입력해 주세요.`
+      : (RULES.org.pattern && !RULES.org.pattern.test(org) ? RULES.org.msg : null);
+    if (orgErr) { showFieldError('fOrg', orgErr); hasError = true; }
+  }
+  if (depositor) {
+    const depErr = (RULES.depositor.maxLen && depositor.length > RULES.depositor.maxLen)
+      ? `${RULES.depositor.maxLen}자 이내로 입력해 주세요.`
+      : (RULES.depositor.pattern && !RULES.depositor.pattern.test(depositor) ? RULES.depositor.msg : null);
+    if (depErr) { showFieldError('fDepositor', depErr); hasError = true; }
+  }
   check('fPurpose', purpose, RULES.purpose, '사용 목적을 입력해 주세요.');
 
   if (hasError) {
@@ -881,6 +889,7 @@ async function submitApply() {
   }
 
   try {
+    _lastSubmitTime = Date.now();
     const res = await fetch(SITE.appsScriptUrl, {
       method:'POST',
       body: JSON.stringify({
