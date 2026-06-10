@@ -84,8 +84,8 @@ const RULES = {
   purpose: {
     maxLen: 300,
     pattern: /^[^<>"'`\x00-\x1f]*$/,
-    msg: '사용 목적에 사용할 수 없는 문자가 포함되어 있습니다. (< > " ' 불가)',
-    sanitize: v => v.replace(/[<>"'`]/g, '').replace(/\x00-\x1f/g, '').trim(),
+    msg: '사용 목적에 사용할 수 없는 문자가 포함되어 있습니다. (< > " \' 불가)',
+    sanitize: v => v.replace(/[<>"'`\x00-\x1f]/g, '').trim(),
   },
 };
 
