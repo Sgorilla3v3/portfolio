@@ -44,20 +44,67 @@ const fmt = n => { const v = Number(n); return isNaN(v) ? '0' : v.toLocaleString
 
 /* ── 입력 검증 규칙 ── */
 const RULES = {
-  name:      { maxLen:30,  pattern:/^[가-힣a-zA-Z][가-힣a-zA-Z\s]{0,29}$/, msg:'성명은 한글 또는 영문으로만 입력해 주세요. (숫자·특수문자 불가)' },
-  phone:     { maxLen:20,  pattern:/^(010|011|016|017|018|019)[\-]?\d{3,4}[\-]?\d{4}$/, msg:'올바른 휴대폰 번호를 입력해 주세요. (예: 010-1234-5678)' },
-  email:     { maxLen:100, pattern:/^[^\s@]+@[^\s@]+\.[^\s@]+$/,             msg:'올바른 이메일 주소를 입력해 주세요.' },
-  org:       { maxLen:60,  pattern:null, msg:'' },
-  depositor: { maxLen:30,  pattern:/^[가-힣a-zA-Z\s]{0,30}$/,               msg:'한글 또는 영문 30자 이내로 입력해 주세요.' },
-  purpose:   { maxLen:300, pattern:null, msg:'' },
+  // 이름: 한글(첫 글자 반드시 한글 또는 영문, 이후 한글·영문·점·중간 공백 허용)
+  // 공백 연속·앞뒤 공백·숫자·특수문자 불가
+  name: {
+    maxLen: 30,
+    pattern: /^[가-힣a-zA-Z][가-힣a-zA-Z·\s]{0,28}[가-힣a-zA-Z]$|^[가-힣a-zA-Z]{1,30}$/,
+    msg: '성명은 한글 또는 영문으로만 입력해 주세요. (숫자·특수문자 불가)',
+    sanitize: v => v.replace(/[<>"'&]/g, '').replace(/\s{2,}/g, ' ').trim(),
+  },
+  // 전화번호: 휴대폰(010~019) + 지역번호(02, 031~064, 070) + 하이픈 선택
+  phone: {
+    maxLen: 20,
+    pattern: /^(01[016789]|02|0[3-9]\d{1})-?\d{3,4}-?\d{4}$/,
+    msg: '올바른 전화번호를 입력해 주세요. (예: 010-1234-5678 또는 054-000-0000)',
+    sanitize: v => v.replace(/[^\d\-]/g, '').trim(),
+  },
+  // 이메일: 표준 이메일 형식 + 공격 문자 차단
+  email: {
+    maxLen: 100,
+    pattern: /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
+    msg: '올바른 이메일 주소를 입력해 주세요. (예: name@example.com)',
+    sanitize: v => v.replace(/[<>"'\s]/g, '').trim(),
+  },
+  // 단체명: 한글·영문·숫자·공백·()·[]·점·하이픈만 허용
+  org: {
+    maxLen: 60,
+    pattern: /^[가-힣a-zA-Z0-9\s()\[\]\.\-]{0,60}$/,
+    msg: '단체명에 사용할 수 없는 문자가 포함되어 있습니다.',
+    sanitize: v => v.replace(/[<>"'&]/g, '').trim(),
+  },
+  // 입금자명: 한글·영문·공백만 허용
+  depositor: {
+    maxLen: 30,
+    pattern: /^[가-힣a-zA-Z][가-힣a-zA-Z\s]{0,29}$|^[가-힣a-zA-Z]{1}$/,
+    msg: '입금자명은 한글 또는 영문으로만 입력해 주세요.',
+    sanitize: v => v.replace(/[^가-힣a-zA-Z\s]/g, '').trim(),
+  },
+  // 사용목적: HTML 태그·스크립트·SQL 인젝션 패턴 차단
+  purpose: {
+    maxLen: 300,
+    pattern: /^[^<>"'`\x00-\x1f]*$/,
+    msg: '사용 목적에 사용할 수 없는 문자가 포함되어 있습니다. (< > " ' 불가)',
+    sanitize: v => v.replace(/[<>"'`]/g, '').replace(/\x00-\x1f/g, '').trim(),
+  },
 };
 
+/* 값 검증 + 선택적 새니타이즈 */
 function validateField(id, rule) {
   const el = $(id); if (!el) return null;
   const val = el.value.trim();
-  if (rule.pattern && val) { if (!rule.pattern.test(val)) return rule.msg; }
-  if (rule.maxLen && val.length > rule.maxLen) return `${rule.maxLen}자 이내로 입력해 주세요.`;
+  if (!val) return null; // 빈값은 필수 체크에서 별도 처리
+  if (rule.maxLen && val.length > rule.maxLen)
+    return `${rule.maxLen}자 이내로 입력해 주세요.`;
+  if (rule.pattern && !rule.pattern.test(val))
+    return rule.msg;
   return null;
+}
+
+/* 제출 직전 값 새니타이즈 (공격 문자 제거 후 반환) */
+function sanitize(val, rule) {
+  if (!rule?.sanitize) return val.trim();
+  return rule.sanitize(val);
 }
 function showFieldError(id, msg) {
   clearFieldError(id);
@@ -751,35 +798,50 @@ function proceedToForm() {
 /* ============================================================
    신청 제출
 ============================================================ */
+/* 1분 제출 제한 */
+let _lastSubmitTime = 0;
+const SUBMIT_COOLDOWN_MS = 60 * 1000; // 60초
+
 async function submitApply() {
   clearAllErrors();
 
+  /* ── 1분 제출 제한 체크 ── */
+  const now = Date.now();
+  if (now - _lastSubmitTime < SUBMIT_COOLDOWN_MS) {
+    const remain = Math.ceil((SUBMIT_COOLDOWN_MS - (now - _lastSubmitTime)) / 1000);
+    showFormError(`${remain}초 후에 다시 시도할 수 있습니다.`);
+    return;
+  }
+
   const spaceId  = $('fSpace')?.value;
   const date     = $('fDate')?.value;
-  // 패널2의 fDuration2 우선, 없으면 fDuration 폴백
   const durEl2   = $('fDuration2') || $('fDuration');
   const duration = parseInt(durEl2?.value) || 1;
-  const countVal = parseInt($('fCount')?.value)||0;
-  const name      = $('fName')?.value.trim();
-  const phone     = $('fPhone')?.value.trim();
-  const email     = $('fEmail')?.value.trim();
-  const org       = $('fOrg')?.value.trim();
-  const depositor = $('fDepositor')?.value.trim();
-  const purpose   = $('fPurpose')?.value.trim();
+  const countVal = parseInt($('fCount')?.value) || 0;
+
+  /* 새니타이즈 후 값 추출 */
+  const name      = sanitize($('fName')?.value      || '', RULES.name);
+  const phone     = sanitize($('fPhone')?.value     || '', RULES.phone);
+  const email     = sanitize($('fEmail')?.value     || '', RULES.email);
+  const org       = sanitize($('fOrg')?.value       || '', RULES.org);
+  const depositor = sanitize($('fDepositor')?.value || '', RULES.depositor);
+  const purpose   = sanitize($('fPurpose')?.value   || '', RULES.purpose);
 
   let hasError = false;
-  const req = (id,msg) => { if(!$(id)?.value.trim()){showFieldError(id,msg);hasError=true;} };
 
-  req('fName','성명을 입력해 주세요.');
-  if (name) { const e=validateField('fName',RULES.name); if(e){showFieldError('fName',e);hasError=true;} }
-  req('fPhone','연락처를 입력해 주세요.');
-  if (phone){ const e=validateField('fPhone',RULES.phone); if(e){showFieldError('fPhone',e);hasError=true;} }
-  req('fEmail','이메일을 입력해 주세요.');
-  if (email){ const e=validateField('fEmail',RULES.email); if(e){showFieldError('fEmail',e);hasError=true;} }
-  if (org)  { const e=validateField('fOrg',RULES.org);    if(e){showFieldError('fOrg',e);hasError=true;} }
-  if (depositor){ const e=validateField('fDepositor',RULES.depositor); if(e){showFieldError('fDepositor',e);hasError=true;} }
-  req('fPurpose','사용 목적을 입력해 주세요.');
-  if (purpose&&purpose.length>300){ showFieldError('fPurpose','300자 이내로 입력해 주세요.'); hasError=true; }
+  /* 필수 + 형식 통합 검증 */
+  const check = (id, val, rule, requiredMsg) => {
+    if (!val) { showFieldError(id, requiredMsg); hasError = true; return; }
+    const err = rule ? validateField(id, rule) : null;
+    if (err) { showFieldError(id, err); hasError = true; }
+  };
+
+  check('fName',  name,  RULES.name,  '성명을 입력해 주세요.');
+  check('fPhone', phone, RULES.phone, '연락처를 입력해 주세요.');
+  check('fEmail', email, RULES.email, '이메일을 입력해 주세요.');
+  if (org)       { const e = validateField('fOrg',       RULES.org);       if(e){ showFieldError('fOrg',e);       hasError=true; } }
+  if (depositor) { const e = validateField('fDepositor', RULES.depositor); if(e){ showFieldError('fDepositor',e); hasError=true; } }
+  check('fPurpose', purpose, RULES.purpose, '사용 목적을 입력해 주세요.');
 
   if (hasError) {
     document.querySelector('.field-error')?.scrollIntoView({behavior:'smooth',block:'center'});
@@ -797,7 +859,7 @@ async function submitApply() {
 
   if (!SITE.appsScriptUrl) {
     console.warn('[개발모드] appsScriptUrl 미설정');
-    showSuccess({name,depositor,final});
+    _lastSubmitTime = Date.now(); showSuccess({name,depositor,final});
     if(btn){btn.disabled=false;btn.textContent='신청 완료하기';}
     return;
   }
@@ -888,19 +950,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   ['fName','fPhone','fEmail','fOrg','fDepositor','fPurpose'].forEach(id=>{
     $(id)?.addEventListener('input', ()=>clearFieldError(id));
   });
-  // 포커스 해제 시: 실시간 형식 검증
-  $('fName')?.addEventListener('blur', () => {
-    const v = $('fName')?.value.trim();
-    if (v) { const e=validateField('fName',RULES.name); if(e) showFieldError('fName',e); }
-  });
-  $('fPhone')?.addEventListener('blur', () => {
-    const v = $('fPhone')?.value.trim();
-    if (v) { const e=validateField('fPhone',RULES.phone); if(e) showFieldError('fPhone',e); }
-  });
-  $('fEmail')?.addEventListener('blur', () => {
-    const v = $('fEmail')?.value.trim();
-    if (v) { const e=validateField('fEmail',RULES.email); if(e) showFieldError('fEmail',e); }
-  });
+  // 포커스 해제 시: 형식 검증 + 새니타이즈
+  const blurValidate = (id, rule) => {
+    const el = $(id); if (!el) return;
+    el.addEventListener('blur', () => {
+      if (rule.sanitize) el.value = rule.sanitize(el.value);
+      const err = validateField(id, rule);
+      if (err) showFieldError(id, err);
+      else clearFieldError(id);
+    });
+  };
+  blurValidate('fName',      RULES.name);
+  blurValidate('fPhone',     RULES.phone);
+  blurValidate('fEmail',     RULES.email);
+  blurValidate('fOrg',       RULES.org);
+  blurValidate('fDepositor', RULES.depositor);
+  blurValidate('fPurpose',   RULES.purpose);
 
   $('modalOverlay')?.addEventListener('click', closeModal);
   $('applyOverlay')?.addEventListener('click', e=>{
