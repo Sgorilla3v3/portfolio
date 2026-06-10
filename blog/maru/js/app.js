@@ -449,6 +449,9 @@ function goToPanel(n) {
 
 /* 패널2 상단 선택 정보 요약 갱신 */
 function updateSelectionSummary() {
+  // selectedTime: 패널1 그리드에서 선택한 시간
+  // _calTimeSelected: 공간 상세 모달 캘린더에서 선택한 시간
+  // 둘 다 확인해서 있는 값 사용
   const spaceId = $('fSpace')?.value;
   const date    = $('fDate')?.value;
   const time    = selectedTime || _calTimeSelected;
@@ -458,8 +461,8 @@ function updateSelectionSummary() {
   const sumDate  = $('sumDate');
   const sumTime  = $('sumTime');
 
-  if (sumSpace) sumSpace.textContent = s ? s.name : '—';
-  if (sumDate)  sumDate.textContent  = date || '—';
+  if (sumSpace) sumSpace.textContent = s?.name || '—';
+  if (sumDate)  sumDate.textContent  = date    || '—';
   if (sumTime)  sumTime.textContent  = time ? time + ' 시작' : '—';
 }
 
@@ -597,16 +600,16 @@ function updateSlotSummary() {
 ============================================================ */
 function openApply(spaceId, preDate, preTime) {
   clearAllErrors();
-  selectedTime = preTime || null;
-  occupiedSlots = [];
+  selectedTime    = null;
+  occupiedSlots   = [];
   currentDiscountRate = 0;
 
   // 공간 사전 선택
-  if (spaceId) {
+  const s = SPACES.find(x => x.id === spaceId);
+  if (spaceId && s) {
     $('fSpace').value = spaceId;
-    const s = SPACES.find(x=>x.id===spaceId);
     $('selectedSpaceBadge').style.display = 'inline-flex';
-    $('selectedSpaceName').textContent = s.name;
+    $('selectedSpaceName').textContent    = s.name;
   } else {
     $('fSpace').value = '';
     $('selectedSpaceBadge').style.display = 'none';
@@ -620,40 +623,55 @@ function openApply(spaceId, preDate, preTime) {
   $('fDate').min = minD.toISOString().split('T')[0];
   $('fDate').max = maxD.toISOString().split('T')[0];
 
-  // 패널 2 초기화
+  // 패널2 초기화
   document.querySelectorAll('#panel2 input, #panel2 textarea')
     .forEach(el => { el.value = ''; });
-  // fDuration2 기본값 복원 (renderDurationOptions에서 selected 설정됐지만 초기화 후 재설정)
   const dur2 = $('fDuration2');
-  if (dur2 && !dur2.value) dur2.value = _durationOpts.includes(3) ? '3' : (_durationOpts[0]||'1');
+  if (dur2) dur2.value = _durationOpts.includes(3) ? '3' : (_durationOpts[0] || '1');
   document.querySelectorAll('#discountCheckboxes input[type="checkbox"]')
     .forEach(c => { c.checked = false; });
 
+  // 항상 패널1부터 시작 — 모달에서 선택한 날짜·시간은 패널1에 채워서 보여줌
+  goToPanel(1);
+
   if (preDate && preTime) {
-    // 모달에서 날짜+시간이 이미 선택된 경우 → 패널1 건너뛰고 바로 패널2
+    // 모달에서 날짜·시간 선택 후 진입 — 패널1에 값 채우고 슬롯 그리드도 복원
     $('fDate').value = preDate;
     selectedTime = preTime;
 
-    // 패널1 상태도 채워두기 (뒤로가기 시 보여줄 수 있도록)
-    $('timeSlotSection').style.display  = 'block';
-    $('durationSection').style.display  = 'block';
-    $('slotSummary').classList.add('visible');
-    const s = SPACES.find(x=>x.id===spaceId);
-    $('slotSummary').textContent =
-      `${s?.name||''} · ${preDate} · ${preTime} 시작`;
-    $('toPanel2Btn').disabled = false;
+    // 슬롯 그리드 복원 — 모달에서 조회했던 occupied 재사용
+    occupiedSlots = _calOccupied || [];
+    renderTimeSlotGrid(occupiedSlots);
+    $('timeSlotSection').style.display = 'block';
 
-    goToPanel(2);
+    // 선택된 시간 하이라이트
+    setTimeout(() => {
+      document.querySelectorAll('.time-slot-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.time === preTime);
+      });
+    }, 50);
+
+    // 사용 시간·인원 섹션 노출
+    $('durationSection').style.display = 'block';
+    const dur1 = $('fDuration');
+    if (dur1) dur1.value = s?.minHours || '1';
+
+    // 상태 및 요약
+    setSlotStatus(
+      `${preDate} · ${s?.name || ''} — 시간을 확인하거나 사용 시간과 인원을 입력해 주세요.`,
+      'ok'
+    );
+    updateSlotSummary();
+
   } else {
-    // 일반 진입 → 패널1
+    // 일반 진입 — 날짜·시간 선택 안 된 상태
     $('fDate').value = '';
     $('timeSlotSection').style.display  = 'none';
     $('durationSection').style.display  = 'none';
     $('slotSummary').classList.remove('visible');
     $('toPanel2Btn').disabled = true;
     setSlotStatus('공간과 날짜를 선택하면 가능한 시간을 표시합니다.', 'idle');
-    goToPanel(1);
-    if (spaceId) setTimeout(()=>$('fDate')?.focus(), 300);
+    if (spaceId) setTimeout(() => $('fDate')?.focus(), 300);
   }
 
   updatePrice();
@@ -701,23 +719,32 @@ function updatePrice() {
    패널1 → 패널2 이동
 ============================================================ */
 function proceedToForm() {
-  if (!selectedTime) {
-    setSlotStatus('시작 시간을 선택해 주세요.', 'full');
-    return;
-  }
   const spaceId  = $('fSpace')?.value;
   const date     = $('fDate')?.value;
-  const duration = parseInt($('fDuration')?.value)||1;
-  const countVal = parseInt($('fCount')?.value)||0;
+  const duration = parseInt($('fDuration')?.value) || 1;
+  const countVal = parseInt($('fCount')?.value)    || 0;
+  const time     = selectedTime;
 
-  if (!spaceId) { alert('공간을 선택해 주세요.'); return; }
-  if (!date)    { alert('날짜를 선택해 주세요.'); return; }
-  if (!countVal||countVal<1||countVal>500) {
-    $('fCount')?.focus();
-    showFieldError('fCount','예상 인원을 1~500 사이로 입력해 주세요.');
+  if (!spaceId) { setSlotStatus('공간을 선택해 주세요.', 'full'); return; }
+  if (!date)    { setSlotStatus('날짜를 선택해 주세요.', 'full'); return; }
+  if (!time)    { setSlotStatus('시작 시간을 선택해 주세요.', 'full'); return; }
+  if (!duration || duration < 1) {
+    showFieldError('fDuration', '사용 시간을 선택해 주세요.');
     return;
   }
+  if (!countVal || countVal < 1 || countVal > 500) {
+    $('fCount')?.focus();
+    showFieldError('fCount', '예상 인원을 1~500 사이로 입력해 주세요.');
+    return;
+  }
+
   clearFieldError('fCount');
+  clearFieldError('fDuration');
+
+  // fDuration2도 패널1 값으로 맞춰줌 (패널2 요금 계산 기준)
+  const dur2 = $('fDuration2');
+  if (dur2) dur2.value = String(duration);
+
   goToPanel(2);
 }
 
