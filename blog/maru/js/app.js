@@ -42,51 +42,66 @@ const ICONS = {
 const $ = id => document.getElementById(id);
 const fmt = n => { const v = Number(n); return isNaN(v) ? '0' : v.toLocaleString('ko-KR'); };
 
+/* ── 전화번호 자동 포맷 (숫자만 입력해도 000-0000-0000 형태로 변환) ── */
+function formatPhone(raw) {
+  const d = raw.replace(/\D/g, ''); // 숫자만 추출
+  if (d.length === 0) return '';
+  // 02 지역번호: 02-XXX-XXXX (9자리) 또는 02-XXXX-XXXX (10자리)
+  if (d.startsWith('02')) {
+    if (d.length <= 9)  return d.replace(/^(\d{2})(\d{3})(\d{0,4})$/, (_, a, b, c) => c ? `${a}-${b}-${c}` : `${a}-${b}`);
+    return d.replace(/^(\d{2})(\d{4})(\d{0,4})$/, (_, a, b, c) => c ? `${a}-${b}-${c}` : `${a}-${b}`);
+  }
+  // 3자리 국번 (010~070): XXX-XXXX-XXXX (11자리) 또는 XXX-XXX-XXXX (10자리)
+  if (d.length <= 10) return d.replace(/^(\d{3})(\d{3})(\d{0,4})$/, (_, a, b, c) => c ? `${a}-${b}-${c}` : `${a}-${b}`);
+  return d.replace(/^(\d{3})(\d{4})(\d{0,4})$/, (_, a, b, c) => c ? `${a}-${b}-${c}` : `${a}-${b}`);
+}
+
 /* ── 입력 검증 규칙 ── */
 const RULES = {
-  // 이름: 한글(첫 글자 반드시 한글 또는 영문, 이후 한글·영문·점·중간 공백 허용)
-  // 공백 연속·앞뒤 공백·숫자·특수문자 불가
+  // 이름: 한글 또는 영문, 2~20자, 숫자·특수문자 불가, 앞뒤·연속 공백 불가
   name: {
-    maxLen: 30,
-    pattern: /^[가-힣a-zA-Z][가-힣a-zA-Z·\s]{0,28}[가-힣a-zA-Z]$|^[가-힣a-zA-Z]{1,30}$/,
-    msg: '성명은 한글 또는 영문으로만 입력해 주세요. (숫자·특수문자 불가)',
-    sanitize: v => v.replace(/[<>"'&]/g, '').replace(/\s{2,}/g, ' ').trim(),
+    minLen: 2,
+    maxLen: 20,
+    pattern: /^[가-힣a-zA-Z][가-힣a-zA-Z\s]{0,18}[가-힣a-zA-Z]$|^[가-힣a-zA-Z]{2,20}$/,
+    msg: '성명은 한글 또는 영문 2~20자로 입력해 주세요. (숫자·특수문자 불가)',
+    sanitize: v => v.replace(/[^가-힣a-zA-Z\s]/g, '').replace(/\s{2,}/g, ' ').trim(),
   },
-  // 전화번호: 휴대폰(010/011/016/017/018/019) + 지역번호(02, 031~064, 070)
-  // 차단: 050(인터넷전화 일부), 060(정보이용료), 080(수신자부담), 090 등
+  // 전화번호: 자동 포맷 적용, 유효 번호만 허용
   phone: {
     maxLen: 20,
     pattern: /^(01[016789]|02|0(3[1-3]|4[1-4]|5[1-5]|6[1-4]|70))-?\d{3,4}-?\d{4}$/,
     msg: '올바른 전화번호를 입력해 주세요. (예: 010-1234-5678 또는 054-000-0000)',
-    sanitize: v => v.replace(/[^\d\-]/g, '').trim(),
+    sanitize: v => formatPhone(v), // 숫자만 입력해도 하이픈 자동 삽입
   },
-  // 이메일: 표준 이메일 형식 + 공격 문자 차단
+  // 이메일: RFC 준수 형식, 공격 문자 차단
   email: {
     maxLen: 100,
     pattern: /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
     msg: '올바른 이메일 주소를 입력해 주세요. (예: name@example.com)',
     sanitize: v => v.replace(/[<>"'\s]/g, '').trim(),
   },
-  // 단체명: 한글·영문·숫자·공백·()·[]·점·하이픈만 허용
+  // 단체명: 한글·영문·숫자·공백·괄호·점·하이픈만 허용
   org: {
     maxLen: 60,
-    pattern: /^[가-힣a-zA-Z0-9\s()\[\]\.\-]{0,60}$/,
+    pattern: /^[가-힣a-zA-Z0-9\s()[\].\-]{0,60}$/,
     msg: '단체명에 사용할 수 없는 문자가 포함되어 있습니다.',
     sanitize: v => v.replace(/[<>"'&]/g, '').trim(),
   },
-  // 입금자명: 한글·영문·공백만 허용
+  // 입금자명: 한글·영문, 2자 이상
   depositor: {
+    minLen: 2,
     maxLen: 30,
-    pattern: /^[가-힣a-zA-Z][가-힣a-zA-Z\s]{0,29}$|^[가-힣a-zA-Z]{1}$/,
-    msg: '입금자명은 한글 또는 영문으로만 입력해 주세요.',
+    pattern: /^[가-힣a-zA-Z][가-힣a-zA-Z\s]{0,28}[가-힣a-zA-Z]$|^[가-힣a-zA-Z]{2,30}$/,
+    msg: '입금자명은 한글 또는 영문 2자 이상으로 입력해 주세요.',
     sanitize: v => v.replace(/[^가-힣a-zA-Z\s]/g, '').trim(),
   },
-  // 사용목적: HTML 태그·스크립트·SQL 인젝션 패턴 차단
+  // 사용목적: HTML·스크립트 인젝션 차단 (따옴표 관련 문자 제거)
   purpose: {
     maxLen: 300,
-    pattern: /^[^<>"'`\x00-\x1f]*$/,
-    msg: '사용 목적에 사용할 수 없는 문자가 포함되어 있습니다. (< > " \' 불가)',
-    sanitize: v => v.replace(/[<>"'`\x00-\x1f]/g, '').trim(),
+    // 작은따옴표를 정규식 내부에서 사용하지 않도록 유니코드 이스케이프 처리
+    pattern: new RegExp('^[^<>"\\u0060\\u0027\\u0000-\\u001f]*$'),
+    msg: '사용 목적에 허용되지 않는 문자가 포함되어 있습니다. (< > " 불가)',
+    sanitize: v => v.replace(/[<>"'`\u0000-\u001f]/g, '').trim(),
   },
 };
 
@@ -955,7 +970,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const blurValidate = (id, rule) => {
     const el = $(id); if (!el) return;
     el.addEventListener('blur', () => {
+      // 새니타이즈 먼저 적용 (전화번호는 하이픈 자동 삽입)
       if (rule.sanitize) el.value = rule.sanitize(el.value);
+      if (!el.value.trim()) return; // 빈값은 제출 시 필수 체크
       const err = validateField(id, rule);
       if (err) showFieldError(id, err);
       else clearFieldError(id);
@@ -967,6 +984,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   blurValidate('fOrg',       RULES.org);
   blurValidate('fDepositor', RULES.depositor);
   blurValidate('fPurpose',   RULES.purpose);
+
+  // 전화번호: 입력 중에도 실시간으로 숫자만 남기고 하이픈 자동 포맷
+  $('fPhone')?.addEventListener('input', () => {
+    const el = $('fPhone');
+    const pos = el.selectionStart;
+    const prev = el.value;
+    el.value = formatPhone(el.value);
+    // 커서 위치 보정 (포맷 후 길이 변화 반영)
+    const diff = el.value.length - prev.length;
+    el.setSelectionRange(pos + diff, pos + diff);
+    clearFieldError('fPhone');
+  });
 
   $('modalOverlay')?.addEventListener('click', closeModal);
   $('applyOverlay')?.addEventListener('click', e=>{
