@@ -22,7 +22,9 @@
       "linkedSpaces": [
         "hall-sangsang",
         "hall-maru"
-      ]
+      ],
+      "minDaysAhead": 7,
+      "maxDaysAhead": 60
     },
     {
       "id": "hall-sangsang",
@@ -45,7 +47,9 @@
       "imageFallback": "상상홀",
       "linkedSpaces": [
         "hall-main"
-      ]
+      ],
+      "minDaysAhead": 7,
+      "maxDaysAhead": 60
     },
     {
       "id": "hall-maru",
@@ -68,7 +72,9 @@
       "imageFallback": "마루홀",
       "linkedSpaces": [
         "hall-main"
-      ]
+      ],
+      "minDaysAhead": 7,
+      "maxDaysAhead": 60
     },
     {
       "id": "seminar",
@@ -88,7 +94,9 @@
       ],
       "image": "data/images/seminar.png",
       "imageFallback": "세미나실",
-      "linkedSpaces": []
+      "linkedSpaces": [],
+      "minDaysAhead": 0,
+      "maxDaysAhead": 30
     },
     {
       "id": "gx",
@@ -109,7 +117,9 @@
       ],
       "image": "data/images/gx.png",
       "imageFallback": "GX실",
-      "linkedSpaces": []
+      "linkedSpaces": [],
+      "minDaysAhead": 0,
+      "maxDaysAhead": 30
     },
     {
       "id": "meeting-a",
@@ -129,7 +139,9 @@
       ],
       "image": "data/images/meeting-a.png",
       "imageFallback": "회의실 A",
-      "linkedSpaces": []
+      "linkedSpaces": [],
+      "minDaysAhead": 0,
+      "maxDaysAhead": 30
     },
     {
       "id": "meeting-b",
@@ -149,7 +161,9 @@
       ],
       "image": "data/images/meeting-b.png",
       "imageFallback": "회의실 B",
-      "linkedSpaces": []
+      "linkedSpaces": [],
+      "minDaysAhead": 0,
+      "maxDaysAhead": 30
     }
   ],
   "filters": [

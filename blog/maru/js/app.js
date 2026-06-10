@@ -11,6 +11,17 @@ let currentDiscountRate = 0;
 let occupiedSlots       = [];
 let selectedTime        = null;   // 박스 그리드에서 선택된 시간
 
+/* ── 공간별 신청 가능 기간 반환
+   우선순위: spaces.json 공간별 설정 > site.json 전역 bookingWindow > 코드 기본값 */
+function getBookingWindow(spaceId) {
+  const space   = SPACES.find(s => s.id === spaceId);
+  const global  = window._bookingWindow || {};
+  return {
+    minDaysAhead: space?.minDaysAhead ?? global.minDaysAhead ?? 7,
+    maxDaysAhead: space?.maxDaysAhead ?? global.maxDaysAhead ?? 30,
+  };
+}
+
 /* ── XSS 방지 ── */
 function esc(str) {
   return String(str ?? '')
@@ -254,8 +265,8 @@ function openModal(id) {
     openApply(_modalSpaceId, _calSelected, _calTimeSelected);
   };
 
-  /* 캘린더 초기화 — 신청 가능 첫 날짜 기준 월 */
-  const { minDaysAhead = 7 } = window._bookingWindow || {};
+  /* 캘린더 초기화 — 공간별 신청 가능 첫 날짜 기준 월 */
+  const { minDaysAhead } = getBookingWindow(id);
   const firstAvail = new Date();
   firstAvail.setDate(firstAvail.getDate() + minDaysAhead);
   _calYear  = firstAvail.getFullYear();
@@ -281,7 +292,7 @@ function closeModal(e) {
 
 /* ── 월별 캘린더 렌더 ── */
 function renderCalendar() {
-  const { minDaysAhead=7, maxDaysAhead=30 } = window._bookingWindow || {};
+  const { minDaysAhead, maxDaysAhead } = getBookingWindow(_modalSpaceId);
   const today    = new Date(); today.setHours(0,0,0,0);
   const minDate  = new Date(today); minDate.setDate(today.getDate() + minDaysAhead);
   const maxDate  = new Date(today); maxDate.setDate(today.getDate() + maxDaysAhead);
@@ -313,7 +324,7 @@ function renderCalendar() {
     const isSaturday = dow === 6;
     const isToday    = date.getTime() === today.getTime();
     const isSelected = dateStr === _calSelected;
-    const isDisabled = isPast || isOverMax || isSunday; // 일요일 불가
+    const isDisabled = isPast || isOverMax || isSunday;
 
     let cls = 'cal-day';
     if (isSelected) cls += ' selected';
@@ -392,7 +403,6 @@ function renderCalTimeGrid() {
 /* ── 시간 선택 ── */
 function selectCalTime(time) {
   _calTimeSelected = time;
-  renderCalTimeGrid();
 
   // 버튼 상태 갱신
   document.querySelectorAll('.cal-time-btn').forEach(btn => {
@@ -602,11 +612,11 @@ function openApply(spaceId, preDate, preTime) {
     $('selectedSpaceBadge').style.display = 'none';
   }
 
-  // 날짜 범위
-  const { minDaysAhead=7, maxDaysAhead=30 } = window._bookingWindow||{};
+  // 날짜 범위 — 공간별 설정 적용
+  const { minDaysAhead, maxDaysAhead } = getBookingWindow(spaceId);
   const today = new Date();
-  const minD = new Date(today); minD.setDate(today.getDate()+minDaysAhead);
-  const maxD = new Date(today); maxD.setDate(today.getDate()+maxDaysAhead);
+  const minD = new Date(today); minD.setDate(today.getDate() + minDaysAhead);
+  const maxD = new Date(today); maxD.setDate(today.getDate() + maxDaysAhead);
   $('fDate').min = minD.toISOString().split('T')[0];
   $('fDate').max = maxD.toISOString().split('T')[0];
 
