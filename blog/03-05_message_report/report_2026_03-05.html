@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>청도혁신센터 지역혁신팀 업무 보고서 2026. 3~5월</title>
+<style>
+:root {
+  --bg:#f8fafc; --card:#fff; --border:#e2e8f0;
+  --text:#1e293b; --muted:#64748b; --accent:#3b82f6;
+  --sidebar-w:220px; --header-h:56px; --nav-h:48px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+      background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+
+/* ── 헤더 */
+.report-header{
+  background:linear-gradient(135deg,#1e3a5f,#1e40af);
+  color:#fff;padding:28px 40px;
+  position:sticky;top:0;z-index:100;
+}
+.report-header h1{font-size:18px;font-weight:700}
+.report-header .meta{font-size:12px;opacity:.7;margin-top:4px}
+
+/* ── 네비 탭 */
+.nav-bar{
+  background:#fff;border-bottom:1px solid var(--border);
+  display:flex;gap:0;overflow-x:auto;
+  position:sticky;top:var(--header-h);z-index:99;
+  padding:0 40px;
+}
+.nav-tab{
+  background:none;border:none;border-bottom:3px solid transparent;
+  padding:12px 16px;font-size:13px;font-weight:500;color:var(--muted);
+  cursor:pointer;white-space:nowrap;transition:all .2s;
+}
+.nav-tab:hover,.nav-tab.active{
+  color:var(--tab-color);border-bottom-color:var(--tab-color);
+}
+
+/* ── 레이아웃 */
+.layout{display:flex;max-width:1400px;margin:0 auto;padding:32px 24px;gap:24px}
+.main-content{flex:1;min-width:0}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:sticky;top:calc(var(--header-h) + var(--nav-h) + 24px);max-height:calc(100vh - 160px);overflow-y:auto}
+
+/* ── 사이드바 */
+.sb-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;padding:0 4px}
+.sb-parent{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 8px;border-radius:6px;font-size:12px;font-weight:600;
+  color:var(--muted);cursor:pointer;transition:all .15s;margin-bottom:2px;
+}
+.sb-parent .sb-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--c);flex-shrink:0;opacity:.4;transition:opacity .15s;
+}
+.sb-parent.active,.sb-parent:hover{color:var(--c);}
+.sb-parent.active .sb-dot{opacity:1}
+.sb-sub{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 8px 4px 20px;font-size:11px;color:var(--muted);
+  cursor:pointer;transition:color .15s;
+}
+.sb-sub .sb-line{width:1px;height:12px;background:#e2e8f0;flex-shrink:0;}
+.sb-sub.active,.sb-sub:hover{color:var(--text)}
+.sb-sub.active .sb-line{background:var(--accent)}
+.sb-cnt{margin-left:auto;font-size:10px;background:#f1f5f9;padding:1px 5px;border-radius:8px}
+
+/* ── 사업 섹션 */
+.proj-section{
+  margin-bottom:48px;scroll-margin-top:120px;
+  border-top:3px solid var(--pc);padding-top:20px;
+}
+.proj-section-header{margin-bottom:20px}
+.proj-tag{
+  display:inline-block;color:#fff;font-size:13px;font-weight:700;
+  padding:4px 14px;border-radius:20px;margin-bottom:8px;
+}
+.proj-desc{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ── 세부사업 카드 */
+.sub-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:20px;margin-bottom:16px;scroll-margin-top:130px;
+  border-left:3px solid var(--pc);
+}
+.sub-header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.sub-title{font-size:15px;font-weight:700}
+.sub-total{font-size:12px;color:var(--muted);margin-left:auto}
+.sub-desc{font-size:13px;color:#475569;margin-bottom:6px;line-height:1.7}
+.sub-users{font-size:11px;color:var(--muted);margin-bottom:14px}
+
+/* ── 월별 타임라인 */
+.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.month-row{background:#f8fafc;border-radius:8px;padding:12px 14px}
+.month-label{
+  font-size:12px;font-weight:700;margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.month-cnt{font-size:10px;color:var(--muted);font-weight:400;
+            background:#e2e8f0;padding:1px 6px;border-radius:8px}
+.month-items{list-style:none;padding:0}
+.month-items li{font-size:12px;color:#475569;padding:2px 0;border-bottom:1px solid #f1f5f9;line-height:1.6}
+.month-items li:last-child{border-bottom:none}
+.month-items li::before{content:"▸";color:#94a3b8;margin-right:4px;font-size:10px}
+
+/* ── 메시지 보기 버튼 */
+.view-msg-btn{
+  background:none;border:1px solid;border-radius:6px;
+  padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;
+  transition:all .15s;
+}
+.view-msg-btn:hover{opacity:.7}
+
+/* ── 메시지 뷰어 */
+.viewer-section{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:24px;margin-top:48px;
+}
+.viewer-title{font-size:16px;font-weight:700;margin-bottom:16px}
+.viewer-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.viewer-controls select,.viewer-controls input{
+  border:1px solid var(--border);border-radius:6px;padding:6px 10px;
+  font-size:13px;background:#fff;color:var(--text);
+}
+.viewer-controls input{flex:1;min-width:160px}
+.file-load-area{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;
+  padding:10px 14px;background:#f8fafc;border-radius:8px;font-size:12px;
+}
+.file-load-area label{
+  background:var(--accent);color:#fff;padding:5px 12px;border-radius:5px;
+  cursor:pointer;font-size:12px;font-weight:600;
+}
+#fileInput{display:none}
+.msg-list{max-height:600px;overflow-y:auto;border:1px solid var(--border);border-radius:8px}
+.msg-item{padding:12px 16px;border-bottom:1px solid #f8fafc;}
+.msg-item:last-child{border-bottom:none}
+.msg-item:hover{background:#fafafa}
+.msg-meta{display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap}
+.msg-dt{font-size:11px;color:var(--muted)}
+.msg-user{font-size:11px;font-weight:600;color:var(--text)}
+.msg-badge{font-size:10px;padding:1px 6px;border-radius:8px;color:#fff}
+.msg-text{font-size:13px;color:#334155;white-space:pre-wrap;word-break:break-all}
+.msg-count{font-size:12px;color:var(--muted);padding:8px 16px;background:#f8fafc;border-bottom:1px solid var(--border)}
+.load-status{font-size:12px;color:var(--muted)}
+
+@media(max-width:900px){
+  .sidebar{display:none}
+  .month-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <h1>청도혁신센터 지역혁신팀 — 업무 보고서 2026. 3~5월</h1>
+  <div class="meta">분석 기간: 2026년 3~5월 · 채널: #2-지역혁신팀, #tf-상상마루_공간-개관준비 · 총 1,302건</div>
+</div>
+
+<nav class="nav-bar">
+  <button class="nav-tab" data-target="소통협력공간상상마루" style="--tab-color:#3b82f6">소통협력공간 상상마루</button>
+<button class="nav-tab" data-target="시군구연고산업" style="--tab-color:#f97316">시군구연고산업</button>
+<button class="nav-tab" data-target="로컬크리에이터" style="--tab-color:#10b981">로컬크리에이터</button>
+<button class="nav-tab" data-target="디지털홍보" style="--tab-color:#ec4899">디지털·홍보 운영</button>
+<button class="nav-tab" data-target="파트너십" style="--tab-color:#f59e0b">외부 파트너십</button>
+<button class="nav-tab" data-target="조직행정" style="--tab-color:#6b7280">조직 행정</button>
+
+</nav>
+
+<div class="layout">
+  <div class="main-content">
+    
+        <section class="proj-section" id="소통협력공간상상마루" style="--pc:#3b82f6;--pc-bg:rgba(59,130,246,0.08)">
+          <div class="proj-section-header">
+            <div class="proj-tag" style="background:#3b82f6">소통협력공간 상상마루</div>
+            <p class="proj-desc">행안부 소통협력공간 지원사업 수탁 운영. 청도 버스터미널 2~4층을 청도상상마루로 리모델링, 5월 29일 가오픈 완료.</p>
+          </div>
+          
+            <div class="sub-card" id="sub-소협공">
+              <div class="sub-header">
+                <span class="sub-title">소협공 사업 행정</span>
+                <span class="sub-total">총 26건</span>
+              </div>
+              <p class="sub-desc">소협공 시즌2 사업 총괄 행정·예산 관리 업무. 세부사업 수행계획서 수립, 예산 집행(품의대장), 용역 계약 처리 담당.</p>
+              <div class="sub-users">주요 담당: 최주원(8) · 유정은Jung-Eun(5) · 박지연(4)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">3월<span class="month-cnt">18건</span></div>
+                  <ul class="month-items"><li>소협공 시즌2 제안서 지자체 제출 완료</li><li>세부사업별 수행계획서 작성·검토(창업공간지원, 심야책바, 미라클헬씨모닝)</li><li>업무분장 회의 및 소협공 성과지표(행안부 기준) 확정</li><li>카카오채널 홍보비 3만원 충전 처리</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">4월<span class="month-cnt">2건</span></div>
+                  <ul class="month-items"><li>마운틴영화제 용역 계약 절차 논의(소협공 예산 집행 기준)</li><li>노는엄마들 창업커뮤니티 운영 용역 계약 예정(660만원, 선급 70%)</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">5월<span class="month-cnt">6건</span></div>
+                  <ul class="month-items"><li>소통협력공간 상상마루 개소 보도자료 초안 작성</li><li>현수막 디자인비 지출결의·지급조서 작성</li><li>공유오피스 입주기업 모집 브로셔(A4 양면), 센터 소개 브로셔(A2) 제작</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="소협공" style="border-color:#3b82f6;color:#3b82f6">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-상상마루_개관">
+              <div class="sub-header">
+                <span class="sub-title">소통협력주간 (개관행사)</span>
+                <span class="sub-total">총 57건</span>
+              </div>
+              <p class="sub-desc">5월 29일 청도상상마루 가오픈 행사 기획·실행. 공간 슬로건·컨셉 확정, 제작물·공연·촬영 섭외 완료. 6월 19일 정식 개관행사 예정.</p>
+              <div class="sub-users">주요 담당: 박지연(17) · 유정은Jung-Eun(12) · 최주원(11)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">3월<span class="month-cnt">2건</span></div>
+                  <ul class="month-items"><li>페이퍼팝 공간 기획 검토(자유석 3만원 제안)</li><li>영화제 상설 프로그램 방향성 논의</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">4월<span class="month-cnt">2건</span></div>
+                  <ul class="month-items"><li>5/19→5/29로 행사일 확정</li><li>컨셉 &quot;버스를 기다리던 곳에서, 이제는 서로를 만납니다&quot; 최종 확정</li><li>공간 개소식 기획회의 완료</li><li>배정란 대표 섭외</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">5월<span class="month-cnt">53건</span></div>
+                  <ul class="month-items"><li>키비주얼 제작 완료(이혜민 디자이너)</li><li>포토월·등신대·레터링 제작(페이퍼팝)</li><li>전단지·쿠폰 500부/200부 제작(다로리인)</li><li>현장 촬영작가 섭외(일오의하루 박소윤)</li><li>온누리 국악팀 공연 확정(11시 야외광장)</li><li>거리현수막·외벽현수막 설치</li><li>5/29 가오픈 완료, 6/19 정식 개관 준비</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="상상마루_개관" style="border-color:#3b82f6;color:#3b82f6">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-상상마루_헬씨">
+              <div class="sub-header">
+                <span class="sub-title">미라클헬씨모닝</span>
+                <span class="sub-total">총 26건</span>
+              </div>
+              <p class="sub-desc">상상마루 4층 GX룸 기반 생활체육·소모임 지원 사업. 동아리 기수제 운영(팀당 12회, 60만원 지원), 8월 말 종료 예정.</p>
+              <div class="sub-users">주요 담당: 최주원(18) · 민복기(3) · 우장한(2)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">3월<span class="month-cnt">12건</span></div>
+                  <ul class="month-items"><li>4층 GX룸 운영 방향 및 동아리 운영 방식 논의</li><li>수행계획서 초안 작성 및 피드백</li><li>3/24 전면 수정(2개월 단위 4텀 순환, 1기수 최대 4팀)</li><li>예산 2,300만원 확정</li><li>헬씨모닝 커피챗 기획(아침 커뮤니티 파일럿)</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">4월<span class="month-cnt">14건</span></div>
+                  <ul class="month-items"><li>4/7 헬씨모닝 커피챗 1회차 진행</li><li>정신건강복지센터 협업 제안(러닝크루 프로그램 연계)</li><li>수행계획서 최종본 완성(소모임 10팀×60만원, 생활체육 투트랙)</li><li>청도군체육회 컨택 논의</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">5월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>개관 준비에 따라 활동 소강</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="상상마루_헬씨" style="border-color:#3b82f6;color:#3b82f6">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-상상마루_영화제">
+              <div class="sub-header">
+                <span class="sub-title">마운틴코미디영화제</span>
+                <span class="sub-total">총 9건</span>
+              </div>
+              <p class="sub-desc">청도 마운틴 코미디 영화제 기획. 상설 프로그램(연 5회) 목표, 대구영상미디어센터와 협력. 10월 개최 예정.</p>
+              <div class="sub-users">주요 담당: 성강현(7) · 유정은Jung-Eun(2)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">3월<span class="month-cnt">2건</span></div>
+                  <ul class="month-items"><li>기획안 초안 작성(상설 프로그램 방향성 설정)</li><li>정은님 피드백: 연간 1회성이 아닌 상설화 필요</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">4월<span class="month-cnt">6건</span></div>
+                  <ul class="month-items"><li>4/1 대구영상미디어센터 권현준 센터장 미팅 완료 → 커뮤니티시네마네트워크 용역 참여 가능 확인</li><li>청도고 영상제작 교육 연계 논의</li><li>영화제 일정 반시축제 기간→10월 31일로 변경</li><li>대구영상미디어 견적서 요청 및 메일 발송</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#3b82f6">5월<span class="month-cnt">1건</span></div>
+                  <ul class="month-items"><li>5/27 예산안 1차 수령(약 16백만원)</li><li>필수 항목 추리면 12~14백만원 내 진행 가능 판단</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="상상마루_영화제" style="border-color:#3b82f6;color:#3b82f6">
+                관련 메시지 보기 →
+              </button>
+            </div>
+        </section>
+        <section class="proj-section" id="시군구연고산업" style="--pc:#f97316;--pc-bg:rgba(249,115,22,0.08)">
+          <div class="proj-section-header">
+            <div class="proj-tag" style="background:#f97316">시군구연고산업</div>
+            <p class="proj-desc">경상북도 시군구연고산업육성 협업프로젝트 수탁. 4개 세부사업(창업교육, 마케팅지원, 비자발급, 외국인정착) 수행.</p>
+          </div>
+          
+            <div class="sub-card" id="sub-연고_창업교육">
+              <div class="sub-header">
+                <span class="sub-title">창업기술트렌드교육</span>
+                <span class="sub-total">총 27건</span>
+              </div>
+              <p class="sub-desc">로컬크리에이터 162명 대상 수요기반 창업 사업설명회 3회차 운영(3/25, 3/26, 3/31). 업종별 분류 및 계약 완료.</p>
+              <div class="sub-users">주요 담당: 최주원(17) · 유정은Jung-Eun(4) · 이영은(3)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">3월<span class="month-cnt">21건</span></div>
+                  <ul class="month-items"><li>수요조사 가이드 수립(로컬크리에이터 162명 + 중간지원조직)</li><li>사업설명회 3일 일정 확정(로컬임팩트랩)</li><li>컨설턴트 송재필 이사 초청(농식품 브랜딩·유통)</li><li>3회차 사업설명회 완료</li><li>현장스케치 영상 제작(노는엄마들)</li><li>서비스 계약서 작성 완료</li><li>SNS 1·2·3회차 게시글 업로드</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">4월<span class="month-cnt">4건</span></div>
+                  <ul class="month-items"><li>4/1 TP 주관 사업설명회 참가(청도군농업기술센터)</li><li>컨설팅 기록지 NAS 저장</li><li>시군구연고사업 지원 리마인드 안내 발송</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">5월<span class="month-cnt">1건</span></div>
+                  <ul class="month-items"><li>4/22 신청자 업종별 세부분류(농식품·문화관광) 완성</li><li>사업계획서 최종본 NAS 정리</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="연고_창업교육" style="border-color:#f97316;color:#f97316">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-연고_마케팅">
+              <div class="sub-header">
+                <span class="sub-title">마케팅지원</span>
+                <span class="sub-total">총 17건</span>
+              </div>
+              <p class="sub-desc">청도 소재 기업 12개 선정, 마케팅 지원금 차등 지급(A 1천만원 4곳, B·C 차등). 공급기업 RMS 등록 및 협약서 작성 완료.</p>
+              <div class="sub-users">주요 담당: 성강현(11) · 유정은Jung-Eun(5) · 박지연(1)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">3월<span class="month-cnt">3건</span></div>
+                  <ul class="month-items"><li>예산·자문비 구조 확인(전체 사업 자문비 300만원)</li><li>사업계획안 작성 완료</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">4월<span class="month-cnt">4건</span></div>
+                  <ul class="month-items"><li>TP 공고 완료(마케팅지원만 서류심사 대상)</li><li>4/21 심사위원 서류심사 진행</li><li>4/27 평가표 집계 오류 수정 완료</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">5월<span class="month-cnt">10건</span></div>
+                  <ul class="month-items"><li>5/13 협약 절차 정리(서류마감→선정단체안내→RMS등록→협약→전자서명)</li><li>5/18 협약서 작성 완료(12개 기업, 좋은예감 대표자 수정 후 완료)</li><li>전자서명 진행 중</li><li>공급기업 포트폴리오 검토(쇼츠 제작비 과다 이슈)</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="연고_마케팅" style="border-color:#f97316;color:#f97316">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-연고_외국인">
+              <div class="sub-header">
+                <span class="sub-title">외국인정착지원</span>
+                <span class="sub-total">총 6건</span>
+              </div>
+              <p class="sub-desc">외국인 근로자·이주민 정착 지원. 가족센터·이주민 커뮤니티 네트워크 연계 홍보 추진.</p>
+              <div class="sub-users">주요 담당: 유정은Jung-Eun(3) · 성강현(2) · 우장한(1)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">3월<span class="month-cnt">3건</span></div>
+                  <ul class="month-items"><li>담당자 미정 상태로 출발, TP 공고 기준 확인(기업 직접 접수)</li><li>가족센터·이주민 커뮤니티 홍보 방안 논의</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">4월<span class="month-cnt">2건</span></div>
+                  <ul class="month-items"><li>공고 후 접수·선정 심사 (마케팅지원 심사와 병행)</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">5월<span class="month-cnt">1건</span></div>
+                  <ul class="month-items"><li>5/22 외국인지원·컨설팅지원·코워킹스페이스 안내 메일 초안 작성 완료</li><li>각 담당자 메일·유선번호 취합 후 발송 예정</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="연고_외국인" style="border-color:#f97316;color:#f97316">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-연고_비자">
+              <div class="sub-header">
+                <span class="sub-title">비자발급컨설팅</span>
+                <span class="sub-total">총 4건</span>
+              </div>
+              <p class="sub-desc">외국인 근로자 비자 발급 컨설팅 지원. 타 연고산업 세부사업과 통합 홍보·접수 진행.</p>
+              <div class="sub-users">주요 담당: 유정은Jung-Eun(2) · 성강현(2)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">3월<span class="month-cnt">1건</span></div>
+                  <ul class="month-items"><li>TP 공고 통해 기업 접수 방식 확인</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">4월<span class="month-cnt">2건</span></div>
+                  <ul class="month-items"><li>선정심사 완료(마케팅지원 심사와 병행)</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f97316">5월<span class="month-cnt">1건</span></div>
+                  <ul class="month-items"><li>5/22 안내 메일 발송 준비</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="연고_비자" style="border-color:#f97316;color:#f97316">
+                관련 메시지 보기 →
+              </button>
+            </div>
+        </section>
+        <section class="proj-section" id="로컬크리에이터" style="--pc:#10b981;--pc-bg:rgba(16,185,129,0.08)">
+          <div class="proj-section-header">
+            <div class="proj-tag" style="background:#10b981">로컬크리에이터</div>
+            <p class="proj-desc">청도 로컬크리에이터 162명 지원 체계 구축. 협의회 법인화, 지역혁신가 홈페이지, 오피스아워 운영.</p>
+          </div>
+          
+            <div class="sub-card" id="sub-로컬_협의회">
+              <div class="sub-header">
+                <span class="sub-title">로컬크리에이터협의회</span>
+                <span class="sub-total">총 8건</span>
+              </div>
+              <p class="sub-desc">로컬크리에이터 협의회 법인화 추진. 혁신센터 사무국 역할 구상, 청도지역혁신가 호명 및 임명장 수여 체계 설계.</p>
+              <div class="sub-users">주요 담당: 이영은(3) · 손정아(2) · 유정은Jung-Eun(2)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#10b981">3월<span class="month-cnt">5건</span></div>
+                  <ul class="month-items"><li>협의회 법인화 방향 논의(혁신센터 사무국 담당)</li><li>사람책 30명 대상 데모 제작 후 162명 확대 계획</li><li>중간지원조직 네트워킹(귀농귀촌, 가족센터, 도시재생, 반석 등)</li><li>새마을회·청창농·4H 홍보 요청 완료</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#10b981">4월<span class="month-cnt">3건</span></div>
+                  <ul class="month-items"><li>4/22 홍보 요청기관 리스트 작성(대구·경북)</li><li>경기도사경센터협의회 워크숍 연계(6/5-6, 10명, 상상마루 투어+사업소개)</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#10b981">5월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>개관 준비 집중으로 활동 소강</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="로컬_협의회" style="border-color:#10b981;color:#10b981">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-로컬_사람책">
+              <div class="sub-header">
+                <span class="sub-title">사람책·지역혁신가웹</span>
+                <span class="sub-total">총 8건</span>
+              </div>
+              <p class="sub-desc">청도지역혁신가 온라인 페이지 구축. 사람책(30명) 기반 데모 제작, 컨설턴트 소개 페이지 완성.</p>
+              <div class="sub-users">주요 담당: 이영은(3) · 최주원(3) · 성강현(2)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#10b981">3월<span class="month-cnt">5건</span></div>
+                  <ul class="month-items"><li>경산청년지식놀이터 사람책 페이지 참고 공유</li><li>3/25 컨설턴트 소개 페이지 개발 완료(문의 기능 포함)</li><li>CMZ054.kr footer 관련 기관 링크 추가 예정</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#10b981">4월<span class="month-cnt">2건</span></div>
+                  <ul class="month-items"><li>지역혁신가 홈피(이미지→web 변환 필요), 컨설턴트 홈피(제작 완료·도메인 미확정) 현황 정리</li><li>구글 SEO 방식 페이지 구성 제안</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#10b981">5월<span class="month-cnt">1건</span></div>
+                  <ul class="month-items"><li>5/26 씽크로콥 홈페이지 2차 수정 기한 조율(6월 말~7월 초)</li><li>조직도·미션·비전 문체 내부 소통 회의 예정</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="로컬_사람책" style="border-color:#10b981;color:#10b981">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-로컬_오피스아워">
+              <div class="sub-header">
+                <span class="sub-title">창업오피스아워</span>
+                <span class="sub-total">총 7건</span>
+              </div>
+              <p class="sub-desc">로컬크리에이터 대상 전문가 자문 연결. 회계·노무·지식재산·SNS마케팅 4개 분야 오픈채팅방 신청 방식 운영.</p>
+              <div class="sub-users">주요 담당: 이영은(2) · 우장한(2) · 성강현(1)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#10b981">3월<span class="month-cnt">7건</span></div>
+                  <ul class="month-items"><li>오피스아워 체계 구상(회계 이명균, 노무 이현우, 지재권 이재환, SNS 이영수)</li><li>농부점빵 이지연 대표 회계 자문 온라인 미팅 추진</li><li>농업법인 회계 자문 별도 검토</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#10b981">4월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>활동 없음</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#10b981">5월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>활동 없음</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="로컬_오피스아워" style="border-color:#10b981;color:#10b981">
+                관련 메시지 보기 →
+              </button>
+            </div>
+        </section>
+        <section class="proj-section" id="디지털홍보" style="--pc:#ec4899;--pc-bg:rgba(236,72,153,0.08)">
+          <div class="proj-section-header">
+            <div class="proj-tag" style="background:#ec4899">디지털·홍보 운영</div>
+            <p class="proj-desc">홈페이지 개편(씽크로콥), SNS 채널 운영(인스타·카카오), 노션 운영DB 구축 및 유지.</p>
+          </div>
+          
+            <div class="sub-card" id="sub-홈페이지">
+              <div class="sub-header">
+                <span class="sub-title">홈페이지개편</span>
+                <span class="sub-total">총 51건</span>
+              </div>
+              <p class="sub-desc">씽크로콥과 CMZ054.kr 개편 진행. 컨설턴트 소개 페이지 완성, 대관 시스템 추가 협의, 2차 수정 기한 조율 중.</p>
+              <div class="sub-users">주요 담당: 최주원(31) · 성강현(6) · 민복기(6)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#ec4899">3월<span class="month-cnt">12건</span></div>
+                  <ul class="month-items"><li>수정 요청사항 정리 및 전달</li><li>3/25 컨설턴트 소개·문의 페이지 개발 완료</li><li>씽크로콥 수정 회신 수령</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#ec4899">4월<span class="month-cnt">14건</span></div>
+                  <ul class="month-items"><li>수정 범위 확인(단순수정 무제한, 심화개발 추가 견적)</li><li>남은 예산 약 200만원 확인</li><li>4/21 씽크로콥 오프라인 미팅(목업 방향, 홈피 로직 개편안 전달)</li><li>대관 시스템 구현 검토</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#ec4899">5월<span class="month-cnt">24건</span></div>
+                  <ul class="month-items"><li>5/26 2차 수정 기한 조율(6월 말~7월 초)</li><li>조직도·미션·비전 문체 내부 정리 후 수정 요청 예정</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="홈페이지" style="border-color:#ec4899;color:#ec4899">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-SNS관리">
+              <div class="sub-header">
+                <span class="sub-title">SNS채널관리</span>
+                <span class="sub-total">총 47건</span>
+              </div>
+              <p class="sub-desc">인스타그램·카카오채널·군청SNS 활용 사업 홍보. 이벤트캣 다국어 지원, 채널별 역할 정리 논의.</p>
+              <div class="sub-users">주요 담당: 최주원(28) · 민복기(7) · 우장한(4)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#ec4899">3월<span class="month-cnt">20건</span></div>
+                  <ul class="month-items"><li>군청 인스타 사업설명회 홍보 요청 완료</li><li>카카오채널 사업설명회 자료 업로드</li><li>이벤트캣 다국어 행사 툴 셋업(9개 언어)</li><li>SNS·홈페이지·카카오 채널별 역할 정리 논의</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#ec4899">4월<span class="month-cnt">14건</span></div>
+                  <ul class="month-items"><li>사업설명회 인스타 게시글 1·2·3회차 업로드</li><li>헬씨모닝·커피챗 게시글 작성</li><li>로컬임팩트랩 대관 종료 안내 게시</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#ec4899">5월<span class="month-cnt">13건</span></div>
+                  <ul class="month-items"><li>임팩트허브 방문 인스타 업로드</li><li>개관 관련 SNS 게시 준비</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="SNS관리" style="border-color:#ec4899;color:#ec4899">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-노션_DB">
+              <div class="sub-header">
+                <span class="sub-title">노션운영DB</span>
+                <span class="sub-total">총 20건</span>
+              </div>
+              <p class="sub-desc">지역혁신팀 주간회의록·과업 관리 노션 DB 운영. 3월 층별 운영계획·소협공 사업내용 업데이트 집중.</p>
+              <div class="sub-users">주요 담당: 성강현(9) · 박지연(5) · 최주원(4)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#ec4899">3월<span class="month-cnt">13건</span></div>
+                  <ul class="month-items"><li>주간회의 자료에 공동사업(상상마루 층별 운영계획) 업데이트</li><li>소협공 성과지표(행안부 기준) 정량 지표 노션 추가</li><li>AI OS 기반 과업별 DB 정리 시작</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#ec4899">4월<span class="month-cnt">6건</span></div>
+                  <ul class="month-items"><li>개관 준비 일정 등 주요 과업 업데이트</li><li>주간회의록 지속 관리</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#ec4899">5월<span class="month-cnt">1건</span></div>
+                  <ul class="month-items"><li>개관 관련 기획회의록 노션 정리</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="노션_DB" style="border-color:#ec4899;color:#ec4899">
+                관련 메시지 보기 →
+              </button>
+            </div>
+        </section>
+        <section class="proj-section" id="파트너십" style="--pc:#f59e0b;--pc-bg:rgba(245,158,11,0.08)">
+          <div class="proj-section-header">
+            <div class="proj-tag" style="background:#f59e0b">외부 파트너십</div>
+            <p class="proj-desc">이화여대 테크포임팩트, 커먼즈네트워크(UNDP·임팩트허브) 등 외부 협력.</p>
+          </div>
+          
+            <div class="sub-card" id="sub-이화여대">
+              <div class="sub-header">
+                <span class="sub-title">이화여대·테크포임팩트연계</span>
+                <span class="sub-total">총 5건</span>
+              </div>
+              <p class="sub-desc">이화여대 소셜벤처창업 수업(테크포임팩트 캠퍼스) 연계. 학생 5명 청도 방문, 드림스테이 연계.</p>
+              <div class="sub-users">주요 담당: 최주원(4) · 유정은Jung-Eun(1)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#f59e0b">3월<span class="month-cnt">5건</span></div>
+                  <ul class="month-items"><li>임현진 학생 컨택</li><li>3/18 팀장·학생 줌미팅 진행</li><li>학생 5명 3/28 청도 방문·1박2일 드림스테이 연계</li><li>이화여대 재학생 지역 협력 프로젝트 진행</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f59e0b">4월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>활동 없음</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f59e0b">5월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>활동 없음</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="이화여대" style="border-color:#f59e0b;color:#f59e0b">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-커먼즈네트워크">
+              <div class="sub-header">
+                <span class="sub-title">커먼즈네트워크</span>
+                <span class="sub-total">총 4건</span>
+              </div>
+              <p class="sub-desc">UNDP·임팩트허브 아시아태평양 지부 연계. 멜라니 담당자 청도 방문 및 협력 논의.</p>
+              <div class="sub-users">주요 담당: 유정은Jung-Eun(1) · 이영은(1) · 곽정의(1)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#f59e0b">3월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>활동 없음</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f59e0b">4월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>활동 없음</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#f59e0b">5월<span class="month-cnt">4건</span></div>
+                  <ul class="month-items"><li>5/6 커먼즈네트워크 행사 참가(금·토)</li><li>임팩트허브 아시아태평양 지부 멜라니 일정 확인</li><li>5/14 임팩트허브 멜라니 청도 방문 완료</li><li>방문 인스타 게시</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="커먼즈네트워크" style="border-color:#f59e0b;color:#f59e0b">
+                관련 메시지 보기 →
+              </button>
+            </div>
+        </section>
+        <section class="proj-section" id="조직행정" style="--pc:#6b7280;--pc-bg:rgba(107,114,128,0.08)">
+          <div class="proj-section-header">
+            <div class="proj-tag" style="background:#6b7280">조직 행정</div>
+            <p class="proj-desc">법인 총회, 채용 심사 등 내부 행정.</p>
+          </div>
+          
+            <div class="sub-card" id="sub-총회">
+              <div class="sub-header">
+                <span class="sub-title">법인총회</span>
+                <span class="sub-total">총 7건</span>
+              </div>
+              <p class="sub-desc">2026년 법인 정기총회 준비 및 진행(3월).</p>
+              <div class="sub-users">주요 담당: 성강현(4) · 유정은Jung-Eun(2) · 민복기(1)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#6b7280">3월<span class="month-cnt">6건</span></div>
+                  <ul class="month-items"><li>총회 자료 작성(소협공사업 정리 포함)</li><li>이사님(장한·정아 포함 12명) 식사 준비</li><li>법인 총회 완료</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#6b7280">4월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>활동 없음</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#6b7280">5월<span class="month-cnt">1건</span></div>
+                  <ul class="month-items"><li>이사회 관련 소통</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="총회" style="border-color:#6b7280;color:#6b7280">
+                관련 메시지 보기 →
+              </button>
+            </div>
+            <div class="sub-card" id="sub-채용">
+              <div class="sub-header">
+                <span class="sub-title">인사·채용</span>
+                <span class="sub-total">총 1건</span>
+              </div>
+              <p class="sub-desc">3월 신규 채용 심사(이장우, 임광순 2명 대상).</p>
+              <div class="sub-users">주요 담당: 유정은Jung-Eun(1)</div>
+              <div class="month-grid">
+                <div class="month-row">
+                  <div class="month-label" style="color:#6b7280">3월<span class="month-cnt">1건</span></div>
+                  <ul class="month-items"><li>채용공고 1차 심사 개요 안내(3/26 오전10시, 로컬임팩트랩 1층)</li><li>심사위원: 우장한, 손정아, 박연빈 팀장, 가족센터 김영란, 이음센터 사무국장</li><li>심사 완료</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#6b7280">4월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>활동 없음</li></ul>
+                </div>
+                <div class="month-row">
+                  <div class="month-label" style="color:#6b7280">5월<span class="month-cnt">0건</span></div>
+                  <ul class="month-items"><li>활동 없음</li></ul>
+                </div></div>
+              <button class="view-msg-btn" data-sub="채용" style="border-color:#6b7280;color:#6b7280">
+                관련 메시지 보기 →
+              </button>
+            </div>
+        </section>
+
+    <!-- ── 메시지 뷰어 -->
+    <div class="viewer-section" id="msg-viewer">
+      <div class="viewer-title">메시지 뷰어</div>
+      <div class="file-load-area">
+        <span class="load-status" id="loadStatus">JSON 파일을 불러오는 중...</span>
+        <label for="fileInput">직접 파일 선택</label>
+        <input type="file" id="fileInput" accept=".json">
+      </div>
+      <div class="viewer-controls">
+        <select id="filterParent">
+          <option value="">전체 사업</option>
+          <option value="소통협력공간상상마루">소통협력공간 상상마루</option><option value="시군구연고산업">시군구연고산업</option><option value="로컬크리에이터">로컬크리에이터</option><option value="디지털홍보">디지털·홍보 운영</option><option value="파트너십">외부 파트너십</option><option value="조직행정">조직 행정</option>
+        </select>
+        <select id="filterMonth">
+          <option value="">전체 기간</option>
+          <option value="2026-03">3월</option>
+          <option value="2026-04">4월</option>
+          <option value="2026-05">5월</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="키워드 검색...">
+      </div>
+      <div class="msg-count" id="msgCount">—</div>
+      <div class="msg-list" id="msgList"></div>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sb-title">목차</div>
+    <div class="sb-parent" data-id="소통협력공간상상마루" style="--c:#3b82f6"><span class="sb-dot"></span>소통협력공간 상상마루</div>
+<div class="sb-sub" data-id="sub-소협공"><span class="sb-line"></span>소협공 사업 행정 <span class="sb-cnt">26</span></div>
+<div class="sb-sub" data-id="sub-상상마루_개관"><span class="sb-line"></span>소통협력주간 (개관행사) <span class="sb-cnt">57</span></div>
+<div class="sb-sub" data-id="sub-상상마루_헬씨"><span class="sb-line"></span>미라클헬씨모닝 <span class="sb-cnt">26</span></div>
+<div class="sb-sub" data-id="sub-상상마루_영화제"><span class="sb-line"></span>마운틴코미디영화제 <span class="sb-cnt">9</span></div>
+<div class="sb-parent" data-id="시군구연고산업" style="--c:#f97316"><span class="sb-dot"></span>시군구연고산업</div>
+<div class="sb-sub" data-id="sub-연고_창업교육"><span class="sb-line"></span>창업기술트렌드교육 <span class="sb-cnt">27</span></div>
+<div class="sb-sub" data-id="sub-연고_마케팅"><span class="sb-line"></span>마케팅지원 <span class="sb-cnt">17</span></div>
+<div class="sb-sub" data-id="sub-연고_외국인"><span class="sb-line"></span>외국인정착지원 <span class="sb-cnt">6</span></div>
+<div class="sb-sub" data-id="sub-연고_비자"><span class="sb-line"></span>비자발급컨설팅 <span class="sb-cnt">4</span></div>
+<div class="sb-parent" data-id="로컬크리에이터" style="--c:#10b981"><span class="sb-dot"></span>로컬크리에이터</div>
+<div class="sb-sub" data-id="sub-로컬_협의회"><span class="sb-line"></span>로컬크리에이터협의회 <span class="sb-cnt">8</span></div>
+<div class="sb-sub" data-id="sub-로컬_사람책"><span class="sb-line"></span>사람책·지역혁신가웹 <span class="sb-cnt">8</span></div>
+<div class="sb-sub" data-id="sub-로컬_오피스아워"><span class="sb-line"></span>창업오피스아워 <span class="sb-cnt">7</span></div>
+<div class="sb-parent" data-id="디지털홍보" style="--c:#ec4899"><span class="sb-dot"></span>디지털·홍보 운영</div>
+<div class="sb-sub" data-id="sub-홈페이지"><span class="sb-line"></span>홈페이지개편 <span class="sb-cnt">51</span></div>
+<div class="sb-sub" data-id="sub-SNS관리"><span class="sb-line"></span>SNS채널관리 <span class="sb-cnt">47</span></div>
+<div class="sb-sub" data-id="sub-노션_DB"><span class="sb-line"></span>노션운영DB <span class="sb-cnt">20</span></div>
+<div class="sb-parent" data-id="파트너십" style="--c:#f59e0b"><span class="sb-dot"></span>외부 파트너십</div>
+<div class="sb-sub" data-id="sub-이화여대"><span class="sb-line"></span>이화여대·테크포임팩트연계 <span class="sb-cnt">5</span></div>
+<div class="sb-sub" data-id="sub-커먼즈네트워크"><span class="sb-line"></span>커먼즈네트워크 <span class="sb-cnt">4</span></div>
+<div class="sb-parent" data-id="조직행정" style="--c:#6b7280"><span class="sb-dot"></span>조직 행정</div>
+<div class="sb-sub" data-id="sub-총회"><span class="sb-line"></span>법인총회 <span class="sb-cnt">7</span></div>
+<div class="sb-sub" data-id="sub-채용"><span class="sb-line"></span>인사·채용 <span class="sb-cnt">1</span></div>
+
+  </aside>
+</div>
+
+<script>
+// ── 사업 구조 (필터용)
+const STRUCTURE = [{"id": "소통협력공간상상마루", "label": "소통협력공간 상상마루", "color": "#3b82f6", "subs": [{"id": "소협공", "label": "소협공 사업 행정"}, {"id": "상상마루_개관", "label": "소통협력주간 (개관행사)"}, {"id": "상상마루_헬씨", "label": "미라클헬씨모닝"}, {"id": "상상마루_영화제", "label": "마운틴코미디영화제"}]}, {"id": "시군구연고산업", "label": "시군구연고산업", "color": "#f97316", "subs": [{"id": "연고_창업교육", "label": "창업기술트렌드교육"}, {"id": "연고_마케팅", "label": "마케팅지원"}, {"id": "연고_외국인", "label": "외국인정착지원"}, {"id": "연고_비자", "label": "비자발급컨설팅"}]}, {"id": "로컬크리에이터", "label": "로컬크리에이터", "color": "#10b981", "subs": [{"id": "로컬_협의회", "label": "로컬크리에이터협의회"}, {"id": "로컬_사람책", "label": "사람책·지역혁신가웹"}, {"id": "로컬_오피스아워", "label": "창업오피스아워"}]}, {"id": "디지털홍보", "label": "디지털·홍보 운영", "color": "#ec4899", "subs": [{"id": "홈페이지", "label": "홈페이지개편"}, {"id": "SNS관리", "label": "SNS채널관리"}, {"id": "노션_DB", "label": "노션운영DB"}]}, {"id": "파트너십", "label": "외부 파트너십", "color": "#f59e0b", "subs": [{"id": "이화여대", "label": "이화여대·테크포임팩트연계"}, {"id": "커먼즈네트워크", "label": "커먼즈네트워크"}]}, {"id": "조직행정", "label": "조직 행정", "color": "#6b7280", "subs": [{"id": "총회", "label": "법인총회"}, {"id": "채용", "label": "인사·채용"}]}];
+const COLOR_MAP = {};
+STRUCTURE.forEach(p => { p.subs.forEach(s => { COLOR_MAP[s.id] = p.color; }); });
+
+// ── 메시지 데이터 (정적 임베드 - 사업 태그 있는 30자 이상 메시지)
+const EMBEDDED_MSGS = [{"dt": "2026-03-02 10:20", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "[안내] 3월 3일(화) 주간 팀 회의는 오후에 진행 예정입니다. 시간 참조 부탁드립니다.\n\n*휴일에 안내해 드리는 점, 양해 부탁드립니다.  (업무 진행 하실 때, 일정 확인하실 필요가 있을 것 같아 말씀드려요:raised_hands:)\n\n내일 주간 고정 팀 회의 시간에는 소협공 시즌2 제안서의 지자체 제출 일정에 맞춰, 점검 회의가 있을 예정입니다.\n해당 사유로, 오전 회의 시간을 오후 시간대로 옮겨 진행할까 합니다. 시간 대는 내일 상황에 따라 맞춰보려고 해요:full_moon_with_face:\n나중 내용 확인해 봐 주셔요~~", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-03 13:18", "mo": "2026-03", "user": "이영은", "text": "대략적인 가이드는 아래와 같습니다.\n\n• 대상: 로컬 크리에이터 단톡방 162명, 중간지원조직(귀농귀촌센터, 가족센터, 도시재생센터, 반석 등) 포함.\n• 목적: 업종(농업·기술·식음료 등)·상황별로 나뉜 창업 수요와 아이디어를 직접 듣고, 수요 기반 프로그램을 설계.\n• 횟수·시기: 3월 중 2–3회 진행, 가능하면 162명 모두 참여 유도할 것\n• 중간지원조직들은 예산이 크지 않지만(이음센터 1–2천 정도 가능할 듯) 네트워크·명분·성과 공유 측면에서 협업 가치 있음.\n• 예산 : 센터 시즌1-창업공간 800만원 + 시군구-창업기술트렌드교육 4500만원 활용 (우선 센터 사업비 800만원을 먼저 활용해 사업 설명회 진행)", "subs": ["연고_창업교육", "소협공"], "parents": ["소통협력공간상상마루", "시군구연고산업"]}, {"dt": "2026-03-03 13:25", "mo": "2026-03", "user": "이영은", "text": "이어서 전달합니다 :slightly_smiling_face:\n\n• 궁극적으로 로컬 크리에이터 협의회’를 만들어 법인화, 혁신센터가 사무국을 맡아 보다 체계적인 데이터 관리·조직 운영을 하자는 제안\n• 우선 사람책 제작한 30명 대상으로 데모버전을 제작하고, 이후에 로컬크리에이터 162명, 그리고 그 외의 청도의 다양한 이해관계자들 페이지도 제작할 예정, \"청도지역혁신가\"로 사회적으로 호명하고, 나름의 인증 혹은 임명장 수여 등을 진행. 청도혁신센터의 성과로도 정리하고, 자체 네트워크를 통해서 협업사업도 진행\n• 장기적으로는 ‘지역 혁신가’ 300명 수준까지 발굴·호명하는 목표 (홈페이지 및 밴드, 카카오톡 채널 등) : 보더리스 재팬 참고", "subs": ["로컬_사람책", "로컬_협의회", "홈페이지"], "parents": ["로컬크리에이터", "디지털홍보"]}, {"dt": "2026-03-03 17:48", "mo": "2026-03", "user": "이영은", "text": "<@U06S37QEL3H> 농부점빵 이지연 님이 회계 자문을 요청하셨는데, 이명균 회계사님께서 얼마 전 청도에 직접 오셨을 때 미팅을 연달아 요청드리기가 어려워 보여 당시 연결하지 못했습니다.\n\n그래서 이번에 *온라인 미팅으로 진행해볼까 하는데, 제안드려도 괜찮을까요?* 이런 방식을 낯설어 하실까 해서요. 제안이 어려울 것 같으면 직접 대구 사무실 방문하거나 회계사님 시간 가능하실 때 청도 모시는 걸로 해볼게요. (도도하다 이지연 대표, 바테그린 박지혜 대표 2명이 자문을 받고자 하시구요. 다른 농부점빵 농부가 더 참여할 수도 있습니다.)\n\n이와 별개로 제가 농부점빵 사업자등록 현황 검색하다가 전북 고창군에 동일한 상호명이 존재하는 것을 확인했어요(<https://moneypin.biz/bizno/detai", "subs": ["로컬_사람책", "로컬_오피스아워"], "parents": ["로컬크리에이터"]}, {"dt": "2026-03-03 17:52", "mo": "2026-03", "user": "우장한", "text": "네 IP관련해서도 체크해야겠네요.\n\n아예 로컬크리에이터 오픈채팅방에 신청을 받아서 오피스아워를 진행하시죠.\n\n회계 : 이명균 회계사님\n노무 : 이현우 노무사님\n지적재산권 : 이재환 경북지식재산센터 파트장님\nSNS마케팅 : 이영수 블로그 마케팅 전문가\n이렇게 네분을 센터에 모시고 신청자 받아보면 어떨까요?", "subs": ["로컬_오피스아워", "SNS관리"], "parents": ["로컬크리에이터", "디지털홍보"]}, {"dt": "2026-03-03 18:02", "mo": "2026-03", "user": "이영은", "text": "네, 말씀하신 부분은 그렇게 진행할게요.\n\n다만 이번에 회계 자문 요청하신 두 분은 농업법인 관련 회계 자문이라서 혹시 별도의 자문이 필요한지는 확인해볼게요. 이지연 대표님이 지금 자문 받고자 하는 내용과 질문을 정리 중이시니, 그거 전달하면서 농업법인 외 기업들도 같이 자문 미팅에 참여할 수 있는지 여쭤볼게요!", "subs": ["로컬_오피스아워"], "parents": ["로컬크리에이터"]}, {"dt": "2026-03-04 15:13", "mo": "2026-03", "user": "이영은", "text": "<@U07LXU3HH1A> 이번 주 목요일 오후 1시에 창업 수요 기반 사업 설명회 미팅, 금요일 오후 2시에 이로움 오동엽 대표 미팅이 잡혀서요.\n목, 금 양일 출근하되 각각 4시간씩 나눠 출근할게요(10시~15시) :sweat_smile:", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-05 10:59", "mo": "2026-03", "user": "성강현", "text": "<@U07LXU3HH1A> 금일 회의에 봐야할 총회 자료 현재까지 작성된 내용 공유드립니다!", "subs": ["총회"], "parents": ["조직행정"]}, {"dt": "2026-03-06 11:43", "mo": "2026-03", "user": "최주원", "text": "어제 회의에서 *4층 운영과 동아리 운영 관련 사업이 필요하다는 방향으로 정리되어*, 해당 부분에 주안점을 두고 내용을 작성했습니다.\n추가로 *카카오톡 채널 홍보비 항목도 반영*해 두었습니다.", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-09 16:43", "mo": "2026-03", "user": "최주원", "text": "밀양 홈페이지 개편했어요!  <https://ccampus.kr/>", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-03-09 17:24", "mo": "2026-03", "user": "성강현", "text": "<@U07LXU3HH1A> 정은님 질문이 있는데요. 시군구 마케팅 지원 기획 중인데 *전체 사업에 대한 자문비*로 *300만 원*이 매칭 되어있는 것인지, 아니면 마케팅 지원에서 심사위원에게 지급할 사례비도 여기서 사용해야하는 건지 궁금합니다!\n\n리드→미팅→PO→매출 전환 파이프라인 관리, 브랜딩·CRM 코칭 이런 내용들이 있는데 전담 컨설턴트 없이는 진행이 어렵지 않을까 싶어서요.", "subs": ["연고_마케팅", "로컬_오피스아워"], "parents": ["로컬크리에이터", "시군구연고산업"]}, {"dt": "2026-03-09 17:32", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "네, 강현님. 해당 전문가 활용비는 전체 사업에 대한 자문비 성격으로 보아주세요~ 그 외로도 개별 사업비 내에서도 가능한 부분은 있겠지만, 요청하시는 해당 사업에 대해서도 가능은 할 듯 합니다.\n\n대신에 해당 사업 전체를 전담하기엔 부족하기도 하거니와, 그 외의 운영 회의비 성격도 있어, 최대한 사업비 내에서의 지출로 분담해보면 좋을듯 합니다.", "subs": ["로컬_오피스아워"], "parents": ["로컬크리에이터"]}, {"dt": "2026-03-10 15:28", "mo": "2026-03", "user": "박지연", "text": "[상상마루 층별 운영 계획 자료]\n\n노션 지역혁신팀 주간회의 자료에 '공동 사업'으로 청도상상마루 층별 운영계획 업데이트 했습니다.\n\n*업데이트 내용\n1. 공유 자료: 소협공&amp;시군구 사업 내용,  상상마루 관리위탁 사업계획서 pdf\n2. 회의록: 3월 8일, 3월 10일_타운홀\n추가할 것 있으면 저에게 말씀해 주세요! 업데이트 할게요~\n오후도 화이팅입니다!:muscle::skin-tone-2:", "subs": ["소협공", "노션_DB"], "parents": ["디지털홍보", "소통협력공간상상마루"]}, {"dt": "2026-03-10 17:21", "mo": "2026-03", "user": "성강현", "text": "<@U07LXU3HH1A> 법인 총회 소협공사업 정리한 내용입니다. 다운로드 받아서 실행하시면 열려요!", "subs": ["소협공", "총회"], "parents": ["조직행정", "소통협력공간상상마루"]}, {"dt": "2026-03-10 19:01", "mo": "2026-03", "user": "이영은", "text": "<@U07LXU3HH1A> 소협공 사업 중 '창업공간 및 커뮤니티 지원(예산 4천만원)' 사업의 수행계획서 초안입니다. 확인 후 피드백 부탁 드려요 :blush:", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-11 09:07", "mo": "2026-03", "user": "최주원", "text": "<https://docs.google.com/spreadsheets/d/1u92-__gNh98qkQmku-YH-Gq9yva2LgSl-038jLm64Pk/edit?usp=sharing> 소협공 품의대장인데 여기서 확인 가능할 거에요!", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-11 09:12", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "<@U093TG40GMQ> 강현님, 확인하시는 예산 관련해, 소협공 예산은(24-25 해당) 아래 파일 확인해봐 주세요~! 예산 변경 승인 공문이라,  세부 사업들 확인하실 수 있어요~", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-11 09:17", "mo": "2026-03", "user": "최주원", "text": "<@U07LXU3HH1A> 소협공 사업 중 '미라클헬씨모닝'사업의 수행계획서 초안입니다! 확인 후 피드백 부탁드립니다! :slightly_smiling_face:", "subs": ["소협공", "상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-11 09:54", "mo": "2026-03", "user": "최주원", "text": "덧붙여, 군청 <https://www.cheongdo.go.kr/portal/board/post/list.do?bcIdx=510&amp;mid=0301010000&amp;token=1773190416309|새소식게시판>에 저희 행사 안내 게시글을 올려달라고 요청할 계획입니다. 이 부분 담당공무원과 연결이 가능할까요?", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-11 10:44", "mo": "2026-03", "user": "박지연", "text": "작성 포맷에 대해 타운홀 마치고 서연 님께 물어보니 구글 독스가 좋다고 하더라고요. 그래서 초벌 작업 중입니다. 위에 공유한 링크의 노션에 있어요.\n업무 맡으신 분들은 전달 받은 사항들 어떻게 녹여낼지 같이 고민해 보면 좋겠어요!\n<@U06T6NTP2F4> <@U08KTRGL2TG>", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-03-11 11:01", "mo": "2026-03", "user": "박지연", "text": "[소협공 수행계획서 공유]\n\n금일 오후 2시 30분에 예정인 소협공 사업계획서 회의 시 공유할 '심야책바' 초안입니다.\n노션에 정리했고요, 고민 지점들도 조금 적어봤습니다. 좋은 아이디어 주시면 춤추겠습니다!:wink:\n\n<https://www.notion.so/_-31e4e2b3d0ef81f493edcdbc9e2542c4?source=copy_link|소협공_심야책바>", "subs": ["소협공", "노션_DB"], "parents": ["디지털홍보", "소통협력공간상상마루"]}, {"dt": "2026-03-11 13:18", "mo": "2026-03", "user": "최주원", "text": "<@U07LXU3HH1A>\n정은님, 정란님께 소통드릴 내용 정리해보았습니다. 아래 내용으로 전달드려도 될지 컨펌 부탁드립니다. :blush:\n1. 현장 스케치는 청도 지역 파트너 측에 요청드리고자 합니다.\n2. 이번 프로그램은 *&lt;창업공간지원(영은님) + 시군구연고사업(주원)&gt; 컨소시엄 형태*로 운영하며, 기획실 사업(고향올래)은 포함하지 않는 것으로 정리했습니다. 이 기준으로 견적서 계속 발행 부탁드립니다.\n*과업 범위*\n1. *창업 기술 트렌드 교육 및 교육 수요조사*\n• 지역 기반 창업기업 및 예비창업가 대상 교육 수요조사 진행\n• 참여기업 모집 및 홍보 강화\n2. *창업 컨설팅*\n• 농식품, 관광·숙박, 문화예술, 교육·돌봄 등 로컬 기반 주요 업종 중심 업종별 특화 컨설팅 제공\n• 회계·", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-11 13:44", "mo": "2026-03", "user": "최주원", "text": "<@U093TG40GMQ>\n경산청년지식놀이터에서 진행 중인 *사람책 열람 및 등록 페이지* 참고가능하실 것 같아서 공유드립니다. 사람책(사회혁신가 운영 홈피)방식이나 신청 구조 참고하실 때 도움이 될 것 같습니다. <https://litt.ly/gsplay?utm_source=ig&amp;utm_medium=social&amp;utm_content=link_in_bio&amp;fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGn0u6j_DzbKjXSmFzvKXYXwTGRA-7Qiy3tQMSYVh1Irkmvgw9RO5VkReW1ojc_aem_wimA6rhZIW59fFXD6K4oBA|바로가기>", "subs": ["로컬_사람책"], "parents": ["로컬크리에이터"]}, {"dt": "2026-03-11 15:09", "mo": "2026-03", "user": "최주원", "text": "시군구연고산업-창업교육 <https://www.notion.so/1-X-2fb4e2b3d0ef80cfb3a2f68b0d1492d3?source=copy_link>\n\n미라클헬씨모닝(@상상마루4층GX룸) <https://www.notion.so/260311-3204e2b3d0ef8074b230d79d2545f6d7?source=copy_link>", "subs": ["연고_창업교육", "상상마루_헬씨"], "parents": ["소통협력공간상상마루", "시군구연고산업"]}, {"dt": "2026-03-11 17:29", "mo": "2026-03", "user": "우장한", "text": "<@U08KTRGL2TG> 주원님, 군청에 게시를 하는 것은 좋은데,\n이번 설명회 취지가 일반 주민이 아니라, 로컬크리에이터 대상인데\n포스터만 봤을때는 일반 주민을 대상으로 하는 사업설명회처럼 이해가 될 수 있을 것 같아요.\n군청에 게시를 하더라도 그런 혼선이 없으면 좋을 것 같기는 합니다.", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-11 20:24", "mo": "2026-03", "user": "성강현", "text": "<@U07LXU3HH1A> <@U0ABRLV698R> 총회 최신자료입니다!", "subs": ["총회"], "parents": ["조직행정"]}, {"dt": "2026-03-12 09:05", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "<@U09L6N45ARJ> 지연님, 좋은 아침입니다^^ ㅎㅎ! 내일 있을 총회 식사 건으로 말씀드립니다.\n\n이사님들은 장한님, 정아님 포함 12명 이에요.\n그래서 그 외 직원들 인원 추가하신 후, 여유 인원 2~3명 정도 더 한 인원으로 주문 부탁드릴게요!\n\n(결제는 카드 결제로 말씀드려 주세요~:pray:)", "subs": ["총회"], "parents": ["조직행정"]}, {"dt": "2026-03-12 09:42", "mo": "2026-03", "user": "최주원", "text": "'26-소협공사업기획 및 지역혁신팀 업무 분장 회의로 진행한 내용 정리해두었습니다. 확인하시고 수정 필요한 부분은 말씀 부탁드립니다 :wink:\nF0AL2CJHKNW", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-12 11:14", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "<@U08KTRGL2TG>\n\n주원님, 어제 사업설명회 사업 홍보 군청 게시건으로 주무관님께 협조 요청드려놓았습니다.\n홍보물 전달해 주면 공보과에 게시 요청드린다고 합니다.\n\n제가 오늘 출장으로 매니저님이 메일 드린다고 말씀드렸어요,\n게시용 홍보물 완성되면 주무관님께 메일 전달 부탁드립니다.\n\n<mailto:bsw74@korea.kr|bsw74@korea.kr>", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-12 18:10", "mo": "2026-03", "user": "성강현", "text": "<@U07LXU3HH1A> <@U06S37Q9LHM> <@U0ABRLV698R>\n*[보고] 총회 자료 보완요청사항 반영 자료 피드백 부탁드립니다.*\n\n오늘 피드백 주신 내용 반영해서 수정했습니다!\n\n1. 고향올래(온스테이) 5억 (25~26년) -&gt; 법인자체사업 표에서 수정\n2. 칠곡로컬브랜딩 마스터플랜 수립(금액) -&gt; 연구용역 사업에 내용 추가\n3. 상상마루 운영(2025.10.01 ~ 2028.09.30 / 2025.10.01 ~ 2028.09.30/위탁일로부터 3년간)\n4. 법인 기부금 사업 추가필요(목적사업이라 추가되어야함) -&gt; 2개로 정리해서 소제목으로 분류해서 추가(기금, 기부금 항목 명시)\n5. 센터 예산금액 확인필요 -&gt; 운영팀 확인 후 25년 집행금액  ₩662,54", "subs": ["총회"], "parents": ["조직행정"]}, {"dt": "2026-03-12 18:40", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "주원님, 수고 많으십니다. \n\n오늘 TP 센터장님, 뵌 김에, 어제 영은님이 확인 요청해주시기도 했던 사업 홍보물에 주최 기관 표기 방식 및 타사업과의 연계도 가능할지 \n여쭤보았어요, 확인 결과는 타사업과의 연계가 가능하되, 사업 결과물로서는 적절한 내용으로 \n제출해주십사 했습니다. \n\n예를 들면 이번, 설명회 사업 예산으로 시군구 예산 사용이 가능하나, 나중 성과 보고 자료에서는 \n청도혁신센터 사업설명회가 \n아닌 “시군구연고사업으로서의 성과(홍보물)” 을 \n같이 병행/진행해달라고 하셨어요~\n\n사업 전에 해당 내용을 염두하고 진행해야 할 것 같아, 슬랙으로 먼저 말씀드립니다~", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-13 16:18", "mo": "2026-03", "user": "최주원", "text": "모두의 마을 인스타 게시글이 올라왔습니다; <https://www.instagram.com/p/DVx8nBFiUQ2/?utm_source=ig_web_copy_link&amp;igsh=MzRlODBiNWFlZA==> <@U07LXU3HH1A>", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-16 09:14", "mo": "2026-03", "user": "최주원", "text": "이화여대 학생팀에서 문의주신 건 관련해서 이따 주간회의 때 소통드릴게요!", "subs": ["이화여대"], "parents": ["파트너십"]}, {"dt": "2026-03-16 11:08", "mo": "2026-03", "user": "최주원", "text": "장한님, 현장에서 안내하는 자료는 형식을 어떻게 할까요?! 정란님께서 여쭤보시기를 인쇄물로 하지 않는다면 노션 제작하시겠다고 하셨어요! 제 생각에는 이번에는 웹 파일로 나가도 괜찮을 것 같은데 어떻게 하면 좋을까요?", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-03-16 13:32", "mo": "2026-03", "user": "최주원", "text": "임현진 학생과 소통했습니다.\n[전화 내용]\n• 비대면 줌미팅 날짜 확정의 건 (내용: 센터 팀장님과 동반한 줌미팅을 요청 드렸고, 학생들 프로젝트에 맞춰 연결 가능한 파트너를 물색하겠다고 전달했습니다.)\n• 청도혁신센터의 활동과 지역 파트너 분들과 같이 일하는 방식, 지역혁신팀의 활동에 대해서 여쭈셔서 전화로 30분 정도 답변을 드렸습니다. \n• 이후 줌미팅 진행시 학생분들이 어떤 궁금증을 갖고 지역에 와서 조사를 하실지 더 얘기해주면 좋을 것 같다고 제안드렸습니다. \n금일중에 미팅 일정 소통도 같이 드리곘습니다. <@U07LXU3HH1A>", "subs": ["이화여대"], "parents": ["파트너십"]}, {"dt": "2026-03-16 13:43", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "01_전국 연계 사업(카카오)\n\n테크포임팩트 캠퍼스 프로그램\n(이화여자대학교_26-1학기(소셜벤처창업) 관련\n____________________\n\n네, 주원님, 수고해 주셔서 감사합니다. 내용 확인했고요,\n지금 전달받은 내용으로는\n\"기술 기반 협력\" 사업을 추진하는 것으로 이해가 됩니다만\n자세한 사항은 오늘 미팅에서 확인해보도록 하면 좋겠습니다.\n\n해당 내용을 염두할 때, <@U093TG40GMQ> 님도 참여하시면 좋을 것 같은 사업일거라 예상이 되지만, 일단 오늘은 실무 인력을 아껴야 하니,\n\n오늘은 저와 주원님이 먼저 참여하여, 어떤 사업인지 확인해보고, 그 다음\n추진 방향은 다음에 논의하도록 해보아요, 강현님 해당 내용 업무에 참조해 주셔요~! 저희가 하고 싶었는데, 예산 등으로 못했던 것들을 추진해", "subs": ["이화여대", "홈페이지"], "parents": ["파트너십", "디지털홍보"]}, {"dt": "2026-03-16 17:57", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "<@U08KTRGL2TG> 주원님 총회 회의록 양식입니다. 해당 파일 참고해 주셔요~ !", "subs": ["총회"], "parents": ["조직행정"]}, {"dt": "2026-03-17 11:21", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "시군구 외국인 정착 지원 사업 관련해 해당 자료도 참고해 주셔요~~! ㅎㅎ아직 미정인 담당자님...!", "subs": ["연고_외국인"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-17 11:54", "mo": "2026-03", "user": "최주원", "text": "운영팀_실행팀 슬랙 채널에 아래와 같이 메시지 공유할 예정입니다. 확인한번 부탁드립니다. <@U07LXU3HH1A>\n\n3/25(수), 3/26(목), 3/31(화) 총 3일간 로컬임팩트랩에서 *「상상마루 사업설명회」*가 진행됩니다.\n사업 운영은 시군구 연고산업육성 협업프로젝트 2.1 창업 기술트렌드 교육 담당자인 제가 메인으로 진행하며,\n소통협력공간 창업공간지원 담당자인 <@U06TKCV1P5F>, <@U06T6NTP2F4>, 그리고 혁신팀 지원으로 함께 운영될 예정입니다.\n\n또한 이번 사업설명회 2회차에는 *커뮤니티팀의 공간 운영 소개, 기획실의 고향올래 사업 소개 세션*이 있어, 관련 내용을 본 채널에도 공유드립니다(참고로 *2회차 현장 운영에도 두 팀의 지원이 필요한 일정*입니다).\n이미 팀장님들을 통", "subs": ["연고_창업교육", "소협공"], "parents": ["소통협력공간상상마루", "시군구연고산업"]}, {"dt": "2026-03-18 09:29", "mo": "2026-03", "user": "최주원", "text": "영은님, 저는 교육 수요조사를 아래 이미지처럼 구글폼으로 만들고 있어요!\n이번 조사에 지난번 회의에서 말씀해주신 컨설팅 희망 조사도 함께 넣으려고 준비 중입니다.\n혹시 컨설턴트 쪽 정리가 아직 진행 중이라 조금 더 시간이 걸릴까요? :slightly_smiling_face: <@U06TKCV1P5F>", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-18 10:43", "mo": "2026-03", "user": "최주원", "text": "<@U07LXU3HH1A> 링크공유드립니다\n\n\n지역혁신팀w.이화여대재학생(온라인/유,최)\n3월 18일 (수요일) · AM 11:00~PM 12:00\n시간대: Asia/Seoul\nGoogle Meet 참여 정보\n영상 통화 링크: <https://meet.google.com/kfx-beud-kqm>\n또는 전화로 참여하기: ‪(US) <tel:+1978-593-3606|+1 978-593-3606>‬ PIN: ‪538 607 250‬#\n추가 전화번호: <https://tel.meet/kfx-beud-kqm?pin=5643806527542>", "subs": ["이화여대"], "parents": ["파트너십"]}, {"dt": "2026-03-18 11:20", "mo": "2026-03", "user": "성강현", "text": "<@U07LXU3HH1A> 금일 김기훈 대표님과 소통에 사용할 코미디영화제 정리자료 입니다! 군청이나 기관에 공유드릴 때는 주민의 니즈를 실제로 수집한 자료들을 보충하면 좋겠다는 생각이 들고 다른 내용들을 더 보충할 건 없을지 피드백 한번만 부탁드릴 수 있을까요?\n<https://gorilla3v3.me/blog/comedy/ch_comedy_film.html>", "subs": ["상상마루_영화제"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-18 12:00", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "강현님, 내용이나 구성이 좋으네요, 다만 아래의 내용들이 전제되어야 할 것 같습니다.\n\n저희가, 해당 프로그램이 1회의 \"영화 상영(제)으로만 지향하는 것이 아니라. 지역 내 소통협력공간이(실현 공간은 상상마루가 되고) 이용되고 활용되는 부분으로 \"상설\" 프로그램으로서의 의미가 더 있습니다.\n\n그래서, 본 내용으로 소통은 가능하되, 지금 제가 해당 내용을 이해하기엔 연간 1회 행사로 이해가 되는데요,\n\n연간 5회 정도의 사업 실행이 성과로 실행되어야 하는 것을 전제로,\n그 중 한 부분을 논의해보는 방향이어야 할 것 같습니다.\n\n예산은 당연히, 부족할 것이고,\n영화제로서의 예산 규모는\n시군구사업에서 콘텐츠 제작의 한 회차를 활용해 볼 수가 있겠습니다. (전적으로 활용하긴 어렵겠지만,)\n\n그래서, 말씀드리는 것", "subs": ["상상마루_개관", "소협공", "상상마루_영화제"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-18 15:10", "mo": "2026-03", "user": "최주원", "text": "고향올래/드림스테이로 숙박 가능한지 확인요청드립니다~! <@U07LXU3HH1A>\n1. 대상/일자: 상상마루 사업설명회 3회차 참석 컨설턴트 &lt;송재필 이사님&gt; /3월 31일(화), 1박 2일\n2. 대상/일자: 다로리인 연계 프로젝트팀(이화여대 재학생 5명) / 3/28(토), 1박2일", "subs": ["이화여대", "연고_창업교육"], "parents": ["파트너십", "시군구연고산업"]}, {"dt": "2026-03-18 16:15", "mo": "2026-03", "user": "최주원", "text": "청도군 인스타에 &lt;&lt;상상마루 사업설명회&gt;&gt; 홍보글 게시 되었어요~: <https://www.instagram.com/p/DWA3_vWE7cC/?utm_source=ig_web_copy_link&amp;igsh=MzRlODBiNWFlZA==>", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-18 17:11", "mo": "2026-03", "user": "박지연", "text": "[수행계획서 공유]\n\n<@U07LXU3HH1A> 님, 수행계획서 공유합니다.:slightly_smiling_face:\n1. 소협공_심야책바\n2. 시군구_외국인력채용", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-18 17:28", "mo": "2026-03", "user": "성강현", "text": "<@U07LXU3HH1A>\n마케팅 지원 사업계획안도 공유드립니다!", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-18 17:31", "mo": "2026-03", "user": "최주원", "text": "<@U07LXU3HH1A> 저도 아래 사업 수행계획서 공유드립니다!\n1. 소협공_미라클헬씨모닝 <@U06S37Q9LHM> \n2. 시군구_창업기술트렌드교육", "subs": ["연고_창업교육", "소협공", "상상마루_헬씨"], "parents": ["소통협력공간상상마루", "시군구연고산업"]}, {"dt": "2026-03-19 15:04", "mo": "2026-03", "user": "성강현", "text": "<@U07LXU3HH1A> <@U08KTRGL2TG>\n[보고] <http://cmz054.kr|cmz054.kr> 청도혁신센터 홈페이지 수정 요청사항 정리 문서 공유\n\n여기에 함께하는 기업들도 업데이트 해야 하는데 이건 사람책 링크 홈페이지에 업데이트 할 때 수정 요청 드려보겠습니다!\n확인해보시고 추가로 수정해야 할 부분이 있으면 말씀해주시면 감사드리겠습니다.\n\n<https://www.notion.so/3284e2b3d0ef80f992aecf033ae24300>", "subs": ["로컬_사람책", "홈페이지"], "parents": ["로컬크리에이터", "디지털홍보"]}, {"dt": "2026-03-19 21:26", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "네! 컨설팅 지원은 가능합니다.\n\nTP에서 중기부 사업은 공고를 내는 것이 기준이라,\n내일 일정으로 공고를 내신다고 했습니다. (공고문 작성 중)\n\n참조해주실 내용으로,\n공고에 포함된 사업 내용 중 저희 법인 사업에 해당하는 것은 직접 지원에 해당하는 것들로(마케팅 지원/비자발급 컨설팅/외국인 정착지원)이 해당되어\n\n해당 사업은 비자발급 컨설팅 등이 필요한 기업 차원에서 접수를 하셔야 한다고 합니다.\n\n관련해서, *기업에서 해당 사업에 참여를 해주셔야 하다고도 말씀해봐 주시면 감사드리겠습니다*.\n\n그 후, 과정은 제가 이어 챙겨보겠습니다.", "subs": ["연고_마케팅", "연고_비자", "연고_외국인"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-20 13:36", "mo": "2026-03", "user": "이영은", "text": "이 분도 페이퍼팝처럼 3만원 자유석 제안드리면 되나요?", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-20 15:49", "mo": "2026-03", "user": "손정아", "text": "상상마루 설명회와 관련해서, 저한테 요청하신 분들께는 연락드렸습니다.\n중간지원조직의 경우 사업소개는 3~5분제안드렸고 가능여부를 월요일 오후까지 알려달라고했어요! 참고 부탁드립니다.\n새마을회는 사무국장연락해뒀고, 청창농이나 4H는 오성준 주무관에게 홍보요청해두었습니다.\n청도군가족센터(청도군 지역사회보장협의체), 도시재생,  귀농귀촌, 이음센터는 별도로 연락했어요. 연락오면 다시공유드릴게요!", "subs": ["로컬_협의회"], "parents": ["로컬크리에이터"]}, {"dt": "2026-03-23 10:23", "mo": "2026-03", "user": "이영은", "text": "계약서류 참고하세요!\n\nZ:\\경북시민재단\\004. 청도혁신센터\\001. 서류양식 및 로고\\03. 서류양식\\계약 관련 (작성관련 노션 확인필수)", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-03-23 13:02", "mo": "2026-03", "user": "이영은", "text": "<@U07LXU3HH1A> 정의님과의 1시 업무 점검 회의는 카페 가서 하고 올게요! 그리고 2시 지역혁신가 홈피 회의는 취소되었습니다.", "subs": ["로컬_사람책"], "parents": ["로컬크리에이터"]}, {"dt": "2026-03-23 13:59", "mo": "2026-03", "user": "최주원", "text": "~[청도혁신센터 카카오 채널]~\n1. ~마스터 계정 변경 방법: 신청자 본인이 카카오비즈니스 문의를 통해, 재직증명서와 회사 사업자 등록증을 전송한 후 결재를 대기~", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-23 14:01", "mo": "2026-03", "user": "최주원", "text": "[청도혁신센터 카카오 채널]\n1. 마스터 계정 변경 방법: 신청자 본인이 카카오비즈니스 문의를 통해, 재직증명서와 회사 사업자 등록증을 전송한 후 결재를 대기 \n2. 매니저 계정 추가 방법: 현재 채널의 마스터 혹은 매니저가 카카오 비즈니스 파트너센터 사이트에 접속해서, 추가하는 인원의 개인 카카오계정 ID를 추가함 \n수렴된 인원의 카카오계정 id를 모을 수 있도록 소통이 필요합니다. 이후 제가 직접 추가할 수도 있고요!", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-23 14:41", "mo": "2026-03", "user": "박지연", "text": "[주간회의록 업데이트]\n오늘 진행한 주간회의록 업데이트하였고, 5주차 주간회의 시트도 복사했습니다. 업무에 참고하세요~\n다음주부터 알림은 따로 하지 않겠습니다~", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-03-23 16:00", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "아! 네넵!  <@U06S37QEL3H> <@U0AH35CCP1A> 님\n\n그 외로, 참조해주실 내용으로,\n\n 오늘 오전 확인된 사항으로, TP에서도 자체적으로 청도군에서의 사업설명회를 준비한다고 하셨습니다.\n\n처음엔, 군청에서 사업설명회를 하는 것을 준비하셨다고 하였는데요, 새마을경제과에서는 다부처 사업이니 행안부 운영 사업인 '상상마루'에서 진행했으면 하셨다고 합니다. 그런 이유로, 상상마루 이용이 가능한지 확인하셔서 4월 말 이후에 가능하다고 하였고\n\n군과 협의된 일자가 4월 1일에 진행하는 것이 확정된 상황인듯해요, 그래서 로컬임팩트랩 이용을 권해드렸습니다.\n\nTP 자체적으로 시행하는 '시군구연고사업' 에 대한 사업설명회도 4월 1일(수)에 로컬임팩트랩에서 진행될 예정입니다. 시간대는 아직 미정으로 일", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-23 17:00", "mo": "2026-03", "user": "이영은", "text": "<@U093TG40GMQ> <@U08KTRGL2TG> <@U06T6NTP2F4> 3월 31일 상상마루 3회차 관련하여 안내 드립니다!\n\n1. 컨설팅 방식/시간대 : 미리 수요조사 받을 예정입니다. 농식품 브랜딩 및 유통 분야 컨설턴트인 송재필 대표님이 서울에서 오시는 관계로 기차 시간 때문에 한 시간 늦게 시작합니다. 시간표 확인 부탁드려요. 그리고 동대구역 픽업 도와주시는 강현님 감사합니다:orange_heart: (아래 시간표 확인)\n2. 컨설팅 기록자 3명(회계-강현, 농식품-주원, SNS-정의)은 아래 양식과 예시 참고하여 컨설팅 기록지 작성 부탁 드립니다(반드시 2페이지 이상). 3타임 모두 할 필요없고, 한 타임만 들어가셔서 기록하면 되구요, 대신 3타임 모두의 참석자는 다 써주세요. 시간은 3시", "subs": ["연고_창업교육", "SNS관리"], "parents": ["디지털홍보", "시군구연고산업"]}, {"dt": "2026-03-24 10:23", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "<@U0AH35CCP1A> <@U06T6NTP2F4> <@U093TG40GMQ> 노션  과업 관리 시트에, 소협공 성과 지표 중 (행안부 사업 기준) 정량 지표를 추가하려고 합니다. 내용 참조해 주세요~", "subs": ["소협공", "노션_DB"], "parents": ["디지털홍보", "소통협력공간상상마루"]}, {"dt": "2026-03-24 10:38", "mo": "2026-03", "user": "박지연", "text": "[소협공 사무 규정집 문의]\n다들 수고 하십니다~ 지출 관련 기준이 궁금해서 노션에서 사무 규정집 찾았는데 2023년 기준이더라고요.\n업데이트된 내용 없이 이 자료가 최신인지 궁금합니다. 아시는 분 피드백 부탁드려요~:slightly_smiling_face:", "subs": ["소협공", "노션_DB"], "parents": ["디지털홍보", "소통협력공간상상마루"]}, {"dt": "2026-03-24 11:39", "mo": "2026-03", "user": "최주원", "text": "미라클헬씨모닝 기획 전면 수정 중입니다. <@U07LXU3HH1A> <@U06S37Q9LHM>\n어제 사업설명회 작업 중 <@U06S37QEL3H> 님과 논의된 내용을 바탕으로 아래와 같이 정리하고 있습니다.\n\n[운영 구조]\n\n운영 기간: 5월~12월 (총 8개월)\n운영 방식: 2개월 단위 4텀 순환 운영 (GX 프로그램 기준)\n기수별 운영:\n1기수당 최대 4개 동아리 선정\n동아리당 12회차 운영\n\n[강사(호스트) 운영]\n\n강사비: 동아리당 50만원\n혜택:\nGX룸 공간 무료 제공\n프로그램 홍보 지원 (참여자 모집 포함)\n안정적인 수강생 확보 기회\n우수 프로그램의 경우 차기 운영 연계 가능\n\n[기타 운영]\n\n관내 학교 및 유관기관 협업을 통한 체육 프로그램 GX룸 진행\n프로그램 진행 시 최대 3층까지 운영 가능", "subs": ["연고_창업교육", "상상마루_헬씨"], "parents": ["소통협력공간상상마루", "시군구연고산업"]}, {"dt": "2026-03-24 14:05", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "주원님, 헬씨모닝 사업 수행 계획서 내용 확인했습니다.\n\n동아리 모집 공고 시 내용에 대해서, 세부 안은 논의해 보아요.\n\n세부사업수행계획서는 이 내용대로 진행해 주시고,\n예산만 2300만원으로 맞춰 주시면 되겠습니다. :woman-gesturing-ok:\n\n민관협의회 때, 해당 금액을 딱 맞춰달란 요청이 있었어요.\n운영 예산만 2300만원으로 하여, 수정 부탁드립니다", "subs": ["상상마루_헬씨", "로컬_협의회"], "parents": ["로컬크리에이터", "소통협력공간상상마루"]}, {"dt": "2026-03-24 18:14", "mo": "2026-03", "user": "최주원", "text": "정은님, 광순님과 논의한 결과\n내일 운영지원팀 도움 받아 소통협력공간 홍보비 3만원 충전 진행할 예정입니다!", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-25 08:59", "mo": "2026-03", "user": "최주원", "text": "사업설명회 자료 카카오채널에 업로드 중입니다! 공유차 링크 올립니다<https://pf.kakao.com/_UZvsn/posts>", "subs": ["연고_창업교육", "SNS관리"], "parents": ["디지털홍보", "시군구연고산업"]}, {"dt": "2026-03-25 10:31", "mo": "2026-03", "user": "이영은", "text": "<@U06S37QEL3H> <@U06T6NTP2F4> 이벤트캣 사용 안내입니다.\n\n• 주소 : (속도가 많이 느린 편입니다. 회의나 행사 전에 미리 접속해둬야 해요) <https://app.eventcat.com/onboarding>\n• 아이디/비번 : <mailto:cheongdo_cmz@naver.com|cheongdo_cmz@naver.com> / zjajswm1130!! (커먼즈1130!!) \n• 사전에 발화 언어 9개까지 지정 가능하나, 3개 이하가 좋음\n• 20명까지 동시 접속 가능하고, 그 이상이면 Pro구독\n• 해당 행사나 회의 관련 용어집을 미리 만들어 둘 수 있고, 용어집은 4개까지 동시 선택 가능\n• 회의 스크립트를 다운 받을 수 있고, 7일간 저장 \n• 행사 직전에 이벤트캣 홈페이지에서", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-03-25 10:43", "mo": "2026-03", "user": "성강현", "text": "<@U07LXU3HH1A> <@U06S37QEL3H> <@U06TKCV1P5F> <@U08KTRGL2TG>\n*[보고] 컨설턴트 소개 페이지 완료되었습니다.*\n\n기본 설명 페이지와 컨설팅 문의 기능까지 모두 개발 완료 되었습니다.\n\n제가 작업한 과정을 정리해서 노션페이지에 업로드 해두었으니 비슷한 작업이 필요한 경우 아래의 노트를 참고해서 ai에 제공하면 다시 작업할 수 있을 것 같습니다!\n\n\n&gt; *추가로 작업이 필요한 것*\n&gt; 1. *홈페이지 주소 이관 -* 홈페이지는 제 개인 페이지에 업로드 중이고 나중에 적합한 도메인을 찾으면 옮겨가거나 아예 홈페이지에 붙이는 방법을 고민해야 할 것 같습니다.\n&gt; 2. *<http://cmz054.kr|cmz054.kr> 컨설팅 topbar 추가 -* 4", "subs": ["홈페이지", "노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-03-25 11:29", "mo": "2026-03", "user": "손정아", "text": "새마을회 김희엽 사무국장 <tel:(010-8596-0316|(010-8596-0316>)", "subs": ["로컬_협의회"], "parents": ["로컬크리에이터"]}, {"dt": "2026-03-25 11:58", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "<@U06T6NTP2F4>정의님, 수고해주셔서 감사합니다!\n\n[청도혁신센터 채용공고 1차 심사 개요]\n\n-일시 : 3월 26일(목) 오전10시 ~ 오전11시 (*심사 시간 앞 뒤로, 조금씩 시간 더 필요할 수 있습니다^^)\n-장소 : 로컬임팩트랩 1층\n-심사 대상자 : 이장우, 임광순 2명\n• 심사위원 : 우장한, 손정아, 주무부서(박연빈 팀장), 가족센터: 김영란 팀장, 이음센터: 사무국장 \n• 심사 시간표 \n    ◦ 순서1 : 오전10시 ~ 오전10시 30분 / 30분 (*이장우)\n    ◦ 순서2 : 오전10시 30분 ~ 오전11시 / 30분 (*임광순)", "subs": ["로컬_협의회", "채용"], "parents": ["로컬크리에이터", "조직행정"]}, {"dt": "2026-03-25 16:41", "mo": "2026-03", "user": "우장한", "text": "<@U06TKCV1P5F> <@U09FLGVSS1L>\n앞으로 청도군 공유오피스 등록 제안 및 예정인 파트너리스트 공유합니다.\n\n*추가제안(예정)*\nMYSC\n언더독스\n빠띠\n진양희 대표(개인)\n지역과 소셜비즈\n워크비자\n홍시궁\n소담소담\n\n*기 입주기업 (갱신제안)*\nF스퀘어\n머쉬룸 아키텍처 <@U093TG40GMQ>\n더컴퍼니씨\n아울러\n메시지팩토리\n씽크로콥\n등이 있습니다. <@U06S37Q9LHM> 리스트 체크 부탁드립니다.\n\n*파트너*\n다로리인\n노는엄마들\n온누리\n\n암튼, 기존 입주기업/추가제안기업 정리해서 관리해야할 것 같고요,\n전체리스트는 <@U06TKCV1P5F> 님이 관리하고 <@U09FLGVSS1L> 커뮤니티팀에서 실무를 담당해주시되\n초기 컨택의 경우에는\n기입주기업은 <@U06S37Q9LHM> 님이 확인해", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-03-26 08:55", "mo": "2026-03", "user": "최주원", "text": "어제 방명록 카운트결과 63명 오셨어요! 카카오채널 친구수는 44명에서 98명으로 두 배 이상 뛰었고요! (와우) 그리고 오늘 아침에 만족도조사/질의응답 페이지 메시지로 발송한 상태입니다~!!\n\n오늘 행사는 32명 참석예정이세요! 11시반에 식사후 12시반에 랩에서 뵙겠습니다~! !\n좌석배치는 오전 중에 아이디어 공유하겠습니다 의견 부탁드려요!~\n\n<@U07LXU3HH1A> <@U06TKCV1P5F> <@U06T6NTP2F4> <@U09L6N45ARJ> <@U093TG40GMQ>", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-26 14:34", "mo": "2026-03", "user": "성강현", "text": "저 노션 데이터 베이스 관련 온라인 교육으로 3시에 잠시 나가서 수업 듣고 오겠습니다!", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 09:38", "mo": "2026-03", "user": "최주원", "text": "3/31(화) 사업설명회 관련해서 준비현황 공유드립니다~", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-27 09:39", "mo": "2026-03", "user": "최주원", "text": "준비팀에서 대화나눈 내용이 있어 공유드립니다~\n\n1. sns마케팅은 추후 정기적? 교육 이나 컨설팅 진행해도 좋을것 같다. \n2. 세무회계는 주로 농부팀이나 소규모 사업장들의 문의가 많다. 어느정도 규모되면 세무사에 기장 맡기는 경우가 많아보인다.\n3. 신한회계랑 mou 확대? 가 가능하다면 기장료 할인 관련해서도 더 논의해보면 좋을듯하다.", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 09:49", "mo": "2026-03", "user": "최주원", "text": "<https://blog.naver.com/designpress2016/223743663705> 아침 커뮤니티로 참고가 되는 서울모닝커피클럽의 기사입니다~!\n\n<https://www.instagram.com/p/C3xbgSrPmdP/?utm_source=ig_web_copy_link&amp;igsh=MzRlODBiNWFlZA==> 직장인의 번아웃에 대한 대안으로 모닝클럽이 소개되기도 했습니다. 청도군정신건강복지센터랑 같이 클럽의 한 부분을 구성해도 좋을 것같다고 생각합니다", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-27 09:53", "mo": "2026-03", "user": "최주원", "text": "아침 시간대 수요가 아직 명확하진 않지만,\n‘고향올래’와 온보딩 청도와 같이 갈 수 있는 선에서 이번 사업은 청도의  아침 시간을 책임지는 방향으로 가져가야 할 것 같다는 생각입니다. 설명회 때도 아침 프로그램 운영 방식에 대한 질문이 있었어서, 본격 시작 전에 ‘아침 루틴 고민하는 분들 모여라’ 형태로 가볍게 커피챗 한번 열어보는 것도 좋을 것 같습니다. 의견 부탁드립니다! 계획 한번 해보겠습니다. <@U06S37QEL3H> <@U07LXU3HH1A> <@U06S37Q9LHM>", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-27 09:55", "mo": "2026-03", "user": "우장한", "text": "미라클 헬씨모닝 사업 자체를 청도군정신건강복지센터와 협업을 하면 어떨까 싶네요.", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-27 10:55", "mo": "2026-03", "user": "최주원", "text": "[청도혁신센터 카카오채널] 관련하여 운영 방향 정리하여 보고드립니다 :blush:\n\n카카오채널 내 ‘채팅방 메뉴’를 커스텀하여 이용 편의성을 높이고자 합니다.\n현재 3가지 메뉴 구성을 계획하고 있습니다.\n\n** 이용안내: 커뮤니티팀에서 제작한 노션 가이드 연결*\n** 예약하기: 추후 공개 예정인 ‘상상마루’ 대관 페이지 URL 연결*\n** 영업시간: 운영시간 확정 후, 자동응답 메시지로 안내*\n\n관련 URL 및 운영시간이 확정되는 대로 메뉴 설정 진행 예정입니다.\n\n추가로 채널 운영 관련하여 담당자 배정이 필요합니다.\n현재 채널 마스터는 제가 운영 중이며(소식 게시 및 메시지 발송),\n캐시 충전 마스터는 광순님, 관리자 권한은 민하님과 정아님(*24-25년도 관리자)께 설정되어 있습니다.\n\n향후 직원분들께 ", "subs": ["SNS관리", "노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 10:57", "mo": "2026-03", "user": "우장한", "text": "네 카카오채널 가입자 확대를 위한 고민도 같이 해보았으면 합니다.\n로컬크리에이터 단톡방을 통해서 홍보를 한다던지,\n군청홈페이지 등을 통해서 가입이벤트를 하되,\n프로모션을 하는 것도 어떨까 합니다. (마루온 이용권 등)", "subs": ["홈페이지", "SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 10:59", "mo": "2026-03", "user": "우장한", "text": "카카오채널 운영 방향과 관련해서는 <@U0AH35CCP1A> 님과도 같이 고민을 해보았으면 해요. 복기님이 상상마루와 혁신센터 사업 전체에 대한 브랜딩을 염두에 두고 계시기 때문에 그 방향에 따라서 채널 운영방향, 핵심타겟 등을 설정해야할 것 같아요.", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 11:00", "mo": "2026-03", "user": "최주원", "text": "프로모션은 헬스장 이용권이 후보인만큼 저희 센터 사업인 미라클 헬씨 모닝과 연계도 계획하겟습니다~", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-27 11:01", "mo": "2026-03", "user": "민복기", "text": "네, 전체 브랜딩 정리차원에서 홈페이지, sns, 카카오 등 채널별  역할 및 주요 대상 등을 정리할 필요가 있을 듯 하니 같이 살펴볼께요 :)", "subs": ["홈페이지", "SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 11:07", "mo": "2026-03", "user": "민복기", "text": "홈페이지, sns, 카카오채널 등 역할 및 운영 방향, 주요대상 등을 구분하고 정리할 필요가 있으니 같이 살펴볼께요. 그리고 행사 전 후 보도자료(쿼터 포함), 기획기사 등 언론보도 관련한 방향 및 역할 부분도 종합적으로 :slightly_smiling_face:", "subs": ["홈페이지", "SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 11:07", "mo": "2026-03", "user": "우장한", "text": "<@U08KTRGL2TG> 청도혁신센터 홍보 관련해서, 지역의 초-중-고등학생들을 어떻게 유입시킬지도 함께 고민해주세요. 저는 마루온과 GX룸의 주요 고객이 지역의 청도년이 되었으면 해요. 청도혁신센터 채널의 청소년 친구도 어떻게 늘릴지를 (채널, 프로모션, 정책 등) 함께 고민해보았으면 합니다. <@U09FLGVSS1L>", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-27 11:10", "mo": "2026-03", "user": "최주원", "text": "청소년 서포터즈 활동을 생각하게 되는데요 특별히 청도 청소년 창업동아리가 있으면 서로 협업하기에 좋은 시너지가 날 것 같다는 예상이 있습니다. 즐겁게 고민한번 해보겠습니다~", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-27 11:10", "mo": "2026-03", "user": "우장한", "text": "<@U07LXU3HH1A> <@U06S37Q9LHM> 장기적인 홍보방안으로 우리 협업기관에 홍보와 가입 요청하는 것도 고려 부탁드립니다. 특히 정류장의 주 이용자가 외국인인 만큼 가족센터와의 협조가 가능할 지 확인부탁 합니다. 보통 이주민들은 국가별 커뮤티니가 활성화 되어있는데 가족센터를 통해서 홍보가 가능할 지 확인했으면 합니다. 그밖에 총무과를 통해서 이장님들께 공지를 한다던지, 버스정류장에 계시는 어르신들께는 개별로 큐알을 통한 신청을 도와드린다던지 하는 DX 관련해서도 고민이 필요할 것 같아요.", "subs": ["연고_외국인"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-27 11:14", "mo": "2026-03", "user": "우장한", "text": "청도역, 보건소, 도서관, 군청, 버던트, 투썸, 부야한의원, 신화랑풍류마을, 레일바일크 등 유동인구가 많은 곳에 오프라인(포스터, 현수막 등)으로 홍보하고 프로모션을 진행하는 것도 장기적인 사용자 확대 계획으로 고려하면 어떨까 합니다.\n청도투데이와 청도신문에 상상마루 오픈과 관련한 기획기사를 싣고 큐알코드 등을 통한 카카오채널 친구추가 프로모션을 하는 것도 괜찮을 것 같고요.", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 11:18", "mo": "2026-03", "user": "최주원", "text": "좋은 방향인 것 같습니다 :blush:\n\n채널 메시지 발송 비용이 건당 15원 수준이라, 친구 수가 증가할수록 비용도 함께 증가하는 구조이긴 합니다.\n다만 단기적으로는 지출 영향 예측이 어렵지만, 확보된 채널 친구를 대상으로 직접 메시지를 전달할 수 있다는 점에서 효율적인 홍보 수단으로 활용 가능할 것 같습니다.\n\n예를 들어, 오프라인에서 현수막 게시에 20만 원 정도가 소요된다고 가정했을 때,\n채널을 활용하면 유사한 비용으로 이미 확보된 고객층(예: 약 1만 명)에게 직접 도달할 수 있다는 점에서\n비용 대비 효과 측면에서 검토해볼 만한 방식이라고 생각합니다.", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 18:10", "mo": "2026-03", "user": "최주원", "text": "씽크로콥에서 센터 홈피 수정 건으로 회신주셨습니다 ~ 내용 공유드립니다 ~!", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-03-27 18:18", "mo": "2026-03", "user": "유정은Jung-Eun", "text": "네! 수고 많으십니다!  내일 잘 부탁드려요~!\n학생들과 함께 논의할 프로젝트는 낮에 말씀드렸던 대로\n지난 소협공 시즌2 준비할 때, 세부 사업 계획 중 1-3의\n&lt;지역 교통 취약계층 지원을 통한 청도형 수요응답형 교통(DRT) 체계 구축&gt; 주제를 기반으로 가능한 작업 범위를 설정하여, 논의해 봐 주시면\n\n감사드리겠습니다. :woman-gesturing-ok:", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-03-30 09:32", "mo": "2026-03", "user": "우장한", "text": "네 좋습니다. 가까운데 사시니깐 <@U0AH35CCP1A> 내부 브랜딩-홍보 정리한 다음에 따로 자문 요청하죠!", "subs": ["로컬_오피스아워"], "parents": ["로컬크리에이터"]}, {"dt": "2026-03-30 09:34", "mo": "2026-03", "user": "민복기", "text": "네, (지금 시점은 아니고 나중에) 전체 브랜딩, 메시지 관련하여 내부 정리, 체화된 이후에 실제적으로 외부 발신이 필요할 때, 협조 또는 자문을 구하면 될 듯합니다.", "subs": ["로컬_오피스아워"], "parents": ["로컬크리에이터"]}, {"dt": "2026-03-30 09:46", "mo": "2026-03", "user": "최주원", "text": "[상상마루 사업설명회_현장스케치 영상] 의견 부탁드립니다 ~!\n<https://drive.google.com/file/d/1KE2YNmkYFECkHReJl8mYQVu9tvw3EY6g/view?usp=sharing>\n영상 전체적으로 흐름이 자연스럽고, 현장 분위기도 잘 전달되는 것 같아요! 저는 자막 글씨체만 한 번 수정 요청드리면 더 좋을 것 같다는 생각이 들었습니다.\n\n그리고 1, 2회차 장면 분할이 없는 부분은 처음에는 조금 고민됐는데, 전체적으로 자연스럽게 이어지고 있고 장한님께서 이미 1, 2회차 의도를 설명해주셔서 큰 문제는 없을 것 같다고 생각했습니다. 그 외에는 전반적으로 잘 나온 것 같아서 크게 수정할 부분은 없어 보입니다 :+1:\n확인 부탁드립니다!", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-31 09:46", "mo": "2026-03", "user": "최주원", "text": "<@U07LXU3HH1A> 시군구 인식개선 창업기술트렌드 교육 행사 운영 서비스로 계약서 초안작성했습니다!\nZ:\\경북시민재단\\005. 기획실\\037. [컨소시엄] 2026년 시군구 연고산업육성 협업프로젝트\\03. 사업실행\\01. 시군구_인식개선_창업기술트렌드_교육\\01. 계약관련\\260326-260331_서비스계약_w.노는엄마들", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-31 11:39", "mo": "2026-03", "user": "이영은", "text": "<@U06S37Q9LHM> 정아님, 위에서 장한님이 나열하신 기입주 기업 리스트는 어디서 확인 가능할까요?\n\n*기 입주기업 (갱신제안)*\nF스퀘어\n머쉬룸 아키텍처\n더컴퍼니씨\n아울러\n메시지팩토리\n씽크로콥\n등등", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-03-31 11:41", "mo": "2026-03", "user": "성강현", "text": "노션 AI 테스트용으로 23-25 실행팀 사업 페이지 복제 해놓겠습니다!", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-03-31 16:35", "mo": "2026-03", "user": "최주원", "text": "영상 피드백 관련 보고드립니다.\n• 회차별 구분. (또는 발표자가 화면에 등장할 때 성함과 소속을 자막으로 표기)\n• 첫 화면 구성 수정.\n    ◦ 최상단: 상상마루 사업설명회\n    ◦ 중간 타이틀: 2026년 시군구 연고산업육성 협업프로젝트 시군구 인식개선 창업기술트렌드 교육 지원 (글씨 크기는 작아도 무방하나 가독성은 유지 필요)\n    ◦ 최하단: 경북시민재단은 상상마루 개소를 준비하며, 지역의 창업가 및 예비창업가를 대상으로 사업설명회를 진행했습니다.", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-03-31 18:03", "mo": "2026-03", "user": "최주원", "text": "상상마루 사업설명회 게시글 업로드했습니다~\n\n3회차 <https://www.instagram.com/p/DWitGRnmKVr/?igsh=ZW90NzdtMXp4YWo5|https://www.instagram.com/p/DWitGRnmKVr/?igsh=ZW90NzdtMXp4YWo5>\n\n1,2회차 <https://www.instagram.com/p/DWV0CP6GAct/?igsh=em5oODQ5engzdXB2|https://www.instagram.com/p/DWV0CP6GAct/?igsh=em5oODQ5engzdXB2>", "subs": ["연고_창업교육", "SNS관리"], "parents": ["디지털홍보", "시군구연고산업"]}, {"dt": "2026-04-01 09:24", "mo": "2026-04", "user": "유정은Jung-Eun", "text": ":raised_hands: 오늘은 시군구연고산업 실행과 관련해, 사업설명회가 있습니다.\n\n• 일시 : 오늘 오후2시~5시  \n• 장소 : 청도군농업기술센터 대회의실(청도군 화양읍 청화3길 10) \n실무 준비는 크게 요청하신 내용이 없습니다만, 진행하시는 경북테크노파크(TP)에서는 자리가 안 채워질까를 염려하셨습니다.\n\n시간이 길게 예정되어 있어, 시작할 때는 자리 채워주시고\n상황에 따라, 업무 있으시면 먼저 나오셔도 되십니다. 일정 참고해 주시면 감사드리겠습니다.", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-04-01 15:32", "mo": "2026-04", "user": "최주원", "text": "[청도혁신센터 SNS 관리]\n팀간 협업 슬랙채널에 공유됐듯이, 필로스와 지유님과 함께 재단과 센터의 SNS 리뉴얼을 위한 작업을 진행중입니다. 금일 오전 회의를 통해, 아래의 내용을 결정했습니다. 확인부탁드립니다. <@U0AH35CCP1A> <@U07LXU3HH1A>\n\n1. 페이스북 계정 \"청도\" 삭제 \n2. 페이스북 계정 \"청도혁신센터\" 활성화 (인스타와 연계 되지 않고 있는 점 감수)\n3. SNS 별 대문 소개글 수정: *지속가능한 청도를 위해 주민의 삶의 문제를 중심으로 참여와 실험을 통해 변화가 시작되는 플랫폼*\n4. SNS 고정글 제작: <https://wood-manx-3af.notion.site/SNS-32e4e2b3d0ef809e8ba5d63e271f00ab|게시글> 참고하여 두개의 게시글을 ", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-01 15:36", "mo": "2026-04", "user": "최주원", "text": "<https://www.notion.so/32f4e2b3d0ef8035b968ce0ee4eb4753?source=copy_link> 4/7(화) 오전8시 시작의 헬씨모닝 커피챗 계획입니다.  이대로 홍보를 진행해도 괜찮을까요? <@U0AH35CCP1A> <@U07LXU3HH1A>", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-01 15:53", "mo": "2026-04", "user": "민복기", "text": "<@U08KTRGL2TG> 핵심은 친목 모임, 강의/교육, 네트워킹 이벤트 x , “*일상의 대화에서 시작되는 지역 변화의 실험”의 초기 단계*\n\n*하루의 시작, 관계와 질문에서 시작되는 변화*\n• 청도혁신센터는 일상의 만남과 대화가 지역의 변화를 만들어가는 출발점이 될 수 있다고 생각합니다. ‘헬씨모닝 커피챗’은 가볍게 걷고 이야기를 나누는 시간을 통해, 서로를 알아가고 삶의 이야기를 나누는 작은 실험입니다.\n• 이 모임은 단순한 아침 산책이 아니라, 각자의 일상에서 느끼는 생각과 문제를 나누고, 그 속에서 새로운 시선과 가능성을 발견하는 자리입니다.\n• 산책 이후 이어지는 커피타임에서는 서로의 일상, 관심사, 고민을 편하게 나누며 작은 공감과 연결이 만들어지는 시간을 갖습니다. \n• 이 짧은 만남이 다음", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-01 17:19", "mo": "2026-04", "user": "최주원", "text": "헬씨모닝<https://www.instagram.com/p/DWlP0HCGA9B/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==> 게시글입니다\n\n• 신청 링크입니다: <https://forms.gle/513Xhin71XUoxpqF6>", "subs": ["상상마루_헬씨", "SNS관리"], "parents": ["디지털홍보", "소통협력공간상상마루"]}, {"dt": "2026-04-02 09:10", "mo": "2026-04", "user": "최주원", "text": "<@U09FLGVSS1L> 지혜님, 카카오채널에 오피스 모집 공고 게시했습니다.", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-02 10:25", "mo": "2026-04", "user": "성강현", "text": "<@U08KTRGL2TG> 상상마루 사업설명회 컨설팅 기록지 나스에 저장 해뒀습니다!\n\"Z:\\경북시민재단\\005. 기획실\\037. [컨소시엄] 2026년 시군구 연고산업육성 협업프로젝트\\03. 사업실행\\01. 시군구_인식개선_창업기술트렌드_교육\\02. 사업수행\\260325-260331_상상마루_사업설명회\"", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-04-02 14:25", "mo": "2026-04", "user": "성강현", "text": "<@U07LXU3HH1A>\n*[보고] 청도 마운틴 영화제 관련 대구영상미디어센터 권현준 센터장 미팅, 회의내용 공유*\n\n*안녕하세요 정은님! 휴가는 잘 보내고 계신지요. 어제 다녀온 미팅 결과 공유 드립니다.* \n\n먼저 다행히도 권현준 센터장님이 생각보다 훨씬 적극적이셨습니다.  대구영상미디어센터 외에 커뮤니티 시네마 네트워크 이사장도 맡고 계셔서 이 조직이 영화제 운영조직으로 용역 참여가 가능하다는 걸 확인했습니다.\n\n저희 공간 운영의 목적이 주민·공동체 성장에 있는 만큼, 장기적으로는 청도에 적을 두거나 별도 영화제 조직이 만들어져야 한다는 점도 전달드렸고 충분히 공감하셨습니다. 가용 인력이나 상세 이력은 저희 입장이 정리되면 요청해서 확인할 예정입니다.\n\n영화제 구성 관련해서는, 스케치 코미디보다 단편", "subs": ["상상마루_헬씨", "상상마루_영화제"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-02 15:17", "mo": "2026-04", "user": "유정은Jung-Eun", "text": "수고 많으셨습니다. \n첫 회의에서 확인되고, 진척 될 수 있는 부분도 \n많아, 고무적이네요! 세부 사항 논의해보아요,\n\n그 전에 해당 기획으로 영화제 준비 기간을 \n가늠해 보면 논의가 빠르겠습니다.", "subs": ["상상마루_영화제"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-02 15:46", "mo": "2026-04", "user": "최주원", "text": "1. 페이스북 이슈\n• \"청도\" 계정 삭제 이후 \"청도혁신센터\" 로그인 불가\n• 두 계정이 연결되어 있었던 것으로 보임 → 확인 필요\n3. 대문글\n• 수정 완료했습니다.\n4. SNS 고정글 방향 (의견 요청)\n• 1번: 질문북 형식 → 질문을 통해 청도혁신센터의 정체성 전달\n• 2번: 왜 ‘상상마루’인가 → 공간의 역사성과 의미 소개\n:point_right::skin-tone-4: 현재 이렇게 제작하고 있어요 <https://canva.link/k4xjux71c1xbm4l|바로가기>\n전체 톤이나 구성에 대해 의견 부탁드립니다!", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-02 15:58", "mo": "2026-04", "user": "민복기", "text": "1. 계정 연계 등 이슈는 다시 확인하고 정리하시죠 (현 상황 및 계정 연동 정책 등 확인 필요)\n2. SNS 고정글 게시는 상상마루에 대한 부분은 공간에 대한 역사성을 설명하더라도, 센터 정체성과 같이 게시하는 메시지가 헷갈릴 수 있을 듯. 청도혁신센터 / 경북시민재단의 정체성을 설명하는 글만 고정게시글로 하시죠!", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-02 17:08", "mo": "2026-04", "user": "성강현", "text": "<@U08KTRGL2TG> 저번에 한번 말씀 드렸었는데 정확한 내용은 아니었어서 방금 확인해봤습니다.\n\n지금 상황에서는 원래 청도가 마스터 계정이라서 청도 페이지는 숨김 혹은 비활성화 시키고 청도혁신센터 관리 계정으로 사용하는 방식을 사용해야 합니다.\n\n일단 제가 예전에 SNS 계정 인사이트 수집할 때 제 아이디로 연결해 둔게 남아있어서 로그인 관리는 되는 상황이구요.\n\n혹시 이미 계정을 삭제했다면 앞으로는 관리계정 하나 만들어서 연결하면 됩니다. 그리고 인스타그램 cheongdo_cmz도 권한이 있긴 하구요.\n\n근데 관리자 페이지에서 마스터 계정이 삭제가 안되는 걸 보니 마스터 계정 변경이 가능한지는 확인해봐야할 거 같습니다.", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-02 17:15", "mo": "2026-04", "user": "최주원", "text": "계정 삭제 절차를 찾아보던 중이었습니다. 그러면 강현님, 청도 계정을 인스타와 연결을 끊으면서 비활성화 해주실 수 있을까요? 그리고, \"청도혁신센터\"만 관리하는 게 현재 SNS 관리 안입니다.", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-02 17:23", "mo": "2026-04", "user": "성강현", "text": "지금 상태에서 청도 계정을 비공개처리만 하면 되는 상황이에요. 청도 페이지는 인스타그램과 연결되어있지 않구요. 관리 권한만 부여되어 있습니다. 청도 계정 비공개 처리하는건 아이디 비밀번호 알려 주시면 처리해볼게요.", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-02 18:13", "mo": "2026-04", "user": "성강현", "text": "방금 확인해봤고 세팅 끝내놨습니다. 그런데 페이스북 페이지에 일괄적으로 공유하는 건 모바일에서만 가능하다고 합니다.\n\n그래서 모바일 환경을 구현하는 장치를 만들어야할 거 같은데요. 인스타그램 업로드는 앞으로 컴퓨터에서 모바일 변환 앱을 사용하거나 메타 비즈니스 슈트를 사용해서 업로드해야할 것 같습니다.\n<https://business.facebook.com/latest/composer/?asset_id=101515559503709&amp;business_id=2114766815566259&amp;ir_qe_exposed=1&amp;nav_ref=internal_nav&amp;ref=biz_web_content_manager_published_posts&amp;context_ref=POSTS|https://b", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-03 15:18", "mo": "2026-04", "user": "성강현", "text": "<@U07LXU3HH1A> <@U0AH35CCP1A>\n*[보고] 청도혁신센터 2026 운영 데이터 베이스 구조 완성*\n\n26년도 주간회의록 백업 데이터와 미시소 OS를 사용한 통합 운영 AI OS를 노션에 업로드했습니다.\n\n페이지 복제만 완료했고 구조 정상 반영 여부는 AI 지침 추가 후 검증할 예정입니다.\n\n*내용 요약*\n• 주간 일정 / KPI / 사업 / 과업을 통합 DB로 관리 가능하도록 구성\n• 추후 커스텀 에이전트를 통해 슬랙 연동 예정\n• 월요일 전체 확인 후 사업 내용 입력 및 개인 주간회의록 입력 페이지 추가 제작\n•  미시소 OS 재단 노션 AI에 세팅 예정\n\n*자세한 사용법 및 개발 과정*은 *<https://www.notion.so/2026-c584e2b3d0ef82f58c8101a12", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-04-03 15:28", "mo": "2026-04", "user": "성강현", "text": "지금 저희 노션이 비즈니스 요금제가 아니라서 대시보드 구현이 제대로 되지 않는 것을 확인해서 결제 정보 확인 후 대시보드 적용이 가능할 것 같습니다.\n\n*대시보드 구성*은 *<https://www.notion.so/2026-1d816c6820594f8f920367fbb570f8f5|제 개인 페이지>*를 참고해주시고 일단 주간회의 데이터는 입력이 가능하도록 월요일에 세팅 해보겠습니다.", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-04-06 11:43", "mo": "2026-04", "user": "성강현", "text": "[노션 데이터 베이스 연동 대시보드 설명서]\n<https://gorilla3v3.me/blog/notion/guide>\n용어집은 토큰 문제로 아직 업데이트가 되지 않았습니다. 일단 회의때 설명드리고 추후에 업데이트 해보겠습니다.\n*<https://w1711689518-pnm779416.slack.com/archives/C06SWE68G8H/p1775197087185939|재단 노션 링크>*", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-04-06 13:35", "mo": "2026-04", "user": "성강현", "text": "<https://w1711689518-pnm779416.slack.com/docs/T06RXFF1T35/F0A8GD84CF6?focus_section_id=temp:C:KLI68df1029f1be423c93c1075f6>\n이 내용 혹시 노션에도 올라와 있는지 아시는 분 있나요??", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-04-07 15:29", "mo": "2026-04", "user": "최주원", "text": "로고 파일 전달했습니다. 그리고 수정 제한 사항 관련해서 아래의 내용을 공유드리니 참고 부탁드립니다.\n\n*`홈페이지 수정 요청 횟수에는 별도의 제한을 두고 있지 않습니다. 다만, 이번 건과 같은 이미지 교체나 텍스트 수정 등 '단순 수정' 범위 내에서 지원이 가능합니다. 만약 새로운 메뉴 개설이나 코딩 등 별도의 심화 개발이 필요한 경우에는 추가 견적이 발생할 수 있는 점 참고 부탁드립니다.`*\n\n*`또한, 수정 작업은 상시 운영 지원 성격으로 진행되기에 별도의 작업 완료 기간이나 진행 시간에 대한 보증이 어렵습니다. 따라서 개별적인 수정보다는 요청 사항을 모아서 한 번에 의뢰해 주시는 것이 효율적이며, 기한이 정해진 급한 작업의 경우 미리 여유 있게 요청 주시는 것을 추천해 드립니다.`*", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-04-08 09:13", "mo": "2026-04", "user": "성강현", "text": "<@U07LXU3HH1A> <@U06TKCV1P5F> <@U06T6NTP2F4> <@U08KTRGL2TG> <@U09L6N45ARJ>\n*[공유] 주차별 주간일정 -&gt; 과업별 데이터베이스 변환 작업 완료*\n\n주차별로 정리하던 주간일정을 과업별로 통합하는 작업을 테스트봤습니다. 이렇게 하면 진행 상황을 설정으로 현재 진행 중인 과업만 남기는 방식으로 대시보드를 띄울 수 있는데요. 지금은 1안대로 개별 입력창에서 전주 데이터를 복제하여 이번주 *<https://www.notion.so/ed04e2b3d0ef83b5b853810dba70c56e?v=1074e2b3d0ef8298b30b0817c28288b5|주간회의록>* 에 저장되어있는데요. 추후에는 *<https://www.notion.so/2026-c584", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-04-08 09:28", "mo": "2026-04", "user": "성강현", "text": "가능은 한데 저희랑 사업 전개 방식이 다르실 거 같아서 그냥 공유해드리는 것보다 먼저 *<https://gorilla3v3.me/blog/notion/guide/|노션 기능 정리 및 가이드>* 한번 읽어보시고 *<https://www.notion.so/2f8f7e95030b816f9a0bda8a92fb8723|노션 OS 시스템 사용가이드>* 한번 읽어보시면 좋을 것 같아요.\n\n일단 지금은 저희 노션 요금제가 pro인가 그래서 비즈니스로 업그레이드 하면 경북시민재단 계정으로도 사용 가능한데 아직은 안되구요. 어떻게 하는 직접 해보신다면 제 계정으로 한번 보여드리겠습니다!", "subs": ["노션_DB"], "parents": ["디지털홍보"]}, {"dt": "2026-04-08 14:28", "mo": "2026-04", "user": "성강현", "text": "*<@U07LXU3HH1A> 님 어제 말씀드렸던 내용인데요.* \n*아래 내용과 같이 시군구연고사업 지원 리마인드를 진행해보려고 합니다!*\n\n---\n*안녕하세요 여러분. 좋은 하루 보내고 계신가요?*\n\n26년도 시군구연고산업육성사업 지원모집 기간이 얼마 남지 않아. 혹시라도 계획은 있었으나 아직 신청하지 못한 분들이 계실까하여 다시한번 안내드립니다.\n\n특히 경북시민재단에서 시행하는 마케팅 지원, 비자발급 컨설팅 지원, 외국인 정착 지원 사업들에 대한 지원 항목을 전달드리니 아직 지원접수가 끝나지 않으셨거나 지원 예정이신 분들은 일정에 참고 바랍니다.\n---\n---\n*[경북시민재단_26년도 시군구연고산업육성사업 지원모집 공고 안내]*\n\n*1. 마케팅 지원*\n\t- 전시회 참가 지원\n\t- 홍보물 제작 지원\n\t- 광", "subs": ["연고_창업교육", "홈페이지", "연고_외국인", "연고_마케팅", "연고_비자"], "parents": ["디지털홍보", "시군구연고산업"]}, {"dt": "2026-04-08 14:53", "mo": "2026-04", "user": "성강현", "text": "코미디 영화제 청소년 공모전 관련 영화제작 교육입니다!", "subs": ["상상마루_영화제"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-08 15:01", "mo": "2026-04", "user": "민복기", "text": "1.내용 확인했고 1차적으로 카카오채널 통해서 위 내용으로 홍보하면 될 것 같습니다.\n2.다만, 카카오채널 내 주체들은 한정적이니 영은, 정의님이 담당,관리하는 기업 정보 활용하여 문자 발송도 추가하면 좋을 것 같습니다. :slightly_smiling_face:\n\n수고 많으십니다!", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-09 10:04", "mo": "2026-04", "user": "유정은Jung-Eun", "text": ":raised_hands: *[시군구연고사업 공고_신청 대상사업_선정 관련] 업무 일정* 안내해 드립니다.\n참여 기관 전체가 진행하는 선정 심사에는 공고된 3개 사업 부문 중, \"마케팅 지원\" 심사만 해당됩니다. \n**아래 일정 업무에 참고해 주셔요~!*\n\n*&lt;해당 사업&gt;* \n• *사업화 관련 -&gt; 마케팅 지원 사업만 심사 운영 =&gt; <@U093TG40GMQ>강현님, 아래 이미지 일정 확인 부탁드립니다.  / 4월 21일(화) 오후2시~* \n• 사업 신청 접수는 시스템을 이용하되, 선정 과정을 운영 주관 단체가 주도(자체적으로 심사 가능) 해당 사업 \n(조금은 유연한 진행 가능)\n    ◦ 비자 발급 컨설팅 지원 -&gt; 자체 \n    ◦ 외국인 정착 지원 -&gt; 자체", "subs": ["연고_마케팅", "연고_비자", "연고_외국인"], "parents": ["시군구연고산업"]}, {"dt": "2026-04-15 09:58", "mo": "2026-04", "user": "최주원", "text": "가족혁신센터에서 랩 대관 관련 문의가 들어왔습니다.\n정은님과 의논한 결과, 4월 말부터 이사 일정으로 대관이 중단되는 점을 회신드렸습니다. 이어서 센터 공지사항으로 랩 대관 문의 중단 안내를 팝업 공지와 게시글로 올리겠습니다~!", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-15 10:09", "mo": "2026-04", "user": "최주원", "text": "*국립청도숲체원에서 연락 왔습니다. <@U07LXU3HH1A>* *<@U09L6N45ARJ>*\n*발신자: 박수민 주임님(<tel:0543717595|054-371-7595>)*\n\n센터 홈페이지를 보시고, 센터가 수행한 사업 중 함께 연계할 수 있는 부분이 있을 것 같다고 하셨어요. 협업 의지가 있으셔서 차주 중으로 사업 소개 메일을 보내주신다고 합니다.\n\n특히 경계성 지능인 대상 단일형 또는 1박 2일 체험 프로그램을 구상 중이며, 가족캠프 형태로도 연결 가능할 것 같다고 하셨습니다. 문서 소통이 되는 대로 대면 미팅도 진행하면 좋을 것 같다고 말씀하셨어요.", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-04-15 10:58", "mo": "2026-04", "user": "최주원", "text": "[랩 대관종료 안내] 업로드 내용 공유드립니다.\n<@U0AH35CCP1A> <@U07LXU3HH1A> <@U09FLGVSS1L>\n인스타게시글: <https://www.instagram.com/p/DXIkmjKGHIs/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==>\n\n홈페이지 게시글: <https://cmz054.kr/notice/?bmode=view&idx=170859138>", "subs": ["홈페이지", "SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-15 11:25", "mo": "2026-04", "user": "최주원", "text": "그러면 저희가 대관 시스템을 만들면 커뮤니티팀에 확인하실 수 있도록 되게끔 하면 될까요?", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-04-15 15:04", "mo": "2026-04", "user": "최주원", "text": "*[정신건강복지센터 컨택]* \n김혜미님께 전화드렸고, 아래 내용으로 협업 제안드렸습니다.\n1)동아리 활성화를 위해 홍보 채널 공동 운영 2)정신건강센터 주관 프로그램인 러닝크루를 상상마루 거점으로 프로그램 운영\n우선, 혜미님 통해서 제안서 공유 드리고, 회의 일정 잡겠습니다!\n<@U07LXU3HH1A>", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-15 17:33", "mo": "2026-04", "user": "최주원", "text": "컨택 전, 우선 수행계획서 수정본 공유드립니다~\n• 피드백 주신 내용 반영했고 소모임 지원 사업에 대한 사업내용을 고도화했습니다.\n• 주요 변경 사항은 5월 시작 → 8월 말 종료 일정이며, 사업 기간 내 총 10개 팀을 선발해 팀당 60만 원을 지원하는 내용으로 수정했습니다. (1개 기간 운영 팀 미달 시 9월에 2차 활동 팀 공고를 예정합니다)\n• 덧붙여 예산 수정을 말씀 주셔서 1,500만원으로 수정했는데요\n내용 확인 부탁드립니다!  <@U0AH35CCP1A> <@U07LXU3HH1A>", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-16 09:39", "mo": "2026-04", "user": "최주원", "text": "아래 내용으로 혜미님께 공유드리겠습니다~!\nZ:\\경북시민재단\\004. 청도혁신센터\\026. 2026년도 사업\\04. 2026_미라클헬씨모닝\\01 사업계획", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-16 09:49", "mo": "2026-04", "user": "민복기", "text": "<@U07LXU3HH1A> 살펴보시고 주원님께 피드백 주시면 좋을 것 같습니다.\n일단 직관적으로 보이는 부분 피드백 드리자면..\n1. 기획안\n• 생활체육 프로그램 운영과 신체활동 기반 소모임 2개가 명확히 투트랙인 것으로 구분 필요. \n• 생활체육 프로그램 운영 관련 예산 정보는 없는데?\n• (선정자 의무사항)에 \"활동 결과 보고 시 활동비 전액에 대한 정산 필수, 본 사업과 무관한 예산 집행 시 정산 결과에 따라 해당액은 환수함\" 이라고 되어 있는데, 표현이 과함. 그리고, 정산 기준이 있는지?\n2. 협력 제안 자료\n• GX페스티벌? 주간행사 때 성과공유 차원에서 참석요청하는 정도인 듯한데, 미리 GX페스티벌이라고 명명하는게 좋을지 검토 필요 (추후 연계지점 고민 가능)\n• 심사위원 청도군 가족센터/정신건", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-16 17:47", "mo": "2026-04", "user": "최주원", "text": "Z:\\경북시민재단\\004. 청도혁신센터\\026. 2026년도 사업\\04. 2026_미라클헬씨모닝\\01 사업계획 사업계획서 작성했습니다. 시간되실 때 구두로 의견 여쭙겠습니다~!", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-16 19:53", "mo": "2026-04", "user": "성강현", "text": "<@U07LXU3HH1A>\n정은님 내일 청도고 선생님과 논의 후 대구영상미디어센터 측에 공유드릴 영화제 관련 과업을 조율할 내용들인데요.\n\n일단 용역비에서 인건비를 30%정도로만 잡는 것 기준으로 예산안을 어떻게 짜실지와 대구영상미디어센터 장비를 사용할 경우 계약서 작성을 어떻게 할 것인지에 대해서 자세하게 논의할 생각인데 소협공 사업에서 용역을 줄때 필요한 서류들은 어떤 것들이 있는지 등에 대해서 내일 잠깐 피드백 해주실 수 있으실까요?\n\n추가로 주의해서 진행해야 할 부분도 말씀해주시면 감사드리겠습니다!\n\n*<https://gorilla3v3.me/blog/comedy/meeting/|청도 마운틴 영화제 대구영상미디어센터 과업 조율 참고자료>*", "subs": ["소협공", "상상마루_영화제"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-17 09:49", "mo": "2026-04", "user": "성강현", "text": "그러면 일단은 논의 자료는 저희 내부자료로만 사용하고 옥상상영, 개최일, 변경한 계획서를 공유 드려보도록 하겠습니다. 지금 제일 고민이 되는 부분은 장비는 대구영상미디어 측에서, 인력운용 및 기획은 커뮤니티 시네마 네트워크 측에서 진행이 될 예정이라 요 부분을 어떻게 조율해야할지가 고민인데요... 아예 저희 측에서 용역 계약과 장비 대여를 나눠서 진행하는 것이 서류적으로 적절할까요??", "subs": ["상상마루_영화제"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-17 10:29", "mo": "2026-04", "user": "이영은", "text": "[청도고 동아리활동 일정(금요일 13:20~16:15(567교시)]\n\n~3/13(금) 3/27(금)~\n~4/10(금)~\n~5/8(금) 5/22(금) 5/29(금)~\n~6/12(금)~\n~9/4(금) 9/11(금)~\n~10/23(금)~\n~11/6(금) 11/13(금) 11/27(금)~\n\n=> 일정 다시 주실 예정", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-17 15:31", "mo": "2026-04", "user": "최주원", "text": "4월 21일(화) 오전 10시, 씽크로콥 사무실에서 센터 홈페이지 개편 관련 회의가 있습니다. 회의내용과 실무적으로 진행중인 사항 공유드립니다.\n\n1. 회의 내용: (사전 공유) 목업의 방향성 전달, 홈페이지 로직 방식 전달, 홈페이지 개편 제안내용 전달\n2. 진행 사항: 메인페이지 로직 개편안 작성 *<https://docs.google.com/document/d/1O6aKKD4f7kt9FOHkwIK0QBwzL3FRFLWehsZxJ3HErmM/edit?usp=sharing|바로가기>*\n3. 주요 과업: 대관시스템 정비 및 캘린더 형식으로 구동될 수 있도록 하는 것 \n이어서, 씽크로콥에서는 소재민실장님 참석 예정이시며 회의전 제안내용 정리해서 공유드릴 예정입니다!", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-04-17 19:01", "mo": "2026-04", "user": "민복기", "text": "정아님 통해서 전해듣기로 씽크로콥네 200여만원정도 남은 비용이 있는 것으로 기억한다고 합니다. (확인필요) 비용이 어느정도 발생하면 서버 등 비용 먼저 결제하고 남은 비용으로 수정 요청하거나, 다른 사업비(예정) 추후 결제하는 걸 염두에 두고 협의해야할 듯 :) 다음주 봬요", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-04-20 14:45", "mo": "2026-04", "user": "최주원", "text": "씽크로콥에서 회의자료로 문서 전달 요청주셔서, <https://docs.google.com/document/d/1O6aKKD4f7kt9FOHkwIK0QBwzL3FRFLWehsZxJ3HErmM/edit?usp=sharing> 여기 문서 보내려고 생각중입니다. 확인부탁드립니다! <@U0AH35CCP1A>", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-04-20 16:25", "mo": "2026-04", "user": "최주원", "text": "<@U093TG40GMQ> 강현니임~ 주간회의 때 말씀 주신 사항 요기 문서에 댓글로 추가 부탁드릴게요!!\n• 지역혁신가 홈페이지 현황 (도메인 확정 필요. 제작 완료함)\n• 구글 SEO 방식으로 페이지 붙여넣는 방식 제안 \n• 등...", "subs": ["로컬_사람책", "홈페이지"], "parents": ["로컬크리에이터", "디지털홍보"]}, {"dt": "2026-04-20 17:12", "mo": "2026-04", "user": "성강현", "text": "• 지역혁신가 홈페이지(이미지 web형태로 변환 필요, 스토리 정리 중)\n• 컨설턴트 홈페이지(페이지 제작 완료, 도메인 확정 필요)\n• <http://CMZ054.kr|CMZ054.kr> 페이지 footer에 관련 기관, 홈페이지 링크 추가.", "subs": ["로컬_사람책", "홈페이지"], "parents": ["로컬크리에이터", "디지털홍보"]}, {"dt": "2026-04-21 10:53", "mo": "2026-04", "user": "유정은Jung-Eun", "text": "<@U06S37QEL3H> <@U093TG40GMQ>\n\n장한님, 이번 심사는 서류 심사 형식으로\n별도의 자료 전달없이 내일 현장에서 준비된 심사 자료 확인 후, 사업 관리시스템에 4월 29일까지 심사 자료 업로드 하는 방식으로\n진행될 예정입니다. 심사위원께는 아래의 문자 내용으로 안내드렸고, 오늘 오후에 다시 진행 점검 연락드리도록 하겠습니다.\n\n해당 진행에 관해, 내용 참조부탁드립니다.\n\n_______________\n\n [안내] 2026년 시군구연고산업 공고 1차 선정평가위원회 관련 사전 안내 (RMS 시스템 등록 포함)\n\n안녕하세요, 경북시민재단 사업 담당자입니다.\n\n오늘도 좋은 하루 보내시길 응원해 드립니다.\n\n내일 진행될 시군구연고산업 심사는 서류 심사로 별도의 서류 전달 없이 진행될 예정이오니, 해", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-04-21 14:22", "mo": "2026-04", "user": "성강현", "text": "<@U07LXU3HH1A>\n*[요청]* 대구 영상미디어센터 관련 견적서 요청 및 논의 일정 결정을 위한 메일 내용 한번 확인부탁드립니다!\n---\n*[청도혁신센터] 청도 코미디 영화제 용역 관련 결정사항 안내 및 추후 논의 일정 확인*\n\n*안녕하세요 권현준 센터장님*\n청도혁신센터 성강현입니다.\n\n지난번에 논의 드린 코미디 영화제 관련 용역에 내부적으로 추가 논의된 사항들 공유 드립니다.\n\n*1. 영화제 진행일 변경(반시축제 기간 -> 10월 31일)*\n먼저 영화제를 반시축제와 함께 진행하려고 했으나 대형축제와 함께 진행하는 것 보단 분리하여 10월 31일로 진행하는 것이 더 나을 것 같다는 판단이 있어 10월 31일 기준으로 기획을 다시 하려고 합니다. 먼저 해당 일자에도 진행 가능하실지 궁금합니다.\n\n*2.", "subs": ["상상마루_영화제"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-21 14:57", "mo": "2026-04", "user": "민복기", "text": "1.공공채널, 2.언론 및 미디어 채널, 3.자체 채널(홈페이지, SNS 등), 4.공간기반 오프라인 채널, 5.네트워크 및 파트너 채널, 6.커뮤니티 채널 등으로 분류해서 초안 준비해주시고 추가로 업데이트 하면 좋을 듯 합니다 :slightly_smiling_face:", "subs": ["홈페이지", "SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-22 15:58", "mo": "2026-04", "user": "최주원", "text": "*[혁신센터-대구,경북 지역의 홍보 요청기관] <@U0AH35CCP1A>* *<@U07LXU3HH1A>* \n*<https://docs.google.com/spreadsheets/d/1PUUnE99RFnwtD9x7T6zXooj4NMMiN-_56HhkEivcRg8/edit?usp=sharing|리스트 >*작성했습니다. 내용 공유드리며, 본 시트의 [6.커뮤니티 채널] 내용 서치 중에 도움 요청드립니다.\n\n특별히, 청도 관내에 활동중인 주민 자치 정보(담당자/연락처)가 부족한데요 아래 내용위주로 아시는 분 도움주실 수 있으세요? (<@U06S37QEL3H> <@U06TKCV1P5F> <@U06T6NTP2F4>)\n• 청도군 새마을부녀회 \n• 청도군 이장단협의회\n• 청도군 시장상인회 \n• 청도군 학생자치회 \n• 위의", "subs": ["로컬_협의회"], "parents": ["로컬크리에이터"]}, {"dt": "2026-04-22 17:18", "mo": "2026-04", "user": "최주원", "text": "[혁신센터-농식품, 문화관광_업종별 세부분류] <https://docs.google.com/spreadsheets/d/10gldmAGysYEumP48NADe5o4HsvFrka_QyceNvkR3S4A/edit?usp=sharing|리스트> 작성했습니다.\n\n청도상상마루 사업설명회 (1~3회차) 신청자 기준으로 작성되었으며, 주매출 하위분류로 구분했습니다~~~\n\n<@U07LXU3HH1A>, <@U06TKCV1P5F>", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-04-23 11:08", "mo": "2026-04", "user": "최주원", "text": "*[tf-메시지 채널브랜딩]* 센터 소개 게시글을 제작했습니다. 특별히 청도혁신센터의 비전과 미션을 정리하면서 센터를 소개하는 장표로 구성되어있으니 편하게 봐주세요~~ <https://canva.link/kwjqnm2bmjnd7cf>", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-04-23 15:21", "mo": "2026-04", "user": "이영은", "text": "<@U07LXU3HH1A> <@U06T6NTP2F4> 소협공 '창업 공간 및 커뮤니티 지원' 사업 중 노는엄마들과 용역 계약 예정인 '창업 커뮤니티 운영' 용역(660만원)의 과업지시서입니다. 계약금의 70%인 462만원이 선급으로 지급 가능해요. 확인 부탁 드립니다 :slightly_smiling_face:", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-23 16:37", "mo": "2026-04", "user": "이영은", "text": "안성사경센터의 박세준 센터장님이 경기도사경센터 협의회 10명 정도가 6월 5-6일 청도로 워크숍을 온다고 합니다.\n\n6월 5일 금요일, 상상마루 공간투어 및 재단 사업소개 가능한지 문의해오셨어요. 이건 가능할 것 같고(누가할진 정해주세요ㅋㅋ), 혹시 드림스테이로 숙박 연계 가능할까요? <@U07LXU3HH1A> <@U09L6N45ARJ>", "subs": ["로컬_협의회"], "parents": ["로컬크리에이터"]}, {"dt": "2026-04-24 13:42", "mo": "2026-04", "user": "최주원", "text": "<@U0AH35CCP1A> 필로스! 지난 번 말씀 주셨듯 청도군 정신건강지원센터와의 회의에서 뚜렷한 성과를 내지는 못했습니다.. ㅎㅎ 대신 청도군체육회 컨택도 제안주셔서 그 부분으로 <@U07LXU3HH1A> 정은님과 상의를 했는데요. 곧 시간 괜찮으실 때, 아래 내용으로 상의 드릴 수 있을까요?\n\n• 협업 풀을 어떻게 가져가야 할지?  \n• 동아리에 지원 내용을 어떻게 설정할지? (경비와 공간대관외 메리트를 설정해줄 수 없나?)", "subs": ["상상마루_헬씨"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-27 10:08", "mo": "2026-04", "user": "성강현", "text": "*[보고] 시군구산업 마케팅 지원 평가표*\n평가표 엑셀로 정리 완료했습니다. 합계 계산 오류와 우대가점 산정 오류 등을 잡았습니다. 심사 결과에는 영향이 없는 수준이나 온라인 입력에 다른 점수가 입력되어있는 것을 확인 수정해야할지 확인해봐야할 것 같습니다!", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-04-28 17:14", "mo": "2026-04", "user": "최주원", "text": "<@U0AH35CCP1A> 아래 내용으로, 씽크로 측 확인 요청 사항 및 회신 초안을 작성해 공유드립니다. 확인 부탁드립니다. 감사합니다 :pray:\n\n:pushpin: 수정 일정 및 우선 작업\n언급하신 일정(5/8 ~ 5/15)으로 진행하며, \"대관 안내 / 대관 신청 페이지\" 오픈을 우선 진행하는 방향으로 전달드리려 합니다.\n\n:pushpin: 수정 시 유의사항\n수정 시 원본으로의 복구가 불가하다는 점을 안내받았으며, 해당 사항에 이의 없음을 전달드리려 합니다.\n\n:pushpin: 2차 수정 관련 확인 요청\n• 공간대관 세션에 한해 디자인 전반의 추가·변경 사항이 있어, 최종 파일은 5월 초 전달 예정입니다. 다만, 지난번 공유드린 [웹페이지 목업]을 기준으로 검토 요청드리려 합니다.\n• 대관 캘린더 연", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-04-29 14:27", "mo": "2026-04", "user": "이영은", "text": "정은님, 지연님, 6월 5-6일로 예정된 경기도사회적경제센터협의회 워크숍 관련해서 담당자가 소통하고 싶어하세요. \n\n수원도시재단 사회적경제지원센터 김태성 님이시구요. \n<tel:01071758269|010-7175-8269>\n\n회의에서 요청드렸던대로 드림스테이 통해서 어떤 것이 제공가능한지, 우리가 챙겨야 할 것이 뭔지 확인하여 연락드려야 할 것 같아요.", "subs": ["로컬_협의회"], "parents": ["로컬크리에이터"]}, {"dt": "2026-04-30 16:25", "mo": "2026-04", "user": "곽정의", "text": "5/19(화) 상상마루 개소식 관련 배정란 대표님 섭외 완료했습니다\n다음주 수요일에 소통해서 회의날짜 잡을 예정입니다", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-04-30 19:47", "mo": "2026-04", "user": "유정은Jung-Eun", "text": "<@U06S37QEL3H> <@U0AH35CCP1A> \n\n1. 시군구연고산업의 협약 체결 행사 건\n>> 세부사항은 TP담당자 휴무로, 세부사항은\n월요일에 확인하여 보고드리겠습니다 \n\n2.  5/19(화) 입주 오픈식 건 : 전시(아카이빙)\n>> 기존 터미널 관련 기록 사진은 건축과 혹은 홍보실 및 지역 신문사 등과 자료 확보 예정(기획실에선 관련 자료가 없다고 합니다) 인데요, \n\n다음 주 초에, 사진 자료 확보가 가능할지 확인하여 준비하고 있는 아카이빙형 전시 주제의 진행 여부도 말씀드리겠습니다. (전시할 만한 사진이 없으면, 지난 해 실행한 “모두의 마을” 과 같은 \n지역을 알리는 사진의 전시도 가능합니다. \n/ 월요일에 의견 부탁드립니다)", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-04 09:22", "mo": "2026-05", "user": "최주원", "text": "```회의 개요\n일시: 2026. 04. 30. (목)\n작성일: 2026. 05. 04. (월)\n참석자: 복,유,영,의,최,연(6인)\n주요 안건: 상상마루 오픈 이벤트(오프닝) 기획 및 일정 확정\n\n1. 행사 일정 및 컨셉\n• 일정 변경: 기존 5월 20일에서 5월 19일(화)로 변경 (장날 유동 인구를 고려하여 하루 앞당김)\n• 메인 컨셉: \"지나던 곳에서 머무는 곳으로\"\n버스 터미널이었던 과거의 정체성을 살려 지역 주민과 청년들이 머무는 공간으로 전환됨을 알림.\n• 전략: 6월 공식 개소식(장관 참석 등 대규모 행사) 전, 주민 대상의 '미니 오픈식(가오픈)' 형태로 추진. (한 듯 안 한 듯 의미를 살리는 방향)\n\n2. 층별 및 타겟별 주요 프로그램 아이디어\n구분/대상/주요 내용\n1층/어르신- 왓츠 인", "subs": ["SNS관리", "상상마루_개관", "홈페이지", "노션_DB"], "parents": ["디지털홍보", "소통협력공간상상마루"]}, {"dt": "2026-05-04 14:57", "mo": "2026-05", "user": "최주원", "text": "*[홈페이지 1차 수정] <@U0AH35CCP1A>* \n예정: 5월 8일~15일 사이 완료\n가견적 송신: 5월 13일", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-04 18:42", "mo": "2026-05", "user": "최주원", "text": "[5/8 시군구 협약식 관련 공유오피스 안내 자료 제작의 건]\n• 내용: 마루01 입주기업 모집 정보 요약\n• 초안: A4 양면 브로셔 (세로형, 2단 접지), 사내 프린터 인쇄 예정\n• 시안: <https://canva.link/544p6oocmle2ydd>\n[5/8, 5/19 청도혁신센터 리뉴얼 이벤트 배포용 센터 브로셔 제작의 건]\n• 내용: 청도혁신센터 및 소통협력공간 소개 (미션/비전/주요 사업 포함)\n• 초안: A2 포스터 형태\n위와 같이 진행 예정입니다.\n추가로 반영 필요 사항이나 수정 의견 주시면 반영하겠습니다!", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-04 21:11", "mo": "2026-05", "user": "민복기", "text": "<@U07LXU3HH1A> 소통협력공간 상상마루 개소 관련 보도자료 초안 작성했습니다. 정신 없을 듯하여, 제가 간단히 정리해서 공유하니 참고 및 검토 바랍니다. 연휴 지나서 봐요 :slightly_smiling_face:", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-06 13:54", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "[업무] 5/8(금)~9(토) 커먼즈 네트워크 진행 관련\n\n <@U06T6NTP2F4> <@U09L6N45ARJ>\n정의, 지연님 이번 주 금토 행사 관련하여,\n아래 업무 워크시트 자료 확인  부탁드립니다.\n\n<https://docs.google.com/spreadsheets/d/1xogDjjagG-L0D-ylXn2KfHoLN_H66RRIEg90HW_nKw0/edit?pli=1&amp;gid=878096601#gid=878096601>", "subs": ["커먼즈네트워크"], "parents": ["파트너십"]}, {"dt": "2026-05-06 17:05", "mo": "2026-05", "user": "성강현", "text": "*[공유] 금일 상상마루 개소식 회의 내용입니다.*\n*<https://www.notion.so/_260506-3584e2b3d0ef8002be40d6e63ed2e95c|상상마루 공간 개소식 기획회의_260506>*\n*<https://www.notion.so/_260506-3584e2b3d0ef80ec80cffd4bc3eba4a6|상상마루 소통협력공간 브랜딩 방향 공유_260506>*", "subs": ["상상마루_개관", "소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-06 17:31", "mo": "2026-05", "user": "이영은", "text": "<@U07LXU3HH1A> 얼렁뚱땅 상점의 대구 팝업 이후에도 전국 다른 지역에서 팝업이 계속될 예정이라고 합니다. 그래서 저희가 부스를 중간에 받아서 사용하는 것은 힘들 것 같고, 향후에도 계속 사용할 수 있도록 잘 만드는 것이 좋겠어요. 디자인 전달 시한이나 제작 가능 여부 등은 별도로 소통해보겠습니다!", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-06 18:45", "mo": "2026-05", "user": "이영은", "text": "<@U07LXU3HH1A>전에 팀회의에서 말씀드렸던 임팩트허브 아시아태평양 지부 담당자 멜라니씨(Melanie Mossard) 일정 확인되었습니다. 5월 14일 수요일 점심 12:45 청도역 도착 예정이구요, 1박 후 다음날 오전 11시 기차로 부산 간다고 해요. 올 때 혼자가 아니라 본인의 파트너인 UNDP(United Nations Development Programme) 청년창업 프로그램 담당자와 함께 온다고 합니다.\n\n당일 일정과 숙박 등에 관해 준비되는 대로 다시 보고 드리겠습니다 :saluting_face:", "subs": ["커먼즈네트워크"], "parents": ["파트너십"]}, {"dt": "2026-05-07 10:42", "mo": "2026-05", "user": "최주원", "text": "~[홈페이지 수정]\n1차 수정 — 2026년 5월 중순\n2차 정식 개편 — 2026년 6월 중순부터 7월 사이\n\n[가견적 금액[~", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-07 10:43", "mo": "2026-05", "user": "최주원", "text": "최신 소통 내용 공유드립니다. 견적 금액 포함 공유드리니 확인 부탁드립니다! <@U0AH35CCP1A> <@U07LXU3HH1A>\n\n[홈페이지 수정]\n1차 수정 — 2026년 5월 중순\n2차 정식 개편 — 2026년 6월 중순부터 7월 사이\n\n[가견적 금액] 8,800,000 (vat포함)", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-07 14:19", "mo": "2026-05", "user": "민복기", "text": "<@U08KTRGL2TG> 가볍게 의견을 드리면~\n1.레고블럭은 1.고사상 2.옛 버스터미널 3.현 상상마루 3개 제작 요청드리고 (전&gt;후 비교전시)\n2.현수막은 버스이미지로 꼭 해야할 필요는 없고 슬로건 기반으로 색감 중심으로 깔끔하게 해도 좋을 듯 (버스 이미지는 전시 월 예시로 얘기한 부분임)\n3.페이퍼팝 요청 제작물은 기획에 따라 필요한 부분 더 확인해서 세부적으로 더 요청하면 좋을 듯 (제작 세팅을 위해서 일정 체크 필요)", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-08 10:21", "mo": "2026-05", "user": "최주원", "text": "*5/19 상상마루 공간 개소식 업무 현황 및 계획 공유*\n상상마루 개소식 관련하여 업데이트된 디자인 방향과 향후 일정을 정리해봤는데요. 잘 정리됐는지 확인 부탁드립니다. :slightly_smiling_face:\n특히 *메인 슬로건이 수정*되었으니 작업 시 꼭 확인 부탁드립니다!\n> :sparkles: *수정 슬로건:* \"버스를 기다리던 곳에서, 이제는 서로를 만납니다.\"\n:white_check_mark: *완료 및 진행 중 (5/8, 금)*\n• *디자인 요청:* 거리/외벽 현수막 디자인 작업 요청 완료 (수정 슬로건 반영)\n• *레고 제작:* 레고 모델링 3건 품목 작업 요청 완료\n• 공간기획: 1층 기획안 <@U06T6NTP2F4> 본 채널에 공유하심\n:date: *오늘 계획 (5/8, 금)*\n• *페", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-08 12:50", "mo": "2026-05", "user": "최주원", "text": "<https://docs.google.com/document/d/1ljS2ZM_GQ0qxqBdTYQRVBPvNqdiNGn6K_ieGR27oSvg/edit?usp=sharing|260508_상상마루_개관행사_기획안> 정리중인데요. 확인 부탁드립니다.\n\n• 공간슬로건: 버스를 기다리던 곳에서, 이제는  서로를 만납니다.\n• 개관행사명: 지나던 곳에서, 머무는 곳으로\n• 핵심가치: 작은 시도가 변화를 만듭니다. \n위와 같이 <@U0AH35CCP1A> 확인 하에 문구를 정리했고요.\n이에 따라 진행되는 프로그램은 아래처럼 정리해볼 수 있을 것같아요. 아이디어 공유드립니다.\n\n&gt; 1. [기억의 머무름] 전시 및 기록 \n&gt; 2. [생각의 머무름] 주민 참여형 실험 \n&gt; 3. [사람의 머무름] 공간 체험 ", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-08 16:23", "mo": "2026-05", "user": "최주원", "text": "지혜님, 혁신센터 게시판의 <https://cmz054.kr/notice/?bmode=view&idx=171178740&back_url=&t=board&page=1|입찰공고(2차)> 게시글 관련 소통드립니다!\n\n• 첨부 파일이 다운로드가 안됩니다. 파일을 새로 업로드해야할 것 같습니다. \n• 첨부드리는 이미지에 텍스트 확인부탁드립니다. 유형A의 입주계약 텍스트가 현재, [2027.06.01 ~ 2027. 04. 30.]로 되어있습니다. \n<@U0AH35CCP1A> <@U09FLGVSS1L>", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-05-08 17:13", "mo": "2026-05", "user": "최주원", "text": "서연님 소통으로 수정했습니다.\n어제 요청주셨던 홍보 진행하려하는데요 게시글 바탕으로 인스타에 게시글 올릴게요!", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-05-08 18:33", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "네, 주원님! 수고 하셨습니다.\n\n**공간슬로건 : 버스를 기다리던 곳에서, 이제는 서로를 만납니다\n\n는 개관 행사 포스터 제목으로도 활용될 예정이오니,\n\n <@U06S37QEL3H> <@U0AH35CCP1A> 최종 컨펌 부탁드립니다.\n\n그리고, 현수막 게시 일정 등은 늦춰진 행사 일정에 맞춰 진행될 예정입니다.\n(주원님의 오전 포스팅 현수막 진행 상황 공유 후, 확정된 내용임&amp;팀 및 외부 협력 주체와도 소통되었음)\n\n <@U08KTRGL2TG> 주원님, 21세기에는 금성님께 부탁드려서 앞서 현수막 시안 전달 일정(월)보다 늦어질 수 있다는 내용 말씀 드려놓았어요~~\n\n내용 참조해주셔요~!", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-08 18:38", "mo": "2026-05", "user": "우장한", "text": "네 <@U09FLGVSS1L>님이 방재업체 사장님 미팅 결과를 공유받으시면 더 확실히 정해질 것 같은데, 2층 공사가 확실히 끝나고 전체 공간도 오픈하고 개소식 행사도 하는 것으로 소통중입니다.", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-11 10:25", "mo": "2026-05", "user": "최주원", "text": "[혁신센터 홈페이지 게시글 편집]\n지난주에 게시된 내용 바탕으로 홈페이지기능 활용해서 흐름을 같이 수정했습니다 :) 수정본 공유드립니다.\n•  <https://cmz054.kr/notice/?bmode=view&amp;idx=171167233&amp;back_url=&amp;t=board&amp;page=1|게시글1> \n•  <https://cmz054.kr/notice/?bmode=view&amp;idx=171178740&amp;back_url=&amp;t=board&amp;page=1|게시글2>\n•  <https://cmz054.kr/notice/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&amp;bmode=view&amp;idx=171196357&amp;", "subs": ["홈페이지", "SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-05-11 13:14", "mo": "2026-05", "user": "최주원", "text": "[5/29 청도상상마루 개소식]\n\n행사 전체 안 정리하고 있습니다. 잘 정리됐는지 확인 한번부탁드립니다.<https://docs.google.com/document/d/1ljS2ZM_GQ0qxqBdTYQRVBPvNqdiNGn6K_ieGR27oSvg/edit?usp=sharing>", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-12 09:44", "mo": "2026-05", "user": "민복기", "text": "어제 저녁에 씽크로콥 대표와 제가 직접 소통했고, 과업범위 수정없이 부가세 포함 700만원으로 협의했습니다. 견적서 수정해서 보내주실 듯. 이후에 다른 건 등 활용해서 추가 예산 마련되면 다른 프로젝트 적극 진행 검토하면 될 듯 합니다 참고요 :slightly_smiling_face:", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-12 11:55", "mo": "2026-05", "user": "성강현", "text": "<@U07LXU3HH1A>\n생생초에서 시군구연고 산업 공급기업을 추천해주실 수 있는지 문의를 주셨는데요. 저희측에서 선정한 기업들은 따로 없어서 직접 컨텍해야한다고 말씀은 드렸는데 혹시나 이런 문의가 다시 오셨을때 추천을 드려도 되는걸까요?", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-05-12 11:59", "mo": "2026-05", "user": "성강현", "text": "일단 마케팅 지원 사업에 홈페이지 제작 쪽으로 문의를 주셔서요. 생각나는 건 씽크로콥이긴한데 리플렛 제작이나 이런 부분들이 필요하면 다른 업체리스트를 준비해보는 것도 좋긴 할 것 같아요.", "subs": ["연고_마케팅", "홈페이지"], "parents": ["디지털홍보", "시군구연고산업"]}, {"dt": "2026-05-12 13:05", "mo": "2026-05", "user": "이영은", "text": "씽크로콥(경산 소재)과 익스브랜딩(청도 소재 / 송제익 대표 <tel:010-3519-7203|010-3519-7203>)이 같은 대표님이 운영하는 기업이라서 이왕이면 익스브랜딩으로 계약하면 좋을 것 같네요!", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-13 17:18", "mo": "2026-05", "user": "성강현", "text": "<@U07LXU3HH1A>\n*[보고] 시군구연고사업 마케팅지원 이후 진행 절차 정리*\n요청하신 이후 진행 절차에 대해 정리했습니다.\n\n*협약 전 진행절차*\n&gt; *14일*, 서류 1차 마감 -&gt; *15일*, 서류 제출 완료 확인 후 선정단체에 교부절차 안내 \n&gt; -&gt; *15일*, 18일 협약일에 전자서명이 가능하도록 공급업체의 RMS 시스템 등록 확인(15일 시스템 확인 필요)\n&gt; -&gt; *18일*, 수혜기업 &amp; 공급기업 협약식. 전자 서명 완료 후 사업 시작\n*교부절차*\n1. 7월 중순 - 8월 초에 현장 점검 이후 조기 종료(대금 지급 의사확인)\n=&gt; 테크노파크 측에서는 조기 종료라고 표현 하나 저희 입장에서는 마케팅 성과를 이후에 파악해야 하기때문에 이 부분을 ", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-05-16 14:22", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "강현님, 휴일에 수고 많으십니다. \n챙겨봐 주셔서 감사합니다. \n\n어제인 금요일에 공급기업 등록 여부를 확인해보니, 저희쪽에서 확인해야 하는 3개 기업 모두 등록해주신 것으로 확인했습니다. \n\n월요일에 최종 확인해보아요, TP에서 전달받은 청도원감 서류가 있는데요, 목요일 쯤 강현님과 소통할 때는 서류가 있는 것으로 제가 이해하여 전달드리지 않은 자료가 있어요. \n\n그건인지 월욜에 확인해봐요^^ \n\n남은 토욜 오후 좋은 하루 보내시길요~", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-05-18 10:08", "mo": "2026-05", "user": "성강현", "text": "지금 보름 쪽 수정 계획서만 들어오면 될 것 같은데요. 나머지 계획서는 저희 측에서는 문제될 건 없을 것으로 예상됩니다.\n\n한가지 맘에 걸리는 부분이 청도원감 쇼츠 제작 비용이 너무 높게 잡혔다는 부분인데... 원래 공급기업 포트폴리오를 확인해보니 홈페이지, 상세페이지 같은 것을 많이 하는 곳이라 이 부분을 확인하기 위해서 쇼츠 포트폴리오 요청을 드렸고 확인해보니 수준이 이 가격을 받을 곳은 전혀 아니라는 판단이 드네요.\n\n이전에 기획하신 내용보다 이번 수정사업계획서에 비용을 더 높게 잡으셨던데 그냥 알고 진행하시는 거면 저희 입장에서는 문제는 없을테니 넘어가면 되지만 혹시나 덤터기 맞으신 건 아닌지 걱정은 되네요.\n---\n브랜드샵(청도원감 공급기업) 쇼츠 포트 폴리오\n<https://youtube.com/", "subs": ["연고_마케팅", "홈페이지"], "parents": ["디지털홍보", "시군구연고산업"]}, {"dt": "2026-05-18 10:09", "mo": "2026-05", "user": "최주원", "text": "확인차 리마인드 드려요! 초대를 수락해주셔야 카카오채널 관리자로 활동 가능하십니다!", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-05-18 18:15", "mo": "2026-05", "user": "성강현", "text": "*[보고] 시군구연고산업지원_마케팅 지원 협약서 작성 완료(좋은예감 제외)*\n<@U07LXU3HH1A>\n좋은 예감의 대표자명이 김민 사무장으로 잘 못 들어가 있는 부분을 수정요청 드린 것을 제외하고 모든 기업들의 협약서 작성과 RMS 시스템 등록을 완료했습니다.\n특이사항으로는 청도원감의 대표자가 정진석으로 되어있었으나 이번 협약에는 이영란 이사가 대표자로 등록되어 있는 것을 확인했고 확인 결과 각자대표인 것이 확인되어 이대로 진행하면 될 것 같습니다.\n좋은 예감은 대표자명 수정 후 협약 등록을 진행할 예정이며 TP 쪽에는 어떻게 전달을 드려야 할지 문의드립니다.", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-05-18 19:47", "mo": "2026-05", "user": "성강현", "text": "내일 좋은예감 변경완료 확인 후 발송할 메일 입니다.\n---\n안녕하세요.\n 경상북도 시군구연고산업 육성사업 마케팅지원 담당자 성강현입니다.\n이번에 마케팅 지원 분야 협약서 등록이 완료되었습니다.\n 아래 내용을 확인하시고 일정에 맞춰 준비해 주시기 바랍니다.\n\n■ 전자서명 진행\n협약서 등록이 완료됨에 따라, 수혜기업 및 공급기업 모두 전자서명을 진행하실 수 있습니다.\n 전자서명이 완료되어야 이후 지원 절차가 진행되오니 서명 후 메일로 회신 부탁드립니다.\n 전자서명 방법은 별도 안내드린 내용을 참고해 주십시오.\n\n■ 향후 주요 일정\n① 현장 실사 및 중간 점검(7월 중순)\n• 마케팅 지원 협약 기업을 대상으로 현장 실사와 중간 점검이 진행될 예정입니다.\n• 구체적인 일정은 추후 개별 안내드릴 예정입니다.\n② 조", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-05-19 09:39", "mo": "2026-05", "user": "최주원", "text": "<@U0AH35CCP1A> <@U07LXU3HH1A> 홈페이지 1차 수정 완료 점검목적의 메일을 발신했습니다", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-19 11:34", "mo": "2026-05", "user": "곽정의", "text": "지난 5월 14일 방문했던 임팩트허브 멜라니분 방문 관련해서 인스타 업로드 했습니다\n<https://www.instagram.com/p/DYgObBJGBL2/?img_index=1>", "subs": ["커먼즈네트워크"], "parents": ["파트너십"]}, {"dt": "2026-05-19 14:30", "mo": "2026-05", "user": "성강현", "text": "좋은예감 대표자명 변경 완료 되었고 협약서 전자서명까지 광순님이 도와주셔서 완료 되었습니다 기업들 서명 들어오는대로 다시 보고 드리겠습니다.", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-05-20 11:07", "mo": "2026-05", "user": "최주원", "text": "*[센터 홈페이지_수정견적서 송부_260520]* \n\n씽크로에서 수정견적서를 주셨네요. 송금 건 관련해서 제가 진행해야 할 일이 있을까요? 알려주시면 바로 챙기겠습니다 ! <@U0AH35CCP1A> <@U07LXU3HH1A>", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-20 11:36", "mo": "2026-05", "user": "최주원", "text": "<@U0ABRLV698R> 광순님, 이번 홈페이지 보수 건으로 [지출결의서] 작성했습니다. 이렇게 작성해도 되는지 한 번 봐주실 수 있으실까요? (24년 계약서류 참고해서 만들었습니다!)\n아래는 문서 경로입니다! :)\nZ:\\경북시민재단\\004. 청도혁신센터\\026. 2026년도 사업\\99.홍보비_홈페이지갱신", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-20 13:41", "mo": "2026-05", "user": "최주원", "text": "<@U0ABRLV698R> 광순님~! 이번 홈페이지 보수건으로 계약서류 이대로 진행해도 괜찮을까요?  세금계산서 발행일은 오늘로 요청드려도 되는지 확인 부탁드립니다..!\n• 세금계산서 발행일: 26.5.20. (오늘)", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-20 15:38", "mo": "2026-05", "user": "최주원", "text": "<@U0ABRLV698R> 광순님, 계약서류 작성했습니다. 씽크로에 계약서류 공유드리며, 날인 후 송부 부탁드리면 될까요? 아니면은 계약서류 확인을 요청드리면 될지 확인부탁드립니다..!\n\n경로입니다 :slightly_smiling_face:\nZ:\\경북시민재단\\004. 청도혁신센터\\026. 2026년도 사업\\99.홍보비_홈페이지갱신\\[계약서류] 씽크로콥 주식회사", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-20 17:14", "mo": "2026-05", "user": "최주원", "text": "*[센터 홈페이지_홍보비 지출 서비스계약_260520]*\n• 씽크로에서, [계약기간 및 중도금 처리 유무]에 대해서 문의주셔서 소통중입니다! \n• 1차 수정 후, 2차 수정 데드라인에 대해서 추가적으로 문의 드리겠습니다.\n• 이후 계약서를 우편으로 보낼지, 지역에서 미팅 날짜를 잡을지 관련해서 논의 후 내용 공유드리겠습니다~\n<@U07LXU3HH1A>", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-21 10:48", "mo": "2026-05", "user": "최주원", "text": "*선금 건으로 소통했습니다. 오류인지, 메일 참조가 안돼서 아래에 내용 공유드립니다.*\n[청도혁신센터 홈페이지 연장 및 유지보수_서비스계약]\n• 씽크로의 선금 요청에 따라, 선금 40%, 잔금 60%로 진행 \n• 선급금 지급에 필요한 전체 서류 전달 완료 \n<@U0AH35CCP1A> <@U07LXU3HH1A> <@U0ABRLV698R>", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-21 17:48", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "<@U093TG40GMQ>\n\n강현님:raised_hands:, 업체 자료 정리하실 때, 해당 내용 참조 주시면 감사드리겠습니다! \n\n&gt; *선정된 팀에서는 시군구연고산업 1차 선정 단체 (12곳)*\n&gt;   • 선정 단체: 12개 업체 /A/B/C ⇒ 차등 지원 (4곳씩)\n&gt;       ◦ 1천만원 (4곳)\n&gt;           ‣ 농업회사법인 주식회사 생생초 -&gt; 확인 중\n&gt;           ‣ 농업회사법인 주식회사 청도원감 -&gt; 확인 중\n&gt;           ‣ 좋은예감 영농조합법인 -&gt; 확인 중\n&gt;           ‣ 영은베리 -&gt; 입주 ×\n&gt;       ◦ 8백만원(4곳)\n&gt;           ‣ 이로움 -&gt; 입주 ×\n&gt;", "subs": ["연고_마케팅"], "parents": ["시군구연고산업"]}, {"dt": "2026-05-22 09:32", "mo": "2026-05", "user": "민복기", "text": "&lt;센터 조직도&gt;\n\n센터장\n↓\n총괄실장\n↓\n운영지원팀: 행정·회계·사업운영 기반 관리\n지역혁신팀: 주민 주체 발굴 및 지역혁신 사업 기획·실행\n커뮤니티팀: 상상마루 기반 커뮤니티·공간 운영 및 연결 활성화\n\n• 현재 팀명이 운영팀으로 되어 있고, 커뮤니티팀은 내용 수정이 필요할 듯하여 수정했습니다.\n• 조직도에 하단에 청도혁신센터는 (사)경북시민재단에서 수탁운영하고 있습니다. 문구하나 들어가면 좋을 듯 \n또는 + (사)경북시민재단- 센터장-팀 (재단과 센터장 사이에 이사회 옆으로 표시하거나 등 검토 논의 필요", "subs": ["총회"], "parents": ["조직행정"]}, {"dt": "2026-05-22 15:22", "mo": "2026-05", "user": "최주원", "text": "소재민실장님께서 홈페이지 수정 내역 확인했는지 회신 요청주셨어요 확인 했다고 말씀드리려고 하는데 위의 내용은 2차수정 때 반영하도록 하겠습니다! <@U0AH35CCP1A>  <@U07LXU3HH1A>", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-22 17:57", "mo": "2026-05", "user": "성강현", "text": "<@U07LXU3HH1A>\n*[보고] 외국인 지원사업, 컨설팅 지원사업, 코워킹 스페이스 안내 메일 작성완료*\n\n말씀하신 메일 내용 정리해봤습니다. 내용에 문제가 없으면 각 담당자의 메일과 유선번호를 정리해서 메일 발송 진행해보겠습니다!\n*---*\n\n안녕하세요.\n시군구연고산업육성사업 수행기관\n경북시민재단 성강현 매니저입니다.\n\n*2026년도 시군구연고산업육성사업*에 선정되신 것을 다시 한번 진심으로 축하드립니다.\n선정부터 협약까지 긴 과정을 함께해 주신 귀사의 노고에 깊이 감사드립니다.\n\n본 메일은 이번 선정사업 수행과 별개로, *귀사가 활용하실 수 있는 연계 프로그램 3가지를 안내드리기 위해 발송하였습니다.*\n\n-----------------------------------------------------", "subs": ["연고_비자", "연고_외국인"], "parents": ["시군구연고산업"]}, {"dt": "2026-05-26 13:31", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "*[주간 팀 회의 이연 안내]* \n오늘 오후 2시 예정인 팀 정기회의는\n다가오는 5.29.(금) 행사 점검과 함께 내일인 27일(수) *&lt;오전 10시~오전11시 30분/1.5시간&gt; 진행될 예정*입니다.\n\n변동된 회의 시간 확인 부탁드립니다.\n\n내일 뵙겠습니다.", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-26 14:20", "mo": "2026-05", "user": "최주원", "text": "*[씽크로콥-센터 홈페이지: 2차 수정 기한 내 수정요청서 작성 관련]*\n현재 2차 수정을 6월 말~7월 초로 요청드린 상황입니다. 이후 센터 내부 소통을 위한 자리를 마련하자는 정은님의 말씀을 바탕으로, 아래와 같이 회의 요청드립니다.\n\n<@U0AH35CCP1A> 님께서 전달해주셨던 [센터 조직도] 관련 작업 초안, <@U07LXU3HH1A>  님께서 전달해주셨던 [미션 및 비전의 문체]에 대한 논의, <@U093TG40GMQ>님 진행 중이신 [지역혁신가 페이지 등 풋터 연결] 관련 사항에 대한 결정이 필요하여, 2026년 상반기 청도혁신센터 홈페이지 개편을 위한 회의를 진행하고자 합니다.\n캘린더를 확인한 결과, 내일(5월 27일 수요일) *오후 2시  이후* 일정이 가능하신지 여쭙습니다. 또는 개관 행사", "subs": ["로컬_사람책", "홈페이지"], "parents": ["로컬크리에이터", "디지털홍보"]}, {"dt": "2026-05-27 09:38", "mo": "2026-05", "user": "최주원", "text": "*2.1 창업·기술트렌드 교육 공유합니다*\n\nZ:\\경북시민재단\\005. 기획실\\037. [컨소시엄] 2026년 시군구 연고산업육성 협업프로젝트\\03. 사업실행\\01. 시군구_인식개선_창업기술트렌드_교육\\01. 사업계획", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-05-27 17:08", "mo": "2026-05", "user": "최주원", "text": "[혁신센터 홈페이지-서버비 추가 결제의 건] 소재민 실장님께 답신받았습니다. <@U07LXU3HH1A>\n\n• 이번 계약건에 포함하여 주신다고 하셨습니다. \n• 최종 계약 금액은 [*7,748,000원]* 으로 확인했습니다. \n• 2차 수정서 제출후, 선금 신청서류 주실 예정이라고 하셨습니다.\n2차 수정서 작성 후 검토의견을 (필로스, 정은님, 커뮤니티팀)께 여쭙고 공유하겠습니다. 그런 다음 선금 결재 진행하겠습니다~!", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-27 17:12", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "좋습니다. 수고해 주셔서 감사해요~! 커뮤니티팀에도 현재 홈페이지 개편 상황 내용 확인해주십사 요청드려 놓았습니다~! 일정 참고요! 확인해주시면 그 피드백 포함하여, 2차 수정 내용 전달드리면 되겠습니다.", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-28 10:34", "mo": "2026-05", "user": "민복기", "text": "<@U08KTRGL2TG> 법인 조직도 현재 버전인데,  센터 조직도 기준으로만 참고하시면 될 듯 합니다. 수정요청서 작성 후 중간 공유해주시고, 같이 확인할께요 :slightly_smiling_face:  (센터 홈페이지 내 조직도에 법인 관련정보가 없어서 간략하게 연계하는 정도로 수정은 필요해서요)", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-28 16:40", "mo": "2026-05", "user": "최주원", "text": "*[홈페이지] 2차 수정 요청서 공유 및 검토 요청:* <https://docs.google.com/document/d/1O6aKKD4f7kt9FOHkwIK0QBwzL3FRFLWehsZxJ3HErmM/edit?usp=sharing|바로가기>\n\n홈페이지 [2차 수정 요청서]를 공유해 드립니다. 이번 수정의 핵심 주안점은 [메인 페이지 로직 변경]입니다. 구글 문서 내에 개별 파트별로 클릭 시 상세 내용을 보실 수 있는 팝업창(서브 문서) 링크가 모두 연결되어 있으니 참고 부탁드립니다.  내용 확인 부탁드립니다. <@U0AH35CCP1A> <@U07LXU3HH1A>", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-06-01 17:57", "mo": "2026-06", "user": "최주원", "text": "<@U09L6N45ARJ> Z:\\경북시민재단\\005. 기획실\\037. [컨소시엄] 2026년 시군구 연고산업육성 협업프로젝트\\03. 사업실행\\01. 시군구_인식개선_창업기술트렌드_교육\\01. 사업계획\n\n지연님, 한글 파일 공유드려요!", "subs": ["연고_창업교육"], "parents": ["시군구연고산업"]}, {"dt": "2026-06-22 16:49", "mo": "2026-06", "user": "최주원", "text": "*[혁신센터 홈페이지 구축 사업 - 최종 계약금액 관련]* <@U07LXU3HH1A>\n\n최종 계약금액은 *7,748,000원*으로 확인했습니다.\n2차 수정요청서 송부 이후 수정 견적서를 전달해 주신다고 하셔서, 이번 주 중 수정 견적서와 계약서를 정리하려고 합니다.\n다만 기존 계약기간이 6월 말까지로 되어 있는데, 현재 진행 상황이 와이어프레임 구축 및 후속 미팅 예정 단계인 점, 실제 수정 및 개발 완료 시점이 7월~8월 초로 예상되는 점을 고려하면 계약기간을 *2026. 7. 31.까지 연장*하는 것이 어떨지 검토가 필요해 보입니다.\n아직 계약서 날인이 완료되지 않은 상황이라 계약기간 조정도 가능할 것으로 판단되는데요.\n내일 한 번 확인해 주시면,\n• 수정 견적서 발행\n• 계약기간 연장\n• 선금 지급 관", "subs": ["홈페이지"], "parents": ["디지털홍보"]}, {"dt": "2026-05-13 16:45", "mo": "2026-05", "user": "민복기", "text": "*금일 청도군 팀장, 주무관과 소통해보니,*\n개관행사는 *선거 이후*로, 공간 운영 시작은 5월 29일로 생각하고 있었음 (다만, 2층 공사가 5월 안으로 완료가 안될 것 같아서 그것도 고민인 듯)\n\n• 오픈은 공간별 운영 시작을 의미하고, 개관은 개관행사를 의미하는데 사실 동시에 진행되는게 필요한 상황이라고 전달했음\n• 6월 통합 개관은 해당 팀 내부에서 실장과 소통해야하는 문제인데, 고민을 더 해보겠다는 의견이었음\n개관행사는 선거 이후 1-2주 이내로 예상하되, 내부에서 *행사 기획 및 준비는 계획대로 진행*하면 될 것 같습니다.\n홍보물 등 게시 시점, 개관 당일 현장 프로그램 일정 조율이 필요한 상황입니다. 내용 참고해주시고, 기타사항은 회의 때 따로 공유드리겠습니다!", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-18 16:23", "mo": "2026-05", "user": "박지연", "text": "[이혜민 디자이너 시안 일정 및 페이퍼팝 작업]\n\n1. 이혜민 디자이너\n• 외벽 현수막 1차 채색 완료\n• 20일(수) 오전: 채색 완료 *키비주얼 자료 받을 수 있음.\n• 21일(목) 오전: 외벽 현수막 시안 공유\n• 금, 토, 일은 작업 어려움 \n2. 페이퍼팝\n• 22일(금)까지 버스 포토월 디자인 전달 시 28일까지 납품 맞출 예정\n• 포토월 디자인 작업은 키비주얼 받아서 다른 디자이너와 진행해야 할 듯합니다~", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-18 16:25", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "포토월 디자인 작업 건 확인했습니다.\n외부에 맡길지 내부에서 소화할지는 사실 관건이 예산인데요,\n\n오늘과 내일 오전 정도까지만 시간 주세요, 계획서 작성하면서 예산 확인해보고 말씀드릴게요!", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-19 15:21", "mo": "2026-05", "user": "민복기", "text": "• 공간 층별 행사 포스터는 메인 포스터 기반으로 약간의 베리에이션을 생각했던 부분인데, 참고로 공유드립니다. \n• 5월 29일은 사진행사, 6월 19일은 세레모니는 별도로 고민하기로 했기에 레퍼런스 참고차 공유\n• 1층, 2-4층 입주기관 및 단체 정보 종이판넬(?) 레퍼런스. 디자인 및 크기, 들어갈 내용 미리 정리 필요", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-19 15:31", "mo": "2026-05", "user": "민복기", "text": "본 자료는 최신자료는 아니고, 제주 오픈당시 시점에서 작성했던 버전이라 참고용으로만 보시면 될 듯\n• 공간소개 리플렛, 공간 소개 리플렛, 공간 사용 설명서, 키비주얼 및 제작물 예시", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-19 16:19", "mo": "2026-05", "user": "최주원", "text": "[5/29(금) 가오픈 행사_현장스케치 촬영 작가 섭외(완)]\n• 사업자: 일오의하루(박소윤)\n• 요청과업; 행사 중 상상마루 1,2,4층 현장을 촬영 \n• 요청시간: 행사당일 10:30 ~ 16:00 \n<@U0AH35CCP1A> <@U07LXU3HH1A> 섭외 완료했습니다. 내용 공유드립니다.", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-19 16:20", "mo": "2026-05", "user": "최주원", "text": "*[5/29(금) 가오픈 행사_기획실 제안의 온보딩청도 팀 | 1층 대합실 온누리 국악팀 공연]*\n• *일시:* 5월 29일 (금) 11:00\n• *장소:* 상상마루 1층 대합실\n• *확인 요청 사항:* 공연 인원, 공연 성격, 공연 소요 시간, 음향 포함 장비 관련 내용\n시간 조율 완료됐습니다. 위의 내용 확인 후 공유드리겠습니다", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-19 17:15", "mo": "2026-05", "user": "최주원", "text": "*[5/29(금) 가오픈 행사 제작물 요청(다로리 담당)]*\n• 작업내용: 행사 소개 전단지 1종, 커피 쿠폰 1종, 헬스장 이벤트 쿠폰 1종\n• 담당: 다로리인 양혜진님\n• 일정: 디자인 시안 5/22까지, 최종 제작 완료 5/29\n• 수량: 전단지 500부, 쿠폰 각 200부\n현재 수량을 위와 같이 설정해도 현장 운영에 무리가 없을지 확인 부탁드립니다.\n문제 없으면 해당 기준으로 제작 요청 진행하겠습니다! :slightly_smiling_face:\n<@U0AH35CCP1A> <@U07LXU3HH1A>", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-19 20:15", "mo": "2026-05", "user": "박지연", "text": "[개관식 준비 중간 보고]\n\n1. 5월 29일(금) 행사\n• 조형물 제작\n   - 페이퍼팝 제작물(포토월, 안내 부스, 대형 레터링, 사람 조형물) 규격, 형태 내용 소통 완료\n   - 포토월 제작 키비주얼 20일(수) 전달\n   - 레터링 시안: gpt로 이미지 생성 *색조합 확인 필요(상상마루 브랜딩 컬러 활용)\n   - 안내부스 탈착형 제작 가능\n   - 사람 조형물은 외벽 현수막 시안 내 사람 캐릭터 활용\n   - 견적서 재요청 완료\n\n• 브릭: 신구 건물&고사상 총 3개(미니어처 크기) 5/27(수) 납품 예정 * 내일 사진 공유 예정\n2. 6월 19일(금) 행사\n• 프로그램 소통\n  - 미식체험 (오전) 꾸꾸네: 복숭아 넣은 타코\n  - 식물 심기(그린부츠 박미나 대표): 회의실1 사용(회의실 앞", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-20 11:54", "mo": "2026-05", "user": "최주원", "text": "*[6/19(금) 행사 준비_4층 입주기관 및 단체 정보 종이판넬]*  \n종이판넬에 들어갈 내용을 정리해봐도 괜찮을까요? 레퍼런스 하나 같이 보냅니다! 아래 내용이 들어간 판넬을 거치할 수 있을 것 같은데요.\n\n```기업명: OOO\n#해시태그1 #해시태그2 #해시태그3 \n기업 비전(혹은 슬로건) \n\n주요사업: 1~3개 \n사업대상: OO \n[OOO]과 함께 할 수 있는 일: 이미지+설명\n\n팀정보: 대표, 설립연도, 법인격, 소재지, 사업지역, 홈페이지 주소(QR코드), SNS 주소(QR코드)```", "subs": ["홈페이지", "SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-05-20 11:58", "mo": "2026-05", "user": "최주원", "text": "[공유] 이혜민 디자이너 작업 일정 안내드립니다.\n• 오늘 18시 이후: [키비주얼] 송부 예정\n• 내일 중: [외벽현수막] 시안 송부 예정\n• 다음 주 중: [거리현수막], [6/19 행사 포스터] 시안 송부 예정\n다음 주 작업 건의 경우, 이번주 일정에 밀려서 정확한 날짜를 상호 소통하지 않았는데요. 5/28까지 일정으로 조정하여 공유드려도 괜찮을지 확인 부탁드립니다. <@U0AH35CCP1A> <@U07LXU3HH1A>", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-20 12:03", "mo": "2026-05", "user": "민복기", "text": "네, 거리현수막, 행사포스터 시안 관련해서 소통해보고 5월 내 일정이 가능한지 확인해보고, 현실적으로 일정이 어려우면 별건으로 진행해도 무방할 듯 합니다.\n• 어렵다했을 때, 5월 29일용 간단 소개 제작물은 키비주얼 활용하고 내용 정리해서 다로리인에 전달해서 제작하고, \n• 6월 19일용 현수막이나 포스터는 준비되는대로 공유 받는 방식이면 어떨까 싶네요.\n일전에 정아님 요청하셨던 것 처럼 (작업은 6월로 밀리거나 출근 이후 계속 진행된다하더라도) 디자이너 비용처리는 5월 중에 마무리 부탁드립니다!", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-20 13:37", "mo": "2026-05", "user": "최주원", "text": "*[이혜민 디자이너- 작업비용 지출결의의 건]* \n서류 작성했어요!  지출결의, 지급조서 작성했습니다. 경로 공유드려요.\n혜민님께 시안 파일을 받으면 보완할 예정입니다.\n• 서류경로: Z:\\경북시민재단\\004. 청도혁신센터\\026. 2026년도 사업\\05. 2026_소통협력주간\\00 계약 및 정산\\99 사업정산\\02 결의서\\CDCMZ-26-지-05-28-000 [소통협력주간] 청도군 소통협력공간 개관 행사를 위한 현수막 다중 디자인 제작비 지출의 건\n• 작업 계약기간: 4/30(목) ~ 5/27(수)\n• 결산일: 5/28(목) \n위와 같이 임의로 작성했습니다. 확인 부탁드립니다!\n\n<@U07LXU3HH1A> <@U0ABRLV698R>", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-20 16:57", "mo": "2026-05", "user": "박지연", "text": "[이혜민 디자이너 작업 일정 공유]\n• 5/29 사용 작업물: 외벽 대형 현수막 시안, 거리 현수막 시안  \n• 외벽 현수막 시안: 21일(목) 오전 - 기존 일정 동일\n   -이번주 목요일 오후 ~ 다음주 월요일 오전까지 작업 어려움. 시안 수정 요청 사항 카톡으로 남겨두면 작업 후 월요일 오후 공유 가능\n• 거리 현수막 시안: 26일 *27일 게시 예정(21세기 인쇄소 소통 완료)\n• 키비주얼 전달: 전체(통째) - 오늘 저녁, 개별 요소 분리한 것 - 다음주 월요일 오후  \n• 디자인 비용: 150만 원", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-20 17:01", "mo": "2026-05", "user": "박지연", "text": "<@U07LXU3HH1A> 5월 29일 추가 홍보물 제작용 키비주얼을 2차 가공해도 된다고 확인받았습니다~", "subs": ["상상마루_개관", "연고_마케팅"], "parents": ["소통협력공간상상마루", "시군구연고산업"]}, {"dt": "2026-05-20 17:12", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "<@U09L6N45ARJ> 소통하신다고 수고 많으셨습니다. 29일 행사 준비를 위한 키비주얼 2차 가공 내용 확인했어요!", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-20 17:56", "mo": "2026-05", "user": "최주원", "text": "*[5/29(금) 가오픈 행사 제작물 요청(다로리 담당)]*\n아래 내용으로 정리하여 작업 요청드렸습니다.", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-21 10:09", "mo": "2026-05", "user": "박지연", "text": "[포토월 시안]\n혜진 님께 넘기기 전에 대략적으로 포토월 시안 만들어 봤습니다.\n첫 번째 사진 위치에 4mX2m 크기로 만들 예정입니다.\n두 번째 사진은 이혜민 디자이너님 시안 적용했고, 세 번째, 네 번째 사진은 상상마루 브랜딩에서 사용된 '마루옐로우', '마루홍시' 적용해 봤습니다.\n보시고 의견 주시면 혜진 님께 전달하겠습니다.\n*사람 크기는 무시해 주세요.^^;;", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-21 11:15", "mo": "2026-05", "user": "손정아", "text": "포토월은 당일 행사에 참여하는 모두가 사용할수있으니, 플랫폼 행사 참여자도 함께 참여할수 있도록 하면 어떨지 제안드려요!\n출범식행사 참여자도, 포토월이용하도록 안내할게요!", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-21 11:57", "mo": "2026-05", "user": "박지연", "text": "[포토월 시안 2]\n페이퍼팝에 맡길 버스 포토월 시안 다시 공유합니다. 먼저 공유해 드린 시안은 무시하셔도 됩니다~ 아래쪽은 안정감을 위해 흰색으로 막을 예정입니다.\n디자인은 바로 페이퍼팝과 진행하기로 했고, 혜진 님께도 연락했습니다~\n<@U0AH35CCP1A> <@U07LXU3HH1A>", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-21 14:40", "mo": "2026-05", "user": "곽정의", "text": "5월 29일에도 폴라로이드 사용하실까요?\n• 사용가능한 폴라로이드 사진기 5개\n• 남은 필름 없음\n• 필름 몇장 구입하면 될까요? 필름이 생각보다 비싼 것 같아요...20장에 2만 5천원 정도 합니다.", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-21 15:24", "mo": "2026-05", "user": "박지연", "text": "상상마루 컬러 활용하여 여러가지 시안 만들어 봤습니다.\n의견 주시면 페이퍼팝에 시안 넘기겠습니다~", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-21 17:40", "mo": "2026-05", "user": "박지연", "text": "[개관 일정에 따른 정식 워딩]\n• 5월 29일(금): 개관\n• 6월 19일(금): 개관 행사\n위 단어로 홍보물, 게시물 작성 시 사용하면 됩니다~", "subs": ["상상마루_개관", "SNS관리"], "parents": ["디지털홍보", "소통협력공간상상마루"]}, {"dt": "2026-05-21 18:17", "mo": "2026-05", "user": "민복기", "text": "(왼쪽)\n지속가능한 청도를 위한\n소통협력공간, 청도상상마루가 문을 엽니다.\n\n(오른쪽)\n지속가능한 청도를 위해,\n주민의 질문과 작은 시도가 이어지는\n소통협력공간 ‘청도상상마루’가 문을 엽니다.\n\n청도상상마루는\n지역의 문제를 단순히 해결의 대상으로 바라보기보다,\n주민 스스로 질문하고 실험하며 협력하는 과정이\n지역 안에 자연스럽게 이어질 수 있도록 만드는 공간입니다.\n\n과거 사람들의 떠남과 도착이 머물던 터미널 위에서,\n이제 상상마루는 주민과 방문객, 청소년과 어르신 등\n서로 다른 삶이 만나고 연결되며\n새로운 가능성을 함께 만들어가는 장소로 다시 시작합니다.\n\n우리는 이 공간이\n누군가의 정답을 전달하는 곳이 아니라,\n각자의 방식으로 참여하고 시도하며\n작은 변화가 지역 안에 천천히 쌓여가는 출발점이 되기를 바랍니", "subs": ["소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-22 16:59", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "주원님:raised_hands::skin-tone-2:\n5.29 행사 전달물 시안에 저도 의견 보탭니다. \n(로고 시안 변경 건 확인했어요~)\n\n저는 2면 설명에서 \n줄바뀜만 챙겨봐 주시면 감사드리겠습니다. \n\n“시작합” -&gt; ‘시작합니다.’ 로 문장 마칠 수 있도록만 챙겨봐 주셔요~~", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-22 17:48", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "<@U06S37Q9LHM> 아! 요 건을 지금 보았네요 :: 포토월 사용 관련해서, 물론 오시는 분들 모두 사용 가능합니다!\n\n그런데, 시안은 버스를 형상화하는 것으로 준비중이여서요, 디자인 관련해서는 위 시안과 다른 느낌으로 갈 것 같아요~ 내용 참조해 주세요:woman-gesturing-ok:", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-25 10:42", "mo": "2026-05", "user": "박지연", "text": "지혜님, 고생 많으세요~\n홍보물 시안을 2장 정도 넣으면 어떨까 싶습니다.\n옥외 대형 현수막은 수정 사항을 혜민 님께 전달한 상태입니다. 로고를 컬러로 넣었으면 한다는 피드백이 지난 금요일 오전 회의 때 나와서 수정 요청했고, 가로 현수막 시안은 내일 받기로 했어요~ (오늘 오후부터 작업 가능하다고 지난주에 피드백 받았습니다.)\n포토월 시안은 내일 오전에 페이퍼팝 대표님께 받기로 했습니다~\n위 내용 삽입 여부는 판단하셔서 군에 송부하시면 될 것 같습니다!", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-26 09:42", "mo": "2026-05", "user": "박지연", "text": "[현수막 시안]\n• 옥외 대형 현수막 중 센터 로고 세부 수정 완료\n• 거리 현수막 1차 시안 공유\n대형 현수막은 넘겨야 돼서 이걸로 확정하려고 합니다. 거리 현수막 시안 피드백 주시면 전달하겠습니다.\n\n키비주얼 요소별 전달은 오후에 받기로 했습니다~", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-26 09:51", "mo": "2026-05", "user": "박지연", "text": "[페이퍼팝 포토월 시안 공유]\n페이퍼팝 버스 포토월 시안 공유합니다~\n빨간선은 커팅라인, 파랑선은 가벽 연결 라인입니다!\n입체 레터링, 안내 부스, 등신대도 곧 공유한답니다.\n오늘 시안 확정되면 28일에 용달로 청도 도착 예정입니다~", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-26 13:28", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "<@U0AH35CCP1A> <@U09FLGVSS1L> <@U09L6N45ARJ> <@U08KTRGL2TG>\n\n5.29일 행사 이벤트 쿠폰 시안입니다. 오전 행사 점검 회의 내용 반영되었습니다.\n\n내용 및 확인 부탁드립니다. 오늘 오후에 인쇄 넘기려고 해요,\n\n________________\n\n&lt;수정된 사항&gt;\n• 청도군 로고 제외, \n• 2면 문장 열맞춤, \n• 음료제공 수정, \n• 카톡친추 큐알코드추가, \n• 카페운영시간 기재", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-26 17:19", "mo": "2026-05", "user": "박지연", "text": "[페이퍼팝 디자인 시안 공유]\n• 포토월 수정: 급하게 키비주얼 적용하여 디자인 수정 요청하였고, 작업해 주셨습니다~\n• 등신대: 지난 주에 아래 세 가지로 요청하였고, 커팅 시안 보내주셨습니다. 버스 등신대도 제작하면 좋을 것 같아서 하나 더 맡겼습니다.\n• 레터링과 안내 부스는 내일 오전 중으로 주신답니다. \n• 28일에 용달로 수령 가능하다고 박대희 대표님께 한 번 더 확인 받았습니다~", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-27 09:45", "mo": "2026-05", "user": "성강현", "text": "*[보고] 청도 마운틴영화제(코미디 영화제) 예산안 전달드립니다.*\n*<@U07LXU3HH1A>* \n1차로 영상미디어센터 권현준 센터장님이 보내주신 예산안 전달드립니다. 약 16백만원으로 잡아 두시긴했는데 청소년 영상 제작교육과 포토월 등 타 사업 대체가능한 항목을 제외하면 약 12백만원 정도로 진행 가능할 것 같습니다.\n\n여기에 당일 운영인력이나 음향 장비들을 추가하면 기존에 14백만원 예산에서도 진행 가능할 것 같고, 2백만원 정도 예산을 줄일 수도 있을 것 같습니다. 지금 청소년 대상 영상제작교육이 조금 예산이 150 정도 부족한 상황이기는 해서 조정을 요청 드리거나 주 강사는 영화제에서 보조 강사는 고향올래에서 나가는 방식도 고민해볼 만한 것 같습니다.\n\n---\n*총 예산 15백만원*\n*영상미디어센터", "subs": ["상상마루_개관", "SNS관리", "상상마루_영화제"], "parents": ["디지털홍보", "소통협력공간상상마루"]}, {"dt": "2026-05-27 10:11", "mo": "2026-05", "user": "박지연", "text": "입체 레터링, 안내부스, 버스 등신대 시안 공유합니다~", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-27 10:53", "mo": "2026-05", "user": "최주원", "text": "*[5월 29일 상상마루 개관 관련 온누리 공연 정보] 공유드려요*\n• 일시: 5월 29일 (금) 11:00-11:30\n• 공연 장소: 상상마루 1층 야외 광장\n• 공연 인원: 총 5명\n• 공연 셋리스트\n  * 아름다운 나라\n  * 인연\n  * 사랑은 늘 도망가\n  * 내 나이가 어때서\n  * 민요의 향연", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-27 13:36", "mo": "2026-05", "user": "박지연", "text": "<@U093TG40GMQ> <@U08KTRGL2TG> 님, <https://docs.google.com/spreadsheets/d/1TVCF4pf3LdNDMDLrmO-rcle-iBmJt1NOjmvzFhjaQv8/edit?gid=268933522#gid=268933522|5월 29일 행사> 내용입니다. 둘이서 먼저 얘기해보고 엑셀에 바로 이름 넣으면 될 것 같아요~ 궁금한 거 있으면 스레드 남겨 주세요~:blush:", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-27 14:20", "mo": "2026-05", "user": "성강현", "text": "주원님이랑 확인해봤는데 포토월 운영이랑 안내 부스 운영 시간대를 분리해서 진행하실 예정이시면 저희 2명씩 자리지키고 로테이션 돌면서 진행하면 어떨까 싶은데요. 이렇게 진행해도 될까요?", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-27 16:17", "mo": "2026-05", "user": "박지연", "text": "[주간업무회의 확인 사항 공유]\n확인 필요했던 내용들 결과 공유합니다.:slightly_smiling_face:\n• 6월 19일 개관 행사용 홍보물 작업: 이혜민 디자이너 출근 후 거리 현수막, 포스터, 엽서 작업 근무 외 시간 가능(금주는 작업이 어렵고, 출근 후에는 플랫폼 발대식 홍보물 준비)\n• 6월 19일 플로깅 건 다로리 소통: 군 관계자 세리머니 연계 취소 내용 전달, 오늘 오전 서 대표님과 윤신명 대표님 현장 방문 후 입구 정면 보라색 천막 장식 가능하고, 세리모니는 일기 문제가 없는 이상 실내보다 야외에서 진행하는 것 제안 \n     ※ 작년 행사 시 철제 봉으로 세웠는데 모양새가 나빠서 다른 봉을 활용할 예정이며, 비용 발생할 예정\n• 페이퍼팝 제작물: 내일 오후 2시 배차, 오후 5시 청도", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-28 09:26", "mo": "2026-05", "user": "최주원", "text": "[인스타그램 게시를 위한 초안 작성]\n'개관' 을 맞아 행사가 진행된다는 내용을 기안해서 작성했습니다. 의견 부탁드립니다. <@U0AH35CCP1A> <@U07LXU3HH1A>", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-05-28 09:40", "mo": "2026-05", "user": "민복기", "text": ":bus: [청도상상마루, *먼저 문을* 엽니다] :sparkles:\n\n안녕하세요, 청도혁신센터입니다.\n청도역 앞, 오랫동안 사람들의 이동과 기다림이 머물던 공간에 새로운 변화가 시작됩니다.\n오는 5월 29일, 소통협력공간 ‘청도상상마루’가 운영을 시작합니다.\n\n*이번 시작은 정식 개관에 앞서 주민 여러분과 공간을 먼저 나누고 경험하는 시간으로 마련됩니다.*\n공간 라운딩과 체험, 작은 공연과 참여 프로그램 등을 통해 상상마루의 첫 모습을 함께 만나보실 수 있습니다.\n\n:balloon: 이웃과 함께 만드는 첫 시작 (오전 11시~)\n오전 11시, 1층 버스 대합실에서는 경북시민재단 ‘온보딩청도’ 참여팀의 국악 공연이 펼쳐집니다.\n지역과 함께 호흡해 온 팀의 무대인 만큼, 상상마루의 첫 시작을 더욱 뜻깊게 만들", "subs": ["상상마루_개관", "소협공"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-28 09:41", "mo": "2026-05", "user": "민복기", "text": "<@U08KTRGL2TG> 먼저 문을 연다는 느낌의 워딩을 포함하는데 좋을 듯 합니다.\n개관, 개관행사 등올 구분했는데 행정에서도 개관이 중복된 메시지를 줄 것 같다고 적절한 워딩을 찾아달라고 하시더라고요.\n제작물은 상관없고, 보도자료나 sns 게시물에는 메시지 정리가 필요할 듯 하여! 참고요 :slightly_smiling_face:", "subs": ["상상마루_개관", "SNS관리"], "parents": ["디지털홍보", "소통협력공간상상마루"]}, {"dt": "2026-05-28 10:27", "mo": "2026-05", "user": "민복기", "text": "<@U07LXU3HH1A> 어제 실장 미팅 이후, 29일 행사에 대한 워딩 검토해서 제가 수정한 보도자료입니다. 관련 내용 활용해서 보도자료 배포하면 좋을 것 같습니다.  <@U08KTRGL2TG> SNS 게시물 등 내용 작성시 워딩 참고요 :slightly_smiling_face:\n<@U09FLGVSS1L> 지자체에 공유하고 센터 별도 보도자료 배포한다고 의견 나눠주시면 감사 :slightly_smiling_face:", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-05-28 10:32", "mo": "2026-05", "user": "최주원", "text": "인스타/홈페이지/페이스북/카카오채널에 게시해두었습니다~!", "subs": ["홈페이지", "SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-05-28 14:10", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "좋습니다. 저는 현재 소개되어 있는 6.19일(금) 투어 동선에는 의견은 없습니다.\n\n다만, 당일에 배포될 참여자 굿즈(떡과 타월) 의 전달 시점이 투어 시작이어야 할지,\n마칠 때여야 할지에 대해 결정이 어렵네요.\n\n해당 부분과\n1. 굿즈 배포시점 \n2. 동선 확인 \n에 대해 <@U0AH35CCP1A> <@U09FLGVSS1L> <@U06TKCV1P5F> 님 의견 주시면 당일 투어 동선을 확정하도록 하겠습니다.\n\n지연님이 올리신 (투어) 동선 점검 자료 확인 부탁드립니다.:woman-gesturing-ok:", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-28 14:47", "mo": "2026-05", "user": "박지연", "text": "[페이퍼팝 제작물 도착 예정 시간]\n오늘 오후 6시 30분 도착 예정입니다. <@U093TG40GMQ> <@U08KTRGL2TG> 님 조립 같이 해요ㅋㅋㅋ", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-28 15:21", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "<@U09FLGVSS1L> <@U09L13PMG14> <@U0AU287R064> @ <@U09L6N45ARJ> <@U08KTRGL2TG> <@U093TG40GMQ>\n\n오늘 오후 5시에 내일 있을 행사 점검 및 동선 논의 회의 진행할 예정입니다.\n\n시간 확인 부탁드립니다:four_leaf_clover::four_leaf_clover:\n\n장소는 2층 카페에서 회의해요~!", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-28 15:23", "mo": "2026-05", "user": "유정은Jung-Eun", "text": "<@U0AH35CCP1A> 복기님, 내일 미니 오픈 행사 점검 회의를 오후5시에 2층 카페에서 진행할 예정입니다.\n\n회의 내용은 내일 스텝 동선과 역할 분담 등의 내용이 될 듯합니다.\n\n내용 확인 부탁드립니다.  시간 괜찮으시면 참석도 부탁드립니다 :woman-gesturing-ok:", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-29 08:41", "mo": "2026-05", "user": "이영은", "text": "어제 저녁에 청도투데이 박창현 기자와 통화했어요!\n\n1. 청도투데이 발행 일정 공유\n• 기존 지면은 2주 단위 수요일 발행\n• 선거 일정으로 인해 차기 발행은 월요일로 조정 예정 : 지난 신문 5/27(수) 발행, 다음 신문은 6/10(수)이어야 선거 결과를 실어 6/8(월) 발행 예정\n• *보통 발행 주 월요일까지 자료 취합 후 화요일 편집, 수요일 발행 진행*\n2. 개관 행사 기사 게재 관련\n• 개관 관련 내용을 지면에 비교적 크게 게재 가능하다는 의견 전달\n• 다음 주 금요일인 *6/5(월)까지 오픈식 행사 기사 취합 시 차기 발행본(6/8) 반영 가능*\n• *온라인 기사는 자료 수신 후 1~2일 내 업로드 가능*\n3. 향후 주요 홍보 시점 논의\n• 5월 개관 행사는 가오픈 성격으로 운영 예정으로 별도", "subs": ["상상마루_개관"], "parents": ["소통협력공간상상마루"]}, {"dt": "2026-05-29 09:39", "mo": "2026-05", "user": "최주원", "text": "5/29 당일 포스팅 -인스타/페북/카카오채널 게시했습니다!", "subs": ["SNS관리"], "parents": ["디지털홍보"]}, {"dt": "2026-05-29 19:17", "mo": "2026-05", "user": "민복기", "text": "공보실에서 공간에 사람이 가득있는 사진, 영상 공유 해 달라고 했어요. 오늘 우리가 찍은 사진 및 영상 소스 공유해 주고 예전에 커먼즈 네트워크 포럼 사진도 같이 공유 해 주면 좋을 것 같아요. 오늘 다들 정말 수고 많았습니다. 주말 푹 쉬세요. :) :raised_hands:", "subs": ["커먼즈네트워크"], "parents": ["파트너십"]}];
+
+// ── 뷰어 렌더
+let currentMsgs = [];
+let allMsgs = EMBEDDED_MSGS;
+
+function renderMsgs(msgs) {
+  const list = document.getElementById("msgList");
+  const count = document.getElementById("msgCount");
+  if (!msgs.length) {
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8">메시지가 없습니다.</div>';
+    count.textContent = "0건";
+    return;
+  }
+  count.textContent = msgs.length + "건 표시 중";
+  list.innerHTML = msgs.slice(0, 200).map(m => {
+    const badges = m.subs.map(s => {
+      const lbl = STRUCTURE.flatMap(p=>p.subs).find(x=>x.id===s)?.label||s;
+      const col = COLOR_MAP[s]||"#94a3b8";
+      return `<span class="msg-badge" style="background:${col}">${lbl}</span>`;
+    }).join(" ");
+    const txt = m.text.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    return `<div class="msg-item">
+      <div class="msg-meta">
+        <span class="msg-dt">${m.dt}</span>
+        <span class="msg-user">${m.user}</span>
+        ${badges}
+      </div>
+      <div class="msg-text">${txt}</div>
+    </div>`;
+  }).join("");
+  if (msgs.length > 200) {
+    list.innerHTML += `<div style="padding:12px;text-align:center;color:#94a3b8;font-size:12px">+ ${msgs.length-200}건 더 있음 (검색/필터로 좁혀주세요)</div>`;
+  }
+}
+
+function applyFilter() {
+  const parent = document.getElementById("filterParent").value;
+  const month  = document.getElementById("filterMonth").value;
+  const kw     = document.getElementById("searchInput").value.trim().toLowerCase();
+  currentMsgs = allMsgs.filter(m => {
+    if (parent && !m.parents.includes(parent)) return false;
+    if (month  && m.mo !== month)              return false;
+    if (kw     && !m.text.toLowerCase().includes(kw)) return false;
+    return true;
+  });
+  renderMsgs(currentMsgs);
+}
+
+document.getElementById("filterParent").addEventListener("change", applyFilter);
+document.getElementById("filterMonth").addEventListener("change", applyFilter);
+document.getElementById("searchInput").addEventListener("input", applyFilter);
+
+// ── 파일 선택 fallback
+document.getElementById("fileInput").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      const msgs = data.messages || [];
+      allMsgs = msgs.filter(m => m.text && m.text.length >= 30 && m.projects && m.projects.length > 0).map(m => {
+        const sub_map = {"소협공": "소협공", "상상마루_개관": "상상마루_개관", "상상마루_헬씨": "상상마루_헬씨", "상상마루_커피챗": "상상마루_헬씨", "상상마루_영화제": "상상마루_영화제", "연고_창업교육": "연고_창업교육", "연고_마케팅": "연고_마케팅", "연고_외국인": "연고_외국인", "연고_비자": "연고_비자", "로컬_협의회": "로컬_협의회", "로컬_사람책": "로컬_사람책", "로컬_오피스아워": "로컬_오피스아워", "홈페이지": "홈페이지", "SNS관리": "SNS관리", "노션_DB": "노션_DB", "이화여대": "이화여대", "커먼즈네트워크": "커먼즈네트워크", "총회": "총회", "채용": "채용"};
+        const par_map = {"소협공": "소통협력공간상상마루", "상상마루_개관": "소통협력공간상상마루", "상상마루_헬씨": "소통협력공간상상마루", "상상마루_커피챗": "소통협력공간상상마루", "상상마루_영화제": "소통협력공간상상마루", "연고_창업교육": "시군구연고산업", "연고_마케팅": "시군구연고산업", "연고_외국인": "시군구연고산업", "연고_비자": "시군구연고산업", "로컬_협의회": "로컬크리에이터", "로컬_사람책": "로컬크리에이터", "로컬_오피스아워": "로컬크리에이터", "홈페이지": "디지털홍보", "SNS관리": "디지털홍보", "노션_DB": "디지털홍보", "이화여대": "파트너십", "커먼즈네트워크": "파트너십", "총회": "조직행정", "채용": "조직행정"};
+        const subs = [...new Set((m.projects||[]).map(p=>sub_map[p]).filter(Boolean))];
+        const parents = [...new Set((m.projects||[]).map(p=>par_map[p]).filter(Boolean))];
+        return { dt:m.datetime_kst||"", mo:m.month||"", user:m.user_name||"", text:(m.text||"").slice(0,400), subs, parents };
+      }).filter(m=>m.subs.length>0);
+      document.getElementById("loadStatus").textContent = `✅ ${file.name} 로드 완료 (${allMsgs.length}건)`;
+      applyFilter();
+    } catch(err) {
+      document.getElementById("loadStatus").textContent = "❌ JSON 파싱 오류: " + err.message;
+    }
+  };
+  reader.readAsText(file, "utf-8");
+});
+
+// ── 초기 로드 (임베드 데이터로 바로 시작)
+document.getElementById("loadStatus").textContent = `✅ 임베드 데이터 로드 완료 (${allMsgs.length}건)`;
+applyFilter();
+
+// ── "메시지 보기" 버튼
+document.querySelectorAll(".view-msg-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const sub = btn.dataset.sub;
+    // 부모 id 찾기
+    const parentId = STRUCTURE.find(p=>p.subs.some(s=>s.id===sub))?.id || "";
+    document.getElementById("filterParent").value = parentId;
+    applyFilter();
+    document.getElementById("msg-viewer").scrollIntoView({behavior:"smooth",block:"start"});
+    // 해당 세부사업만 필터
+    currentMsgs = allMsgs.filter(m => m.subs.includes(sub));
+    renderMsgs(currentMsgs);
+  });
+});
+
+// ── 네비 탭
+const navTabs = document.querySelectorAll(".nav-tab");
+navTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    const target = document.getElementById(tab.dataset.target);
+    if (target) target.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+});
+
+// ── IntersectionObserver (스크롤 위치 추적)
+const observed = new Map();
+document.querySelectorAll(".proj-section, .sub-card").forEach(el => {
+  observed.set(el.id, el);
+});
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.id;
+    // 사이드바 강조
+    document.querySelectorAll(".sb-parent,.sb-sub").forEach(el=>el.classList.remove("active"));
+    if (id.startsWith("sub-")) {
+      document.querySelector(`[data-id="${id}"]`)?.classList.add("active");
+      // 상위 부모도 강조
+      const subId = id.replace("sub-","");
+      const parentId = STRUCTURE.find(p=>p.subs.some(s=>s.id===subId))?.id;
+      if (parentId) document.querySelector(`[data-id="${parentId}"]`)?.classList.add("active");
+    } else {
+      document.querySelector(`[data-id="${id}"]`)?.classList.add("active");
+    }
+    // 네비탭 강조
+    navTabs.forEach(t=>t.classList.remove("active"));
+    const pId = id.startsWith("sub-")
+      ? STRUCTURE.find(p=>p.subs.some(s=>s.id===id.replace("sub-","")))?.id
+      : id;
+    document.querySelector(`.nav-tab[data-target="${pId}"]`)?.classList.add("active");
+  });
+}, { threshold: 0.15, rootMargin: "-100px 0px -60% 0px" });
+
+observed.forEach(el => io.observe(el));
+
+// ── 사이드바 클릭 → 스크롤
+document.querySelectorAll(".sb-parent").forEach(el => {
+  el.addEventListener("click", () => {
+    document.getElementById(el.dataset.id)?.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+});
+document.querySelectorAll(".sb-sub").forEach(el => {
+  el.addEventListener("click", () => {
+    document.getElementById(el.dataset.id)?.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+});
+</script>
+</body>
+</html>
