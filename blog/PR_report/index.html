@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>청도혁신센터 보도자료 복합 PR 효과 종합 리포트</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+  :root{
+    --bg:#F6F3EC;
+    --surface:#FFFFFF;
+    --surface-tint:#EFEBDF;
+    --ink:#22241F;
+    --muted:#6B6A62;
+    --line:#DEDACB;
+    --accent:#B05A2E;
+    --accent-soft:#F1E0D2;
+    --accent-deep:#7A3B1C;
+    --teal:#1F5B52;
+    --teal-soft:#E1EEEA;
+    --navy:#185fa5;
+    --gold:#D8A24A;
+    --gray-step:#6B6A62;
+
+    --radius:0px;
+    --radius-pill:999px;
+    --bar-w:4px;
+
+    --space-xs:8px;
+    --space-sm:14px;
+    --space-md:24px;
+    --space-lg:40px;
+    --space-xl:64px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    line-height:1.65;
+  }
+  a{color:var(--accent-deep);}
+
+  /* ---------- 상단 네비게이션 ---------- */
+  header.topnav{
+    position:sticky;top:0;z-index:50;
+    background:var(--surface);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav-inner{
+    max-width:1080px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 24px;gap:24px;
+    flex-wrap:wrap;
+  }
+  .brand{
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .brand .org{
+    font-size:12px;letter-spacing:.06em;color:var(--muted);
+  }
+  .brand .title{
+    font-size:15px;font-weight:700;color:var(--ink);
+  }
+  nav.tabs{
+    display:flex;gap:4px;overflow-x:auto;
+    -ms-overflow-style:none;scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    appearance:none;border:none;background:transparent;
+    font-family:inherit;font-size:14px;font-weight:600;
+    color:var(--muted);
+    padding:10px var(--space-sm);border-radius:var(--radius);
+    cursor:pointer;white-space:nowrap;
+    transition:background .15s,color .15s;
+  }
+  nav.tabs button:hover{background:var(--accent-soft);color:var(--accent-deep);}
+  nav.tabs button.active{
+    background:var(--accent);color:#fff;
+  }
+  nav.tabs button:focus-visible{outline:2px solid var(--accent-deep);outline-offset:2px;}
+
+  /* ---------- 본문 ---------- */
+  main{max-width:1080px;margin:0 auto;padding:var(--space-lg) var(--space-md) 80px;}
+  .panel{display:none;}
+  .panel.active{display:block;animation:fadeIn .2s ease;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+  .eyebrow{
+    font-size:12px;letter-spacing:.08em;color:var(--accent-deep);
+    font-weight:700;margin:0 0 var(--space-xs);
+  }
+  h1.page-title{
+    font-size:30px;line-height:1.3;margin:0 0 6px;font-weight:800;
+  }
+  .page-sub{
+    font-size:15px;color:var(--muted);margin:0 0 var(--space-lg);
+  }
+
+  /* 단락 구분: 인덱스 배지 + 굵은 액센트 라인 */
+  .panel{counter-reset:section;}
+  h2.section-title{
+    counter-increment:section;
+    font-size:20px;font-weight:700;
+    margin:var(--space-xl) 0 var(--space-md);
+    padding-top:var(--space-md);
+    display:flex;align-items:center;gap:10px;
+  }
+  h2.section-title::before{
+    content:counter(section, decimal-leading-zero);
+    display:inline-flex;align-items:center;justify-content:center;
+    width:28px;height:28px;flex:0 0 auto;
+    background:var(--accent);color:#fff;
+    font-size:12px;font-weight:700;
+  }
+  h2.section-title{border-top:var(--bar-w) solid var(--line);}
+  h2.section-title:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+  h3.subsection-title{
+    font-size:15px;font-weight:700;color:var(--ink);
+    margin:var(--space-md) 0 var(--space-xs);
+  }
+
+  /* 자료 블록(표/차트/콜아웃) 공용 — 본문과 배경을 분리 */
+  .data-block{
+    background:var(--surface-tint);
+    border:1px solid var(--line);
+    padding:var(--space-md);
+    margin-bottom:var(--space-md);
+  }
+
+  /* 요약 탭: 숫자 카드 */
+  .stat-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-sm);
+    margin-bottom:var(--space-xs);
+  }
+  .stat-card{
+    background:var(--surface);border:1px solid var(--line);
+    border-left:var(--bar-w) solid var(--accent);
+    border-radius:var(--radius);padding:20px 18px;
+  }
+  .stat-card .num{
+    font-size:28px;font-weight:800;color:var(--accent-deep);
+    line-height:1.1;margin-bottom:6px;
+  }
+  .stat-card .label{
+    font-size:13px;color:var(--muted);
+  }
+
+  /* 결론 콜아웃 */
+  .callout{
+    margin:var(--space-md) 0 var(--space-lg);
+    background:var(--teal-soft);
+    border:1px solid #BFD6CF;
+    border-left:var(--bar-w) solid var(--teal);
+    border-radius:var(--radius);
+    padding:22px var(--space-md);
+  }
+  .callout .callout-label{
+    font-size:12px;font-weight:700;letter-spacing:.06em;
+    color:var(--teal);margin-bottom:var(--space-xs);
+  }
+  .callout p{margin:0;font-size:16px;font-weight:600;color:#163F38;}
+
+  /* 탭 바로가기 카드 */
+  .nav-cards{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-sm);
+  }
+  .nav-card{
+    display:block;text-decoration:none;
+    background:var(--surface);border:1px solid var(--line);
+    border-top:var(--bar-w) solid var(--accent);
+    border-radius:var(--radius);padding:18px;
+    transition:background-color .15s;
+  }
+  .nav-card:hover{background:var(--accent-soft);}
+  .nav-card .nc-eyebrow{
+    font-size:11px;color:var(--muted);margin-bottom:6px;
+  }
+  .nav-card .nc-title{
+    font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;
+  }
+  .nav-card .nc-desc{
+    font-size:13px;color:var(--muted);
+  }
+
+  /* 준비중 placeholder */
+  .stub{
+    border:1px dashed var(--line);border-radius:var(--radius);
+    padding:48px var(--space-md);text-align:center;color:var(--muted);
+    font-size:14px;
+  }
+
+  /* 데이터 표 */
+  table.data-table{
+    width:100%;border-collapse:collapse;
+    margin-bottom:var(--space-md);font-size:14px;
+    background:var(--surface);border-radius:var(--radius);overflow:hidden;
+    border:1px solid var(--line);
+  }
+  table.data-table th,table.data-table td{
+    text-align:left;padding:10px var(--space-sm);border-bottom:1px solid var(--line);
+  }
+  table.data-table th{
+    background:var(--surface-tint);font-weight:700;font-size:13px;color:var(--muted);
+  }
+  table.data-table tr:last-child td{border-bottom:none;}
+  table.data-table tr.hl td{background:var(--accent-soft);}
+
+  .note-list{margin:0 0 var(--space-md);padding-left:20px;font-size:14px;color:var(--ink);}
+  .note-list li{margin-bottom:var(--space-xs);}
+  code{
+    background:var(--surface-tint);border-radius:var(--radius);padding:2px 6px;
+    font-size:13px;font-family:"SFMono-Regular",Consolas,monospace;
+    color:var(--accent-deep);
+  }
+
+  .chart-wrap{
+    position:relative;width:100%;height:340px;
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:var(--space-sm);margin-bottom:var(--space-xs);
+  }
+  .chart-legend{
+    display:flex;gap:18px;flex-wrap:wrap;
+    font-size:13px;color:var(--muted);margin-bottom:var(--space-md);
+  }
+  .chart-legend .dot{
+    display:inline-block;width:10px;height:10px;border-radius:var(--radius-pill);
+    margin-right:6px;vertical-align:middle;
+  }
+
+  /* PR 캠페인 파이프라인 */
+  .pipeline{
+    display:flex;align-items:stretch;gap:6px;
+    margin-bottom:var(--space-sm);overflow-x:auto;
+    padding:4px 2px var(--space-sm);
+  }
+  .pipeline-step{
+    flex:1 1 0;min-width:128px;
+    background:var(--surface);border:1px solid var(--line);
+    border-top:var(--bar-w) solid var(--step-color);
+    border-radius:var(--radius);padding:14px 12px;
+    text-align:center;
+  }
+  .pipeline-step .ps-day{
+    font-size:11px;font-weight:700;letter-spacing:.05em;
+    color:var(--step-color);margin-bottom:6px;
+  }
+  .pipeline-step .ps-name{
+    font-size:14px;font-weight:700;color:var(--ink);
+    margin-bottom:var(--space-xs);line-height:1.3;
+  }
+  .pipeline-step .ps-measure{
+    font-size:12px;color:var(--muted);line-height:1.4;
+  }
+  .pipeline-arrow{
+    display:flex;align-items:center;justify-content:center;
+    color:var(--line);font-size:18px;flex:0 0 auto;
+    padding:0 2px;
+  }
+  .pipeline-note{
+    font-size:13px;color:var(--muted);margin-bottom:var(--space-lg);
+  }
+  @media (max-width:760px){
+    .pipeline{flex-direction:column;}
+    .pipeline-arrow{transform:rotate(90deg);padding:4px 0;}
+  }
+
+  /* PR 채널 특성 카드 */
+  .channel-cards{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:var(--space-xs);
+    margin-bottom:var(--space-md);
+  }
+  .channel-card{
+    background:var(--surface);border:1px solid var(--line);
+    border-top:var(--bar-w) solid var(--ch-color);
+    border-radius:var(--radius);padding:14px 10px;text-align:center;
+  }
+  .channel-card i{font-size:22px;color:var(--ch-color);margin-bottom:8px;display:block;}
+  .channel-card .ch-name{font-size:13px;font-weight:700;margin-bottom:4px;}
+  .channel-card .ch-role{font-size:11px;color:var(--muted);line-height:1.4;}
+  @media (max-width:760px){
+    .channel-cards{grid-template-columns:repeat(2,1fr);}
+  }
+
+  footer.report-footer{
+    max-width:1080px;margin:0 auto;padding:0 var(--space-md) 48px;
+    color:var(--muted);font-size:12px;
+    border-top:1px solid var(--line);padding-top:18px;
+  }
+
+  @media (max-width:760px){
+    .stat-grid,.nav-cards{grid-template-columns:repeat(2,1fr);}
+    h1.page-title{font-size:24px;}
+  }
+
+  /* ---------- 인쇄 모드 ---------- */
+  @media print{
+    header.topnav{display:none;}
+    .panel{display:block !important;page-break-after:always;}
+    .panel:last-of-type{page-break-after:auto;}
+    body{background:#fff;}
+    .stub{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <span class="org">청도혁신센터</span>
+      <span class="title">보도자료 복합 PR 효과 종합 리포트</span>
+    </div>
+    <nav class="tabs" id="tabnav">
+      <button data-tab="summary" class="active">요약</button>
+      <button data-tab="timing">시점별 유입 분석</button>
+      <button data-tab="digital">디지털 효과 분석</button>
+      <button data-tab="media">매체 분석</button>
+      <button data-tab="method">측정 방법론</button>
+      <button data-tab="next">다음 단계</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== 0. 요약 ===================== -->
+  <section class="panel active" id="panel-summary">
+    <p class="eyebrow">EXECUTIVE SUMMARY</p>
+    <h1 class="page-title">보도자료, 무엇을 만들어냈나</h1>
+    <p class="page-sub">2026년 5~6월 두 차례 보도자료 배포와 동시에 진행된 복합 PR 활동의 효과를 종합한다.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="num">37건</div>
+        <div class="label">누적 매체 게재 (중복 제외 30개 매체)</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">인지도</div>
+        <div class="label">보도자료의 역할 추정 — 홈페이지 트래픽은 움직였으나 신청 전환과의 직접 연결은 약함</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">156명</div>
+        <div class="label">홈페이지 방문자 일일 최고치(6/16)</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">2회</div>
+        <div class="label">보도자료 배포 (5.29 개관 / 6.19 주간)</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">한 줄 결론</div>
+      <p>보도자료와 인스타그램은 같은 목적의 채널이 아니다 — <strong>보도자료는 홈페이지 트래픽·기관 인지도를 끌어올리는 역할</strong>(두 배포 모두 직후 방문자 최고치), <strong>인스타그램은 실제 프로그램 신청 전환에 더 가까운 채널</strong>(게시 직후·+1일 구간에 신청이 몰리는 경향)로 역할이 나뉘는 것으로 보인다. 다만 채널 게시가 한 주에 몰려 있고 모수가 작아(신청 28건) 단정하기는 어렵다 — 다음 캠페인부터는 채널을 분리해 배포해 이 구분을 검증한다.</p>
+    </div>
+
+    <h2 class="section-title">자세히 보기</h2>
+    <div class="nav-cards">
+      <a class="nav-card" href="#timing" data-goto="timing">
+        <div class="nc-eyebrow">01</div>
+        <div class="nc-title">시점별 유입 분석</div>
+        <div class="nc-desc">홍보 시점과 유입량 증가가 얼마나 맞물렸는지</div>
+      </a>
+      <a class="nav-card" href="#digital" data-goto="digital">
+        <div class="nc-eyebrow">02</div>
+        <div class="nc-title">디지털 효과 분석</div>
+        <div class="nc-desc">홈페이지·인스타그램 데이터와 채널 중첩 타임라인</div>
+      </a>
+      <a class="nav-card" href="#media" data-goto="media">
+        <div class="nc-eyebrow">03</div>
+        <div class="nc-title">매체 분석</div>
+        <div class="nc-desc">배포 매체의 Tier 구성과 회차별 성격 차이</div>
+      </a>
+      <a class="nav-card" href="#method" data-goto="method">
+        <div class="nc-eyebrow">04</div>
+        <div class="nc-title">측정 방법론</div>
+        <div class="nc-desc">다음 캠페인에서 단독 효과를 분리하는 방법</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================== 1. 시점별 유입 분석 ===================== -->
+  <section class="panel" id="panel-timing">
+    <p class="eyebrow">01 · TIMING</p>
+    <h1 class="page-title">시점별 유입 분석</h1>
+    <p class="page-sub">언제 홍보했고, 언제 유입이 늘었는가 — 채널 게시 시점과 유입량 변화를 직접 대조한다.</p>
+
+    <h2 class="section-title">홍보 시점 정리</h2>
+    <table class="data-table">
+      <thead><tr><th>날짜</th><th>채널</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>5/28</td><td>보도자료</td><td>5.29 개관 보도자료 배포 (14건 중 대다수 당일)</td></tr>
+        <tr><td>5/30~6/3</td><td>보도자료</td><td>5.29 배포분 잔여 게재 (3건)</td></tr>
+        <tr><td>6/11</td><td>인스타그램</td><td>소통협력주간 안내 게시(릴스 1차)</td></tr>
+        <tr><td>6/12</td><td>오프라인/로컬</td><td>현수막·포스터 게시, 청도사랑카페 게시</td></tr>
+        <tr><td>6/15</td><td>인스타그램</td><td>릴스 2차 게시</td></tr>
+        <tr><td>6/16</td><td>온라인</td><td>청도군 블로그 게시</td></tr>
+        <tr><td>6/16~17</td><td>보도자료</td><td>6.19 주간 보도자료 배포 (23건 중 대다수 이틀에 집중)</td></tr>
+        <tr><td>6/19</td><td>인스타그램</td><td>릴스 3차 게시</td></tr>
+        <tr><td>6/18~22</td><td>보도자료</td><td>6.19 배포분 잔여 게재</td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">유입량 시계열 대조</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:-8px;">홈페이지 방문자를 단일 기준으로 두고, 각 채널의 게시일을 마커로 표시해 시점 일치 여부만 확인한다. (인스타그램 노출수는 광고 영향으로 추정되어 결과 지표에서 제외 — 아래 각주 참고)</p>
+    <div class="chart-wrap">
+      <canvas id="timingChart" role="img" aria-label="2026년 5월~6월 홈페이지 방문자 추이와 인스타그램·현수막·블로그·보도자료 게시일 마커">5월1일부터 6월24일까지 홈페이지 방문자 일별 추이와 채널별 게시일 표시</canvas>
+    </div>
+    <div class="chart-legend">
+      <span><span class="dot" style="background:#185fa5;"></span>홈페이지 방문자</span>
+      <span><span class="dot" style="background:#6B6A62;"></span>보도자료 배포일</span>
+      <span><span class="dot" style="background:#B05A2E;"></span>인스타그램 릴스 게시일(3회)</span>
+      <span><span class="dot" style="background:#1F5B52;"></span>현수막·포스터·카페 게시일</span>
+      <span><span class="dot" style="background:#22241F;"></span>청도군 블로그 게시일</span>
+    </div>
+    <p style="color:var(--muted);font-size:13px;margin-top:-6px;">※ 인스타그램 페이지 단위 노출(6/11~17, 499~1,633회)은 같은 기간 게시물 단위 노출(42회)과 크게 어긋나고, 활동 시작·종료와 함께 즉시 튀고 즉시 사라지는 패턴을 보여 유료 광고의 영향으로 추정한다. 실제로 릴스가 6/15에 추가 게시됐을 때 노출 규모에 별다른 추가 변동이 없었고, 6/19 릴스 게시일에는 노출이 21회로 평소 수준에 그쳐 이 추정을 뒷받침한다. 이 수치는 조직적 도달의 증거로 보지 않고, 게시 시점 정보로만 활용한다.</p>
+
+    <h2 class="section-title">홈페이지 방문자 vs 게시 시점</h2>
+    <table class="data-table">
+      <thead><tr><th>날짜</th><th>방문자</th><th>해당일 채널 활동</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>5/28</td><td>66</td><td>1차 보도자료 배포일 — 당일은 평소 수준</td></tr>
+        <tr><td>5/29</td><td>96</td><td>+1일</td></tr>
+        <tr class="hl"><td>6/1</td><td>143</td><td>1차 배포 +3일 — 기간 내 2위</td></tr>
+        <tr class="hl"><td>6/11</td><td>81</td><td>인스타그램 릴스 1차 게시일 — 평소 수준, 즉각 반응 없음</td></tr>
+        <tr class="hl"><td>6/12</td><td>94</td><td>현수막·포스터·카페 게시일 — 평소 수준</td></tr>
+        <tr class="hl"><td>6/15</td><td>113</td><td>인스타그램 릴스 2차 게시일 — 블로그 게시 전날, 평소보다 다소 높은 수준이나 보도자료 효과와 구분 안 됨</td></tr>
+        <tr class="hl"><td>6/16</td><td>156</td><td>블로그 게시 + 2차 보도자료 배포일 — 기간 내 1위</td></tr>
+        <tr class="hl"><td>6/17</td><td>137</td><td>2차 배포 +1일 — 기간 내 2위</td></tr>
+        <tr><td>6/18</td><td>83</td><td>급락</td></tr>
+        <tr class="hl"><td>6/19</td><td>83</td><td>인스타그램 릴스 3차 게시일 — 변화 없음</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--muted);font-size:13px;margin-top:-12px;">인스타그램 릴스는 6/11·6/15·6/19 세 차례 게시됐지만 세 날짜 모두 방문자 변화가 없다 — 단일 사례가 아니라 반복 확인된 패턴이다. 현수막·카페 게시일(6/12)도 마찬가지다. 방문자가 실제로 움직인 시점은 <strong>블로그 게시 + 2차 보도자료가 겹친 6/16~17</strong>과, <strong>1차 보도자료 +3일째인 6/1</strong>뿐이다.</p>
+
+    <h2 class="section-title">참고: 프로그램 신청 건수 (같은 성격의 결과 변수)</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:-8px;">소통협력공간 상상마루 체험 신청 응답 — 홈페이지 방문자처럼 "실제 행동으로 이어졌는가"를 보는 결과 변수다.</p>
+    <div class="chart-wrap" style="height:240px;">
+      <canvas id="applyChart" role="img" aria-label="날짜별 프로그램 신청 건수, 6월 12일 8건으로 최고치">날짜별 신청 건수: 6/11 2건, 6/12 8건, 6/14 1건, 6/15 5건, 6/16 5건, 6/17 6건, 6/18 1건</canvas>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>날짜</th><th>신청 건수</th><th>해당일 채널 활동</th></tr></thead>
+      <tbody>
+        <tr><td>6/11</td><td>2건</td><td>인스타그램 릴스 1차 게시일</td></tr>
+        <tr class="hl"><td>6/12</td><td>8건 (최고치)</td><td>현수막·포스터·카페 게시일</td></tr>
+        <tr><td>6/14</td><td>1건</td><td>-</td></tr>
+        <tr><td>6/15</td><td>5건</td><td>인스타그램 릴스 2차 게시일</td></tr>
+        <tr><td>6/16</td><td>5건</td><td>블로그 게시 + 보도자료 배포</td></tr>
+        <tr><td>6/17</td><td>6건</td><td>보도자료 배포 지속</td></tr>
+        <tr><td>6/18</td><td>1건</td><td>-</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--muted);font-size:13px;margin-top:-12px;">총 28건 중 6/12(현수막·카페 게시일)에 8건으로 가장 많았다. 같은 날 홈페이지 전체 방문자는 평소 수준(94명)이었던 것과 대조적이다 — 즉 현수막·카페 같은 로컬 채널은 <strong>전체 트래픽은 못 움직여도 실제 신청 행동은 끌어냈을 가능성</strong>이 있다. 모수가 28건으로 작아 확정하기는 어렵지만, "단독 채널은 효과 없음"이라는 위 결론에 예외로 남겨둘 필요가 있다.</p>
+    <p style="color:var(--muted);font-size:13px;margin-top:-4px;">다만 6/12 급증의 원인은 한 가지로 단정하기 어렵다. ① <strong>인스타 1차(6/11) +1일 지연 반응</strong>일 수도 있고, ② 6/12가 <strong>금요일(주말 직전)</strong>이라 행사 참여를 앞두고 신청이 몰린 <strong>요일 효과</strong>일 수도 있다 — 이 +1일 지연 가설을 다른 채널에도 적용해보면 현수막·카페(6/12)는 +1일인 6/13에 신청 0건으로 패턴이 깨져, 채널 전체에 일관되게 적용되는 규칙은 아니다. 채널이 겹쳐 있고 모수가 작아 현재로서는 두 가설을 가를 수 없다.</p>
+
+    <h2 class="section-title">채널별 반응 속도 비교 (홈페이지 방문자 기준)</h2>
+    <table class="data-table">
+      <thead><tr><th>채널</th><th>게시일 직후 방문자 변화</th><th>해석</th></tr></thead>
+      <tbody>
+        <tr><td>인스타그램 릴스 게시(6/11·6/15·6/19 3회)</td><td>변화 없음 — 세 게시일 모두 평소 수준(81·113·83명)</td><td>전체 트래픽은 안 움직이지만, 신청 건수는 게시 직후 구간에 몰리는 경향(아래 참고)</td></tr>
+        <tr><td>현수막·포스터·카페(6/12)</td><td>변화 없음 (94명, 평소 수준)</td><td>전체 트래픽 효과는 없으나 같은 날 신청은 8건(최고치)</td></tr>
+        <tr><td>청도군 블로그 + 2차 보도자료(6/16)</td><td>즉시 상승, 기간 내 1위(156명)</td><td>블로그와 보도자료가 같은 날 겹쳤을 때만 뚜렷한 반응</td></tr>
+        <tr><td>1차 보도자료 단독(5/28)</td><td>지연 반응, +3일째(6/1) 143명</td><td>즉시성 채널이 아니라 지연 반응 채널일 가능성</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout" style="margin-top:24px;">
+      <div class="callout-label">채널별 역할 구분</div>
+      <p>홈페이지 전체 방문자만 보면 인스타그램·현수막·카페는 단독으로 뚜렷한 영향을 주지 못했고, 방문자가 움직인 시점은 보도자료가 작동한 때(단독이면 +3일 지연, 블로그와 겹치면 즉시)뿐이다. 반면 위 프로그램 신청 건수를 같이 보면 다른 그림이 나온다 — 인스타그램 게시 직후(특히 +1일 구간)에 신청이 몰리는 경향이 있다. 즉 <strong>보도자료는 "사이트에 와서 둘러보게" 만드는 인지도 채널</strong>, <strong>인스타그램은 "신청까지 이어지게" 만드는 전환 채널</strong>로 역할이 다른 것으로 추정된다.</p>
+    </div>
+
+    <h2 class="section-title">한계</h2>
+    <ul class="note-list">
+      <li><strong>"인스타그램=신청 전환, 보도자료=인지도"라는 역할 구분은 인과관계가 아니라 시점 일치를 바탕으로 한 추정이다</strong> — 신청 28건이라는 작은 모수, 채널 게시 일정이 한 주에 겹쳐 있다는 점 때문에 확정할 수 없다. 6/12 신청 급증은 인스타 지연 반응일 수도, 금요일(주말 직전) 요일 효과일 수도 있어 경쟁 가설을 가르지 못한다</li>
+      <li>인스타그램 페이지 단위 노출 폭증(6/11~17)은 게시물 단위 노출(42회)과 크게 어긋나고 활동 종료 즉시 소멸하는 패턴이라 유료 광고 영향으로 추정 — 조직적 도달 효과로 해석하지 않고 게시 시점 정보로만 사용</li>
+      <li>보도자료·블로그 무관 날짜에도 유사한 규모의 방문자 스파이크가 존재 — 표본이 작아 통계적 확정은 어려움</li>
+      <li>카카오채널/청도 카톡방 클릭 데이터는 미확보 — 이번 분석에 미포함</li>
+      <li>전화문의 데이터는 미확보 — 슬랙 기록 체계 가동 후 다음 분석에 포함 예정</li>
+    </ul>
+  </section>
+
+  <!-- ===================== 2. 디지털 효과 분석 ===================== -->
+  <section class="panel" id="panel-digital">
+    <p class="eyebrow">02 · DIGITAL</p>
+    <h1 class="page-title">디지털 효과 분석</h1>
+    <p class="page-sub">보도자료가 실제로 어떤 효과를 냈는지 검증하기 위해 거친 가설 검토와 실데이터 분석 과정.</p>
+
+    <h2 class="section-title">분석 배경</h2>
+    <p>네이버 키워드도구로 확인한 관련 키워드 월 검색량은 평균 약 280회로 모수 자체가 작아, 검색량 증가를 보도자료의 주요 목적·지표로 삼기에는 부적합하다고 판단했다. 프로그램 신청자 수 역시 모수가 작아 통계적으로 의미 있는 변화 검증이 어려워, 홈페이지 유입과 인스타그램 데이터로 분석 범위를 전환했다.</p>
+
+    <h2 class="section-title">가설 검토 과정</h2>
+    <table class="data-table">
+      <thead><tr><th>가설</th><th>검토 결과</th></tr></thead>
+      <tbody>
+        <tr><td>PC 검색량이 모바일보다 많다 → 업무시간 검색 = 기관·공무원 관심</td><td>타당성은 있으나, 지역 공공기관 키워드 카테고리 자체가 PC 비중이 구조적으로 높아 단정은 위험. 요일·시간대별 분포 데이터가 추가로 필요(미확보)</td></tr>
+        <tr><td>보도자료로 주민 프로그램 신청자가 단기간에 늘어날 것이다</td><td>신청자 수 모수가 작아 통계적 검증 어려움 → 홈페이지 유입·인스타그램 데이터로 분석 전환</td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">홈페이지 방문자·페이지뷰</h2>
+    <p>평소 일평균 방문자는 60~90명대로 등락이 잦은 노이즈성 데이터다. 1차 보도자료(5/28) 배포 +3일째인 6/1에 방문자 143명, 2차 보도자료(6/16~17)와 청도군 블로그 게시가 겹친 6/16에 156명으로 분석 기간 내 최고치를 기록했다. 다만 보도자료와 무관한 날(6/5, 6/10 등)에도 유사한 스파이크가 있어 노이즈 대비 신호가 강하지는 않다. (상세 시계열은 <a href="#timing" data-goto="timing">시점별 유입 분석</a> 탭 참고)</p>
+
+    <h2 class="section-title">인스타그램 데이터 — 해석 주의</h2>
+    <p>6/11~17 사이 인스타그램 페이지 단위 노출이 499~1,633회로 폭증했다가 6/18에 즉시 4로 떨어졌다. 같은 기간 게시물 단위 노출은 42회에 불과해 수치가 크게 어긋나며, 활동 시작·종료와 함께 즉시 튀고 즉시 사라지는 패턴은 유료 광고의 전형적 특징과 일치한다. <strong>이 노출 수치는 조직적 도달의 증거로 보지 않고, 게시 시점 정보로만 활용한다.</strong> 실제로 인스타그램 릴스는 6/11·6/15·6/19 세 차례 게시됐지만, 세 날짜 모두 홈페이지 방문자 변화가 없었다(81명·113명·83명, 모두 평소 수준). 단일 사례가 아니라 세 번 반복 확인된 결과라는 점에서, 인스타그램 단독 게시가 홈페이지 유입으로 이어지지 않는다는 결론에 더 무게가 실린다.</p>
+
+    <h2 class="section-title">채널 중첩 타임라인</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:-8px;">모든 채널을 "최초 게시·배포일" 기준으로 통일해 같은 기준으로 비교한다. 한 주(6/11~6/19) 안에 거의 모든 채널의 시작점이 몰려 있다 — 이것이 "단독 효과 분리 불가"의 시각적 근거다. (보도자료가 매체로 퍼져나간 게재 확산 기간은 <a href="#media" data-goto="media">매체 분석</a> 탭 참고)</p>
+    <div class="chart-wrap" style="height:260px;">
+      <canvas id="ganttChart" role="img" aria-label="채널별 최초 게시·배포일, 보도자료 1차 5월28일, 인스타그램 6월11일·15일·19일, 현수막카페 6월12일, 블로그와 보도자료 2차 6월16일">보도자료 1차 5/28, 인스타그램 6/11·6/15·6/19, 현수막·카페 6/12, 블로그 6/16, 보도자료 2차 6/16</canvas>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>날짜</th><th>채널 활동</th><th>홈페이지 방문자</th></tr></thead>
+      <tbody>
+        <tr><td>6/11</td><td>인스타그램 릴스 1차 게시(소통협력주간 안내)</td><td>81 (평소 수준)</td></tr>
+        <tr><td>6/12</td><td>현수막·포스터 게시, 청도사랑카페 게시</td><td>94 (평소 수준)</td></tr>
+        <tr><td>6/15</td><td>인스타그램 릴스 2차 게시</td><td>113 (평소 수준)</td></tr>
+        <tr class="hl"><td>6/16</td><td>청도군 블로그 게시 + 보도자료 배포 시작</td><td>156 (기간 내 1위)</td></tr>
+        <tr class="hl"><td>6/17</td><td>보도자료 배포 지속</td><td>137 (기간 내 2위)</td></tr>
+        <tr><td>6/18</td><td>모든 채널 활동 종료(인스타 노출 4로 급락)</td><td>83</td></tr>
+        <tr><td>6/19</td><td>인스타그램 릴스 3차 게시</td><td>83 (평소 수준)</td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">결론</h2>
+    <ul class="note-list">
+      <li>보도자료의 단독 효과는 분리 측정이 어렵다 — 1차는 다른 채널과 겹치지 않아 +3일 지연 반응이 보였고, 2차는 블로그와 같은 날 겹쳐 즉시 반응처럼 보였다</li>
+      <li>홈페이지 전체 방문자 기준으로는 보도자료가 유입(인지도) 채널, 인스타그램은 단독으로 방문자를 움직이지 못했다(릴스 3회 게시 모두에서 반복 확인)</li>
+      <li>다만 프로그램 신청 건수(<a href="#timing" data-goto="timing">시점별 유입 분석</a> 탭 참고)를 같이 보면 인스타그램 게시 직후 구간에 신청이 몰리는 경향이 있어, <strong>보도자료=인지도/트래픽, 인스타그램=신청 전환</strong>으로 역할이 나뉘는 것으로 추정한다 — 단, 인과관계가 아니라 시점 일치 기반 추정이며 모수가 작아(28건) 확정할 수 없다</li>
+      <li>전화 문의는 정량 측정이 어려우나, 슬랙 기록을 통한 정성적 추적은 가능 (<a href="#method" data-goto="method">측정 방법론</a> 탭 참고)</li>
+    </ul>
+
+    <h2 class="section-title">한계</h2>
+    <ul class="note-list">
+      <li>"보도자료=인지도, 인스타그램=신청 전환" 구분은 시점 일치에 기반한 추정이며 인과관계를 입증한 것은 아니다 — 6/12 신청 급증을 인스타 지연 반응이 아니라 요일(금요일/주말 직전) 효과로 설명할 수도 있어 경쟁 가설을 가르지 못한다</li>
+      <li>검색량 데이터의 요일·시간대별 분포 미확보 — 기관·공무원 가설 검증 보류</li>
+      <li>인스타그램 페이지 단위 노출 폭증은 유료 광고로 추정되나 광고 계정 데이터로 직접 확인하지는 못함</li>
+      <li>채널 배포 일정이 한 주에 몰려 있어 인과관계 분리에 한계 — 다음 캠페인에서 분리 설계 필요</li>
+    </ul>
+  </section>
+
+  <!-- ===================== 3. 매체 분석 ===================== -->
+  <section class="panel" id="panel-media">
+    <p class="eyebrow">03 · MEDIA</p>
+    <h1 class="page-title">매체 분석</h1>
+    <p class="page-sub">PR 루트별로 어떤 역할을 하는지 먼저 정리하고, 그중 언론사 보도가 어떤 매체에·어떤 영향력 수준으로 도달했는지 살펴본다.</p>
+
+    <h2 class="section-title">PR 채널별 일반적 특성</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:-8px;">이번 캠페인에서 함께 쓰인 채널들이 PR 활동에서 일반적으로 어떤 역할을 하는지 정리한다. 채널마다 강점·한계·적합한 목적이 다르므로, 효과를 같은 기준(유입량)으로만 비교하면 오독하기 쉽다.</p>
+    <div class="channel-cards">
+      <div class="channel-card" style="--ch-color:#B05A2E;">
+        <i class="ti ti-brand-instagram" aria-hidden="true"></i>
+        <div class="ch-name">인스타그램</div>
+        <div class="ch-role">신청 전환 추정<br>즉시·휘발성</div>
+      </div>
+      <div class="channel-card" style="--ch-color:#22241F;">
+        <i class="ti ti-pencil" aria-hidden="true"></i>
+        <div class="ch-name">블로그</div>
+        <div class="ch-role">검색 노출<br>장기 누적</div>
+      </div>
+      <div class="channel-card" style="--ch-color:#1F5B52;">
+        <i class="ti ti-message-circle" aria-hidden="true"></i>
+        <div class="ch-name">카페·카톡방</div>
+        <div class="ch-role">로컬 직접 도달<br>측정 어려움</div>
+      </div>
+      <div class="channel-card" style="--ch-color:#D8A24A;">
+        <i class="ti ti-flag" aria-hidden="true"></i>
+        <div class="ch-name">현수막·포스터</div>
+        <div class="ch-role">반복 노출<br>추적 불가</div>
+      </div>
+      <div class="channel-card" style="--ch-color:#185fa5;">
+        <i class="ti ti-news" aria-hidden="true"></i>
+        <div class="ch-name">보도자료</div>
+        <div class="ch-role">인지도·트래픽<br>지연 반응</div>
+      </div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>채널</th><th>일반적 특성</th><th>강점</th><th>한계</th><th>적합한 목적</th></tr></thead>
+      <tbody>
+        <tr class="hl">
+          <td>인스타그램 (게시물/릴스)</td>
+          <td>즉시 게시·즉시 소비, 휘발성 강함</td>
+          <td>시각적 전달력, 행사 분위기·현장감 전달에 강함. 이번 캠페인에서는 게시 직후 구간에 신청 건수가 몰리는 경향도 확인됨</td>
+          <td>전체 사이트 트래픽으로는 효과가 거의 드러나지 않음(노출 수치도 광고 영향 추정) — 신청 전환 추정도 시점 일치 기반이라 인과관계는 아님</td>
+          <td>실제 프로그램 신청 전환 — 브랜드 인지도보다 행동 유도에 더 가까운 채널로 추정</td>
+        </tr>
+        <tr>
+          <td>기관 블로그 (청도군 블로그 등)</td>
+          <td>한 번 게시되면 검색을 통해 장기간 노출됨</td>
+          <td>SEO/검색 노출에 유리, 콘텐츠 수명이 길어 누적 효과 있음</td>
+          <td>즉시성은 낮음 — 게시 직후보다 시간이 지나며 누적되는 효과</td>
+          <td>정보 아카이빙, 검색 기반 유입, 보도자료와 결합 시 신뢰도 보강</td>
+        </tr>
+        <tr>
+          <td>카페·카카오채널·카톡방</td>
+          <td>폐쇄형 로컬 커뮤니티에 직접 도달</td>
+          <td>지역 주민에게 가장 직접적으로 닿음, 신뢰도 높음</td>
+          <td>클릭·반응을 정량적으로 측정하기 어려움, 확산력은 제한적(채널 밖으로 잘 안 퍼짐)</td>
+          <td>주민 직접 공지, 신청 유도, 빠른 안내</td>
+        </tr>
+        <tr>
+          <td>현수막·포스터 (오프라인)</td>
+          <td>물리적 공간에서 반복 노출</td>
+          <td>지역 거주자에게 반복적으로 눈에 띔, 디지털 채널을 안 쓰는 주민에게도 도달</td>
+          <td>노출량·반응을 추적할 방법이 거의 없음 — 효과를 데이터로 증명하기 가장 어려운 채널</td>
+          <td>지역 주민 인지, 오프라인 신청 유도</td>
+        </tr>
+        <tr>
+          <td>보도자료 / 언론 보도</td>
+          <td>매체를 거쳐 전달되므로 신뢰도가 가장 높음</td>
+          <td>공신력·신뢰 형성에 가장 효과적, 매체 백링크로 검색엔진 SEO에도 기여. 두 배포 모두 직후 홈페이지 방문자 최고치 기록</td>
+          <td>반응이 즉시 나타나지 않고 지연될 수 있음, 신청 전환과의 직접 연결은 약함(보도자료 단독일의 신청 건수가 인스타 직후보다 적음)</td>
+          <td>기관 브랜드 인지도 개선, 신뢰 형성, 협업·투자 유치 — 신청 전환보다는 인지도 채널로 추정</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout" style="margin-top:8px;">
+      <div class="callout-label">시사점</div>
+      <p>홈페이지 전체 트래픽과 프로그램 신청 건수를 나눠보면 채널의 역할이 다르게 드러난다. <strong>보도자료는 홈페이지 방문자·기관 인지도를 끌어올리는 채널</strong>(두 배포 모두 직후 방문자 최고치), <strong>인스타그램은 실제 신청 전환에 더 가까운 채널</strong>(게시 직후 구간에 신청이 몰리는 경향)로 추정한다. 다만 이는 시점 일치를 근거로 한 추정이며, 모수가 작고(신청 28건) 채널 게시가 한 주에 겹쳐 있어 인과관계를 확정한 것은 아니다 — 6/12 신청 급증은 인스타 지연 반응일 수도, 요일(금요일) 효과일 수도 있어 경쟁 가설을 가르지 못한다.</p>
+    </div>
+
+    <h2 class="section-title">언론사 분석 — 배포 개요</h2>
+    <table class="data-table">
+      <thead><tr><th>배포 회차</th><th>배포일</th><th>게재 매체 수</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>5.29 개관</td><td>2026-05-28 ~ 06-03</td><td>14건</td><td>대부분 5/28 당일 집중</td></tr>
+        <tr><td>6.19 주간</td><td>2026-06-16 ~ 06-22</td><td>23건</td><td>대부분 6/16~17 집중</td></tr>
+        <tr class="hl"><td colspan="2">합계</td><td>37건</td><td>중복 제외 30개 매체</td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">Tier별 매체 구성</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:-8px;">자체 구축 중인 언론사 Tier DB(보도 빈도·영향력 기준)에 대입한 결과.</p>
+    <div class="chart-wrap" style="height:300px;">
+      <canvas id="tierChart" role="img" aria-label="보도자료 게재 매체의 Tier별 분포, Tier1 1개, Tier2 3개, Tier3 4개, Tier3~4 확인필요 3개, Tier4 비제휴 12개, 분류보류 7개">매체 Tier 분포: Tier1 1개, Tier2 3개, Tier3 4개, Tier3~4 확인필요 3개, Tier4 비제휴 12개, 분류보류 7개, 총 30개 매체</canvas>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Tier</th><th>정의</th><th>이번 배포에 포함된 매체</th><th>회차</th></tr></thead>
+      <tbody>
+        <tr><td>Tier 1 (전국 1차 영향력 매체)</td><td>전국 단위로 1차 보도되어 타 매체가 재인용하는 근원 매체 — 통신사 + 전국 종합일간지 + 중앙 방송사</td><td>뉴스1</td><td>6.19만</td></tr>
+        <tr><td>Tier 2 (지역거점 종합매체)</td><td>대구·경북 대표 일간지/방송</td><td>매일신문(대구·경북 영향력 최상위), 경북일보, 경북매일</td><td>매일신문·경북일보 6.19 / 경북매일 5.29</td></tr>
+        <tr><td>Tier 3 (전국 경제지·시사주간지)</td><td>기고문·기획기사 적합 매체</td><td>시사저널, 아주경제, 에너지경제, 아시아투데이</td><td>대부분 6.19</td></tr>
+        <tr class="hl"><td>Tier 3~4 (확인 필요, 보도 빈도 높음)</td><td>도메인 성격 추가 검증 필요</td><td>경북도민일보(=hidomin.com, 전체 키워드 통틀어 보도건수 1위), 대경일보, 국제뉴스</td><td>두 회차 모두 게재</td></tr>
+        <tr><td>Tier 4 / 비제휴 소형 지역매체</td><td>네이버 뉴스 비제휴, 자동 모니터링 미포착</td><td>청도투데이·청도신문 등 12개</td><td>1·2회차 분산</td></tr>
+        <tr><td>분류 보류</td><td>Tier DB 1차 분류 미반영분</td><td>스포츠동아, Break News, 경상매일신문 등 7개</td><td>1·2회차 분산</td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">핵심 발견 — 회차별 매체 성격이 다르다</h2>
+    <ul class="note-list">
+      <li><strong>1차(5.29 개관)</strong>는 청도신문·청도투데이처럼 청도 지역에 직접 닿는 매체가 포함됨 → 주민 타겟 노출에 상대적으로 유리한 구성</li>
+      <li><strong>2차(6.19 주간)</strong>는 통신사(뉴스1)·지역거점매체(매일신문·경북일보)·전국 경제지·시사주간지가 새로 추가되며 권위·신뢰 형성에 유리한 구성으로 전환 — 단, 청도신문·청도투데이는 2차에는 포함되지 않음</li>
+      <li>경북도민일보·대경일보·국제뉴스는 <strong>두 회차 모두 게재</strong> — 보도자료를 가장 안정적으로 받아주는 파트너 매체로, 우선 컨택 대상으로 관리할 가치가 있음</li>
+    </ul>
+
+    <h2 class="section-title">모니터링 시스템의 구조적 한계</h2>
+    <p>자체 보도 모니터링 파이프라인(네이버 뉴스 검색 API 기반)으로 자동 집계를 시도한 결과, 실제 게재가 확인된 매체 중 12개가 자동 집계에서 전혀 잡히지 않았다. 네이버 뉴스 검색 API는 네이버와 제휴(검색·콘텐츠 제휴)된 매체만 색인하는 구조이며, 누락된 매체들은 모두 비제휴 소형·지역 인터넷매체다. 즉 보도자료의 실제 도달 범위가 자동 리포트상 수치보다 더 넓을 수 있음에도, 시스템만으로는 이를 입증할 수 없다. 현재는 수동 클리핑(엑셀 리스트)을 병행해 누락을 보정하고 있다.</p>
+  </section>
+
+  <!-- ===================== 4. 측정 방법론 ===================== -->
+  <section class="panel" id="panel-method">
+    <p class="eyebrow">04 · METHOD</p>
+    <h1 class="page-title">측정 방법론</h1>
+    <p class="page-sub">보도자료, 인스타그램, 카카오채널/카톡방, 현수막·포스터, 블로그 등 복합 PR 채널의 단독 기여도를 차기 캠페인에서 분리 측정하기 위한 설계.</p>
+
+    <h2 class="section-title">① 캠페인 파이프라인 — 배포 순서</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:-8px;">정확한 일자가 핵심이 아니라, <strong>각 채널 사이에 측정이 분리될 만큼 충분한 간격을 두는 것</strong>이 핵심이다. 한 주에 몰아 배포하면(이번 캠페인처럼) 어떤 채널의 기여인지 다시 가를 수 없다.</p>
+    <div class="pipeline">
+      <div class="pipeline-step" style="--step-color:#B05A2E;">
+        <div class="ps-day">순서 1</div>
+        <div class="ps-name">인스타그램<br>(릴스 포함)</div>
+        <div class="ps-measure">도달·공유·프로필 방문</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step" style="--step-color:#D8A24A;">
+        <div class="ps-day">순서 2</div>
+        <div class="ps-name">카카오채널<br>청도 카톡방</div>
+        <div class="ps-measure">클릭수·정성 반응</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step" style="--step-color:#1F5B52;">
+        <div class="ps-day">순서 3</div>
+        <div class="ps-name">현수막·포스터<br>청도사랑카페</div>
+        <div class="ps-measure">홈페이지 방문자 전후 비교</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step" style="--step-color:#22241F;">
+        <div class="ps-day">순서 4</div>
+        <div class="ps-name">청도군 블로그</div>
+        <div class="ps-measure">블로그발 referral 트래픽</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step" style="--step-color:#6B6A62;">
+        <div class="ps-day">순서 5</div>
+        <div class="ps-name">보도자료</div>
+        <div class="ps-measure">검색량·direct 유입·기관 언급</div>
+      </div>
+    </div>
+    <div class="pipeline-note">
+      <span><span class="dot" style="background:#6B6A62;"></span>전화문의는 모든 구간에 걸쳐 슬랙(<code>#문의기록</code>)으로 상시 기록</span>
+      <br>각 단계 사이 간격은 1~2일을 기본값으로 제안하되, 캠페인 일정에 맞춰 조정 가능 — 간격을 두는 목적이 우선이고 정확한 일수는 부차적이다.
+    </div>
+
+    <h2 class="section-title">② 성과측정 파이프라인 — 데이터가 채널별로 분리되는 구조</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:-8px;">①이 "언제 무엇을 배포하는가"라면, ②는 "그 배포가 채널별로 분리되어 측정되도록 데이터를 어떻게 설계하는가"다. 현재는 채널 게시일과 홈페이지 방문자를 수동으로 날짜 매칭해 추정하는 수준이라, 그 자체가 분리 측정의 한계였다. GTM 태그 도입으로 이 부분을 구조적으로 개선할 수 있다.</p>
+    <div class="pipeline">
+      <div class="pipeline-step" style="--step-color:#185fa5;">
+        <div class="ps-day">STEP 1</div>
+        <div class="ps-name">채널별 UTM<br>파라미터 부착</div>
+        <div class="ps-measure">인스타/카톡방/블로그/보도자료 링크에 utm_source 구분 삽입</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step" style="--step-color:#185fa5;">
+        <div class="ps-day">STEP 2</div>
+        <div class="ps-name">GTM 태그<br>(검토 중)</div>
+        <div class="ps-measure">홈페이지 방문·신청서 제출 이벤트를 소스별로 자동 캡처</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step" style="--step-color:#185fa5;">
+        <div class="ps-day">STEP 3</div>
+        <div class="ps-name">데이터 수집<br>(GA4/시트)</div>
+        <div class="ps-measure">채널별로 자동 구분된 방문자·신청 데이터 축적</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step" style="--step-color:#185fa5;">
+        <div class="ps-day">STEP 4</div>
+        <div class="ps-name">채널별 기여 비교</div>
+        <div class="ps-measure">사람이 날짜로 추정하지 않고, 소스 태그로 직접 비교</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step" style="--step-color:#185fa5;">
+        <div class="ps-day">STEP 5</div>
+        <div class="ps-name">리포트 반영</div>
+        <div class="ps-measure">본 리포트의 "시점별 유입 분석" 탭 갱신</div>
+      </div>
+    </div>
+    <div class="pipeline-note">
+      이번 분석은 STEP 1~2가 없어 날짜 매칭으로 채널 효과를 <em>추정</em>하는 수준에 머물렀다(예: "6/12는 현수막 게시일이니 그날 신청 증가는 현수막 덕분일 것이다"). UTM·GTM이 들어가면 추정이 아니라 <strong>방문 기록 자체에 소스가 찍혀 직접 비교</strong>할 수 있다.
+    </div>
+
+    <h2 class="section-title">채널별 배포 순서 (상세)</h2>
+    <table class="data-table">
+      <thead><tr><th>순서</th><th>채널</th><th>간격 기준(예시)</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>인스타그램(릴스 포함)</td><td>기준일</td></tr>
+        <tr><td>2</td><td>카카오채널 / 청도 카톡방</td><td>+2일</td></tr>
+        <tr><td>3</td><td>현수막·포스터 / 청도사랑카페</td><td>+4일</td></tr>
+        <tr><td>4</td><td>청도군 블로그</td><td>+6일</td></tr>
+        <tr><td>5</td><td>보도자료</td><td>+8일</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--muted);font-size:14px;margin-top:-12px;">각 채널 게시 직후 24~48시간 동안의 변화량을 별도로 기록한다. 위 간격(2일 단위)은 예시이며, 실제 캠페인 일정에 맞춰 늘리거나 줄여도 된다 — 핵심은 간격을 "둔다"는 것 자체다.</p>
+
+    <h2 class="section-title">채널별 측정 지표</h2>
+    <table class="data-table">
+      <thead><tr><th>채널</th><th>측정 지표</th></tr></thead>
+      <tbody>
+        <tr><td>인스타그램/릴스</td><td>도달, 공유, 프로필 방문 (노출수는 광고 영향 가능성을 배제하기 어려워 보조 지표로만 사용)</td></tr>
+        <tr><td>카카오채널/카톡방</td><td>클릭수(가능 시), 정성 반응(채팅 언급)</td></tr>
+        <tr><td>현수막/포스터/카페</td><td>게시 기간 전후 홈페이지 방문자 변화</td></tr>
+        <tr><td>청도군 블로그</td><td>블로그발 referral 트래픽</td></tr>
+        <tr><td>보도자료</td><td>PC/모바일 검색량, 사이트 direct 유입, 기관 언급</td></tr>
+        <tr class="hl"><td>전화문의</td><td>슬랙 기록 → 건수/날짜/추정 유입경로</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--muted);font-size:14px;margin-top:-12px;">현재는 위 지표 대부분을 채널 게시일과 날짜 매칭으로 추정한다. <strong>GTM 태그 도입을 검토 중</strong>이며, 도입되면 ② 성과측정 파이프라인처럼 소스별 자동 구분이 가능해져 이 표의 신뢰도가 높아진다.</p>
+
+    <h2 class="section-title">전화문의 기록 운영 규칙 (신규 제정)</h2>
+    <p>전화문의는 직접 측정이 불가능하므로, 슬랙 기록을 표준화해 정성 지표로 추적한다.</p>
+    <ul class="note-list">
+      <li><strong>기록 채널 통일</strong>: 전화문의 전용 슬랙 채널 1개(예: <code>#문의기록</code>)로 일원화 — 기존에 여러 채널에 흩어져 올라오던 관행 종료</li>
+      <li><strong>기록 포맷</strong>: <code>[날짜] [추정 유입경로] [문의 내용 한 줄]</code> — 추정 유입경로는 "어디서 보고 연락 주셨나요?"를 표준 질문으로 물어 확인. 모르면 "[미확인]"으로 기록(추측해서 채우지 않음)</li>
+      <li><strong>운영 원칙</strong>: 문의를 받은 즉시(같은 날 안에) 기록, 응대자가 바뀌어도 동일 포맷 유지, 캠페인 종료 후 날짜별·경로별로 집계</li>
+      <li><strong>한계</strong>: 문의자 진술에 의존하므로 정확도 100%는 아님 — 정성 보조지표로만 활용</li>
+    </ul>
+
+    <h2 class="section-title">측정 후 비교 템플릿 (캠페인 종료 후 채워넣기)</h2>
+    <table class="data-table">
+      <thead><tr><th>채널</th><th>배포일</th><th>배포 전 평균</th><th>배포 후 변화</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>인스타그램</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>카카오채널/카톡방</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>현수막/포스터/카페</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>블로그</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>보도자료</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>전화문의(슬랙 집계)</td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">실행 체크리스트</h2>
+    <ul class="note-list">
+      <li>채널별 배포일 1~2일 간격 확정 및 담당자 공유</li>
+      <li>전화문의 전용 슬랙 채널(<code>#문의기록</code>) 생성 및 포맷 사전 공유</li>
+      <li>응대 담당자에게 "유입경로 질문" 표준 스크립트 전달</li>
+      <li>각 채널 배포 D+1, D+2 데이터 기록</li>
+      <li>캠페인 종료 D+7 데이터 종합 수집 및 비교 템플릿 작성</li>
+    </ul>
+  </section>
+
+  <!-- ===================== 5. 다음 단계 ===================== -->
+  <section class="panel" id="panel-next">
+    <p class="eyebrow">05 · NEXT</p>
+    <h1 class="page-title">다음 단계 — 데이터 추출 및 분석 실행 가이드</h1>
+    <p class="page-sub">위 측정 방법론을 실제로 어디서·어떻게 추출했는지, 재현 가능한 절차로 정리.</p>
+
+    <h2 class="section-title">데이터 소스 개요</h2>
+    <table class="data-table">
+      <thead><tr><th>채널</th><th>데이터 소스</th><th>추출 방식</th></tr></thead>
+      <tbody>
+        <tr><td>홈페이지</td><td>관리자 페이지</td><td>통계 메뉴 → 일자별 요약 CSV 다운로드</td></tr>
+        <tr><td>인스타그램</td><td>Meta Business Suite</td><td>인사이트 → 일별 데이터 내보내기(CSV)</td></tr>
+        <tr><td>보도자료 게재 시점</td><td>네이버 뉴스 검색 API + 수동 클리핑</td><td><code>news-monitor</code> 파이프라인 조회 + 실제 게재 확인 리스트 대조</td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">채널별 추출 절차</h2>
+    <h3 style="font-size:15px;margin:20px 0 8px;">홈페이지 — 관리자 페이지</h3>
+    <ul class="note-list">
+      <li>경로: 관리자 페이지 → 통계 메뉴 → 일자별 요약, 다운로드 항목은 페이지뷰·방문자 중심</li>
+      <li>월 단위로 끊어 다운로드됨 — 여러 달을 합쳐 전체 기간 시계열 구성 필요</li>
+      <li>주의: 당일(다운로드 시점) 데이터는 "집계중"으로 표시 → 분석에서 제외</li>
+    </ul>
+    <h3 style="font-size:15px;margin:20px 0 8px;">인스타그램 — Meta Business Suite</h3>
+    <ul class="note-list">
+      <li>"페이지 활동 일일 분석"(페이지 단위)과 "콘텐츠 게시 시간 요약"(게시물 단위) 2종을 모두 내보내야 함</li>
+      <li>주의: 두 리포트의 노출 수치가 일치하지 않을 수 있음 — 페이지 단위는 상한선 추정치, 게시물 단위는 확인된 최소치로 구분</li>
+      <li>날짜 형식이 <code>MM/DD/YYYY</code>로 내려오므로 병합 전 형식 통일 필요</li>
+    </ul>
+    <h3 style="font-size:15px;margin:20px 0 8px;">보도자료 게재 시점 — 네이버 API + 수동 클리핑</h3>
+    <ul class="note-list">
+      <li>1차 소스는 실제 게재 확인 리스트(엑셀, 매체명·발행일자·URL) — 네이버 API는 보조 검증용</li>
+      <li>네이버 뉴스 검색 API는 비제휴 소형매체를 색인하지 않는 구조적 한계가 있어, 단독 사용 시 누락 위험</li>
+    </ul>
+
+    <h2 class="section-title">데이터 병합 및 분석 절차</h2>
+    <ul class="note-list">
+      <li>날짜 키 통일(YYYY-MM-DD) 후 단일 시계열 테이블로 병합</li>
+      <li>각 채널 게시일 기준 D-3~D+3 구간을 평소 평균과 비교</li>
+      <li>해석 원칙: 단일 채널 게시일과 정확히 겹치는 변화만 "직접 연관 가능성 있음"으로 표현, 여러 채널이 겹친 구간은 "복합 효과"로 명시</li>
+    </ul>
+
+    <h2 class="section-title">재현 시 체크리스트</h2>
+    <ul class="note-list">
+      <li>홈페이지 관리자 페이지에서 월별 CSV 누락 없이 다운로드(월 경계일 중복/누락 확인)</li>
+      <li>Meta Business Suite 페이지 단위·게시물 단위 리포트 둘 다 내보내기</li>
+      <li>보도자료 실제 게재 확인 리스트를 1차 소스로 유지</li>
+      <li>현수막/카페/카톡방 등 오프라인·로컬 채널 게시일은 게시 즉시 수기 기록 — 안 하면 다음 분석에서 복원 불가</li>
+    </ul>
+
+    <h2 class="section-title">한계</h2>
+    <ul class="note-list">
+      <li>카카오채널/청도 카톡방은 자체 통계 추출 도구가 확인되지 않아 이번 실행 문서에는 포함하지 못함</li>
+      <li>전화문의는 슬랙 기록 규칙(<a href="#method" data-goto="method">측정 방법론</a> 탭 참고)이 가동된 이후부터 데이터 소스로 추가 가능</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="report-footer">
+  청도혁신센터 PR 보고 · 최종 갱신일 2026-06-24 · 작성: PR팀
+</footer>
+
+<script>
+  (function(){
+    var buttons = document.querySelectorAll('nav.tabs button');
+    var panels = document.querySelectorAll('.panel');
+
+    function activate(tabId, updateHash){
+      buttons.forEach(function(b){
+        b.classList.toggle('active', b.dataset.tab === tabId);
+      });
+      panels.forEach(function(p){
+        p.classList.toggle('active', p.id === 'panel-' + tabId);
+      });
+      if(updateHash !== false){
+        history.replaceState(null, '', '#' + tabId);
+      }
+      window.scrollTo({top:0, behavior:'instant'});
+    }
+
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        activate(b.dataset.tab);
+      });
+    });
+
+    document.querySelectorAll('[data-goto]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        activate(a.dataset.goto);
+      });
+    });
+
+    var initial = (location.hash || '').replace('#','');
+    var valid = Array.prototype.some.call(buttons, function(b){return b.dataset.tab === initial;});
+    if(valid){ activate(initial, false); }
+  })();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  (function(){
+    var raw = [["05-01",58],["05-02",63],["05-03",73],["05-04",40],["05-05",83],["05-06",42],["05-07",46],["05-08",90],["05-09",93],["05-10",63],["05-11",84],["05-12",89],["05-13",68],["05-14",62],["05-15",40],["05-16",91],["05-17",47],["05-18",66],["05-19",63],["05-20",77],["05-21",78],["05-22",83],["05-23",31],["05-24",78],["05-25",45],["05-26",100],["05-27",64],["05-28",66],["05-29",96],["05-30",69],["05-31",64],["06-01",143],["06-02",56],["06-03",50],["06-04",48],["06-05",101],["06-06",30],["06-07",44],["06-08",105],["06-09",83],["06-10",124],["06-11",81],["06-12",94],["06-13",69],["06-14",70],["06-15",113],["06-16",156],["06-17",137],["06-18",83],["06-19",83],["06-20",61],["06-21",70],["06-22",97],["06-23",66],["06-24",33]];
+    var labels = raw.map(function(r){return r[0];});
+    var visitors = raw.map(function(r){return r[1];});
+
+    var pressDates = ["05-28","05-30","05-31","06-03","06-16","06-17","06-18","06-22"];
+    var instaDates = ["06-11","06-15","06-19"];
+    var bannerDates = ["06-12"];
+    var blogDates = ["06-16"];
+
+    function markerSeries(dateSet){
+      return raw.map(function(r){ return dateSet.indexOf(r[0]) > -1 ? r[1] : null; });
+    }
+
+    var ctx = document.getElementById('timingChart');
+    if(ctx){
+      new Chart(ctx, {
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              type:'line', label:'홈페이지 방문자', data:visitors,
+              borderColor:'#185fa5', backgroundColor:'#185fa5',
+              tension:0.25, pointRadius:1.5, borderWidth:2, order:5
+            },
+            {
+              type:'scatter', label:'보도자료 배포일', data:markerSeries(pressDates),
+              backgroundColor:'#6B6A62', borderColor:'#6B6A62',
+              pointStyle:'triangle', pointRadius:7, showLine:false, order:1
+            },
+            {
+              type:'scatter', label:'인스타그램 릴스 게시일(3회)', data:markerSeries(instaDates),
+              backgroundColor:'#B05A2E', borderColor:'#B05A2E',
+              pointStyle:'circle', pointRadius:6, showLine:false, order:2
+            },
+            {
+              type:'scatter', label:'현수막·카페 게시일', data:markerSeries(bannerDates),
+              backgroundColor:'#1F5B52', borderColor:'#1F5B52',
+              pointStyle:'rect', pointRadius:6, showLine:false, order:3
+            },
+            {
+              type:'scatter', label:'블로그 게시일', data:markerSeries(blogDates),
+              backgroundColor:'#22241F', borderColor:'#22241F',
+              pointStyle:'rectRot', pointRadius:7, showLine:false, order:4
+            }
+          ]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          interaction:{mode:'index', intersect:false},
+          plugins:{legend:{display:false}},
+          scales:{
+            x:{ticks:{autoSkip:true, maxRotation:60, font:{size:11}}},
+            y:{title:{display:true, text:'방문자(명)'}, beginAtZero:true}
+          }
+        }
+      });
+    }
+
+    var tierCtx = document.getElementById('tierChart');
+    if(tierCtx){
+      new Chart(tierCtx, {
+        type:'doughnut',
+        data:{
+          labels:['Tier1 전국 1차 영향력','Tier2 지역거점','Tier3 경제지·주간지','Tier3~4 확인필요(충성도 높음)','Tier4 비제휴 소형','분류 보류'],
+          datasets:[{
+            data:[1,3,4,3,12,7],
+            backgroundColor:['#185fa5','#1F5B52','#B05A2E','#D8A24A','#9C8F7A','#C9C3B0'],
+            borderColor:'#FFFFFF', borderWidth:2
+          }]
+        },
+        options:{
+          responsive:true, maintainAspectRatio:false,
+          plugins:{
+            legend:{
+              position:'right',
+              labels:{ font:{size:12}, boxWidth:12, padding:14 }
+            }
+          }
+        }
+      });
+    }
+
+    var applyCtx = document.getElementById('applyChart');
+    if(applyCtx){
+      var applyLabels = ['6/11','6/12','6/14','6/15','6/16','6/17','6/18'];
+      var applyData = [2,8,1,5,5,6,1];
+      new Chart(applyCtx, {
+        type:'bar',
+        data:{
+          labels:applyLabels,
+          datasets:[{
+            label:'신청 건수', data:applyData,
+            backgroundColor: applyData.map(function(v){ return v===8 ? '#B05A2E' : '#D8C9B5'; }),
+            borderRadius:0
+          }]
+        },
+        options:{
+          responsive:true, maintainAspectRatio:false,
+          plugins:{legend:{display:false}},
+          scales:{
+            y:{beginAtZero:true, ticks:{stepSize:2}},
+            x:{grid:{display:false}}
+          }
+        }
+      });
+    }
+
+    var ganttCtx = document.getElementById('ganttChart');
+    if(ganttCtx){
+      // 모든 채널을 "최초 게시·배포일" 하루 기준으로 통일 (보도자료의 게재 확산 기간은 별도 표/탭에서 다룸)
+      var ganttLabels = ['보도자료 1차','인스타그램','현수막·카페','인스타그램(2차)','블로그','보도자료 2차','인스타그램(3차)'];
+      var startDays = [0,14,15,18,19,19,22]; // 기준일(5/28)로부터의 일수
+      var tickHalfWidth = 0.4; // 모든 채널에 동일하게 적용하는 시각적 두께(점처럼 보이게)
+      var ranges = startDays.map(function(d){ return [d - tickHalfWidth, d + tickHalfWidth]; });
+      var ganttColors = ['#6B6A62','#B05A2E','#1F5B52','#B05A2E','#22241F','#6B6A62','#B05A2E'];
+      new Chart(ganttCtx, {
+        type:'bar',
+        data:{
+          labels:ganttLabels,
+          datasets:[{
+            data:ranges,
+            backgroundColor:ganttColors,
+            borderRadius:0,
+            barThickness:18,
+            minBarLength:6
+          }]
+        },
+        options:{
+          indexAxis:'y',
+          responsive:true, maintainAspectRatio:false,
+          plugins:{legend:{display:false},
+            tooltip:{ callbacks:{ label:function(ctx){
+              var i = ctx.dataIndex;
+              var dateOf = function(d){ var base=new Date(2026,4,28); var dt=new Date(base); dt.setDate(base.getDate()+Math.round(d)); return (dt.getMonth()+1)+'/'+dt.getDate(); };
+              return dateOf(startDays[i]) + ' 게시·배포';
+            }}}
+          },
+          scales:{
+            x:{
+              min:0, max:25,
+              ticks:{
+                stepSize:5,
+                callback:function(v){ var base=new Date(2026,4,28); var dt=new Date(base); dt.setDate(base.getDate()+v); return (dt.getMonth()+1)+'/'+dt.getDate(); }
+              }
+            },
+            y:{grid:{display:false}}
+          }
+        }
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
