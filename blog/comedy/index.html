@@ -52,71 +52,7 @@ body {
 .tab-page { display: none; }
 .tab-page.active { display: block; }
 
-/* =========================================================
-   공통 네비게이션
-   ========================================================= */
-.nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 1000;
-  padding: 18px 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(13,12,10,0.92);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(46,40,32,0.6);
-}
-.nav-logo {
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  color: var(--persimmon);
-  cursor: pointer;
-  letter-spacing: 0.03em;
-}
-.nav-right { display: flex; align-items: center; gap: 8px; }
-.nav-detail-links { display: flex; gap: 4px; }
-.nav-btn {
-  padding: 7px 16px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  border: 1px solid var(--warm-dark);
-  background: transparent;
-  color: var(--muted);
-  font-family: var(--font-body);
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.nav-btn:hover { background: var(--warm-dark); color: var(--cream); }
-.nav-btn.active { background: var(--persimmon-deep); color: var(--cream); border-color: var(--persimmon-deep); }
-.nav-back-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 16px;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  border: 1px solid var(--persimmon-deep);
-  background: transparent;
-  color: var(--persimmon);
-  font-family: var(--font-body);
-  transition: all 0.2s;
-  margin-right: 12px;
-}
-.nav-back-btn:hover { background: var(--persimmon-deep); color: var(--cream); }
-.nav-main-links { display: flex; gap: 24px; list-style: none; }
-.nav-main-links a {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--muted);
-  text-decoration: none;
-  letter-spacing: 0.1em;
-  transition: color 0.2s;
-}
-.nav-main-links a:hover { color: var(--persimmon); }
+
 
 /* =========================================================
    공통 레이아웃
@@ -168,37 +104,9 @@ body {
 .reveal-delay-1 { transition-delay: 0.1s; }
 .reveal-delay-2 { transition-delay: 0.2s; }
 .reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
 
-/* 세부 페이지 공통 헤더 */
-.detail-page-header {
-  padding: 140px 60px 64px;
-  max-width: 1200px;
-  margin: 0 auto;
-  border-bottom: 1px solid var(--warm-dark);
-}
-.detail-page-header .page-tag {
-  font-size: 0.7rem;
-  letter-spacing: 0.3em;
-  color: var(--persimmon);
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 16px;
-}
-.detail-page-header h1 {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  color: var(--cream);
-  line-height: 1.2;
-  margin-bottom: 16px;
-}
-.detail-page-header h1 em { font-style: normal; color: var(--persimmon); }
-.detail-page-header p {
-  font-family: var(--font-serif);
-  font-size: 1rem;
-  color: var(--muted);
-  font-weight: 300;
-}
+
+
 
 /* =========================================================
    애니메이션
@@ -404,7 +312,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 .data-table tr:last-child td { border-bottom: none; }
 .data-table tr:hover td { background: rgba(46,40,32,0.4); }
 .td-accent { color: var(--persimmon); font-weight: 700; }
-.td-muted { color: var(--muted); font-size: .78rem; }
+
 
 /* 토글 chevron */
 .toggle-chevron {
@@ -417,31 +325,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 .monthly-row.open .toggle-chevron,
 .identity-layer.active .toggle-chevron { transform: rotate(180deg); color: var(--persimmon); }
 
-/* 타임라인 행 */
-.timeline-rows { display: flex; flex-direction: column; gap: 2px; }
-.tl-row {
-  background: var(--film);
-  border: 1px solid var(--warm-dark);
-  cursor: pointer;
-  transition: background .2s;
-}
-.tl-row:hover { background: var(--warm-dark); }
-.tl-row-header {
-  display: grid;
-  grid-template-columns: 96px 1fr auto auto;
-  align-items: center;
-  padding: 16px 22px;
-  gap: 20px;
-}
-.tl-time { font-family: var(--font-display); font-size: 1.15rem; color: var(--persimmon); }
-.tl-title { font-size: .92rem; font-weight: 500; color: var(--cream); }
-.tl-badge {
-  font-size: 0.8rem; padding: 3px 10px;
-  border: 1px solid var(--muted); color: var(--muted); letter-spacing: .08em; white-space: nowrap;
-}
-.tl-badge.reserved { border-color: var(--persimmon-deep); color: var(--persimmon-pale); background: rgba(192,74,24,.15); }
-.tl-body { max-height: 0; overflow: hidden; transition: max-height .3s var(--ease); font-size: .84rem; color: var(--muted); line-height: 1.75; padding: 0 22px; }
-.tl-row.open .tl-body { max-height: 200px; padding: 0 22px 18px; }
+
 
 /* 병렬 3트랙 타임테이블 */
 .tl-parallel-header {
@@ -561,6 +445,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 .step-cards { display: flex; flex-direction: column; gap: 2px; }
 .step-card { background: var(--charcoal); border: 1px solid var(--warm-dark); }
 .step-card-header { display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 20px; padding: 20px 24px; cursor: pointer; }
+.accordion-header { cursor: pointer; }
 .step-card.open .step-card-header { border-bottom: 1px solid var(--warm-dark); }
 .step-n { font-family: var(--font-display); font-size: 2.2rem; color: var(--persimmon-deep); line-height: 1; }
 .step-meta { display: flex; align-items: baseline; gap: 12px; }
@@ -624,17 +509,11 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
   .process-flow { grid-template-columns: 1fr 1fr; }
   .process-flow::before { display: none; }
   .id-content { grid-template-columns: 1fr; padding-left: 32px; }
-  .nav-main-links { display: none; }
-  .nav-detail-links { gap: 2px; }
-  .nav-btn { padding: 6px 10px; font-size: .68rem; }
-  .detail-page-header { padding: 120px 28px 48px; }
 }
 @media (max-width: 600px) {
   .needs-grid, .goals-grid, .three-col, .finance-grid { grid-template-columns: 1fr; }
   .intro-meta { flex-direction: column; gap: 12px; }
   .intro-divider { width: 36px; height: 1px; }
-  .tl-row-header { grid-template-columns: 80px 1fr; }
-  .tl-row-header .tl-badge { display: none; }
 }
 
 
@@ -697,7 +576,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
   background: transparent;
   font-family: var(--font-body);
   border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  transition: color 0.2s, border-color 0.2s, background 0.2s var(--ease);
   white-space: nowrap;
   flex-shrink: 0;
   position: relative;
@@ -835,7 +714,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
   font-size: 0.8rem;
   color: var(--muted);
   cursor: pointer;
-  transition: color 0.2s, background 0.2s, padding-left 0.2s;
+  transition: color 0.2s, background 0.2s, padding-left 0.2s var(--ease);
   border-left: 2px solid transparent;
   line-height: 1.4;
   text-decoration: none;
@@ -1072,7 +951,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="intro-meta">
         <div class="intro-meta-item"><span class="intro-meta-label">장소</span><span class="intro-meta-value">청도 상상마루</span></div>
         <div class="intro-divider"></div>
-        <div class="intro-meta-item"><span class="intro-meta-label">일시</span><span class="intro-meta-value">청도반시축제 기간 중 1일</span></div>
+        <div class="intro-meta-item"><span class="intro-meta-label">일시</span><span class="intro-meta-value">10월 31일 토요일</span></div>
         <div class="intro-divider"></div>
         <div class="intro-meta-item"><span class="intro-meta-label">입장료</span><span class="intro-meta-value">전액 무료</span></div>
       </div>
@@ -1112,7 +991,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             <div class="needs-card-label" style="color:var(--persimmon-pale);margin-top:4px">반시축제 3일 방문객 · 외지인 88.3%</div>
           </div>
           <div>
-            <div class="needs-hl-title">반시축제는 이미 코미디 페스티벌이다</div>
+            <div class="needs-hl-title">청도 대표 축제 반시축제는 이미 코미디 페스티벌이다</div>
             <div class="needs-hl-sub">2024년부터 청도세계코미디아트페스티벌과 공동 개최 중.<br>코미디는 청도의 기존 자산이며, 관객도 이미 온다.</div>
           </div>
         </div>
@@ -1136,7 +1015,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
       <div class="identity-layers">
         <div class="identity-layer active" onclick="toggleLayer(this)">
-          <div class="identity-layer-header"><div class="id-num">01</div><div class="id-title"><h3>코미디 — 장르</h3><p>세대를 잇는 공통 언어</p></div></div>
+          <div class="identity-layer-header accordion-header"><div class="id-num">01</div><div class="id-title"><h3>코미디 — 장르</h3><p>세대를 잇는 공통 언어</p></div></div>
           <div class="identity-layer-body"><div class="id-content">
             <div class="id-point"><h4>지금 코미디는 성장 중</h4><p>글로벌 코미디 영화 2025년 353편, 역대 최고. 스트리밍 코미디 오리지널은 더욱 가파르게 증가.</p></div>
             <div class="id-point"><h4>세대를 가로지르는 장르</h4><p>청소년은 코미디로 첫 영화 경험을 쌓고, 중장년은 웃음에서 일상의 위안을 찾는다.</p></div>
@@ -1145,7 +1024,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           </div></div>
         </div>
         <div class="identity-layer" onclick="toggleLayer(this)">
-          <div class="identity-layer-header"><div class="id-num">02</div><div class="id-title"><h3>청도 — 지역 정서</h3><p>반시·소싸움·미나리가 만드는 코미디</p></div></div>
+          <div class="identity-layer-header accordion-header"><div class="id-num">02</div><div class="id-title"><h3>청도 — 지역 정서</h3><p>반시·소싸움·미나리가 만드는 코미디</p></div></div>
           <div class="identity-layer-body"><div class="id-content">
             <div class="id-point"><h4>반시 — 익어가는 시간</h4><p>씨 없는 감, 청도만의 품종. 천천히 익어야 빛나는 것들의 이야기.</p></div>
             <div class="id-point"><h4>소싸움 — 부딪히는 웃음</h4><p>청도 소싸움의 에너지. 예상 못한 반전, 짜릿한 역전. 청도 코미디의 DNA.</p></div>
@@ -1154,11 +1033,11 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           </div></div>
         </div>
         <div class="identity-layer" onclick="toggleLayer(this)">
-          <div class="identity-layer-header"><div class="id-num">03</div><div class="id-title"><h3>태도 — 서사</h3><p>소멸이 아닌 웃음이 살아있는 동네</p></div></div>
+          <div class="identity-layer-header accordion-header"><div class="id-num">03</div><div class="id-title"><h3>태도 — 서사</h3><p>소멸이 아닌 웃음이 살아있는 동네</p></div></div>
           <div class="identity-layer-body"><div class="id-content">
             <div class="id-point"><h4>비관 없는 활력의 서사</h4><p>"사라지는 곳"이 아닌 "웃음이 살아있는 동네" — 청도의 이야기를 스스로 쓴다.</p></div>
             <div class="id-point"><h4>주민이 주인인 영화제</h4><p>청도 청소년이 만들고 청도 어른이 심사하는 영화제.</p></div>
-            <div class="id-point"><h4>전국 어디에도 없는 포지셔닝</h4><p>"소멸 시대, 웃음으로 버티기" — 전국 89개 인구감소지역과 공명하는 화두.</p></div>
+            <div class="id-point"><h4>전국 어디에도 없는 포지셔닝</h4><p>"소멸 시대, 웃음으로 바꿔나가기" — 전국 89개 인구감소지역과 공명하는 화두.</p></div>
             <div class="id-point"><h4>뿌리 내리는 영화제</h4><p>청소년 공모전으로 다음 세대 기획자를 키우는 지속 가능한 구조.</p></div>
           </div></div>
         </div>
@@ -1187,7 +1066,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <div class="market-card reveal reveal-delay-2">
           <span class="market-idx">데이터 02 — 국내</span>
           <div class="market-num">341<span class="u">만</span></div>
-          <div class="market-ttl">숏박스 유튜브 구독자</div>
+          <div class="market-ttl">대형 스케치 코미디 유튜브 구독자 수</div>
           <p class="market-desc">개그콘서트 종영 이후 유튜브로 이동한 스케치 코미디 생태계. 숏박스 341만, 빠더너스 300만. 코미디는 플랫폼만 바뀌었을 뿐 수요는 견고하다.</p>
           <div class="market-src">KOCCA, YouTube Korea (2025)</div>
         </div>
@@ -1215,8 +1094,8 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="three-col reveal">
         <div class="card">
           <span class="card-label">장소</span>
-          <div class="card-title">청도 상상마루 3개 층</div>
-          <p class="card-body">1층 코미디 스케치관(자유 입장) · 2층 연계 공간(카페·체험) · 3층 코미디 시네마+토크(사전 예약)</p>
+          <div class="card-title">청도 상상마루 (1층·2층·옥상)</div>
+          <p class="card-body">1층 루프상영(자유입장) · 2층 코미디 공연 · 옥상 메인 상영(사전 예약)</p>
         </div>
         <div class="card">
           <span class="card-label">프로그램</span>
@@ -1226,7 +1105,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <div class="card">
           <span class="card-label">청소년 공모전</span>
           <div class="card-title">지역 뿌리 만들기 장치</div>
-          <p class="card-body">관내 중·고생 대상 코미디 단편 10분 이내. 시상금 최우수 30만원. 수상자 가족이 영화제 지지자가 된다.</p>
+          <p class="card-body">관내 중·고생 대상 코미디 단편 10분 이내.  수상자 가족이 영화제 지지자가 된다.</p>
         </div>
       </div>
       <button class="detail-btn" onclick="switchTab('tab-ops')">
@@ -1244,19 +1123,14 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="section-header reveal">
         <span class="section-num">Section 05 — Budget & Goals</span>
         <h2 class="section-title">예산 <em>&amp;</em> 성과 목표</h2>
-        <p class="section-subtitle">총 1,500만원의 합리적 배분과 1회차 달성 목표</p>
+        <p class="section-subtitle">총 1,500만원 (용역비 1,400 + 센터 운영비 100)과 1회차 달성 목표</p>
       </div>
       <div class="budget-grid">
         <div class="reveal">
-          <div class="budget-chart-title">예산 배분 — 총 1,500만원</div>
+          <div class="budget-chart-title">예산 구조 — 총 1,500만원</div>
           <div class="budget-bars" id="budgetBars">
-            <div class="budget-bar-row"><span class="budget-bar-label">상영권</span><div class="budget-bar-track"><div class="budget-bar-fill" data-width="30"></div></div><span class="budget-bar-amount">450만원</span></div>
-            <div class="budget-bar-row"><span class="budget-bar-label">게스트 초청</span><div class="budget-bar-track"><div class="budget-bar-fill" data-width="20"></div></div><span class="budget-bar-amount">300만원</span></div>
-            <div class="budget-bar-row"><span class="budget-bar-label">운영 인력</span><div class="budget-bar-track"><div class="budget-bar-fill" data-width="20"></div></div><span class="budget-bar-amount">300만원</span></div>
-            <div class="budget-bar-row"><span class="budget-bar-label">장비 임차</span><div class="budget-bar-track"><div class="budget-bar-fill" data-width="10"></div></div><span class="budget-bar-amount">150만원</span></div>
-            <div class="budget-bar-row"><span class="budget-bar-label">홍보·마케팅</span><div class="budget-bar-track"><div class="budget-bar-fill" data-width="6.7"></div></div><span class="budget-bar-amount">100만원</span></div>
-            <div class="budget-bar-row"><span class="budget-bar-label">청소년 공모전</span><div class="budget-bar-track"><div class="budget-bar-fill" data-width="6.7"></div></div><span class="budget-bar-amount">100만원</span></div>
-            <div class="budget-bar-row"><span class="budget-bar-label">포토존</span><div class="budget-bar-track"><div class="budget-bar-fill" data-width="6.7"></div></div><span class="budget-bar-amount">100만원</span></div>
+            <div class="budget-bar-row"><span class="budget-bar-label">용역비</span><div class="budget-bar-track"><div class="budget-bar-fill" data-width="93.3"></div></div><span class="budget-bar-amount">1,400만원</span></div>
+            <div class="budget-bar-row"><span class="budget-bar-label">센터 운영비</span><div class="budget-bar-track"><div class="budget-bar-fill" data-width="6.7"></div></div><span class="budget-bar-amount">100만원</span></div>
           </div>
         </div>
         <div class="reveal reveal-delay-2">
@@ -1353,7 +1227,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <div class="index-card" onclick="switchTab('tab-club')">
           <span class="index-card-num">06</span>
           <div class="card-title">코미디 동아리</div>
-          <p class="card-body">6주 커리큘럼, 수료 쇼케이스, 연간 사이클</p>
+          <p class="card-body">심야책바 형식 4회, 코미디 독서 모임, 영화제 연계</p>
         </div>
         <div class="index-card" onclick="switchTab('tab-screening')">
           <span class="index-card-num">07</span>
@@ -1370,11 +1244,11 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
   <section class="main-section-bg-ink">
     <div class="inner">
       <div class="closing reveal">
-        <blockquote class="closing-quote">"반시축제 기간이 오면, 청도 주민이 먼저 묻는다.<br><strong>올해도 영화제 하지?</strong>"</blockquote>
+        <blockquote class="closing-quote">"반시축제 기간이 끝나면, 청도 주민이 먼저 묻는다.<br><strong>올해도 영화제 하지?</strong>"</blockquote>
         <div class="closing-festival">청도 반시시시 코미디 영화제</div>
         <div class="closing-info">
           <div class="closing-info-item"><strong>장소</strong> 청도 상상마루</div>
-          <div class="closing-info-item"><strong>일시</strong> 청도반시축제 기간 중 1일</div>
+          <div class="closing-info-item"><strong>일시</strong> 10월 31일 토요일</div>
           <div class="closing-info-item"><strong>주관</strong> 청도혁신센터</div>
         </div>
         <span class="closing-tag">청도 코미디 영화제, 합니다</span>
@@ -1390,7 +1264,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="page-hero">
         <span class="page-hero-tag">Detail 01 — Operations</span>
         <h1>공간 설계 &amp; <em>타임테이블</em></h1>
-        <p>청도 상상마루 3개 층의 운영 설계와 당일 전체 프로그램 흐름</p>
+        <p>청도 상상마루 1층·2층·옥상의 공간 설계와 당일 전체 프로그램 흐름</p>
       </div>
       <div class="page-inner">
   <div class="inner">
@@ -1403,13 +1277,13 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
       <table class="data-table">
         <tbody>
-          <tr><td style="width:140px;color:var(--gold);font-weight:500">행사명</td><td>청도 반시시시 코미디 영화제 (가제)</td></tr>
-          <tr><td style="color:var(--gold);font-weight:500">장소</td><td>청도 상상마루 (1층 터미널 공간 + 2층 연계 공간 + 3층 상영·토크)</td></tr>
-          <tr><td style="color:var(--gold);font-weight:500">일시</td><td>청도반시축제(코미디 페스티벌) 기간 중 1일 — 매년 10월 중</td></tr>
-          <tr><td style="color:var(--gold);font-weight:500">관람료</td><td>전액 무료 (3층 사전 예약제 운영) · 음료 판매 별도</td></tr>
+          <tr><td style="width:140px;color:var(--gold);font-weight:500">행사명</td><td>청도 코미디 영화제 (가제)</td></tr>
+          <tr><td style="color:var(--gold);font-weight:500">장소</td><td>청도 상상마루 (1층 루프상영 + 2층 코미디 공연 + 옥상 메인 상영)</td></tr>
+          <tr><td style="color:var(--gold);font-weight:500">일시</td><td>소통협력주간 연계, 독립 일정으로 진행 — 11월 (날짜 확정 필요)</td></tr>
+          <tr><td style="color:var(--gold);font-weight:500">관람료</td><td>전액 무료 (옥상 사전 예약제 운영) · 음료 판매 별도</td></tr>
           <tr><td style="color:var(--gold);font-weight:500">총 예산</td><td>1,500만원</td></tr>
           <tr><td style="color:var(--gold);font-weight:500">주관</td><td>청도혁신센터 / 상상마루</td></tr>
-          <tr><td style="color:var(--gold);font-weight:500">후원·협력</td><td>청도군청 / 반시축제 집행위원회 / 영화제 위원회(코미디, 영화제 각 1인 자문)</td></tr>
+          <tr><td style="color:var(--gold);font-weight:500">후원·협력</td><td>청도군청 / 영화제 위원회(코미디, 영화제 각 1인 자문)</td></tr>
         </tbody>
       </table>
     </div>
@@ -1418,7 +1292,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
     <div class="detail-section">
       <div class="section-header">
         <span id="ops-space" class="section-num">02 — 공간 설계</span>
-        <h2 class="section-title">상상마루 <em>3개 층</em> 운영</h2>
+        <h2 class="section-title">상상마루 <em>1층·2층·옥상</em> 운영</h2>
         <p class="section-subtitle">각 층이 유기적으로 연결되어 자연스러운 관객 동선을 만든다</p>
       </div>
 
@@ -1426,13 +1300,12 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <div class="floor-n">1F</div>
         <div>
           <div class="floor-tag">개방형 · 자유 입장 · 스태프 2인 상주</div>
-          <div class="floor-h">코미디 스케치관</div>
+          <div class="floor-h">루프상영 &amp; 포토존</div>
           <p class="floor-desc">터미널 유동 인구가 자연스럽게 유입되는 개방형 구조. 별도 예약·등록 없이 언제든 입장 가능. 루프 상영으로 상시 운영.</p>
           <ul class="floor-list">
-            <li>스케치 코미디 단편 (3~10분) 4~6편 루프 상영</li>
+            <li>코미디 단편 (3~10분) 4~6편 루프 상영</li>
             <li>청소년 공모 수상작·입선작 별도 상영 코너</li>
-            <li>반시 × 소싸움 × 코미디 밈 결합 포토존</li>
-            <li>스탠딩 코미디 무대 상영 (반시축제 프로그램 연계)</li>
+            <li>포토존 (코미디 밈 결합)</li>
           </ul>
         </div>
       </div>
@@ -1440,37 +1313,36 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="floor-block">
         <div class="floor-n">2F</div>
         <div>
-          <div class="floor-tag">오픈마이크 무대 + 카페 연계 · 체험 부스</div>
-          <div class="floor-h">참여형 공간</div>
-          <p class="floor-desc">모든 주민에게 열려 있는 오픈마이크 무대가 2층의 핵심이다. 3층이 "보는 코미디"라면 2층은 "하는 코미디". 관객이 참여자로 전환되는 공간.</p>
+          <div class="floor-tag">코미디 공연 무대 · 자유 입장 · 카페 연계</div>
+          <div class="floor-h">코미디 공연 무대</div>
+          <p class="floor-desc">오픈마이크 형태의 코미디 공연 무대. 구체 운영 방식은 김기훈 대표와 재논의 예정. 옥상이 "보는 코미디"라면 2층은 "하는 코미디"로 관객이 참여자로 전환되는 공간.</p>
           <ul class="floor-list">
-            <li>오픈마이크 무대 (카페 테이블 재배치, 마이크 스탠드 + PA 소형 스피커)</li>
-            <li>자유 입장 · 예약 불필요 (1·3층과 차별화)</li>
-            <li>코미디 동아리 소개 부스 + 2기 모집 현장 신청 코너</li>
-            <li>카페 운영 (기존 2층 카페 연계 — 별도 준비 불필요)</li>
-            <li>체험형 프로그램 부스 (감물 염색 등 반시축제 연계)</li>
-            <li>영화제 굿즈 판매대</li>
+            <li>코미디 공연 무대 (오픈마이크 형식, 세부 형식 재논의)</li>
+            <li>자유 입장 · 예약 불필요</li>
+            <li>카페 운영 (기존 2층 카페 연계)</li>
+            <li>코미디 동아리 소개 부스 + 2기 모집 현장 신청</li>
           </ul>
         </div>
       </div>
 
       <div class="floor-block">
-        <div class="floor-n">3F</div>
+        <div class="floor-n">옥상</div>
         <div>
-          <div class="floor-tag">사전 예약제 · 30~50석 · 회차별 운영</div>
-          <div class="floor-h">코미디 시네마 + 토크</div>
-          <p class="floor-desc">회차별 사전 예약 운영으로 좌석 과밀 방지 및 집중 관람 환경 확보. 네이버 예약 또는 구글폼 기반 무료 예약. 현장 잔여석은 당일 선착순 입장 허용.</p>
+          <div class="floor-tag">야외 메인 상영관 · 사전 예약제 · 200인치 스크린</div>
+          <div class="floor-h">메인 상영관 (코미디 극장)</div>
+          <p class="floor-desc">야외 스크린과 좌석 배치로 운영되는 메인 상영 공간. 단편·장편·고전 상영 세션 운영. 우천 대비 플랜 B 사전 확정 필수.</p>
           <ul class="floor-list">
-            <li>예약 오픈: D-30 (홍보 시작 시점과 동시 오픈)</li>
-            <li>회차별 정원: 30~50석 (공간 실측 후 확정)</li>
-            <li>현장 당일 선착순 잔여석 개방</li>
-            <li>언론 취재 구역 별도 설정</li>
+            <li>코미디 장편 상영 1편 (옹알스 등) + GV</li>
+            <li>코미디 단편 묶음 (공모작 포함)</li>
+            <li>고전 코미디 상영 1편 (어르신 타깃)</li>
+            <li>라운드 토크 "소멸 시대, 웃음의 힘"</li>
+            <li>예약 오픈: D-30 / 좌석 방식: 공간 실측 후 확정</li>
           </ul>
         </div>
       </div>
 
       <div class="highlight-box">
-        <p><strong>층 간 연계 핵심 원칙:</strong> 1층은 하루 종일 자유 입장으로 진입 통로 및 홍보처 역할. 핵심 프로그램들의 시간대를 이격시켜 한 명의 주민이 하루종일 웃음이 끊기지 않는 유기적인 프로그램 운영. </p>
+        <p><strong>공간 연계 핵심 원칙:</strong> 1층은 하루 종일 자유 입장으로 진입 통로·홍보처 역할. 2층 공연과 옥상 상영의 시간대를 이격시켜 한 명의 관객이 두 공간을 모두 경험할 수 있도록 설계. 우천 시 옥상 상영 대체 공간 사전 확정 필요.</p>
       </div>
     </div>
 
@@ -1478,15 +1350,15 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
     <div class="detail-section">
       <div class="section-header">
         <span id="ops-timetable" class="section-num">03 — 병렬 타임테이블</span>
-        <h2 class="section-title">1·2·3층 <em>동시 운영</em> 흐름</h2>
-        <p class="section-subtitle">3개 층이 동시에 진행되는 당일 전체 프로그램(전체 수정 예정)</p>
+        <h2 class="section-title">1층·2층·옥상 <em>동시 운영</em> 흐름</h2>
+        <p class="section-subtitle">1층·2층·옥상이 동시에 진행되는 당일 전체 프로그램</p>
       </div>
 
       <div class="tl-parallel-header">
         <div class="tl-col">시간</div>
         <div class="tl-col floor-1">1층 — 코미디 스케치관</div>
         <div class="tl-col floor-2">2층 — 오픈마이크</div>
-        <div class="tl-col floor-3">3층 — 코미디 시네마</div>
+        <div class="tl-col floor-3">옥상 — 메인 상영관</div>
       </div>
 
       <div class="tl-parallel-row">
@@ -1534,7 +1406,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="tl-parallel-row">
         <div class="tl-cell tl-cell-time">15:30</div>
         <div class="tl-cell"><div class="tl-cell-desc">루프 상영 중</div></div>
-        <div class="tl-cell"><div class="tl-cell-title">잠시 중단 (3층 이동 유도)</div></div>
+        <div class="tl-cell"><div class="tl-cell-title">잠시 중단 (옥상 이동 유도)</div></div>
         <div class="tl-cell"><div class="tl-cell-title">개막 인사 + 영화제 소개</div><div class="tl-cell-desc">10분 — 취지 안내, 공모전 소개</div><span class="tl-cell-badge reserve">사전예약</span></div>
       </div>
 
@@ -1556,7 +1428,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <div class="tl-cell tl-cell-time">18:20</div>
         <div class="tl-cell"><div class="tl-cell-desc">루프 상영 중</div></div>
         <div class="tl-cell"><div class="tl-cell-title">마무리 + 단편 상영 안내</div></div>
-        <div class="tl-cell"><div class="tl-cell-desc">(3층 이동 전환 타임)</div></div>
+        <div class="tl-cell"><div class="tl-cell-desc">(옥상 이동 전환 타임)</div></div>
       </div>
 
       <div class="tl-parallel-row">
@@ -1588,7 +1460,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
 
       <div class="tl-parallel-note">
-        <strong>핵심 동선 설계 원칙:</strong> 13:00 방문 관객은 2층 오픈마이크 → 15:30 잠시 중단 시 3층 개막으로 자연 이동. 3층 GV(17:30) 중 이탈 관객은 2층 헤드라이너로 흡수. 1층은 하루 종일 자유 입장으로 진입 장벽 없이 운영.
+        <strong>핵심 동선 설계 원칙:</strong> 13:00 방문 관객은 2층 공연 → 15:30 잠시 중단 시 옥상 개막으로 자연 이동. 옥상 GV(17:30) 중 이탈 관객은 2층 헤드라이너로 흡수. 1층은 하루 종일 자유 입장으로 진입 장벽 없이 운영.
       </div>
     </div>
 
@@ -1602,15 +1474,15 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <thead><tr><th>역할</th><th>담당</th><th>비고</th></tr></thead>
         <tbody>
           <tr><td class="td-accent">총괄 기획·예산 관리</td><td>혁신센터 지역혁신팀</td><td>추후 독립법인 설립 필요</td></tr>
-          <tr><td class="td-accent">상영작 선정·감독 섭외</td><td>외부 영화 자문 1인</td><td>M-6 위촉 완료 필수</td></tr>
+          <tr><td class="td-accent">상영작 선정·감독 섭외</td><td>외부 영화 자문 1인</td><td>5월 위촉 완료 필수</td></tr>
           <tr><td class="td-accent">공모전 기획·심사</td><td>혁신센터 + 지역 주민 심사위원</td><td>주민 심사위원 3인 이상</td></tr>
           <tr><td class="td-accent">2층 오픈마이크 운영</td><td>MC 1인 + 혁신센터 스태프 2인</td><td>MC는 김기훈 대표 또는 외부 초청</td></tr>
           <tr><td class="td-accent">현장 운영 (1층)</td><td>혁신센터 스태프 2인</td><td>루프 상영·포토존 관리</td></tr>
-          <tr><td class="td-accent">현장 운영 (3층)</td><td>혁신센터 스태프 2인 + 자원봉사</td><td>예약 확인·좌석 안내</td></tr>
+          <tr><td class="td-accent">현장 운영 (옥상)</td><td>커뮤니티 시네마 네트워크 협동조합 (외주)</td><td>예약 확인·좌석 안내</td></tr>
           <tr><td class="td-accent">홍보·SNS</td><td>혁신센터 + 서포터즈</td><td>당일 실시간 업로드</td></tr>
           <tr><td class="td-accent">예약 시스템 운영</td><td>혁신센터 (네이버예약/구글폼)</td><td>D-30 오픈</td></tr>
           <tr><td class="td-accent">기술·장비</td><td>외부 장비 임차 업체</td><td>D-7 사전 테스트</td></tr>
-          <tr><td class="td-accent">반시축제 연계 협의</td><td>혁신센터 ↔ 청도군청</td><td>M-5 서면 확정</td></tr>
+          <tr><td class="td-accent">반시축제 연계 협의</td><td>혁신센터 ↔ 청도군청</td><td>2회차 부터 논의 예정</td></tr>
         </tbody>
       </table>
     </div>
@@ -1628,9 +1500,9 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <table class="data-table" style="margin-top:20px;margin-bottom:24px;">
         <thead><tr><th>예산 항목</th><th>금액</th><th>내용</th></tr></thead>
         <tbody>
-          <tr><td class="td-accent">포스터·인쇄물</td><td>50만원</td><td>A2 포스터 100매, 리플릿 500부</td></tr>
+          <tr><td class="td-accent">포스터·인쇄물</td><td>50만원</td><td>A2 포스터 30매, 리플릿 300부</td></tr>
           <tr><td class="td-accent">SNS 광고</td><td>30만원</td><td>인스타·페이스북 타겟 광고 <br>(청도·대구·경산·밀양 반경)</td></tr>
-          <tr><td class="td-accent">현수막</td><td>20만원</td><td>청도 읍내 + 반시축제장 입구 2~3개소</td></tr>
+          <tr><td class="td-accent">현수막</td><td>20만원</td><td>청도 읍내 + 반시축제장 입구 등 2~3개소</td></tr>
           <tr><td class="td-accent">보도자료·기타</td><td>타 예산 활용</td><td>지역 언론 배포, 기타 돌발 대응</td></tr>
           <tr><td style="font-weight:700;color:var(--gold)">합계</td><td style="font-weight:700;color:var(--gold)">100만원</td><td></td></tr>
         </tbody>
@@ -1665,7 +1537,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             <tr><td class="td-accent">D-21</td><td>지역 언론</td><td>보도자료 1차 배포 (TBC대구·청도일보·청도투데이 등 3개 이상)</td><td>혁신센터</td></tr>
             <tr><td class="td-accent">D-14</td><td>학교 공문</td><td>관내 중·고교 공문 발송. 청소년 공모전 안내 겸용</td><td>혁신센터</td></tr>
             <tr><td class="td-accent">D-14</td><td>현수막 설치</td><td>청도 읍내 주요 거리 + 반시축제장 입구</td><td>혁신센터</td></tr>
-            <tr><td class="td-accent">D-7</td><td>주민 커뮤니티</td><td>당근마켓·맘카페·지역 밴드 게시. "예약 잔여 XX석" 긴박감 활용</td><td>혁신센터</td></tr>
+            <tr><td class="td-accent">D-7</td><td>주민 커뮤니티</td><td>당근마켓·맘카페·지역 밴드 리마인드 게시. "예약 잔여 XX석" 긴박감 활용</td><td>혁신센터</td></tr>
             <tr><td class="td-accent">D-3</td><td>SNS + 카카오</td><td>카운트다운 콘텐츠. 게스트 인터뷰 쇼츠 1편 업로드 (가능 시)</td><td>혁신센터</td></tr>
             <tr><td class="td-accent">D-Day</td><td>실시간 SNS</td><td>현장 사진·영상 실시간 업로드. 포토존 인증샷 리그램</td><td>서포터즈</td></tr>
             <tr><td class="td-accent">D+3</td><td>SNS + 언론</td><td>결과 보도자료 배포. 현장 사진·관객 반응 게시. 다음 회차 예고</td><td>혁신센터</td></tr>
@@ -1676,7 +1548,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="needs-grid" style="grid-template-columns:repeat(3,1fr);margin-top:36px;">
         <div class="needs-card">
           <div class="needs-card-label">SNS 핵심 카피 방향</div>
-          <p class="needs-card-desc">청도 최초 코미디 영화제 / 입장 무료 / 반시축제 기간 단 하루 / 사전 예약 필수. "청도 코미디 영화제, 합니다" 슬로건 일관 사용.</p>
+          <p class="needs-card-desc">전국 유일 코미디 영화제 / 입장 무료 / 10월 31일 토요일 / 사전 예약 필수. "청도 코미디 영화제, 합니다" 슬로건 일관 사용.</p>
         </div>
         <div class="needs-card">
           <div class="needs-card-label">예약률이 최고의 홍보</div>
@@ -1700,7 +1572,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="page-hero">
         <span class="page-hero-tag">Detail 02 — Budget & Plan</span>
         <h1>예산 상세 &amp; <em>추진 플랜</em></h1>
-        <p>1,500만원 항목별 세부 내역과 반시축제 개최 6개월 전부터의 월별 실행 계획</p>
+        <p>총 1,500만원 (용역비 1,400 + 센터 운영비 100) 구조와 소통협력주간(11월) 기준 월별 실행 계획</p>
       </div>
       <div class="page-inner">
   <div class="inner">
@@ -1708,40 +1580,35 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
     <div class="detail-section">
       <div class="section-header">
         <span id="budget-detail" class="section-num">01 — 예산 상세</span>
-        <h2 class="section-title">1,500만원 <em>항목별 내역</em></h2>
+        <h2 class="section-title">1,500만원 <em>예산 구조</em></h2>
       </div>
       <table class="data-table">
-        <thead><tr><th>항목</th><th>금액</th><th>세부 내용</th><th>비고</th></tr></thead>
+        <thead><tr><th>구분</th><th>금액</th><th>내용</th><th>비고</th></tr></thead>
         <tbody>
-          <tr><td class="td-accent">상영권</td><td>450만원</td><td>장편 1편 + 단편 5~8편 상영권 계약</td><td>인디그라운드·대구독립영화협회 채널</td></tr>
-          <tr><td class="td-accent">게스트 초청</td><td>300만원</td><td>감독 2인 교통·숙박·사례비, 사회자 1인</td><td>M-3 계약 완료 목표</td></tr>
-          <tr><td class="td-accent">운영 인력</td><td>300만원</td><td>현장 스태프 (진행·기술·안내) 1일 운영</td><td>자원봉사 연계 시 절감 가능</td></tr>
-          <tr><td class="td-accent">장비 임차</td><td>150만원</td><td>빔프로젝터·음향·1층 루프 상영 장비</td><td>일부 시군구 장비 활용 가능</td></tr>
-          <tr><td class="td-accent">홍보·마케팅</td><td>100만원</td><td>포스터·SNS광고·현수막·보도자료</td><td>디자인 자체 제</td></tr>
-          <tr><td class="td-accent">청소년 공모전</td><td>100만원</td><td>시상금 70만 + 운영비 30만</td><td>수요 확인 후 최종 확정</td></tr>
-          <tr><td class="td-accent">포토존</td><td>100만원</td><td>반시·소싸움 × 코미디 밈 결합 포토존 설치</td><td>시군구 홍보 부스비용 有</td></tr>
+          <tr><td class="td-accent">용역비</td><td>1,400만원</td><td>커뮤니티 시네마 네트워크 협동조합 외주 (상영권·게스트·운영·장비·공모전·포토존 포함)</td><td>외주 계약 단위로 집행</td></tr>
+          <tr><td class="td-accent">홍보·운영비</td><td>100만원</td><td>포스터·SNS광고·현수막·보도자료 등 홍보 전반</td><td>청도혁신센터 직접 집행</td></tr>
           <tr><td style="font-weight:700;color:var(--gold)">합계</td><td style="font-weight:700;color:var(--gold)">1,500만원</td><td colspan="2"></td></tr>
         </tbody>
       </table>
       <div class="highlight-box" style="margin-top:28px;">
-        <p><strong>장비 임차 절감 방안:</strong> 시군구 공동 장비 풀을 우선 확인한다. 빔프로젝터와 음향 장비의 경우 지자체 보유 장비를 협의해 활용하면 장비 예산 50%까지 절감 가능. 절감분은 게스트 초청 또는 홍보 예산으로 전용.</p>
+        <p><strong>예산 집행 구조:</strong> 용역비 1,400만원은 커뮤니티 시네마 네트워크 협동조합과의 외주 계약으로 일괄 집행한다. 홍보·운영비 100만원은 청도혁신센터가 직접 집행하며 포스터·SNS 광고·현수막 제작에 사용한다. 외주 계약 전 용역 범위(상영권·게스트·운영·장비·공모전·포토존) 명시가 선결 과제다.</p>
       </div>
     </div>
 
     <div class="detail-section">
       <div class="section-header">
         <span id="budget-plan" class="section-num">02 — 추진 플랜</span>
-        <h2 class="section-title">6개월 <em>월별 실행 계획</em></h2>
-        <p class="section-subtitle">반시축제 개최월을 M월로 기준 설정 (통상 10~11월 · 착수 4~5월)</p>
+        <h2 class="section-title">소통협력주간까지 <em>월별 실행 계획</em></h2>
+        <p class="section-subtitle">소통협력주간(11월) 기준 실제 월 일정</p>
       </div>
       <div class="monthly-rows">
         <div class="monthly-row" onclick="toggleMonthly(this)">
-          <div class="monthly-row-header"><span class="monthly-month">M-6</span><span class="monthly-label">기반 구축 — 뼈대 확정, 준비 체계 가동</span></div>
+          <div class="monthly-row-header accordion-header"><span class="monthly-month">5월</span><span class="monthly-label">기반 구축 — 뼈대 확정, 준비 체계 가동</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
             <table class="data-table">
               <thead><tr><th>주차</th><th>활동</th><th>담당</th><th>완수 기준</th></tr></thead>
               <tbody>
-                <tr><td>1주</td><td>반시축제 집행위와 공식 협의, 행사일·상상마루 공간 사용 확정</td><td>혁신센터 총괄</td><td>날짜·공간 서면 확정</td></tr>
+                <tr><td>1주</td><td>소통협력주간 공식 일정 확인 및 행사일·상상마루 공간 사용 확정</td><td>혁신센터 총괄</td><td>날짜·공간 서면 확정</td></tr>
                 <tr><td>2주</td><td>운영위원회 구성 (혁신센터 + 지역 코미디언 + 외부 영화 자문 + 지역 상인)</td><td>혁신센터 총괄</td><td>위원회 명단 확정</td></tr>
                 <tr><td>3주</td><td>외부 영화 자문 위촉, 상영작 리서치 방향 설정</td><td>총괄 + 자문</td><td>계약서 또는 협약 체결</td></tr>
                 <tr><td>4주</td><td>청소년 공모전 수요 조사 — 관내 중·고교 담당교사 접촉, 참여 의향 확인</td><td>혁신센터</td><td>의향 학교 수 파악 후 진행/보류 결정</td></tr>
@@ -1750,7 +1617,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           </div></div>
         </div>
         <div class="monthly-row" onclick="toggleMonthly(this)">
-          <div class="monthly-row-header"><span class="monthly-month">M-5</span><span class="monthly-label">콘텐츠 기획 + 공모전 설계</span></div>
+          <div class="monthly-row-header accordion-header"><span class="monthly-month">6월</span><span class="monthly-label">콘텐츠 기획 + 공모전 설계</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
             <table class="data-table">
               <thead><tr><th>주차</th><th>활동</th><th>담당</th><th>완수 기준</th></tr></thead>
@@ -1764,7 +1631,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           </div></div>
         </div>
         <div class="monthly-row" onclick="toggleMonthly(this)">
-          <div class="monthly-row-header"><span class="monthly-month">M-4</span><span class="monthly-label">섭외 확정 + 공모전 오픈 + 홍보물 착수</span></div>
+          <div class="monthly-row-header accordion-header"><span class="monthly-month">7월</span><span class="monthly-label">섭외 확정 + 공모전 오픈 + 홍보물 착수</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
             <table class="data-table">
               <thead><tr><th>주차</th><th>활동</th><th>담당</th><th>완수 기준</th></tr></thead>
@@ -1778,7 +1645,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           </div></div>
         </div>
         <div class="monthly-row" onclick="toggleMonthly(this)">
-          <div class="monthly-row-header"><span class="monthly-month">M-3</span><span class="monthly-label">홍보 가동 + 예약 시스템 오픈</span></div>
+          <div class="monthly-row-header accordion-header"><span class="monthly-month">8월</span><span class="monthly-label">홍보 가동 + 예약 시스템 오픈</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
             <table class="data-table">
               <thead><tr><th>주차</th><th>활동</th><th>담당</th><th>완수 기준</th></tr></thead>
@@ -1786,34 +1653,34 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
                 <tr><td>1주</td><td>장편·단편 상영권 계약 완료</td><td>자문 + 혁신센터</td><td>계약서 체결</td></tr>
                 <tr><td>2주</td><td>포스터·홍보물 최종 확정, SNS 홍보 시작</td><td>홍보 담당</td><td>SNS 1차 게시 완료</td></tr>
                 <tr><td>2주</td><td>언론 보도자료 배포 (사전 보도)</td><td>혁신센터</td><td>3개 매체 이상 발송</td></tr>
-                <tr><td>3주</td><td>3층 사전 예약 시스템 오픈 (네이버예약/구글폼)</td><td>혁신센터</td><td>예약 링크 생성 및 홍보</td></tr>
+                <tr><td>3주</td><td>옥상 사전 예약 시스템 오픈 (네이버예약/구글폼)</td><td>혁신센터</td><td>예약 링크 생성 및 홍보</td></tr>
                 <tr><td>4주</td><td>현장 운영 매뉴얼 작성, 자원봉사자 모집 공고</td><td>운영팀</td><td>매뉴얼 초안 완성</td></tr>
               </tbody>
             </table>
           </div></div>
         </div>
         <div class="monthly-row" onclick="toggleMonthly(this)">
-          <div class="monthly-row-header"><span class="monthly-month">M-1</span><span class="monthly-label">공모전 마감 + 최종 준비</span></div>
+          <div class="monthly-row-header accordion-header"><span class="monthly-month">10월</span><span class="monthly-label">공모전 마감 + 최종 준비</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
             <table class="data-table">
               <thead><tr><th>주차</th><th>활동</th><th>담당</th><th>완수 기준</th></tr></thead>
               <tbody>
                 <tr><td>1주</td><td>청소년 공모전 마감 및 1차 심사</td><td>혁신센터 + 운영위</td><td>수상작 확정</td></tr>
                 <tr><td>2주</td><td>최종 수상작 확정 및 수상자 개별 통보</td><td>혁신센터</td><td>수상자 개별 연락</td></tr>
-                <tr><td>3주</td><td>자원봉사자 오리엔테이션</td><td>운영팀</td><td>오리엔테이션 완료</td></tr>
-                <tr><td>4주</td><td>장비 임차 계약 완료, 포토존 제작물 확인</td><td>운영팀</td><td>계약서 체결</td></tr>
+                <tr><td>3주</td><td>장비 임차 계약 완료, 포토존 제작물 확인</td><td>운영팀</td><td>계약서 체결</td></tr>
+                <tr><td>4주</td><td>자원봉사자 오리엔테이션</td><td>운영팀</td><td>오리엔테이션 완료</td></tr>
               </tbody>
             </table>
           </div></div>
         </div>
         <div class="monthly-row" onclick="toggleMonthly(this)">
-          <div class="monthly-row-header"><span class="monthly-month">D-Day</span><span class="monthly-label">실행 + 사후 정리</span></div>
+          <div class="monthly-row-header accordion-header"><span class="monthly-month">11월</span><span class="monthly-label">실행 + 사후 정리</span></div>
           <div class="monthly-body"><div class="monthly-body-inner">
             <table class="data-table">
               <thead><tr><th>시점</th><th>활동</th></tr></thead>
               <tbody>
                 <tr><td class="td-accent">D-7</td><td>현장 사전 방문 — 공간 배치, 장비 테스트, 예약 현황 점검</td></tr>
-                <tr><td class="td-accent">D-Day</td><td>청도 반시시시 코미디 영화제 개최</td></tr>
+                <tr><td class="td-accent">D-Day</td><td>청도 코미디 영화제 개최</td></tr>
                 <tr><td class="td-accent">D+7</td><td>관객 수·예약 데이터·SNS 도달·언론 보도 취합</td></tr>
                 <tr><td class="td-accent">D+14</td><td>결과보고서 초안 작성, 공모전 정산 완료</td></tr>
                 <tr><td class="td-accent">D+30</td><td>최종 결과보고서 완성 (관객 데이터·경제효과·언론 보도 포함 제출)</td></tr>
@@ -1833,16 +1700,16 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <table class="data-table">
         <thead><tr><th>월</th><th>핵심 과업</th><th>완수 기준</th></tr></thead>
         <tbody>
-          <tr><td class="td-accent">M-6 / 4주</td><td>외부 영화 자문 위촉 완료</td><td>계약서 또는 협약 체결</td></tr>
-          <tr><td class="td-accent">M-6 / 4주</td><td>청소년 공모전 수요 확인 → 진행 여부 결정</td><td>의향 학교 수 파악 후 결정</td></tr>
-          <tr><td class="td-accent">M-5 / 1주</td><td>반시축제 집행위 협의 → 행사일·공간 서면 확정</td><td>날짜·공간 서면 확정</td></tr>
-          <tr><td class="td-accent">M-5 / 2주</td><td>상영 후보작 리스트 확정 (장편 3편+, 단편 10편+)</td><td>리스트 문서화</td></tr>
-          <tr><td class="td-accent">M-5 / 4주</td><td>감독·게스트 1차 컨택 완료</td><td>후보 2~3인 응답</td></tr>
-          <tr><td class="td-accent">M-3 / 1주</td><td>장편·단편 상영권 계약 완료</td><td>계약서 체결</td></tr>
-          <tr><td class="td-accent">M-3 / 2주</td><td>감독·게스트 섭외 확정</td><td>출연 확약 및 계약</td></tr>
-          <tr><td class="td-accent">M-3 / 3주</td><td>3층 사전 예약 시스템 오픈</td><td>예약 링크 + 홍보 완료</td></tr>
-          <tr><td class="td-accent">M-1 / 2주</td><td>청소년 공모전 수상작 확정 및 통보</td><td>수상자 개별 연락</td></tr>
-          <tr><td class="td-accent">M-1 / 4주</td><td>장비 임차 계약 완료</td><td>계약서 체결</td></tr>
+          <tr><td class="td-accent">5월 4주</td><td>외부 영화 자문 위촉 완료</td><td>계약서 또는 협약 체결</td></tr>
+          <tr><td class="td-accent">5월 4주</td><td>청소년 공모전 수요 확인 → 진행 여부 결정</td><td>의향 학교 수 파악 후 결정</td></tr>
+          <tr><td class="td-accent">6월 1주</td><td>소통협력주간 공식 일정 확인 및 행사일·상상마루 공간 사용 확정</td><td>날짜·공간 서면 확정</td></tr>
+          <tr><td class="td-accent">6월 2주</td><td>상영 후보작 리스트 확정 (장편 3편+, 단편 10편+)</td><td>리스트 문서화</td></tr>
+          <tr><td class="td-accent">6월 4주</td><td>감독·게스트 1차 컨택 완료</td><td>후보 2~3인 응답</td></tr>
+          <tr><td class="td-accent">8월 1주</td><td>장편·단편 상영권 계약 완료</td><td>계약서 체결</td></tr>
+          <tr><td class="td-accent">8월 2주</td><td>감독·게스트 섭외 확정</td><td>출연 확약 및 계약</td></tr>
+          <tr><td class="td-accent">8월 3주</td><td>옥상 사전 예약 시스템 오픈</td><td>예약 링크 + 홍보 완료</td></tr>
+          <tr><td class="td-accent">10월 2주</td><td>청소년 공모전 수상작 확정 및 통보</td><td>수상자 개별 연락</td></tr>
+          <tr><td class="td-accent">10월 3주</td><td>장비 임차 계약 완료</td><td>계약서 체결</td></tr>
           <tr><td class="td-accent">D+30</td><td>최종 결과보고서 완성</td><td>데이터 포함 제출</td></tr>
         </tbody>
       </table>
@@ -1899,11 +1766,11 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           <tr><td style="color:var(--gold);font-weight:500">주제</td><td>청도를 배경으로 한 웃음·코미디 영상</td></tr>
           <tr><td style="color:var(--gold);font-weight:500">형식</td><td>스케치 코미디, 개그, 일상 코미디 등 자유</td></tr>
           <tr><td style="color:var(--gold);font-weight:500">분량</td><td>10분 이내</td></tr>
-          <tr><td style="color:var(--gold);font-weight:500">시상</td><td>최우수 1편 30만원 / 우수 2편 각 20만원 / 참가상</td></tr>
-          <tr><td style="color:var(--gold);font-weight:500">예산</td><td>100만원 (시상금 70만원 + 운영비 30만원)</td></tr>
-          <tr><td style="color:var(--gold);font-weight:500">공고</td><td>M-4 3주차 — 관내 학교 공문 발송 + SNS 공고</td></tr>
-          <tr><td style="color:var(--gold);font-weight:500">마감</td><td>M-1 1주차</td></tr>
-          <tr><td style="color:var(--gold);font-weight:500">결과 발표</td><td>M-1 2주차 — 수상자 개별 통보</td></tr>
+          <tr><td style="color:var(--gold);font-weight:500">시상</td><td>기존 상금에서 상패 등 시상으로 대체</td></tr>
+          <tr><td style="color:var(--gold);font-weight:500">예산</td><td>100만원 영상 제작지원 가능 여부 확인</td></tr>
+          <tr><td style="color:var(--gold);font-weight:500">공고</td><td>7월 3주 — 관내 학교 공문 발송 + SNS 공고</td></tr>
+          <tr><td style="color:var(--gold);font-weight:500">마감</td><td>10월 1주</td></tr>
+          <tr><td style="color:var(--gold);font-weight:500">결과 발표</td><td>10월 2주 — 수상자 개별 통보</td></tr>
           <tr><td style="color:var(--gold);font-weight:500">시상식</td><td>D-Day 폐막 시 (21:00~21:30)</td></tr>
         </tbody>
       </table>
@@ -1915,10 +1782,10 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <h2 class="section-title">단계별 <em>운영 흐름</em></h2>
       </div>
       <div class="process-flow">
-        <div class="process-step"><div class="process-dot">01</div><div class="process-label">수요 조사</div><div class="process-sub">관내 학교 교사 접촉<br>참여 의향 확인<br>M-6 4주차</div></div>
-        <div class="process-step"><div class="process-dot">02</div><div class="process-label">MOU 체결</div><div class="process-sub">참여 학교 협약<br>단체 관람 협의<br>M-5</div></div>
-        <div class="process-step"><div class="process-dot">03</div><div class="process-label">사전 교육</div><div class="process-sub">배짼다 쇼 단체 관람<br>코미디언 강의<br>M-4~M-3</div></div>
-        <div class="process-step"><div class="process-dot">04</div><div class="process-label">제작 지원</div><div class="process-sub">영상 제작비 10팀<br>중간 점검 피드백<br>M-3~M-1</div></div>
+        <div class="process-step"><div class="process-dot">01</div><div class="process-label">수요 조사</div><div class="process-sub">관내 학교 교사 접촉<br>참여 의향 확인<br>5월 4주</div></div>
+        <div class="process-step"><div class="process-dot">02</div><div class="process-label">MOU 체결</div><div class="process-sub">참여 학교 협약<br>교육 프로그램 개발<br>6월</div></div>
+        <div class="process-step"><div class="process-dot">03</div><div class="process-label">사전 교육</div><div class="process-sub">영상미디어센터 강의<br>영화 제작 실습<br>7~8월</div></div>
+        <div class="process-step"><div class="process-dot">04</div><div class="process-label">제작 지원</div><div class="process-sub">영상 제작비 10팀<br>중간 점검 피드백<br>8~10월</div></div>
         <div class="process-step"><div class="process-dot">05</div><div class="process-label">심사·시상</div><div class="process-sub">운영위 심사<br>수상작 영화제 상영<br>D-Day</div></div>
       </div>
       <div class="highlight-box">
@@ -2065,6 +1932,15 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
             <li>셀러브리티 파워 ≠ 생태계</li>
           </ul>
         </div>
+        <div class="case-card success" style="grid-column: 1 / -1;">
+          <span class="case-badge s">성공 — 김해시민영화제 (부산 모퉁이극장 × 김해시민재단)</span>
+          <div class="case-name">외부 전문성 + 지역 재단 결합이 영화제 조직을 키운 사례</div>
+          <ul class="case-points">
+            <li>부산 모퉁이극장이 운영 주체, 김해시민재단이 재원 지원 — 외부 전문성과 지역 기반의 역할 분리</li>
+            <li>영화제 조직 운영 과정에서 지역 주민을 문화 기획자로 성장시킨 구조</li>
+            <li>벤치마킹 포인트: 외부 협동조합·단체 외주 + 지역 재단 결합 모델 → 청도혁신센터 + 커뮤니티 시네마 네트워크 협동조합 구조와 직접 대응</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -2091,7 +1967,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           <ul class="cycle-chain">
             <li>"지역 정서를 담은 웃음" (정체성)</li>
             <li>지역 정서를 담은 코미디 큐레이션</li>
-            <li>반시축제 관광객 + 외지 코미디 팬</li>
+            <li>반시축제 관광객 노출 + 외지 코미디 팬</li>
             <li>코미디 창작자 네트워킹 (산업 기능)</li>
             <li>경제효과 + 사회적 가치 데이터</li>
             <li style="color:var(--persimmon)">→ 더 강한 정체성 구축</li>
@@ -2119,7 +1995,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       </div>
       <div class="step-cards">
         <div class="step-card open">
-          <div class="step-card-header" onclick="toggleStep(this)">
+          <div class="step-card-header accordion-header" onclick="toggleStep(this)">
             <div class="step-n">1</div>
             <div class="step-meta"><span class="step-period">1회차 · 생존기</span><span class="step-title">행사를 무사히 열고, 데이터를 쌓는다</span></div>
           </div>
@@ -2151,7 +2027,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         </div>
 
         <div class="step-card">
-          <div class="step-card-header" onclick="toggleStep(this)">
+          <div class="step-card-header accordion-header" onclick="toggleStep(this)">
             <div class="step-n">2</div>
             <div class="step-meta"><span class="step-period">2회차 · 뿌리기</span><span class="step-title">지역 뿌리를 깊게 하고, 재원을 다변화한다</span></div>
           </div>
@@ -2179,7 +2055,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         </div>
 
         <div class="step-card">
-          <div class="step-card-header" onclick="toggleStep(this)">
+          <div class="step-card-header accordion-header" onclick="toggleStep(this)">
             <div class="step-n">3</div>
             <div class="step-meta"><span class="step-period">3~4회차 · 성장기</span><span class="step-title">정체성이 외부에서 인정받고, 산업 기능이 싹튼다</span></div>
           </div>
@@ -2200,7 +2076,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         </div>
 
         <div class="step-card">
-          <div class="step-card-header" onclick="toggleStep(this)">
+          <div class="step-card-header accordion-header" onclick="toggleStep(this)">
             <div class="step-n">4</div>
             <div class="step-meta"><span class="step-period">5회차+ · 안착기</span><span class="step-title">영화제가 없어지면 지역이 아쉬워하는 상태</span></div>
           </div>
@@ -2367,7 +2243,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
       <div class="page-hero">
         <span class="page-hero-tag">Detail 06 — Comedy Club</span>
         <h1>코미디 <em>동아리</em></h1>
-        <p>오픈마이크가 단발 이벤트로 끝나지 않으려면 무대에 올라올 로컬 퍼포머가 필요하다</p>
+        <p>코미디 영화를 매개로 책을 읽고 이야기를 나누는 심야책바 형식의 소규모 모임</p>
       </div>
       <div class="page-inner">
       <div class="inner">
@@ -2375,85 +2251,108 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
         <div class="detail-section">
           <div class="section-header">
             <span id="club-why" class="section-num">01 — 왜 동아리인가</span>
-            <h2 class="section-title">오픈마이크를 <em>지속시키는 구조</em></h2>
+            <h2 class="section-title">코미디를 <em>함께 읽는</em> 이유</h2>
           </div>
-          <blockquote class="quote-block">오픈마이크가 단발 이벤트로 끝나지 않으려면 무대에 올라올 로컬 퍼포머가 필요하다. 그 퍼포머를 키우는 구조가 동아리다.</blockquote>
+          <blockquote class="quote-block">코미디 영화제가 단발 이벤트로 끝나지 않으려면 지역 안에서 코미디를 진지하게 생각하는 사람들이 필요하다. 동아리는 그 씨앗이다.</blockquote>
+          <div class="two-col" style="margin-top:24px;">
+            <div class="card" style="border-top:3px solid var(--persimmon);">
+              <span class="card-label">동아리의 역할</span>
+              <div class="card-title">코미디 감각을 기르는 모임</div>
+              <p class="card-body">코미디 구성·역사·감각을 다룬 책을 함께 읽고 논의한다. 공연 역량을 키우는 워크숍이 아닌, 코미디를 깊이 이해하는 독서 모임.</p>
+            </div>
+            <div class="card" style="border-top:3px solid var(--gold);">
+              <span class="card-label">영화제와의 연결</span>
+              <div class="card-title">영화제의 충성 관객이 된다</div>
+              <p class="card-body">코미디를 책으로 공부한 사람은 영화제의 큐레이션을 다르게 본다. 동아리 참가자는 영화제의 가장 적극적인 관객·서포터가 된다.</p>
+            </div>
+          </div>
         </div>
 
         <div class="detail-section">
           <div class="section-header">
-            <span id="club-target" class="section-num">02 — 모집 대상 &amp; 규모</span>
+            <span id="club-target" class="section-num">02 — 모집 대상 &amp; 운영 개요</span>
             <h2 class="section-title">소규모로 <em>밀도 있게</em></h2>
           </div>
           <table class="data-table">
             <thead><tr><th>항목</th><th>내용</th></tr></thead>
             <tbody>
               <tr><td class="td-accent">대상</td><td>청도·청도 인근 지역 거주 청년·성인 (연령 불문)</td></tr>
-              <tr><td class="td-accent">규모</td><td>기수당 10~12명 (소규모 유지로 개별 피드백 보장)</td></tr>
-              <tr><td class="td-accent">자격</td><td>코미디 경험 불필요, 청도를 소재로 뭔가 말하고 싶은 사람</td></tr>
-              <tr><td class="td-accent">모집 채널</td><td>SNS + 지역 커뮤니티 + 학교 공문 + 영화제 현장 QR</td></tr>
+              <tr><td class="td-accent">규모</td><td>회당 10~15명 내외 (소규모 유지)</td></tr>
+              <tr><td class="td-accent">형식</td><td>심야책바 형식 — 코미디 관련 책 읽고 논의</td></tr>
+              <tr><td class="td-accent">횟수</td><td>총 4회</td></tr>
+              <tr><td class="td-accent">회당 시간</td><td>약 2시간</td></tr>
+              <tr><td class="td-accent">장소</td><td>상상마루 내 (위치 김기훈 대표와 재논의)</td></tr>
+              <tr><td class="td-accent">비용</td><td>회당 약 25만원 수준 / 다과비는 상상마루 집행</td></tr>
+              <tr><td class="td-accent">모집 채널</td><td>SNS + 지역 커뮤니티 + 영화제 현장 QR</td></tr>
             </tbody>
           </table>
         </div>
 
         <div class="detail-section">
           <div class="section-header">
-            <span id="club-curriculum" class="section-num">03 — 6주 커리큘럼</span>
-            <h2 class="section-title">주 1회 2시간 <em>총 6회</em></h2>
+            <span id="club-curriculum" class="section-num">03 — 4회 프로그램</span>
+            <h2 class="section-title">회당 2시간 <em>총 4회</em></h2>
           </div>
           <table class="data-table">
-            <thead><tr><th>주차</th><th>주제</th><th>주요 내용</th><th>강사</th></tr></thead>
+            <thead><tr><th>회차</th><th>주제</th><th>내용</th></tr></thead>
             <tbody>
-              <tr><td class="td-accent">1주</td><td>코미디란 무엇인가</td><td>관찰 코미디, 하이퍼 리얼리즘, 한국형 코미디 흐름</td><td>자체</td></tr>
-              <tr><td class="td-accent">2주</td><td>조크 구조 이론</td><td>셋업과 펀치라인, 규칙과 반전, 짧은 조크 써보기</td><td>자체</td></tr>
-              <tr><td class="td-accent">3주</td><td>소재 발굴</td><td>청도 일상·반시·소싸움 관찰 / 소재 3개 발표</td><td>외부 초청</td></tr>
-              <tr><td class="td-accent">4주</td><td>세트 개발 + 피드백</td><td>5분 세트 초안 작성, 소그룹 피드백</td><td>자체</td></tr>
-              <tr><td class="td-accent">5주</td><td>무대 기술</td><td>마이크 다루기, 타이밍, 눈 맞춤, 침묵 활용</td><td>외부 초청</td></tr>
-              <tr><td class="td-accent">6주</td><td>수료 쇼케이스</td><td>실제 관객 앞 5분 공연, 동아리 공식 데뷔</td><td>—</td></tr>
+              <tr><td class="td-accent">1회차</td><td>코미디 구성 이론 — 책 1</td><td>코미디 구성·구조 관련 책 선정 후 함께 읽기·토론. 코미디가 왜 웃긴가, 웃음의 메커니즘 논의.</td></tr>
+              <tr><td class="td-accent">2회차</td><td>코미디 구성 이론 — 책 2</td><td>두 번째 책으로 첫 책과 다른 관점 탐색. 장르별·문화권별 코미디 차이 논의.</td></tr>
+              <tr><td class="td-accent">3회차</td><td>청도 소재 발굴</td><td>청도의 일상·반시·소싸움을 코미디 소재로 바라보기. 참가자 자유 발제 + 토론.</td></tr>
+              <tr><td class="td-accent">4회차</td><td>짧은 발표 + 마무리</td><td>짧은 코미디 아이디어 또는 감상 발표. 모임 마무리 및 영화제 연계 안내.</td></tr>
             </tbody>
           </table>
+          <div class="highlight-box" style="margin-top:24px;">
+            <p><strong>선정 도서 기준:</strong> 코미디 창작 이론, 코미디 역사, 유머 심리학 관련 서적 중 참가자 접근성과 논의 가능성을 고려해 사전 선정. 구체 도서는 김기훈 대표와 협의.</p>
+          </div>
         </div>
 
         <div class="detail-section">
           <div class="section-header">
-            <span id="club-after" class="section-num">04 — 수료 후 연결</span>
-            <h2 class="section-title">수료가 끝이 아닌 <em>시작</em></h2>
+            <span id="club-after" class="section-num">04 — 영화제 연계</span>
+            <h2 class="section-title">모임이 끝나도 <em>연결은 계속된다</em></h2>
           </div>
           <div class="highlight-box">
-            <p style="font-family:var(--font-body);font-size:.88rem;line-height:2.2;font-style:normal;"><strong style="color:var(--persimmon-glow);">[수료 쇼케이스]</strong> → <strong style="color:var(--cream);">정기 오픈마이크 MC 역할 + 퍼포머</strong> → <strong style="color:var(--cream);">영화제 퍼포머 선발</strong> → <strong style="color:var(--cream);">영화제 당일 2층 무대</strong> → <strong style="color:var(--persimmon-glow);">다음 기수 멘토 역할</strong></p>
+            <p style="font-family:var(--font-body);font-size:.88rem;line-height:2.2;font-style:normal;"><strong style="color:var(--persimmon-glow);">심야책바 4회 참가</strong> → <strong style="color:var(--cream);">영화제 당일 2층 공연 관람 우선 초대</strong> → <strong style="color:var(--cream);">영화제 서포터즈 참여 제안</strong> → <strong style="color:var(--persimmon-glow);">익년 동아리 2기 멘토 역할</strong></p>
           </div>
-        </div>
-
-        <div class="detail-section">
-          <div class="section-header">
-            <span id="club-showcase" class="section-num">05 — 수료 쇼케이스</span>
-            <h2 class="section-title">동아리의 <em>공식 데뷔</em> 무대</h2>
-          </div>
-          <table class="data-table">
-            <thead><tr><th>항목</th><th>내용</th></tr></thead>
+          <table class="data-table" style="margin-top:20px;">
+            <thead><tr><th>연계 항목</th><th>내용</th></tr></thead>
             <tbody>
-              <tr><td class="td-accent">시기</td><td>워크숍 마지막 회차 (6주차)</td></tr>
-              <tr><td class="td-accent">관객</td><td>가족·지인·혁신센터 관계자 (20~30명)</td></tr>
-              <tr><td class="td-accent">형식</td><td>수료자 전원 5분씩 공연</td></tr>
-              <tr><td class="td-accent">의미</td><td>동아리 공식 데뷔, 정기 오픈마이크 첫 참가 자격 취득</td></tr>
-              <tr><td class="td-accent">홍보</td><td>SNS 영상 촬영 후 게시 → 다음 기수 모집 콘텐츠로 활용</td></tr>
+              <tr><td class="td-accent">영화제 관람</td><td>동아리 참가자에게 옥상 상영 우선 예약 기회 제공</td></tr>
+              <tr><td class="td-accent">서포터즈</td><td>관심 있는 참가자에게 영화제 당일 서포터즈 역할 제안</td></tr>
+              <tr><td class="td-accent">2기 연결</td><td>4회 마무리 시 2기 모집 안내 및 참가자 추천 독려</td></tr>
             </tbody>
           </table>
         </div>
 
         <div class="detail-section">
           <div class="section-header">
-            <span id="club-desc" class="section-num">06 — 설명자료 세션</span>
-            <h2 class="section-title">2층 오픈마이크 중 <em>2기 모집</em> 세션</h2>
+            <span id="club-showcase" class="section-num">05 — 4회 마무리 자리</span>
+            <h2 class="section-title">마무리는 <em>발표가 아닌 대화</em>로</h2>
           </div>
           <table class="data-table">
             <thead><tr><th>항목</th><th>내용</th></tr></thead>
             <tbody>
-              <tr><td class="td-accent">시간</td><td>14:30, 약 20분 (1·2라운드 휴식 타임)</td></tr>
-              <tr><td class="td-accent">발표자</td><td>1기 수료자 1~2인 + 혁신센터 담당자</td></tr>
-              <tr><td>내용</td><td>동아리 소개 (3분) → 수료자 후기 (5분) → 오픈마이크 연결 구조 (3분) → 2기 모집 안내 (3분) → Q&A (6분)</td></tr>
-              <tr><td class="td-accent">신청</td><td>현장 QR 코드 + 신청 용지 병행</td></tr>
-              <tr><td class="td-accent">목표</td><td>현장 2기 신청 10명 이상</td></tr>
+              <tr><td class="td-accent">형식</td><td>자유로운 발표 + 소감 나누기 (강제 발표 없음)</td></tr>
+              <tr><td class="td-accent">참가자</td><td>4회 참가자 전원 + 김기훈 대표 + 혁신센터 담당자</td></tr>
+              <tr><td class="td-accent">다과</td><td>상상마루 집행</td></tr>
+              <tr><td class="td-accent">기록</td><td>SNS 후기 콘텐츠 제작 (동의 참가자 한정) → 2기 모집 자료로 활용</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="detail-section">
+          <div class="section-header">
+            <span id="club-desc" class="section-num">06 — 홍보 및 모집</span>
+            <h2 class="section-title">영화제 현장에서 <em>2기를 모은다</em></h2>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>항목</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><td class="td-accent">1기 모집</td><td>영화제 개최 전 SNS + 지역 커뮤니티 공고</td></tr>
+              <tr><td class="td-accent">2기 모집</td><td>영화제 당일 현장 QR 코드 + 1기 참가자 추천</td></tr>
+              <tr><td class="td-accent">핵심 메시지</td><td>"코미디를 좋아하는 사람, 청도를 소재로 이야기하고 싶은 사람"</td></tr>
+              <tr><td class="td-accent">참가 문턱</td><td>코미디 지식·경험 불필요. 책 읽고 이야기할 수 있으면 충분.</td></tr>
             </tbody>
           </table>
         </div>
@@ -2465,28 +2364,20 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           </div>
           <div class="monthly-rows">
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">3~4월</span><span class="monthly-label">동아리 모집 + 입문 워크숍 개강</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">SNS + 지역 커뮤니티 + 학교 공문으로 모집 공고. 오리엔테이션 후 1~2주차 이론 수업 시작.</p></div></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">7~9월</span><span class="monthly-label">1기 모집 + 심야책바 4회 진행</span></div>
+              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">SNS + 지역 커뮤니티 공고로 1기 모집. 월 1~2회 간격으로 4회 진행. 선정 도서 사전 안내.</p></div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">5월</span><span class="monthly-label">워크숍 수료 + 수료 쇼케이스</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">3~5주차 소재 발굴·세트 개발·무대 기술. 6주차 수료 쇼케이스 개최. SNS 영상 제작 후 다음 기수 모집 콘텐츠 활용.</p></div></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">10~11월</span><span class="monthly-label">오픈마이크 + 영화제 연계</span></div>
+              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">오픈마이크 준비. 참가자에게 옥상 상영 우선 예약 안내. 영화제 서포터즈 참여 제안.</p></div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">6~8월</span><span class="monthly-label">정기 오픈마이크 (월 1회)</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">수료자 앵커 + 신규 신청자로 월 1회 정기 오픈마이크 운영. 참가자 피드백 수렴.</p></div></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">11월</span><span class="monthly-label">영화제 당일 — 현장 2기 모집</span></div>
+              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">영화제 현장 QR 코드로 2기 사전 신청 접수. 1기 참가자 입소문 효과 활용.</p></div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">8~9월</span><span class="monthly-label">영화제 퍼포머 선발 + 멘토링</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">영화제 D-2개월 수료자 참가 의향 확인 후 선발. 집중 멘토링 세션 및 외부 코미디언 특별 피드백 1회.</p></div></div>
-            </div>
-            <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">10월</span><span class="monthly-label">영화제 D-Day — 2층 오픈마이크 무대</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">동아리 수료자가 영화제 당일 2층 오픈마이크 1·2·3라운드 퍼포머로 참가. 설명자료 세션(14:30)에서 1기 수료자가 2기 모집 발표.</p></div></div>
-            </div>
-            <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">11월~</span><span class="monthly-label">정기 오픈마이크 재개 + 2기 모집</span></div>
-              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">영화제 이후 월 1회 정기 오픈마이크 재개. 익년 3월 2기 모집 시작, 4월 개강.</p></div></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">익년~</span><span class="monthly-label">2기 심야책바 + 연간 사이클 반복</span></div>
+              <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">2기 개강. 영화제를 향한 연중 사이클 유지. 1기 참가자가 2기의 자연스러운 멘토 역할.</p></div></div>
             </div>
           </div>
         </div>
@@ -2682,31 +2573,31 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
           </div>
           <div class="monthly-rows">
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">5월</span><span class="monthly-label">첫 상영 — 지역 정서 코미디 1편 / SNS 인증 이벤트 성격</span></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">5월</span><span class="monthly-label">첫 상영 — 지역 정서 코미디 1편 / SNS 인증 이벤트 성격</span></div>
               <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">첫 상영은 지인 동원 + 혁신센터 네트워크 총동원. 좌석 절반 이상 채우는 것이 목표. 포토존 설치 + 인증샷 이벤트로 SNS 확산 유도.</p></div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">6월</span><span class="monthly-label">가족 코미디 or 고전 코미디 / 가족 단위 타깃</span></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">6월</span><span class="monthly-label">가족 코미디 or 고전 코미디 / 가족 단위 타깃</span></div>
               <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">가족 코미디 또는 고전 코미디 1편. 어르신 + 자녀/손자녀 함께 오는 구조 첫 시도.</p></div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">7월</span><span class="monthly-label">한국 독립 코미디 (청도 정서 공명) / 여름방학 청소년 타깃</span></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">7월</span><span class="monthly-label">한국 독립 코미디 (청도 정서 공명) / 여름방학 청소년 타깃</span></div>
               <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">여름방학 청소년 타깃. 농촌·소도시를 다룬 한국 독립영화. "청도 사람 이야기 같은 영화" 포지셔닝 본격화.</p></div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">8월</span><span class="monthly-label">10월 영화제 예고편 포지셔닝 1 / 코미디 영화제 소개 1분 포함</span></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">8월</span><span class="monthly-label">10월 영화제 예고편 포지셔닝 1 / 코미디 영화제 소개 1분 포함</span></div>
               <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">영화 상영 전 1분 코미디 영화제 소개. "이 영화 감독이 10월 영화제에 옵니다" 등 연결 고리 설계. 공모전 홍보 병행.</p></div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">9월</span><span class="monthly-label">10월 영화제 예고편 포지셔닝 2 / 코미디 공모전 홍보 병행</span></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">9월</span><span class="monthly-label">10월 영화제 예고편 포지셔닝 2 / 코미디 공모전 홍보 병행</span></div>
               <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">영화제 D-1개월. 상영회 참가자 = 예비 영화제 방문자. 영화제 프로그램 미리보기 제공.</p></div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">10월</span><span class="monthly-label">영화제 D-Day — 정기 상영 휴회 / 영화제가 정기 상영의 확장판</span></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">10월</span><span class="monthly-label">영화제 D-Day — 정기 상영 휴회 / 영화제가 정기 상영의 확장판</span></div>
               <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">10월은 정기 상영 휴회. 반시시시 코미디 영화제가 정기 상영의 연간 확장판으로 기능.</p></div></div>
             </div>
             <div class="monthly-row" onclick="toggleMonthly(this)">
-              <div class="monthly-row-header"><span class="monthly-month">11월~</span><span class="monthly-label">정기 상영 재개 / 수상작 재상영 또는 새 작품</span></div>
+              <div class="monthly-row-header accordion-header"><span class="monthly-month">11월~</span><span class="monthly-label">정기 상영 재개 / 수상작 재상영 또는 새 작품</span></div>
               <div class="monthly-body"><div class="monthly-body-inner"><p style="font-size:.84rem;color:var(--muted);padding:12px 0;">영화제 이후 정기 상영 재개. 수상작 재상영 또는 새 작품. 익년 영화제를 향한 연중 사이클 유지.</p></div></div>
             </div>
           </div>
@@ -2759,7 +2650,7 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 
 <footer>
   <div class="footer-logo">청도 반시시시 코미디 영화제</div>
-  <div class="footer-credit">주관: 청도혁신센터 · 후원·협력: 청도군청 문화관광과 / 청도반시축제 집행위원회</div>
+  <div class="footer-credit">주관: 청도혁신센터 · 후원·협력: 청도군청</div>
 </footer>
 
 <script>
@@ -2767,19 +2658,9 @@ footer { background: var(--charcoal); border-top: 1px solid var(--warm-dark); pa
 /* ----------------------------------------------------------
    탭 데이터 정의
    ---------------------------------------------------------- */
+/* 탭 단일 소스 — sidebar 항목 포함, TAB_ORDER/TAB_LABELS는 여기서 파생 */
 const TABS = [
-  { id: 'tab-main',     label: '개요',           num: '00' },
-  { id: 'tab-ops',      label: '운영 상세',       num: '01' },
-  { id: 'tab-budget',   label: '예산 및 추진 플랜', num: '02' },
-  { id: 'tab-youth',    label: '청소년 공모전',    num: '03' },
-  { id: 'tab-eco',      label: '생태계 전략',      num: '04' },
-  { id: 'tab-openmic',  label: '오픈마이크',       num: '05' },
-  { id: 'tab-club',     label: '코미디 동아리',    num: '06' },
-  { id: 'tab-screening', label: '월정기상영회',    num: '07' },
-];
-
-const SIDEBAR_ITEMS = {
-  'tab-main': [
+  { id: 'tab-main',      label: '개요',            num: '00', sidebar: [
     { anchor: 'main-needs',   label: '01 — 왜 지금 청도인가' },
     { anchor: 'main-concept', label: '02 — 기획 컨셉 & 정체성' },
     { anchor: 'main-market',  label: '03 — 시장 근거' },
@@ -2787,51 +2668,51 @@ const SIDEBAR_ITEMS = {
     { anchor: 'main-budget',  label: '05 — 예산 & 성과' },
     { anchor: 'main-roadmap', label: '06 — 로드맵' },
     { anchor: 'main-index',   label: '07 — 문서 인덱스' },
-  ],
-  'tab-ops': [
+  ]},
+  { id: 'tab-ops',       label: '운영 상세',        num: '01', sidebar: [
     { anchor: 'ops-overview',   label: '01 — 행사 개요' },
     { anchor: 'ops-space',      label: '02 — 공간 설계' },
     { anchor: 'ops-timetable',  label: '03 — 병렬 타임테이블' },
     { anchor: 'ops-staff',      label: '04 — 추진 체계' },
     { anchor: 'ops-promo',      label: '05 — 홍보 방안' },
-  ],
-  'tab-openmic': [
+  ]},
+  { id: 'tab-budget',    label: '예산 및 추진 플랜', num: '02', sidebar: [
+    { anchor: 'budget-detail', label: '01 — 예산 상세' },
+    { anchor: 'budget-plan',   label: '02 — 월별 추진 플랜' },
+    { anchor: 'budget-tasks',  label: '03 — 핵심 과업' },
+  ]},
+  { id: 'tab-youth',     label: '청소년 공모전',    num: '03', sidebar: [
+    { anchor: 'youth-why',      label: '01 — 존재 이유' },
+    { anchor: 'youth-overview', label: '02 — 공모전 개요' },
+    { anchor: 'youth-process',  label: '03 — 추진 프로세스' },
+    { anchor: 'youth-judge',    label: '04 — 심사 기준' },
+    { anchor: 'youth-expand',   label: '05 — 확장 가능성' },
+  ]},
+  { id: 'tab-eco',       label: '생태계 전략',      num: '04', sidebar: [
+    { anchor: 'eco-why',     label: '01 — 왜 생태계인가' },
+    { anchor: 'eco-cases',   label: '02 — 사례 비교' },
+    { anchor: 'eco-cycles',  label: '03 — 3대 순환 고리' },
+    { anchor: 'eco-roadmap', label: '04 — 단계별 로드맵' },
+    { anchor: 'eco-finance', label: '05 — 재원 다각화' },
+  ]},
+  { id: 'tab-openmic',   label: '오픈마이크',       num: '05', sidebar: [
     { anchor: 'om-concept',   label: '01 — 왜 오픈마이크인가' },
     { anchor: 'om-space',     label: '02 — 2층 공간 세팅' },
     { anchor: 'om-timetable', label: '03 — 당일 타임테이블' },
     { anchor: 'om-mc',        label: '04 — MC 역할' },
     { anchor: 'om-etiquette', label: '05 — 참가자 에티켓' },
     { anchor: 'om-after',     label: '06 — 영화제 이후 정기화' },
-  ],
-  'tab-club': [
+  ]},
+  { id: 'tab-club',      label: '코미디 동아리',    num: '06', sidebar: [
     { anchor: 'club-why',        label: '01 — 왜 동아리인가' },
-    { anchor: 'club-target',     label: '02 — 모집 대상 & 규모' },
-    { anchor: 'club-curriculum', label: '03 — 6주 커리큘럼' },
-    { anchor: 'club-after',      label: '04 — 수료 후 연결' },
-    { anchor: 'club-showcase',   label: '05 — 수료 쇼케이스' },
-    { anchor: 'club-desc',       label: '06 — 설명자료 세션' },
+    { anchor: 'club-target',     label: '02 — 모집 대상 & 운영 개요' },
+    { anchor: 'club-curriculum', label: '03 — 4회 프로그램' },
+    { anchor: 'club-after',      label: '04 — 영화제 연계' },
+    { anchor: 'club-showcase',   label: '05 — 4회 마무리' },
+    { anchor: 'club-desc',       label: '06 — 홍보 및 모집' },
     { anchor: 'club-timeline',   label: '07 — 연간 흐름' },
-  ],
-  'tab-budget': [
-    { anchor: 'budget-detail', label: '01 — 예산 상세' },
-    { anchor: 'budget-plan',   label: '02 — 월별 추진 플랜' },
-    { anchor: 'budget-tasks',  label: '03 — 핵심 과업' },
-  ],
-  'tab-youth': [
-    { anchor: 'youth-why',      label: '01 — 존재 이유' },
-    { anchor: 'youth-overview', label: '02 — 공모전 개요' },
-    { anchor: 'youth-process',  label: '03 — 추진 프로세스' },
-    { anchor: 'youth-judge',    label: '04 — 심사 기준' },
-    { anchor: 'youth-expand',   label: '05 — 확장 가능성' },
-  ],
-  'tab-eco': [
-    { anchor: 'eco-why',     label: '01 — 왜 생태계인가' },
-    { anchor: 'eco-cases',   label: '02 — 사례 비교' },
-    { anchor: 'eco-cycles',  label: '03 — 3대 순환 고리' },
-    { anchor: 'eco-roadmap', label: '04 — 단계별 로드맵' },
-    { anchor: 'eco-finance', label: '05 — 재원 다각화' },
-  ],
-  'tab-screening': [
+  ]},
+  { id: 'tab-screening', label: '월정기상영회',     num: '07', sidebar: [
     { anchor: 'scr-why',      label: '01 — 왜 월정기상영회인가' },
     { anchor: 'scr-cases',    label: '02 — 레퍼런스 사례' },
     { anchor: 'scr-design',   label: '03 — 운영 기본 설계' },
@@ -2839,8 +2720,11 @@ const SIDEBAR_ITEMS = {
     { anchor: 'scr-sourcing', label: '05 — 콘텐츠 소싱' },
     { anchor: 'scr-monthly',  label: '06 — 월별 운영 흐름' },
     { anchor: 'scr-budget',   label: '07 — 예산 추정' },
-  ],
-};
+  ]},
+];
+
+/* TABS에서 파생 — 탭 추가 시 TABS만 수정하면 됨 */
+const SIDEBAR_ITEMS = Object.fromEntries(TABS.map(t => [t.id, t.sidebar || []]));
 
 /* ----------------------------------------------------------
    탭 전환
@@ -2901,9 +2785,9 @@ renderTopbar();
    ---------------------------------------------------------- */
 function renderSidebar(tabId) {
   const sidebar = document.getElementById('mainSidebar');
-  const items = SIDEBAR_ITEMS[tabId] || [];
-
-  sidebar.innerHTML = `
+  const tab = TABS.find(t => t.id === tabId);
+  const items = tab?.sidebar || [];
+  sidebar.innerHTML = items.length ? `
     <div class="sidebar-section-label">목차</div>
     <div class="sidebar-divider"></div>
     ${items.map(item => `
@@ -2913,7 +2797,7 @@ function renderSidebar(tabId) {
         ${item.label}
       </a>
     `).join('')}
-  `;
+  ` : '';
 }
 renderSidebar('tab-main');
 
@@ -2930,7 +2814,8 @@ function scrollToAnchor(anchorId, evt) {
 }
 
 function updateSidebarActive() {
-  const items = SIDEBAR_ITEMS[currentTab] || [];
+  const tab = TABS.find(t => t.id === currentTab);
+  const items = tab?.sidebar || [];
   if (!items.length) return;
 
   let activeAnchor = items[0].anchor;
@@ -2961,6 +2846,13 @@ function buildFilm() {
   });
 }
 buildFilm();
+(function() {
+  let _filmTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(_filmTimer);
+    _filmTimer = setTimeout(buildFilm, 200);
+  }, { passive: true });
+})();
 
 /* ----------------------------------------------------------
    Reveal
@@ -3020,14 +2912,11 @@ const goalsEl = document.querySelector('.goals-grid');
 if (goalsEl) counterObs.observe(goalsEl);
 
 /* ----------------------------------------------------------
-   토글 chevron 자동 삽입
+   토글 chevron 자동 삽입 (0-2: .accordion-header 공통 클래스로 통합)
    ---------------------------------------------------------- */
 (function injectChevrons() {
   const SVG = `<svg class="toggle-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  document.querySelectorAll('.step-card-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
-  document.querySelectorAll('.tl-row-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
-  document.querySelectorAll('.monthly-row-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
-  document.querySelectorAll('.identity-layer-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
+  document.querySelectorAll('.accordion-header').forEach(el => el.insertAdjacentHTML('beforeend', SVG));
 })();
 
 /* ----------------------------------------------------------
@@ -3043,40 +2932,24 @@ function toggleSidebar() {
   btn.title = sidebar.classList.contains('collapsed') ? '사이드바 보이기' : '사이드바 숨기기';
 }
 
-function toggleLayer(el) {
-  document.querySelectorAll('.identity-layer').forEach(l => l.classList.remove('active'));
-  el.classList.add('active');
+/* ----------------------------------------------------------
+   아코디언 공통 토글 (0-1: 4개 함수 통합)
+   ---------------------------------------------------------- */
+function toggleAccordion(el, groupSel, activeClass) {
+  const isOn = el.classList.contains(activeClass);
+  document.querySelectorAll(groupSel).forEach(r => r.classList.remove(activeClass));
+  if (!isOn) el.classList.add(activeClass);
 }
-function toggleTl(row) {
-  const isOpen = row.classList.contains('open');
-  document.querySelectorAll('.tl-row').forEach(r => r.classList.remove('open'));
-  if (!isOpen) row.classList.add('open');
-}
-function toggleMonthly(row) {
-  const isOpen = row.classList.contains('open');
-  document.querySelectorAll('.monthly-row').forEach(r => r.classList.remove('open'));
-  if (!isOpen) row.classList.add('open');
-}
-function toggleStep(header) {
-  const card = header.parentElement;
-  const isOpen = card.classList.contains('open');
-  document.querySelectorAll('.step-card').forEach(c => c.classList.remove('open'));
-  if (!isOpen) card.classList.add('open');
-}
+function toggleLayer(el)    { toggleAccordion(el, '.identity-layer', 'active'); }
+function toggleMonthly(row) { toggleAccordion(row, '.monthly-row', 'open'); }
+function toggleStep(header) { toggleAccordion(header.parentElement, '.step-card', 'open'); }
 
 /* ----------------------------------------------------------
    하단 페이지 네비게이터
    ---------------------------------------------------------- */
-const TAB_ORDER = ['tab-main','tab-ops','tab-budget','tab-youth','tab-eco','tab-openmic','tab-club','tab-screening'];
-const TAB_LABELS = {
-  'tab-main':    '개요',
-  'tab-ops':     '운영 상세',
-  'tab-budget':  '예산 및 추진 플랜',
-  'tab-youth':   '청소년 공모전',
-  'tab-eco':     '생태계 전략',
-  'tab-openmic': '오픈마이크',
-  'tab-club':    '코미디 동아리',
-};
+/* TABS에서 파생 (버그 수정: tab-screening 누락 해결) */
+const TAB_ORDER  = TABS.map(t => t.id);
+const TAB_LABELS = Object.fromEntries(TABS.map(t => [t.id, t.label]));
 
 function renderBottomNav(tabId) {
   const idx = TAB_ORDER.indexOf(tabId);
