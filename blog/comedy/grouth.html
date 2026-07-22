@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>청도 코미디영화제 — 그로스마케팅·측정체계</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root{
+    --ink:#0f0f0e; --ink-2:#17181a; --ink-3:#1d1e20;
+    --paper:#f2efe6; --paper-dim:#b9b4a6;
+    --amber:#e0762f; --amber-2:#f0a25c; --amber-dim:rgba(224,118,47,0.10);
+    --hairline:#2b2c2b; --hairline-2:#232423; --slate:#83807a;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ width:100%; height:100%; background:#050505; overflow:hidden; }
+  body{
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    -webkit-font-smoothing:antialiased; color:var(--paper);
+  }
+  .mono{ font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace; }
+
+  .stage{ position:relative; width:1280px; height:720px; background:var(--ink); box-shadow:0 40px 120px rgba(0,0,0,0.65); }
+
+  .sprockets{ position:absolute; left:0; right:0; height:9px; z-index:5;
+    background-image:repeating-linear-gradient(90deg, var(--ink-2) 0 15px, transparent 15px 30px); }
+  .sprockets.top{ top:0; } .sprockets.bottom{ bottom:0; }
+
+  .index-strip{
+    position:absolute; left:0; top:9px; bottom:9px; width:40px; z-index:5;
+    border-right:1px solid var(--hairline);
+    display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:16px 0;
+  }
+  .index-strip .num{ writing-mode:vertical-rl; transform:rotate(180deg); font-size:11px; letter-spacing:0.16em; color:var(--amber-2); }
+  .index-strip .num b{ color:var(--paper); font-size:13px; }
+  .ticks{ display:flex; flex-direction:column; gap:6px; }
+  .tick{ width:4px; height:4px; border-radius:50%; background:var(--hairline); cursor:pointer; }
+  .tick.on{ background:var(--amber); width:5px; height:5px; }
+
+  .slides{ position:absolute; top:9px; left:40px; right:0; bottom:9px; }
+  .slide{
+    position:absolute; inset:0; padding:34px 48px 40px 44px;
+    opacity:0; visibility:hidden; transform:translateY(8px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .slide.active{ opacity:1; visibility:visible; transform:translateY(0); }
+
+  .eyebrow{ display:flex; align-items:center; gap:9px; font-family:'SFMono-Regular',Consolas,monospace;
+    font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber-2); margin-bottom:10px; }
+  .eyebrow .dot{ width:5px; height:5px; border-radius:50%; background:var(--amber); }
+  .eyebrow .muted{ color:var(--slate); }
+  h1{ font-size:40px; font-weight:800; line-height:1.26; letter-spacing:-0.01em; }
+  h2{ font-size:22px; font-weight:800; line-height:1.3; margin-bottom:4px; }
+  .lede{ font-size:12px; color:var(--slate); margin-bottom:16px; }
+  .accent{ color:var(--amber); }
+
+  /* ---------- 공통 패널/테이블 ---------- */
+  .panel{ border:1px solid var(--hairline); border-radius:4px; padding:14px 16px; background:rgba(255,255,255,0.015); }
+  .panel-title{ font-family:'SFMono-Regular',Consolas,monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); margin-bottom:10px; }
+  .panel-title b{ color:var(--amber-2); }
+
+  table{ width:100%; border-collapse:collapse; }
+  th{ text-align:left; font-family:'SFMono-Regular',Consolas,monospace; font-size:9.5px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--slate); padding:6px 8px; border-bottom:1px solid var(--hairline); font-weight:500; }
+  td{ padding:8px 8px; border-bottom:1px solid var(--hairline-2); font-size:11px; vertical-align:top; line-height:1.45; }
+  tr:last-child td{ border-bottom:none; }
+  .tag{ display:inline-block; font-size:9px; padding:2px 7px; border-radius:20px; border:1px solid var(--hairline); color:var(--slate); white-space:nowrap; }
+  .tag.on{ color:var(--amber-2); border-color:rgba(224,118,47,0.4); }
+  .tag.gap{ color:var(--amber); border-color:rgba(224,118,47,0.55); }
+  .tag.ok{ color:#8fae7c; border-color:rgba(143,174,124,0.4); }
+
+  /* ================= S1 표지 ================= */
+  #s1{ display:flex; flex-direction:column; justify-content:center; }
+  #s1 h1{ font-size:44px; margin-bottom:16px; }
+  #s1 .sub{ max-width:600px; font-size:14px; line-height:1.8; color:var(--paper-dim); border-left:2px solid var(--amber); padding-left:14px; margin-bottom:26px; }
+  .agenda{ display:grid; grid-template-columns:repeat(5,1fr); gap:6px; max-width:820px; }
+  .agenda div{ font-family:'SFMono-Regular',Consolas,monospace; font-size:9.5px; color:var(--slate); padding:6px 0; border-top:1px solid var(--hairline); }
+  .agenda div b{ color:var(--amber-2); display:block; font-size:10px; margin-bottom:2px; }
+  #s1 .cover-foot{ position:absolute; left:44px; right:48px; bottom:8px; font-size:11px; color:var(--slate); line-height:1.6; }
+  #s1 .cover-foot b{ color:var(--paper-dim); }
+
+  /* ================= S2 문제인식 ================= */
+  .layers3{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+  .layer{ border:1px solid var(--hairline); border-radius:3px; padding:12px 14px; }
+  .layer .lname{ font-size:13px; font-weight:700; margin-bottom:6px; }
+  .layer .lpath{ font-size:9.5px; color:var(--slate); margin-bottom:6px; }
+  .layer .lstate{ font-size:10.5px; color:var(--paper-dim); line-height:1.5; }
+  .core-callout{ border:1px solid rgba(224,118,47,0.5); background:var(--amber-dim); border-radius:4px; padding:14px 18px; font-size:14px; font-weight:700; text-align:center; }
+  .core-callout span{ color:var(--amber-2); }
+
+  /* ================= S3 퍼널정의 ================= */
+  #s3 td:nth-child(1){ font-family:'SFMono-Regular',Consolas,monospace; color:var(--amber-2); width:60px; }
+  #s3 td:nth-child(2){ width:230px; font-weight:600; }
+
+  /* ================= S4 사다리 ================= */
+  .split2{ display:grid; grid-template-columns:1.3fr 1fr; gap:14px; }
+  .goal-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; }
+  .goal-item{ border:1px solid var(--hairline); border-radius:3px; padding:9px 10px; }
+  .goal-item .gn{ font-family:'SFMono-Regular',Consolas,monospace; font-size:9px; color:var(--amber-2); margin-bottom:4px; }
+  .goal-item .gt{ font-size:10.5px; font-weight:600; margin-bottom:3px; }
+  .goal-item .gv{ font-size:9.5px; color:var(--slate); }
+
+  /* ================= S5 원칙 ================= */
+  .principle-row{ display:grid; grid-template-columns:110px 1fr; gap:14px; padding:12px 0; border-top:1px solid var(--hairline); }
+  .principle-row:first-of-type{ border-top:none; }
+  .principle-row .ptitle{ font-size:14px; font-weight:800; line-height:1.35; }
+  .principle-row .pn{ font-family:'SFMono-Regular',Consolas,monospace; font-size:9.5px; color:var(--amber-2); margin-bottom:6px; }
+  .principle-row .pdesc{ font-size:11.5px; color:var(--paper-dim); line-height:1.65; }
+  .principle-row .psrc{ font-size:9.5px; color:var(--slate); margin-top:6px; }
+
+  /* ================= S6 일정 ================= */
+  .timeline{ position:relative; margin-top:30px; padding-top:20px; }
+  .timeline .track{ position:absolute; top:20px; left:0; right:0; height:1px; background:var(--hairline); }
+  .tl-row{ display:flex; justify-content:space-between; position:relative; }
+  .tl-pt{ display:flex; flex-direction:column; align-items:center; text-align:center; width:150px; }
+  .tl-pt .tdot{ width:9px; height:9px; border-radius:50%; background:var(--ink-3); border:2px solid var(--hairline); margin-bottom:10px; z-index:1; }
+  .tl-pt.now .tdot{ background:var(--amber); border-color:var(--amber); box-shadow:0 0 0 5px rgba(224,118,47,0.18); }
+  .tl-pt .tdate{ font-family:'SFMono-Regular',Consolas,monospace; font-size:11px; color:var(--amber-2); margin-bottom:4px; }
+  .tl-pt .tlabel{ font-size:10.5px; color:var(--paper-dim); line-height:1.4; }
+  .tl-pt .tnote{ font-size:9px; color:var(--slate); margin-top:4px; }
+  .rehearsal-note{ margin-top:34px; text-align:center; font-size:13px; color:var(--paper-dim); }
+  .rehearsal-note b{ color:var(--amber-2); }
+
+  /* ================= S7 로드맵개요 ================= */
+  .phase-band{ margin-bottom:10px; }
+  .phase-band .pbtitle{ font-family:'SFMono-Regular',Consolas,monospace; font-size:10px; color:var(--slate); margin-bottom:6px; letter-spacing:0.08em; }
+  .mini-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:7px; }
+  .mini-grid.two{ grid-template-columns:repeat(2,1fr); max-width:33%; }
+  .mini-grid.three{ grid-template-columns:repeat(3,1fr); max-width:50%; }
+  .minicard{ border:1px solid var(--hairline); border-radius:3px; padding:8px 9px; background:rgba(255,255,255,0.015); }
+  .minicard.now{ border-color:var(--amber); background:var(--amber-dim); }
+  .minicard .msid{ font-family:'SFMono-Regular',Consolas,monospace; font-size:10px; color:var(--amber-2); margin-bottom:3px; }
+  .minicard .mstitle{ font-size:10.5px; font-weight:700; margin-bottom:5px; line-height:1.25; min-height:26px; }
+  .minicard .mscond{ font-size:8.5px; color:var(--slate); line-height:1.4; }
+  .minicard .mscond b{ color:var(--paper-dim); }
+  .phase-flex{ display:flex; gap:8px; }
+
+  /* ================= S8/S9 실행디테일 카드 ================= */
+  .exec-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:9px; }
+  .execcard{ border:1px solid var(--hairline); border-radius:4px; padding:11px 11px; display:flex; flex-direction:column; }
+  .execcard.now{ border-color:var(--amber); background:var(--amber-dim); }
+  .execcard .esid{ font-family:'SFMono-Regular',Consolas,monospace; font-size:12px; color:var(--amber-2); margin-bottom:2px; }
+  .execcard .estitle{ font-size:11.5px; font-weight:800; margin-bottom:7px; line-height:1.3; min-height:30px; }
+  .execcard .epurpose{ font-size:9.5px; color:var(--paper-dim); line-height:1.5; margin-bottom:8px; min-height:56px; }
+  .execcard ul{ list-style:none; margin-bottom:8px; flex:1; }
+  .execcard li{ font-size:9px; color:var(--slate); line-height:1.55; padding-left:9px; position:relative; margin-bottom:3px; }
+  .execcard li::before{ content:"–"; position:absolute; left:0; color:var(--hairline); }
+  .execcard .edone{ font-size:8.5px; color:var(--amber-2); border-top:1px solid var(--hairline); padding-top:7px; line-height:1.45; }
+  .execcard .edone b{ color:var(--paper-dim); font-family:'SFMono-Regular',Consolas,monospace; font-weight:500; }
+
+  /* ================= S10 마무리 ================= */
+  .close-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:14px; }
+  .decision-item{ display:flex; gap:10px; padding:8px 0; border-top:1px solid var(--hairline); align-items:flex-start; }
+  .decision-item:first-child{ border-top:none; }
+  .decision-item .dstate{ width:16px; text-align:center; font-size:11px; flex:none; margin-top:1px; }
+  .decision-item .dstate.pending{ color:var(--amber-2); }
+  .decision-item .dstate.done{ color:#8fae7c; }
+  .decision-item .dtext b{ display:block; font-size:11px; font-weight:700; }
+  .decision-item .dtext span{ font-size:9.5px; color:var(--slate); }
+  .kit-list{ display:flex; flex-direction:column; gap:6px; }
+  .kit-row{ display:flex; gap:8px; font-size:10.5px; color:var(--paper-dim); align-items:flex-start; }
+  .kit-row .kb{ width:4px; height:4px; border-radius:50%; background:var(--amber-2); margin-top:6px; flex:none; }
+  .kit-row b{ color:var(--paper); }
+  .next-strip{ border:1px solid rgba(224,118,47,0.5); background:var(--amber-dim); border-radius:4px; padding:14px 18px; display:flex; align-items:center; gap:16px; }
+  .next-strip .nlabel{ font-family:'SFMono-Regular',Consolas,monospace; font-size:10.5px; color:var(--amber-2); letter-spacing:0.08em; flex:none; }
+  .next-strip .ntext{ font-size:12.5px; color:var(--paper); }
+  .next-strip .ntext b{ color:var(--amber-2); }
+
+  /* ---------- 내비게이션 ---------- */
+  .nav{ position:absolute; left:44px; right:48px; bottom:12px; z-index:6; display:flex; align-items:center; justify-content:space-between; }
+  .nav-btns{ display:flex; gap:7px; }
+  .nav-btn{ width:26px; height:26px; border-radius:50%; border:1px solid var(--hairline); background:rgba(255,255,255,0.03);
+    color:var(--paper-dim); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px; transition:all .2s ease; }
+  .nav-btn:hover{ border-color:var(--amber); color:var(--amber-2); }
+  .nav-count{ font-family:'SFMono-Regular',Consolas,monospace; font-size:10px; color:var(--slate); letter-spacing:0.06em; }
+  .nav-count b{ color:var(--paper); }
+  .nav-dots{ display:flex; gap:5px; flex-wrap:wrap; max-width:400px; justify-content:center; }
+  .nav-dots span{ width:4px; height:4px; border-radius:50%; background:var(--hairline); cursor:pointer; }
+  .nav-dots span.on{ background:var(--amber); }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="sprockets top"></div>
+  <div class="sprockets bottom"></div>
+
+  <div class="index-strip">
+    <div class="num" id="idxLabel"><b>01</b> / 10 — 표지</div>
+    <div class="ticks" id="ticks"></div>
+  </div>
+
+  <div class="slides">
+
+    <!-- ============ 01 표지 ============ -->
+    <section class="slide active" id="s1">
+      <div class="eyebrow"><span class="dot"></span>청도혁신센터 · PR·마케팅 실험 사업<span class="muted"> / 2026 하반기</span></div>
+      <h1>청도 코미디영화제<br><span class="accent">그로스마케팅</span> · 측정체계</h1>
+      <p class="sub">트래픽·캠페인·임팩트, 세 층으로 흩어져 있던 생각을 하나의 퍼널로 접는다.<br>최종 목표는 영화제 한 건의 성과가 아니라, 다른 사업에도 이식 가능한 <b style="color:var(--paper)">재사용 측정 키트</b>.</p>
+      <div class="agenda">
+        <div><b>02</b>문제 인식</div><div><b>03</b>퍼널 7단계</div><div><b>04</b>참여 사다리</div><div><b>05</b>측정 원칙</div><div><b>06</b>일정 제약</div>
+        <div><b>07</b>로드맵 개요</div><div><b>08</b>실행 · P0–1</div><div><b>09</b>실행 · P2–3</div><div><b>10</b>결정과 산출물</div><div></div>
+      </div>
+      <div class="cover-foot"><b>업무 작업 보고서</b> / 청도 코미디영화제 그로스마케팅 · 인덱스 문서 00 기준 · 2026-07-22</div>
+    </section>
+
+    <!-- ============ 02 문제 인식 ============ -->
+    <section class="slide" id="s2">
+      <div class="eyebrow"><span class="dot"></span>WHY NOW<span class="muted"> / 왜 지금 정리가 필요한가</span></div>
+      <h2>세 층으로 흩어진 생각, 서로 연결되지 않았다</h2>
+      <p class="lede">지금까지의 작업은 이미 세 개의 층에 존재하지만, 어느 것도 다른 층을 참조하지 않는다.</p>
+
+      <div class="layers3">
+        <div class="layer">
+          <div class="lname">트래픽 층</div>
+          <div class="lpath mono">업무/청도 코미디 영화제/개발일지</div>
+          <div class="lstate">GA4·UTM·SEO 도구는 거의 설치됨. 계측 부채 잔존 — 서치콘솔 미등록, 키이벤트 미등록, GTM 404.</div>
+        </div>
+        <div class="layer">
+          <div class="lname">캠페인 층</div>
+          <div class="lpath mono">1-11. 홍보방안 · PR 관리</div>
+          <div class="lstate">3월에 채널 역할·D-30 타임라인 설계. 이후 UTM 규칙과 전혀 연결되지 않은 채 방치.</div>
+        </div>
+        <div class="layer">
+          <div class="lname">임팩트 층</div>
+          <div class="lpath mono">2026-07-08_임팩트 측정 방법론</div>
+          <div class="lstate">참여 사다리 개념만 존재. "팬을 만드는 일의 측정 가능성" — 아직 어떤 도구에도 연결 안 됨.</div>
+        </div>
+      </div>
+
+      <div class="core-callout">이 작업의 핵심 과제는 <span>세 층을 하나의 퍼널로 접는 것</span>이다.</div>
+
+      <div style="margin-top:14px; font-size:11px; color:var(--slate); text-align:center;">
+        산출물의 최종 목표는 영화제 한 건의 성과가 아니라, 소협공·상상마루·컨설팅·혁신센터 본체에 <b style="color:var(--paper-dim)">이식 가능한 측정 키트</b>다.
+      </div>
+    </section>
+
+    <!-- ============ 03 퍼널 7단계 정의 ============ -->
+    <section class="slide" id="s3">
+      <div class="eyebrow"><span class="dot"></span>FUNNEL<span class="muted"> / 세 층이 접합되는 지점</span></div>
+      <h2>퍼널 7단계 — 정의 · 측정 소스 · 현재 상태</h2>
+      <p class="lede">1~4단계는 개발일지의 3단계 퍼널을 확장한 것이고, 5~7단계가 임팩트 측정 방법론의 참여 사다리와 접합되는 지점이다.</p>
+
+      <table>
+        <tr><th>단계</th><th>정의</th><th>측정 소스</th><th>현재 상태</th></tr>
+        <tr><td>1 노출</td><td>채널에 콘텐츠가 게시되고 최소 1명 이상에게 도달</td><td>SNS 자체 인사이트, 서치콘솔 노출수, 오프라인은 배포 부수로 근사</td><td><span class="tag on">부분 측정</span></td></tr>
+        <tr><td>2 유입</td><td>사이트 방문 발생, UTM으로 채널 식별 가능</td><td>GA4 + UTM 파라미터</td><td><span class="tag on">측정 중</span></td></tr>
+        <tr><td>3 검토</td><td>프로그램 상세 페이지 조회, 일정 시간 이상 체류</td><td>GA4 페이지뷰 · 평균 참여시간 · 이탈률</td><td><span class="tag gap">병목 · 이탈 79.0%</span></td></tr>
+        <tr><td>4 신청</td><td>신청 폼 제출 완료 (서버 성공 응답 기준)</td><td>접수 구글시트 행수(1차) + apply_submit_success 이벤트(2차, 채널귀속)</td><td><span class="tag gap">계측 미완 (S1 대상)</span></td></tr>
+        <tr><td>5 참여</td><td>신청자가 실제로 교육 회차·행사에 출석</td><td>현장 체크인 — 회차별 명단 대조 (S9 설계)</td><td><span class="tag gap">미설계</span></td></tr>
+        <tr><td>6 재참여</td><td>교육 참가자가 완성작 상영회·영화제에 재등장</td><td>명단 대조 (개인정보 처리 검토 필요)</td><td><span class="tag gap">미설계</span></td></tr>
+        <tr><td>7 확산</td><td>자발적 SNS 공유, 지인 동반, 사후 설문 추천 의향</td><td>포토존 인증샷 · 해시태그 · 사후 설문</td><td><span class="tag gap">미설계</span></td></tr>
+      </table>
+    </section>
+
+    <!-- ============ 04 참여 사다리 접합 ============ -->
+    <section class="slide" id="s4">
+      <div class="eyebrow"><span class="dot"></span>LADDER<span class="muted"> / 임팩트 방법론 접합 + 목표 수치</span></div>
+      <h2>참여 사다리 접합 (5~7단계) · 교육 목표 수치</h2>
+
+      <div class="split2">
+        <div class="panel">
+          <div class="panel-title">임팩트 측정 방법론 <b>2026-07-08</b> → 퍼널 5~7단계</div>
+          <table>
+            <tr><th>방법론 원문</th><th>퍼널 단계</th><th>판별 방법</th></tr>
+            <tr><td>한번 보기는 함</td><td>1~3 (노출~검토)</td><td>GA4로 충분히 측정됨</td></tr>
+            <tr><td>관심을 가짐</td><td>4 (신청)</td><td>신청 자체가 관심의 증거</td></tr>
+            <tr><td>실제로 참여함</td><td>5 (참여)</td><td>현장 체크인</td></tr>
+            <tr><td>앞으로도 참여하고 싶음</td><td>6 (재참여 의향)</td><td>사후 설문 "다음에도 참여하시겠어요"</td></tr>
+            <tr><td>생활에서도 노력</td><td>6~7 실측 (행동+확산)</td><td>명단 대조 + 추천·공유 행동</td></tr>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="panel-title">교육 캠페인 목표 <b>8월 · 정원 15명</b></div>
+          <div class="goal-grid" style="grid-template-columns:repeat(2,1fr);">
+            <div class="goal-item"><div class="gn">STAGE 4</div><div class="gt">신청</div><div class="gv">15명 (정원 충족)</div></div>
+            <div class="goal-item"><div class="gn">STAGE 5</div><div class="gt">참여</div><div class="gv">신청자 80% 이상 1회차 출석</div></div>
+            <div class="goal-item"><div class="gn">STAGE 6</div><div class="gt">재참여</div><div class="gv">참가자 50% 이상 10/31 상영회 참석</div></div>
+            <div class="goal-item"><div class="gn">STAGE 7</div><div class="gt">확산</div><div class="gv">포토존·SNS 인증 5건 이상</div></div>
+          </div>
+          <div style="margin-top:12px; font-size:10px; color:var(--slate); line-height:1.6;">
+            영화제(10월 본행사) 목표 수치는 S8 착수 시점에 S6 실측 데이터를 반영해 별도 설정.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 측정 원칙 ============ -->
+    <section class="slide" id="s5">
+      <div class="eyebrow"><span class="dot"></span>PRINCIPLES<span class="muted"> / 모든 세션이 따르는 3가지 규칙</span></div>
+      <h2>측정 원칙 3 — 개발일지에서 이미 도출한 결론을 승격</h2>
+
+      <div class="principle-row">
+        <div><div class="pn mono">PRINCIPLE 01</div><div class="ptitle">전환의 진실은<br>서버에 있다</div></div>
+        <div><div class="pdesc">GA4의 향상된 측정이 자동 기록하는 form_start / form_submit은 성공 여부와 무관하게 발화한다. 실제 전환은 서버 성공 응답 시에만 발생하는 커스텀 이벤트(apply_submit_success)만 신뢰한다.</div>
+        <div class="psrc">근거 — 개발일지 12번, GA4 리포트 분석 중 발견</div></div>
+      </div>
+      <div class="principle-row">
+        <div><div class="pn mono">PRINCIPLE 02</div><div class="ptitle">절대수치와 상대비교의<br>소스를 분리한다</div></div>
+        <div><div class="pdesc">절대수치(몇 명이 신청했는가)는 구글시트 접수 행 수, 상대비교(어느 채널이 잘했는가)는 GA4로 구분한다. 두 값을 정기적으로 교차검증하고 괴리율을 기록한다 (S5 주간 리포트).</div>
+        <div class="psrc">근거 — GA4 이벤트 수와 실제 전환의 괴리 확인</div></div>
+      </div>
+      <div class="principle-row">
+        <div><div class="pn mono">PRINCIPLE 03</div><div class="ptitle">모수를<br>먼저 청소한다</div></div>
+        <div><div class="pdesc">클라우드 데이터센터 소재지(Dublin·Prineville·Altoona 등)가 활성 사용자로 잡히는 봇 트래픽, 그리고 내부 관계자 트래픽을 걷어내기 전의 숫자는 의사결정에 쓰지 않는다.</div>
+        <div class="psrc">근거 — 청도혁신센터_SEO_수정기획안_v3의 직원 트래픽 필터링 아이디어를 그대로 이식</div></div>
+      </div>
+    </section>
+
+    <!-- ============ 06 일정 제약 ============ -->
+    <section class="slide" id="s6">
+      <div class="eyebrow"><span class="dot"></span>TIMELINE<span class="muted"> / 세션 순서를 결정하는 외부 고정 일정</span></div>
+      <h2>일정 제약 — 교육이 리허설, 영화제가 본선</h2>
+      <p class="lede">오늘(2026-07-22)은 신청 마감(7/25)까지 D-3. Phase 0가 진행 중이다.</p>
+
+      <div class="timeline">
+        <div class="track"></div>
+        <div class="tl-row">
+          <div class="tl-pt"><div class="tdot"></div><div class="tdate">07.20</div><div class="tlabel">청소년 영화제작교육<br>신청 오픈</div><div class="tnote">데이터 수집 시작됨</div></div>
+          <div class="tl-pt now"><div class="tdot"></div><div class="tdate">07.25</div><div class="tlabel">신청 마감</div><div class="tnote">S1·S2 데드라인</div></div>
+          <div class="tl-pt"><div class="tdot"></div><div class="tdate">08월</div><div class="tlabel">교육 운영<br>(1~8회차)</div><div class="tnote">5~7단계 리허설 구간</div></div>
+          <div class="tl-pt"><div class="tdot"></div><div class="tdate">09월 중순</div><div class="tlabel">영화제 계약 시작</div><div class="tnote">S8 착수 시점</div></div>
+          <div class="tl-pt"><div class="tdot"></div><div class="tdate">10.31</div><div class="tlabel">청소년 완성작<br>상영회</div><div class="tnote">6~7단계 관측 기회</div></div>
+          <div class="tl-pt"><div class="tdot"></div><div class="tdate">10월</div><div class="tlabel">영화제 본행사</div><div class="tnote">본선</div></div>
+          <div class="tl-pt"><div class="tdot"></div><div class="tdate">11월 말</div><div class="tlabel">계약 종료</div><div class="tnote">S10 결산 마감</div></div>
+        </div>
+      </div>
+
+      <div class="rehearsal-note"><b>교육(7~8월)</b>이 리허설, <b>영화제(9~10월)</b>가 본선이다 — 교육에서 체계를 검증하고 영화제에 이식하는 구조로 설계한다.</div>
+    </section>
+
+    <!-- ============ 07 로드맵 개요 ============ -->
+    <section class="slide" id="s7">
+      <div class="eyebrow"><span class="dot"></span>ROADMAP OVERVIEW<span class="muted"> / S1 → S10 전체 지도</span></div>
+      <h2>세션 로드맵 개요 — 선행조건과 완료조건</h2>
+
+      <div class="phase-band">
+        <div class="pbtitle">PHASE 0 — 계측 부채 청산 · 7/21–7/25</div>
+        <div class="mini-grid two">
+          <div class="minicard now"><div class="msid">S1</div><div class="mstitle">계측 부채 청산</div><div class="mscond"><b>선행</b> 도메인 권한(확보) · <b>완료</b> 양콘솔 소유확인+GA4 전환조회</div></div>
+          <div class="minicard now"><div class="msid">S2</div><div class="mstitle">마감 스프린트·채널 다변화</div><div class="mscond"><b>선행</b> 없음(병렬) · <b>완료</b> 채널 3개+ 집행·UTM기록</div></div>
+        </div>
+      </div>
+      <div class="phase-band">
+        <div class="pbtitle">PHASE 1 — 설계 · 7/26–8월 초</div>
+        <div class="mini-grid three">
+          <div class="minicard"><div class="msid">S3</div><div class="mstitle">퍼널 7단계 본체</div><div class="mscond"><b>선행</b> S1 · <b>완료</b> 매핑표+성공정의 확정</div></div>
+          <div class="minicard"><div class="msid">S4</div><div class="mstitle">UTM 규칙 v2</div><div class="mscond"><b>선행</b> S3 · <b>완료</b> CSV 재설계+QR 재생성</div></div>
+          <div class="minicard"><div class="msid">S5</div><div class="mstitle">주간 리포트·교차검증</div><div class="mscond"><b>선행</b> S1,S4 · <b>완료</b> 템플릿+1회차 작성</div></div>
+        </div>
+      </div>
+      <div class="phase-band">
+        <div class="pbtitle">PHASE 2 — 검증 · 8월 교육 운영</div>
+        <div class="mini-grid two">
+          <div class="minicard"><div class="msid">S6</div><div class="mstitle">1차 결산·병목 개선</div><div class="mscond"><b>선행</b> S1,S2,S5 · <b>완료</b> 결산문서+개선 커밋</div></div>
+          <div class="minicard"><div class="msid">S7</div><div class="mstitle">SEO 콘텐츠·키워드맵</div><div class="mscond"><b>선행</b> S1 · <b>완료</b> 키워드맵+콘텐츠2건</div></div>
+        </div>
+      </div>
+      <div class="phase-band">
+        <div class="pbtitle">PHASE 3 — 본선 적용 · 9–11월</div>
+        <div class="mini-grid three">
+          <div class="minicard"><div class="msid">S8</div><div class="mstitle">영화제 캠페인 이식</div><div class="mscond"><b>선행</b> S4,S6 · <b>완료</b> 실행안+UTM세트</div></div>
+          <div class="minicard"><div class="msid">S9</div><div class="mstitle">참여 사다리·현장 계측</div><div class="mscond"><b>선행</b> S3 · <b>완료</b> 설계서+운영도구</div></div>
+          <div class="minicard"><div class="msid">S10</div><div class="mstitle">최종 결산·키트화</div><div class="mscond"><b>선행</b> 전세션 · <b>완료</b> 결산+키트폴더</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 08 실행디테일 P0-1 ============ -->
+    <section class="slide" id="s8">
+      <div class="eyebrow"><span class="dot"></span>EXECUTION<span class="muted"> / Phase 0–1 상세 — S1 ~ S5</span></div>
+      <h2>실행 디테일 · Phase 0–1</h2>
+
+      <div class="exec-grid">
+        <div class="execcard now">
+          <div class="esid">S1</div><div class="estitle">계측 부채 청산</div>
+          <div class="epurpose">지금 측정이 안 되거나 신뢰 못 할 구멍을 전부 막는다. 나머지 전 세션의 선행조건.</div>
+          <ul>
+            <li>네이버 서치어드바이저 + 구글 서치콘솔 등록·소유확인·사이트맵 제출</li>
+            <li>GA4 apply_submit_success 키이벤트 등록</li>
+            <li>GTM(GTM-5TMXFHTK) 404 결론 — gtag.js 직접방식 유지 유력</li>
+            <li>봇·내부 IP 트래픽 필터 활성</li>
+          </ul>
+          <div class="edone"><b>완료</b> 양쪽 콘솔 소유확인 + GA4 채널별 전환 조회됨</div>
+        </div>
+        <div class="execcard now">
+          <div class="esid">S2</div><div class="estitle">마감 스프린트·채널 다변화</div>
+          <div class="epurpose">인스타 68% 편중이 "유일 채널이라서"인지 검증 안 됨 — 마감 전 나흘 안에 실행해야 이번 주기 안에서 비교 가능.</div>
+          <ul>
+            <li>네이버카페·청도군청·홈페이지배너·포스터 실집행</li>
+            <li>당근마켓·맘카페·지역밴드·오픈채팅 검토</li>
+            <li>전 채널 UTM 필수, 집행 시각 기록</li>
+            <li>D-Day 접수현황 원본 저장</li>
+          </ul>
+          <div class="edone"><b>완료</b> 채널 3개 이상 집행 + UTM·시각 기록</div>
+        </div>
+        <div class="execcard">
+          <div class="esid">S3</div><div class="estitle">퍼널 7단계 본체</div>
+          <div class="epurpose">세 층을 하나의 퍼널로 접고 성공 정의를 확정한다. 이 작업의 본체 문서.</div>
+          <ul>
+            <li>7단계 정의·소스·주기 확정</li>
+            <li>참여 사다리 5~7단계 접합</li>
+            <li>성공 정의 확정 — A(15명) vs B(측정체계)</li>
+            <li>교육/영화제 별도 목표 수치</li>
+          </ul>
+          <div class="edone"><b>완료</b> 매핑표 완성 + 성공정의 문서화</div>
+        </div>
+        <div class="execcard">
+          <div class="esid">S4</div><div class="estitle">UTM 규칙 v2</div>
+          <div class="epurpose">현재 UTM은 "어느 채널"만 보이고 "언제 뿌린 게 먹혔나"가 안 보인다 — 시점 축 도입.</div>
+          <ul>
+            <li>campaign=시점(d30~d_plus3) 재정의</li>
+            <li>source/medium=채널, content=크리에이티브</li>
+            <li>utm-channels.csv 재설계 + QR 재생성</li>
+            <li>7월 집행분 소급 없이 8월부터 전면 적용</li>
+          </ul>
+          <div class="edone"><b>완료</b> 규칙서 + CSV 갱신 + QR 재생성</div>
+        </div>
+        <div class="execcard">
+          <div class="esid">S5</div><div class="estitle">주간 리포트·교차검증</div>
+          <div class="epurpose">측정이 일회성 분석으로 끝나지 않고 루틴이 되게 한다. 작성 15분 이내가 원칙.</div>
+          <ul>
+            <li>6섹션 고정 포맷 (절대수치/채널/병목/교차검증/검색/액션1개)</li>
+            <li>시트↔GA4 괴리율 계산식 문서화</li>
+            <li>GA4 API·Apps Script 자동화 범위 검토</li>
+          </ul>
+          <div class="edone"><b>완료</b> 템플릿 확정 + 1회차 실제 작성</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 09 실행디테일 P2-3 ============ -->
+    <section class="slide" id="s9">
+      <div class="eyebrow"><span class="dot"></span>EXECUTION<span class="muted"> / Phase 2–3 상세 — S6 ~ S10</span></div>
+      <h2>실행 디테일 · Phase 2–3</h2>
+
+      <div class="exec-grid">
+        <div class="execcard">
+          <div class="esid">S6</div><div class="estitle">1차 결산·병목 개선</div>
+          <div class="epurpose">확인된 병목 — 프로그램 이탈률 79.0% vs 신청 이탈률 29.0%. 프로그램→신청 구간 집중 개선.</div>
+          <ul>
+            <li>채널별 유입·전환 결산</li>
+            <li>CTA 위치·정보 순서 재검토</li>
+            <li>A/B 대신 순차 개선 + 정성 로그 (표본 작음)</li>
+          </ul>
+          <div class="edone"><b>완료</b> 결산문서 + 개선 적용 커밋</div>
+        </div>
+        <div class="execcard">
+          <div class="esid">S7</div><div class="estitle">SEO 콘텐츠·키워드맵</div>
+          <div class="epurpose">검색이라는 장기 유입 채널을 실제로 착수. 브랜드 방어와 논브랜드 확장 두 축.</div>
+          <ul>
+            <li>브랜드: "청도 코미디영화제" 1위 방어</li>
+            <li>논브랜드: "청소년 영화 만들기 캠프 경북" 등</li>
+            <li>키워드맵 확정 + 콘텐츠 2건 발행</li>
+          </ul>
+          <div class="edone"><b>완료</b> 키워드맵 + 콘텐츠 2건 + 색인 요청</div>
+        </div>
+        <div class="execcard">
+          <div class="esid">S8</div><div class="estitle">영화제 캠페인 이식</div>
+          <div class="epurpose">교육에서 검증한 체계를 영화제 본행사에 적용. 3월 홍보방안 원안을 실측 데이터로 재조정.</div>
+          <ul>
+            <li>D-30 타임라인 × UTM v2 결합</li>
+            <li>예산 100만원 배분 재조정 (S6 반영)</li>
+            <li>채널 역할 재확정 (PR관리 주력/안내/아카이브)</li>
+          </ul>
+          <div class="edone"><b>완료</b> 실행안 + UTM·QR 세트 완비</div>
+        </div>
+        <div class="execcard">
+          <div class="esid">S9</div><div class="estitle">참여 사다리·현장 계측</div>
+          <div class="epurpose">퍼널 5~7단계를 실제로 측정 가능하게 만든다. 이 작업에서 가장 어렵고 독창적인 부분.</div>
+          <ul>
+            <li>현장 체크인 (QR / 명단 대조)</li>
+            <li>사후 설문 (재참여·확산 의향 문항)</li>
+            <li>재참여 판별 로직 + 개인정보 동의 검토</li>
+          </ul>
+          <div class="edone"><b>완료</b> 설계서 + 실제 운영 가능한 도구</div>
+        </div>
+        <div class="execcard">
+          <div class="esid">S10</div><div class="estitle">최종 결산·키트화</div>
+          <div class="epurpose">이 작업의 진짜 산출물을 남긴다. 다른 사업에 이식 가능한 형태로 패키징.</div>
+          <ul>
+            <li>전체 퍼널 1~7단계 실측 결산</li>
+            <li>키트 6종 패키징 (UTM·GA4정의·리포트·현장도구)</li>
+            <li>소협공·상상마루·컨설팅 이식 가이드</li>
+          </ul>
+          <div class="edone"><b>완료</b> 결산보고서 + 키트 폴더 완성</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 10 결정과 산출물 ============ -->
+    <section class="slide" id="s10">
+      <div class="eyebrow"><span class="dot"></span>CLOSING<span class="muted"> / 남은 결정과 최종 산출물</span></div>
+      <h2>결정할 것, 그리고 남길 것</h2>
+
+      <div class="close-grid">
+        <div class="panel">
+          <div class="panel-title">미결정 사항</div>
+          <div class="decision-item"><div class="dstate done">✓</div><div class="dtext"><b>도메인 소유 확인 권한자</b><span>확보됨 (본인) — S1 즉시 착수 가능</span></div></div>
+          <div class="decision-item"><div class="dstate pending">○</div><div class="dtext"><b>성공 정의</b><span>A. 정원 15명 채우기  vs  B. 재사용 측정체계 구축 — S3 착수 시 확정</span></div></div>
+          <div class="decision-item"><div class="dstate pending">○</div><div class="dtext"><b>GTM 존치 여부</b><span>404 미해결 — S1에서 gtag.js 직접방식 유지(A안) 유력 결론</span></div></div>
+          <div class="decision-item"><div class="dstate pending">○</div><div class="dtext"><b>7월 집행분 UTM 소급 처리</b><span>S4 — 소급 없이 8월부터 v2 전면 적용 권장</span></div></div>
+          <div class="decision-item"><div class="dstate pending">○</div><div class="dtext"><b>개인정보 처리 범위</b><span>참여자 명단 대조(재참여 측정) — S9에서 검토</span></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">S10 최종 산출물 — 재사용 측정 키트</div>
+          <div class="kit-list">
+            <div class="kit-row"><span class="kb"></span><span><b>UTM 명명 규칙서</b> + utm-channels.csv 템플릿</span></div>
+            <div class="kit-row"><span class="kb"></span><span><b>GA4 이벤트 정의서</b> (apply_submit_success 패턴)</span></div>
+            <div class="kit-row"><span class="kb"></span><span><b>주간 리포트 템플릿</b> + 교차검증 절차</span></div>
+            <div class="kit-row"><span class="kb"></span><span><b>현장 계측 도구</b> — 체크인·설문·확산추적 세트</span></div>
+            <div class="kit-row"><span class="kb"></span><span><b>이식 가이드</b> → 소협공·상상마루·컨설팅·혁신센터 본체</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="next-strip">
+        <div class="nlabel">NEXT STEP</div>
+        <div class="ntext">오늘(D-3)부터 <b>S1 계측 부채 청산</b> 착수 — 도메인 권한 확보돼 있어 즉시 실행 가능. S2 채널 다변화는 병렬 진행.</div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="nav">
+    <div class="nav-btns"><div class="nav-btn" id="prevBtn">‹</div><div class="nav-btn" id="nextBtn">›</div></div>
+    <div class="nav-dots" id="navDots"></div>
+    <div class="nav-count"><b id="curNum">01</b> / 10</div>
+  </div>
+</div>
+
+<script>
+  const slides = ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10'];
+  const labels = ['표지','문제인식','퍼널정의','참여사다리','측정원칙','일정제약','로드맵개요','실행P0-1','실행P2-3','마무리'];
+  let cur = 0;
+
+  const ticksEl = document.getElementById('ticks');
+  const dotsEl = document.getElementById('navDots');
+  slides.forEach((_,i)=>{
+    const t = document.createElement('div'); t.className='tick'+(i===0?' on':''); t.dataset.i=i; ticksEl.appendChild(t);
+    const d = document.createElement('span'); if(i===0) d.className='on'; d.dataset.i=i; dotsEl.appendChild(d);
+  });
+
+  function render(){
+    slides.forEach((id,i)=> document.getElementById(id).classList.toggle('active', i===cur));
+    document.querySelectorAll('.tick').forEach((t,i)=> t.classList.toggle('on', i===cur));
+    document.querySelectorAll('#navDots span').forEach((d,i)=> d.classList.toggle('on', i===cur));
+    document.getElementById('curNum').textContent = String(cur+1).padStart(2,'0');
+    document.getElementById('idxLabel').innerHTML = '<b>'+String(cur+1).padStart(2,'0')+'</b> / 10 — '+labels[cur];
+  }
+  function go(d){ cur = Math.max(0, Math.min(slides.length-1, cur+d)); render(); }
+  document.getElementById('prevBtn').addEventListener('click', ()=>go(-1));
+  document.getElementById('nextBtn').addEventListener('click', ()=>go(1));
+  document.addEventListener('click', (e)=>{
+    if(e.target.classList.contains('tick') || (e.target.parentElement && e.target.parentElement.id==='navDots')){
+      cur = parseInt(e.target.dataset.i); render();
+    }
+  });
+  window.addEventListener('keydown', (e)=>{
+    if(e.key==='ArrowRight' || e.key===' ') go(1);
+    if(e.key==='ArrowLeft') go(-1);
+  });
+
+  function fitStage(){
+    const s = document.getElementById('stage');
+    const scale = Math.min(window.innerWidth/1280, window.innerHeight/720) * 0.96;
+    s.style.transform = 'scale('+scale+')';
+  }
+  window.addEventListener('resize', fitStage);
+  fitStage();
+</script>
+
+</body>
+</html>
