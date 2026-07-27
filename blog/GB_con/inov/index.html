@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>참여 심화·LTV 성과 보고서 — 청도혁신센터·경북시민재단</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+/* ============================================================
+   CSS 변수 — 볼트 accordion-information-making-guide-html 스킬 팔레트 차용 (PRD 4.2 고정)
+   ============================================================ */
+:root {
+  --bg:        #f9f7f4;
+  --bg2:       #f3f0eb;
+  --bg3:       #ede9e2;
+  --surface:   #ffffff;
+  --border:    #e4dfd6;
+  --border2:   #d4cec4;
+  --text:      #2d2a26;
+  --text-sub:  #5a544a;
+  --text-muted:#8a8278;
+  --claude:    #d97757;
+  --claude-lt: #f5ede8;
+  --claude-dk: #b85e3e;
+  --teal:      #2a7d6f;
+  --teal-lt:   #e6f4f1;
+  --indigo:    #4a5fa8;
+  --indigo-lt: #eceffe;
+  --amber:     #b07d2a;
+  --amber-lt:  #fdf4e3;
+  --rose:      #b84f5a;
+  --rose-lt:   #fdedef;
+  --green:     #3a7a52;
+  --green-lt:  #eaf4ee;
+  --red:       #b84444;
+  --red-lt:    #fdeaea;
+  --white:     #ffffff;
+  --claude-border: #e8c3b3;
+  --chart-grid: var(--bg3);
+
+  --font-body: 'Noto Sans KR', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --maxw: 1080px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 2rem; }
+a { color: inherit; }
+img, svg, canvas { max-width: 100%; }
+
+/* ---- Nav ---- */
+nav { position: sticky; top: 0; z-index: 100; background: rgba(249,247,244,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+.nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 0.9rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.nav-logo { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; color: var(--claude-dk); letter-spacing: 0.02em; white-space: nowrap; }
+.nav-links { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+.nav-links a { font-size: 0.78rem; color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color .15s; }
+.nav-links a:hover, .nav-links a.active { color: var(--claude-dk); }
+
+/* ---- Section shell ---- */
+section { padding: 4.5rem 0; border-bottom: 1px solid var(--border); }
+section:last-of-type { border-bottom: none; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--claude); margin-bottom: 0.7rem; display: block; }
+h2 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
+.section-sub { color: var(--text-sub); font-size: 0.95rem; max-width: 680px; margin-bottom: 2.4rem; }
+h3 { font-size: 1.15rem; font-weight: 700; margin: 2rem 0 0.8rem; }
+p.body-p { color: var(--text-sub); font-size: 0.93rem; margin-bottom: 0.9rem; max-width: 720px; }
+strong { color: var(--text); font-weight: 600; }
+
+/* ---- Hero (cover) ---- */
+#hero { padding: 6rem 0 4.5rem; background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; color: var(--claude-dk); background: var(--claude-lt); border: 1px solid var(--claude-border); padding: 0.35rem 0.9rem; border-radius: 100px; margin-bottom: 1.6rem; }
+#hero h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.28; max-width: 780px; margin-bottom: 1rem; }
+#hero h1 em { font-style: normal; color: var(--claude-dk); border-bottom: 3px solid var(--claude-lt); }
+.hero-sub { font-size: 1.02rem; color: var(--text-sub); max-width: 620px; margin-bottom: 2.2rem; }
+.hero-meta { display: flex; gap: 1.6rem; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-bottom: 2.6rem; }
+.hero-meta b { color: var(--text-sub); font-weight: 600; }
+.hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 720px; }
+.hstat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.3rem; }
+.hstat .n { font-family: var(--font-mono); font-size: 1.7rem; font-weight: 700; color: var(--claude-dk); line-height: 1; margin-bottom: 0.45rem; }
+.hstat .l { font-size: 0.8rem; color: var(--text-sub); font-weight: 500; }
+
+/* ---- KPI cards (0장/4장 공용) ---- */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-bottom: 2.2rem; }
+.kpi-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.3rem 1.4rem; transition: border-color .15s, transform .15s; }
+.kpi-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.kpi-card .kv { font-family: var(--font-mono); font-size: 2rem; font-weight: 700; line-height: 1; margin-bottom: 0.5rem; }
+.kpi-card .kl { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+.kpi-card .ks { font-size: 0.74rem; color: var(--text-muted); line-height: 1.5; }
+.kpi-card.c-claude .kv { color: var(--claude-dk); }
+.kpi-card.c-teal .kv { color: var(--teal); }
+.kpi-card.c-indigo .kv { color: var(--indigo); }
+.kpi-card.c-rose .kv { color: var(--rose); }
+
+/* ---- 발견/제언 리스트 (0장) ---- */
+.finding-list { display: grid; gap: 0.8rem; margin-bottom: 2rem; }
+.finding-item { display: flex; gap: 1rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; }
+.finding-num { font-family: var(--font-mono); font-weight: 700; font-size: 0.85rem; color: var(--white); background: var(--claude); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.1rem; }
+.finding-item.action .finding-num { background: var(--teal); }
+.finding-text { font-size: 0.9rem; color: var(--text-sub); line-height: 1.65; }
+.finding-text strong { color: var(--text); }
+
+/* ---- 인용/포인트 박스 ---- */
+.pull-quote { font-size: 1.08rem; font-style: normal; color: var(--text); line-height: 1.7; padding: 1.4rem 1.6rem; border-left: 3px solid var(--claude); background: var(--claude-lt); border-radius: 0 var(--radius) var(--radius) 0; margin: 1.6rem 0; max-width: 760px; }
+.insight-box { background: var(--indigo-lt); border-left: 3px solid var(--indigo); border-radius: 0 var(--radius) var(--radius) 0; padding: 1rem 1.2rem; margin: 1.2rem 0; max-width: 760px; }
+.insight-box .box-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: var(--indigo); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.insight-box p { font-size: 0.88rem; color: var(--text); line-height: 1.75; }
+.warn-box { background: var(--red-lt); border-left: 3px solid var(--red); border-radius: 0 var(--radius) var(--radius) 0; padding: 1rem 1.2rem; margin: 1.2rem 0; max-width: 760px; }
+.warn-box .box-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: var(--red); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.warn-box p { font-size: 0.88rem; color: var(--text-sub); line-height: 1.75; }
+
+/* ---- STAGE 프레임워크 플로우 다이어그램 (2장) ---- */
+.flow-diagram { display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding: 1.5rem 0.2rem 2rem; margin-bottom: 1rem; }
+.flow-node { flex: 1 0 150px; min-width: 150px; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1rem; cursor: pointer; transition: transform .15s, border-color .15s, box-shadow .15s; position: relative; }
+.flow-node:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(45,42,38,0.08); }
+.flow-node .stage-tag { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; padding: 0.15rem 0.5rem; border-radius: 4px; display: inline-block; margin-bottom: 0.6rem; }
+.flow-node .stage-name { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+.flow-node .stage-en { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.7rem; }
+.flow-node .stage-device { font-size: 0.76rem; color: var(--text-sub); line-height: 1.5; border-top: 1px dashed var(--border2); padding-top: 0.6rem; }
+.flow-arrow { flex: 0 0 28px; display: flex; align-items: center; justify-content: center; color: var(--border2); font-size: 1.3rem; }
+.stage-detail { display: none; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.3rem 1.5rem; margin-top: -0.5rem; margin-bottom: 1.5rem; font-size: 0.88rem; color: var(--text-sub); line-height: 1.8; }
+.stage-detail.open { display: block; animation: fadeUp .25s both; }
+
+/* ---- 매핑 테이블 (3장) ---- */
+.map-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+table.map-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 720px; }
+table.map-table th { background: var(--bg2); font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-align: left; padding: 0.75rem 1rem; letter-spacing: 0.05em; text-transform: uppercase; border-bottom: 1px solid var(--border); white-space: nowrap; }
+table.map-table td { padding: 0.75rem 1rem; color: var(--text-sub); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+table.map-table tr:last-child td { border-bottom: none; }
+table.map-table tr:hover td { background: var(--bg2); }
+table.map-table td:first-child { font-weight: 600; color: var(--text); }
+.stage-pill { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 100px; display: inline-block; white-space: nowrap; }
+
+/* stage color helpers */
+.s-claude { background: var(--claude-lt); color: var(--claude-dk); }
+.s-teal   { background: var(--teal-lt); color: var(--teal); }
+.s-indigo { background: var(--indigo-lt); color: var(--indigo); }
+.s-amber  { background: var(--amber-lt); color: var(--amber); }
+.s-rose   { background: var(--rose-lt); color: var(--rose); }
+.s-green  { background: var(--green-lt); color: var(--green); }
+.s-muted  { background: var(--bg3); color: var(--text-muted); }
+
+/* ---- 4장: 차트 카드 ---- */
+.chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem 1.5rem; margin: 0.8rem 0 1.8rem; height: 300px; }
+.chart-card.tall { height: 340px; }
+
+/* ---- 4장: compare-pair ---- */
+.compare-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.6rem 0 2rem; max-width: 720px; }
+.compare-box { border-radius: var(--radius); padding: 1.2rem 1.3rem; border: 1px solid var(--border); }
+.compare-box.bad  { background: var(--red-lt);   border-color: rgba(184,68,68,0.18); }
+.compare-box.good { background: var(--green-lt); border-color: rgba(58,122,82,0.18); }
+.compare-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
+.compare-box.bad  .compare-label { color: var(--red); }
+.compare-box.good .compare-label { color: var(--green); }
+.compare-num { font-family: var(--font-mono); font-size: 1.7rem; font-weight: 700; margin-bottom: 0.4rem; }
+.compare-box.bad  .compare-num { color: var(--red); }
+.compare-box.good .compare-num { color: var(--green); }
+.compare-box p { font-size: 0.82rem; color: var(--text-sub); line-height: 1.6; }
+
+@media (max-width: 768px) {
+  .compare-pair { grid-template-columns: 1fr; }
+}
+
+/* ---- 5장: 가치 산식 박스 ---- */
+.formula-box { background: var(--bg2); border: 1.5px solid var(--border2); border-radius: var(--radius); padding: 1.6rem 1.8rem; margin: 1.2rem 0 2rem; max-width: 780px; }
+.formula-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.7rem; }
+.formula-main { font-family: var(--font-mono); font-size: 1.02rem; font-weight: 600; color: var(--text); line-height: 1.9; }
+.formula-main .fx { font-weight: 400; color: var(--claude-dk); font-size: 0.85rem; }
+
+/* ---- 5장: 사회자본 3차원 칩 ---- */
+.dim-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.9rem; margin: 1rem 0 2rem; max-width: 780px; }
+.dim-chip { border-radius: var(--radius); padding: 1rem 1.1rem; font-weight: 700; font-size: 0.92rem; display: flex; flex-direction: column; gap: 0.35rem; border: 1px solid var(--border); }
+.dim-chip span { font-weight: 400; font-size: 0.78rem; color: var(--text-sub); }
+
+/* ---- 6장: 제언 카드 ---- */
+.rec-grid { display: grid; gap: 1rem; }
+.rec-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.3rem 1.5rem; position: relative; }
+.rec-card.risk { border-color: rgba(184,68,68,0.35); background: linear-gradient(180deg, var(--red-lt) 0%, var(--surface) 90px); }
+.rec-head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.rec-badge { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 100px; letter-spacing: 0.03em; }
+.rec-badge.urgent { background: var(--red-lt); color: var(--red); border: 1px solid rgba(184,68,68,0.25); }
+.rec-badge.important { background: var(--amber-lt); color: var(--amber); border: 1px solid rgba(176,125,42,0.25); }
+.rec-badge.risk-tag { background: var(--red); color: var(--white); }
+.rec-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+.rec-body { font-size: 0.88rem; color: var(--text-sub); line-height: 1.7; margin-bottom: 0.6rem; }
+.rec-impact { font-size: 0.8rem; color: var(--teal); font-weight: 600; }
+.rec-impact::before { content: "→ "; }
+
+/* ---- 7장: 데이터 품질 리스트 ---- */
+.dq-list { list-style: none; display: grid; gap: 0.55rem; margin: 0.8rem 0 1.8rem; max-width: 760px; }
+.dq-list li { font-size: 0.86rem; color: var(--text-sub); padding-left: 1.3rem; position: relative; line-height: 1.6; }
+.dq-list li::before { content: "—"; position: absolute; left: 0; color: var(--text-muted); }
+
+/* ---- Footer ---- */
+footer { padding: 2.6rem 2rem; text-align: center; background: var(--surface); }
+.footer-title { font-size: 0.82rem; font-weight: 600; color: var(--text-sub); margin-bottom: 0.3rem; }
+.footer-note  { font-size: 0.75rem; color: var(--text-muted); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+#hero .hero-badge, #hero h1, #hero .hero-sub, #hero .hero-stats { animation: fadeUp 0.5s both; }
+#hero h1 { animation-delay: .08s; } .hero-sub { animation-delay: .16s; } .hero-stats { animation-delay: .24s; }
+
+@media print {
+  nav { display: none; }
+  section { break-inside: avoid; padding: 1.6rem 0; }
+  body { background: var(--white); }
+  .flow-diagram { overflow-x: visible; flex-wrap: wrap; }
+}
+
+@media (max-width: 768px) {
+  .wrap, .nav-inner { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .nav-links { display: none; }
+  #hero h1 { font-size: 1.8rem; }
+  .hero-stats { grid-template-columns: 1fr; }
+  h2 { font-size: 1.4rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">참여심화·LTV 성과보고서</div>
+    <div class="nav-links">
+      <a href="#s0">핵심요약</a>
+      <a href="#s1">문제제기</a>
+      <a href="#s2">프레임워크</a>
+      <a href="#s3">사업진단</a>
+      <a href="#s4">실데이터</a>
+      <a href="#s5">가치측정</a>
+      <a href="#s6">실행제언</a>
+      <a href="#s7">부록</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     표지 (Hero)
+============================================================ -->
+<header id="hero">
+  <div class="wrap">
+    <span class="hero-badge">청도혁신센터 · 경북시민재단 &nbsp;|&nbsp; 성과 보고서</span>
+    <h1>참여자 수만으로는 <em>가치</em>를 증명할 수 없다</h1>
+    <p class="hero-sub">참여 심화(engagement ladder)와 고객 LTV·사회가치 관점에서 우리 사업 포트폴리오를 진단한다. 573명의 실데이터가 말하는 것 — 어디가 두텁고, 어디가 비었는가.</p>
+    <div class="hero-meta">
+      <span><b>작성일</b> 2026-07-27</span>
+      <span><b>버전</b> 1.0</span>
+      <span><b>대상</b> 경영진·이사회</span>
+      <span><b>근거 데이터</b> 참여기록 924건 · 임팩트랩 756건</span>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="n">573명</div><div class="l">고유 참여자</div></div>
+      <div class="hstat"><div class="n">10.3%</div><div class="l">교차참여율</div></div>
+      <div class="hstat"><div class="n">30.3%</div><div class="l">공간 재방문율</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     0. 핵심 요약
+============================================================ -->
+<section id="s0">
+  <div class="wrap">
+    <span class="eyebrow">Executive Summary</span>
+    <h2>0. 핵심 요약</h2>
+    <p class="section-sub">이 장만 읽어도 의사결정이 가능하도록 발견 3개와 제언 3개를 압축했다. 상세 근거는 각 장에 있다.</p>
+
+    <h3>발견 3</h3>
+    <div class="finding-list">
+      <div class="finding-item">
+        <div class="finding-num">1</div>
+        <div class="finding-text"><strong>유입은 성공하나 89.7%가 일회성으로 끝난다.</strong> 573명 중 2개 이상 사업에 참여한 사람은 59명(10.3%)뿐. 참여자 "수"만으로는 관계의 깊이를 증명할 수 없다.</div>
+      </div>
+      <div class="finding-item">
+        <div class="finding-num">2</div>
+        <div class="finding-text"><strong>심화 엔진(캠프·창업양성·임팩트랩)과 유입 엔진(생활실험팀·모두의마을)이 단절되어 있다.</strong> 규모의 사업일수록 교차참여율이 낮고, 소규모 밀착 사업일수록 압도적으로 높다 — 정반대 역할인데 서로 연결되지 않는다.</div>
+      </div>
+      <div class="finding-item">
+        <div class="finding-num">3</div>
+        <div class="finding-text"><strong>공간(임팩트랩)이 관계 허브다.</strong> 개별 프로그램 교차율(10.3%)보다 공간 재방문율(30.3%)이 3배 높고, 교차참여 상위 경로 2건 모두 임팩트랩과 연결된다.</div>
+      </div>
+    </div>
+
+    <h3>제언 3</h3>
+    <div class="finding-list">
+      <div class="finding-item action">
+        <div class="finding-num">①</div>
+        <div class="finding-text"><strong>공통 참여자 ID 도입.</strong> 이것 없이는 코호트 잔존·LTV 계산 자체가 불가능하다.</div>
+      </div>
+      <div class="finding-item action">
+        <div class="finding-num">②</div>
+        <div class="finding-text"><strong>대관·종합시트 추적 정상화.</strong> 대관 참여자 정보 4%만 확보되고, 2025년 종합 시트는 아직 미작성 상태다.</div>
+      </div>
+      <div class="finding-item action">
+        <div class="finding-num">③</div>
+        <div class="finding-text"><strong>유입→심화 핸드오프 설계.</strong> 생활실험팀 참여자를 캠프·창업양성으로 넘기는 통로만 만들어도 교차참여율이 크게 오를 잠재력이 있다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     1. 문제 제기
+============================================================ -->
+<section id="s1">
+  <div class="wrap">
+    <span class="eyebrow">Why This Analysis</span>
+    <h2>1. 왜 지금 이 분석인가</h2>
+    <p class="section-sub">청도군은 정주인구 감소·생활인구 확대라는 이중 전략 속에 있다. 이 맥락에서 "참여자 수" 지표는 한계에 부딪힌다.</p>
+
+    <p class="body-p">지역센터 사업의 성과는 오랫동안 "참여자 수"로 보고되어 왔다. 하지만 참여자 수는 그 관계가 얼마나 깊고 오래 지속되는지, 그래서 실제로 지역에 어떤 가치를 남기는지 말해주지 않는다. 한 번 왔다 사라지는 434명과, 여러 사업을 넘나들며 지역의 활동가로 자리잡은 4명은 같은 "1명"으로 집계되지만 창출하는 가치는 전혀 다르다.</p>
+
+    <div class="insight-box">
+      <div class="box-label">Insight</div>
+      <p>"참여자 수"라는 지표의 한계는 관계의 깊이·잔존을 보지 못한다는 데 있다. LTV·사회가치라는 새 렌즈는 이 깊이를 화폐화·정량화해, 어떤 사업이 실제로 지역에 남는 가치를 만드는지 구분해준다.</p>
+    </div>
+
+    <p class="body-p">문제 제기는 데이터로, 해법은 이론·제언으로 잇는다. 2장은 이 관계 심화를 측정하는 프레임워크(STAGE 0~5)를 제시하고, 3~4장은 우리 사업을 그 프레임워크에 실제로 매핑·검증한다.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     2. 분석 프레임워크 — 참여 심화 5단계
+============================================================ -->
+<section id="s2">
+  <div class="wrap">
+    <span class="eyebrow">Framework</span>
+    <h2>2. 참여 심화 5단계</h2>
+    <p class="section-sub">Arnstein 시민참여 사다리 · 관객발달 충성사다리 · IAP2 커뮤니티 참여모델, 세 이론을 결합했다. 카드를 클릭하면 상세를 볼 수 있다.</p>
+
+    <div class="flow-diagram" id="flowDiagram"><!-- JS로 렌더링 --></div>
+    <div id="stageDetails"><!-- JS로 렌더링 --></div>
+
+    <div class="pull-quote">신규 관객 1명을 확보하는 비용은 기존 관객을 사다리 위로 끌어올리는 비용의 7~10배다 — Audiences NI</div>
+
+    <p class="body-p">가치 측정은 두 층위로 나눈다. <strong>개인 LTV</strong>(1인당 연간 웰빙가치 × 잔존기간)와 <strong>집합적 사회자본</strong>(경제적 연결성·응집성·시민참여 3차원)이다. 자세한 산정법은 5장에서 다룬다.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     3. 우리 사업 진단 — 13개 사업 매핑
+============================================================ -->
+<section id="s3">
+  <div class="wrap">
+    <span class="eyebrow">Portfolio Diagnosis</span>
+    <h2>3. 우리 사업 진단</h2>
+    <p class="section-sub">13개 사업(+ 병렬축 1개)을 5단계 프레임워크에 매핑한 결과, 가운데(STAGE 2~3)가 강하고 양 끝(STAGE 1, STAGE 5)이 약한 <strong>"장구형" 구조</strong>가 드러난다.</p>
+
+    <div class="map-table-wrap">
+      <table class="map-table" id="mapTable">
+        <thead>
+          <tr><th>사업명</th><th>주 STAGE</th><th>권력배분</th><th>참여 규모(실적)</th><th>심화 근거</th></tr>
+        </thead>
+        <tbody><!-- JS로 렌더링 --></tbody>
+      </table>
+    </div>
+
+    <div class="warn-box">
+      <div class="box-label">Gap 1 — STAGE 1 반복/잔존</div>
+      <p>가장 큰 공백. 거의 모든 사업이 참여자 "수"는 세지만, 같은 사람이 다음 프로그램으로 이어졌는지(코호트 잔존)를 추적하지 않는다. KPI가 head count에 고착되어 있다.</p>
+    </div>
+    <div class="warn-box">
+      <div class="box-label">Gap 2 — STAGE 5 재생산</div>
+      <p>자치로의 연결 통로는 있으나(주민참여예산 연계 설계), 자치 주체가 된 주민이 신규 진입자를 다시 STAGE 0으로 끌어오는 순환 구조는 문서상 확인되지 않는다.</p>
+    </div>
+
+    <h3>병렬축 발견 — 경제적 심화 경로</h3>
+    <p class="body-p">문화 사다리와 별개로 작동하는 트랙이 하나 더 있다. 소셜비즈니스 창업가 양성(STAGE 2~3)에서 시작해 라이콘펀드(투자유치 17억)로 이어지는 경로는 "참여자 → 창업가 → 투자유치 기업"이라는 경제적 자생 경로로, 개인 LTV를 넘어 <strong>지역 경제 생태계 가치</strong>로 별도 측정이 필요하다.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     [Session 3에서 이어서 작성] 4. 실데이터 검증 (★핵심)
+============================================================ -->
+<section id="s4">
+  <div class="wrap">
+    <span class="eyebrow">Real Data Validation</span>
+    <h2>4. 실데이터 검증 <span style="color:var(--claude-dk)">★</span></h2>
+    <p class="section-sub">참여자 명부(924건)와 임팩트랩 캘린더(756건)를 실측해, 3장의 "장구형" 진단을 데이터로 확증한다. 그리고 예상 못한 반전이 하나 있다.</p>
+
+    <div class="kpi-grid" id="kpiGrid"><!-- JS 렌더링 --></div>
+
+    <h3>A. 1인당 참여 횟수 분포</h3>
+    <p class="body-p">75.7%가 단 한 번 참여하고 끝난다. 소수 슈퍼참여자(11회 이상, 최다 16회)가 전체 참여기록을 끌어올리는 전형적 롱테일 구조다.</p>
+    <div class="chart-card"><canvas id="chartA"></canvas></div>
+
+    <h3>B. 사업별 심화 격차 — "규모의 사업"과 "심화의 사업"은 다르다</h3>
+    <p class="body-p">각 사업 참여자 중 다른 사업에도 참여한 사람의 비율(교차율)을 그 사업의 STAGE 상승 기여도로 본다. 대규모 사업일수록 교차율이 낮고, 소규모 밀착 사업일수록 압도적으로 높다.</p>
+    <div class="chart-card tall"><canvas id="chartB"></canvas></div>
+    <div class="insight-box">
+      <div class="box-label">반전 발견</div>
+      <p>생활실험팀 공모는 410명을 모았지만 88%가 한 번 보고 사라진다. 반대로 지속가능캠프는 32명뿐이지만 69%를 다음 단계로 올린다. 유입은 생활실험팀·모두의마을이, 심화 전환은 캠프·창업양성·임팩트랩이 담당하는 역할 분담이 이미 데이터에 존재한다 — 문제는 이 둘이 연결(핸드오프)되지 않는다는 것.</p>
+    </div>
+
+    <h3>C. 전환 경로 — 어떤 사업 조합이 실제로 이어지나</h3>
+    <p class="body-p">교차참여자 59명의 사업 조합을 쌍 단위로 집계했다. 상위 경로 두 건 모두 임팩트랩과 연결된다.</p>
+    <div class="chart-card"><canvas id="chartC"></canvas></div>
+
+    <div class="compare-pair">
+      <div class="compare-box bad">
+        <span class="compare-label">프로그램 교차참여율</span>
+        <div class="compare-num">10.3%</div>
+        <p>573명 중 59명만 2개 이상 사업 참여</p>
+      </div>
+      <div class="compare-box good">
+        <span class="compare-label">공간 재방문율</span>
+        <div class="compare-num">30.3%</div>
+        <p>이용주체 145곳 중 44곳이 2회 이상 재방문 — 프로그램보다 3배 높음</p>
+      </div>
+    </div>
+
+    <h3>D. 공간 활성도 추이 — 경고 신호</h3>
+    <p class="body-p">2025년 8월(61건)을 정점으로 이후 13개월 연속 하락, 2026년 7월 3건까지 붕괴했다. 잔존을 개선하기 전에 <strong>유입 자체가 마르고 있다.</strong></p>
+    <div class="chart-card tall"><canvas id="chartD"></canvas></div>
+    <p style="font-size:0.76rem;color:var(--text-muted);max-width:720px;margin-top:0.6rem;">* 임팩트랩_구글_캘린더_총합.csv 원본 756건 전수 집계(2024-01~2026-07, 월별 실측치)</p>
+    <div class="warn-box">
+      <div class="box-label">경고</div>
+      <p>2025년 여름 성수기(6~8월 53·56·61건)를 정점으로 9월 43건, 10~12월 10~13건으로 급락한 뒤, 2026년 상반기는 월 8~9건 수준에서 정체하다가 7월 3건으로 재차 하락했다. 2024년 동월(2024-07 35건) 대비로도 크게 낮은 수준이다. 원인 규명이 필요하다(사업 종료? 예산? 담당자 이탈? 캘린더 기록 누락?).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [Session 4에서 이어서 작성] 5~7장
+============================================================ -->
+<section id="s5">
+  <div class="wrap">
+    <span class="eyebrow">Value Model</span>
+    <h2>5. 가치 측정 모델</h2>
+    <p class="section-sub">개인이 어디까지 올라왔는가(개인 LTV)와 지역 전체 관계망이 얼마나 두터워졌는가(집합적 사회자본)는 다른 지표를 요구한다. 두 층위로 나눠 측정한다.</p>
+
+    <div class="formula-box">
+      <div class="formula-label">개인 LTV 산식</div>
+      <div class="formula-main">개인 LTV &nbsp;=&nbsp; 1인당 연간 웰빙가치 <span class="fx">(HACT)</span> &nbsp;×&nbsp; 평균 잔존기간 <span class="fx">(코호트 분석)</span></div>
+    </div>
+
+    <h3>집합적 사회자본 — 3차원</h3>
+    <div class="dim-row">
+      <div class="dim-chip s-claude">경제적 연결성<span>이질적 소득집단 간 연결</span></div>
+      <div class="dim-chip s-teal">응집성<span>관계망의 밀도·상호성</span></div>
+      <div class="dim-chip s-indigo">시민참여<span>자원봉사율·시민조직 밀도</span></div>
+    </div>
+
+    <h3>해외 사례 벤치마크</h3>
+    <p class="body-p">공공·비영리 커뮤니티센터 영역의 검증된 방법론 5건. 그대로 이식 가능한 사례부터 참고용 정량화 기법까지 정리했다.</p>
+    <div class="map-table-wrap">
+      <table class="map-table" id="valueTable">
+        <thead><tr><th>사례</th><th>지표</th><th>값</th></tr></thead>
+        <tbody><!-- JS 렌더링 --></tbody>
+      </table>
+    </div>
+    <div class="insight-box">
+      <div class="box-label">적용 포인트</div>
+      <p>West Berkshire 도서관(영국)의 자원봉사 웰빙가치 £12,221은 커뮤니티센터에 거의 그대로 이식 가능한 사례다. 청도 맥락에서는 4장에서 확보한 만족도(89%, 5.0점)·자원봉사 시간 데이터를 HACT 프록시에 대입하는 것이 출발점이 된다.</p>
+    </div>
+  </div>
+</section>
+<section id="s6">
+  <div class="wrap">
+    <span class="eyebrow">Recommendations</span>
+    <h2>6. 실행 제언</h2>
+    <p class="section-sub">4장 데이터 분석에서 드러난 <strong>운영 리스크 2건을 제언에 정식 편입</strong>했다. 이 둘은 단순 개선사항이 아니라 "성과 측정 자체를 불가능하게 만드는" 근본 공백이다.</p>
+
+    <div class="rec-grid" id="recGrid"><!-- JS 렌더링 --></div>
+  </div>
+</section>
+<section id="s7">
+  <div class="wrap">
+    <span class="eyebrow">Appendix</span>
+    <h2>7. 부록</h2>
+    <p class="section-sub">본문 수치의 한계와 산정 방법, 참고문헌을 밝힌다.</p>
+
+    <h3>7.1 데이터 품질 한계</h3>
+    <ul class="dq-list" id="dqList"><!-- JS 렌더링 --></ul>
+
+    <h3>7.2 방법론</h3>
+    <p class="body-p">연락처 정규화 후 개인식별(중복 인물 병합) → 코호트별 참여 횟수·사업종류 수 집계 → 사업 쌍 단위 교차참여 경로 산출. 교차참여율 = 2개 이상 사업 참여 인원 ÷ 전체 고유 참여자. 공간 재방문율 = 2회 이상 이용주체 ÷ 전체 이용주체.</p>
+
+    <h3>7.3 참고문헌</h3>
+    <p class="body-p" style="font-size:0.82rem;">Arnstein, S. R. (1969). A Ladder of Citizen Participation. <em>JAIP</em>, 35(4). · IAP2 Australasia Community Engagement Model · HACT Social Value Bank (2018) · HM Treasury Green Book · Chetty et al. (2022), Social Capital Atlas, <em>Nature</em> · Audiences NI (2013) · EU (2017) Study on Audience Development</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-title">참여 심화·LTV 성과 보고서 — 청도혁신센터 · 경북시민재단</div>
+  <div class="footer-note">status: draft (Session 2/5 완료) · 2026-07-27</div>
+</footer>
+
+<script>
+/* ============================================================
+   데이터 소스 (report_data.js 인라인 병합 예정 — Session 5에서 통합)
+   Session 2에서는 2장·3장 렌더링에 필요한 데이터만 임시 선언
+============================================================ */
+const STAGE_FRAMEWORK = [
+  { stage: 0, name: "진입", en: "Access",             device: "우연하고 수월한 첫 경험", color: "claude",
+    detail: "문화에 무관심하던 주민이 센터에 첫 접촉. 심리적·물리적 진입장벽을 제거한다. 핵심지표: 신규 접촉 수, 유입경로별 전환율, 30일 내 재방문율." },
+  { stage: 1, name: "반복", en: "Attendance",          device: "소속감·인지 트리거", color: "teal",
+    detail: "일회성 방문자를 정기 참여자로. 이름을 기억하고 작은 역할을 부여하는 것만으로도 소속감이 생긴다. 핵심지표: 방문 빈도, 코호트별 3·6개월 잔존율." },
+  { stage: 2, name: "관여", en: "Engagement",          device: "공동저작 초대", color: "indigo",
+    detail: "수동적 관객에서 능동적 기여자로. 자원봉사·운영 참여가 시작된다. 핵심지표: 자원봉사 참여자 수·시간, 리더 전환율." },
+  { stage: 3, name: "공동창작", en: "Co-creation",      device: "권력·예산 이양", color: "amber",
+    detail: "참여자가 프로그램을 함께 기획·저작. 소액 기획예산과 공개 크레딧이 이양의 시작이다. 핵심지표: 주민기획 프로그램 수, 기획단 규모." },
+  { stage: 4, name: "공동거버넌스", en: "Co-governance", device: "제도화", color: "rose",
+    detail: "주민이 센터 운영·예산 의사결정에 참여. 조례·규정으로 참여 구조를 고정해 담당자가 바뀌어도 지속되게 한다. 핵심지표: 의사결정 참여 주민 수, 주민 발의 안건 채택률." },
+  { stage: 5, name: "자치", en: "Self-governance",     device: "(재생산 순환)", color: "green",
+    detail: "주민참여예산·주민자치. Arnstein 시민통제 단계 도달. 신규 진입자를 STAGE 0으로 순환시키는 자체 재생산 구조가 관건이다. 핵심지표: 주민참여예산 규모·집행률, 자체 발주 프로젝트 수." }
+];
+
+const STAGE_MAPPING = [
+  { name: "미리 맛보는 소통협력공간", stage: "0", stageColor: "claude", power: "① 기관주도·정보제공", scale: "목표 대관240/이용300 (실적 미확인)", evidence: "공간 첫 접촉" },
+  { name: "소통협력공간 주간", stage: "0→1", stageColor: "claude", power: "① → ②", scale: "41개 기관, 체험 183명", evidence: "저장벽 첫 경험, 포스터 40곳" },
+  { name: "관계안내소 운영", stage: "1", stageColor: "teal", power: "② 기관주도·주민실행", scale: "월 관계인구 25명 목표, 간담회 45명", evidence: "관계인구 정기 접점" },
+  { name: "로컬임팩트랩 운영", stage: "1→2", stageColor: "teal", power: "②", scale: "미드나잇 38명, 만족도 89%", evidence: "정기 프로그램·공간 상주 (교차참여 허브)" },
+  { name: "스테이 in 로컬", stage: "2", stageColor: "indigo", power: "② → ③", scale: "6회 90명, 전국 네트워크", evidence: "상호학습·공동작업 경험" },
+  { name: "경북지속가능캠프/포럼", stage: "2", stageColor: "indigo", power: "②", scale: "캠프 100명+, 포럼 5회 120명", evidence: "타지역 벤치마킹·전문가 네트워크 (교차참여 68.8%)" },
+  { name: "로컬 소셜비즈니스 창업가 양성", stage: "2→3", stageColor: "indigo", power: "② → ③", scale: "14개사 29회, 빌더 10명", evidence: "역량강화→창업 주체화 (교차참여 50.0%)" },
+  { name: "청소년/청년 로컬창업가 양성", stage: "2→3", stageColor: "indigo", power: "② → ③", scale: "24명, 창업팀 4개, 가상브랜드 4개", evidence: "청소년을 창작 주체로" },
+  { name: "모두의 마을", stage: "3", stageColor: "amber", power: "③ 주민주도·기관실행", scale: "9개 읍면 영상19·숏폼9", evidence: "주민이 지역문화 아카이빙 저작" },
+  { name: "경북-청도 브랜딩 지역자원발굴", stage: "3", stageColor: "amber", power: "③", scale: "시민 취타대 10명, 굿즈 4종", evidence: "주민이 브랜드 자산 공동제작" },
+  { name: "로컬브랜딩 생활실험팀 공모", stage: "3→4", stageColor: "amber", power: "③ → ④", scale: "소모임 32팀, 새참모임 61팀 1,099명", evidence: "최대 유입, 최저 심화(교차참여 12.0%)" },
+  { name: "N개의 공론장", stage: "4", stageColor: "rose", power: "④ 주민주도·책임", scale: "토론회 6회, 정책제안 6건, 퍼실 6명", evidence: "주민이 정책의제 심의·발의" },
+  { name: "경북지역문제해결플랫폼", stage: "4→5", stageColor: "rose", power: "④ → ⑤", scale: "의제 320건, 실행의제 2건, 37개 기관", evidence: "다자협업 난제해결, 주민참여예산 연계" },
+  { name: "라이콘펀드/스타트업밸리", stage: "(병렬축)", stageColor: "muted", power: "⑤ 공유리더십", scale: "투자유치 17억, 기업가치 100억+", evidence: "자생 경제 생태계(자치의 경제판)" }
+];
+
+/* ---- 2장: 플로우 다이어그램 렌더링 ---- */
+function renderFlow() {
+  const flowEl = document.getElementById('flowDiagram');
+  const detailEl = document.getElementById('stageDetails');
+  let flowHtml = '';
+  let detailHtml = '';
+  STAGE_FRAMEWORK.forEach((s, i) => {
+    flowHtml += `<div class="flow-node" onclick="toggleStage(${s.stage})">
+      <span class="stage-tag s-${s.color}">STAGE ${s.stage}</span>
+      <div class="stage-name">${s.name}</div>
+      <div class="stage-en">${s.en}</div>
+      <div class="stage-device">→ ${s.device}</div>
+    </div>`;
+    if (i < STAGE_FRAMEWORK.length - 1) flowHtml += `<div class="flow-arrow">›</div>`;
+    detailHtml += `<div class="stage-detail" id="detail-${s.stage}">${s.detail}</div>`;
+  });
+  flowEl.innerHTML = flowHtml;
+  detailEl.innerHTML = detailHtml;
+}
+function toggleStage(n) {
+  document.querySelectorAll('.stage-detail').forEach(el => {
+    if (el.id === `detail-${n}`) el.classList.toggle('open');
+    else el.classList.remove('open');
+  });
+}
+
+/* ---- 3장: 매핑 테이블 렌더링 ---- */
+function renderMapTable() {
+  const tbody = document.querySelector('#mapTable tbody');
+  let html = '';
+  STAGE_MAPPING.forEach(row => {
+    html += `<tr>
+      <td>${row.name}</td>
+      <td><span class="stage-pill s-${row.stageColor}">${row.stage}</span></td>
+      <td>${row.power}</td>
+      <td>${row.scale}</td>
+      <td>${row.evidence}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+renderFlow();
+renderMapTable();
+
+/* ============================================================
+   4장 데이터 — report_data.js 발췌 (Session 5에서 report_data.js 전체 통합 예정)
+============================================================ */
+const KPI = [
+  { v: "573", l: "고유 참여자", s: "참여기록 924건 · 유효연락처 886건 기준", cls: "c-claude" },
+  { v: "10.3%", l: "교차참여율", s: "573명 중 2개 이상 사업 참여 59명", cls: "c-teal" },
+  { v: "30.3%", l: "공간 재방문율", s: "임팩트랩 이용주체 145곳 중 44곳", cls: "c-indigo" },
+  { v: "75.7%", l: "일회성 참여율", s: "1회 참여 434명 / 573명", cls: "c-rose" }
+];
+function renderKpi() {
+  document.getElementById('kpiGrid').innerHTML = KPI.map(k =>
+    `<div class="kpi-card ${k.cls}"><div class="kv">${k.v}</div><div class="kl">${k.l}</div><div class="ks">${k.s}</div></div>`
+  ).join('');
+}
+renderKpi();
+
+/* ---- Chart.js 공통 설정 (하드코딩 없이 CSS 변수에서 직접 읽음) ---- */
+const CSS_VAR = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+Chart.defaults.color = CSS_VAR('--text-sub');
+const COLOR = {
+  claude: CSS_VAR('--claude'), teal: CSS_VAR('--teal'), indigo: CSS_VAR('--indigo'),
+  amber: CSS_VAR('--amber'), rose: CSS_VAR('--rose'), green: CSS_VAR('--green'),
+  red: CSS_VAR('--red'), border: CSS_VAR('--border'), grid: CSS_VAR('--chart-grid')
+};
+
+/* ---- 차트 A: 1인당 참여 횟수 분포 ---- */
+new Chart(document.getElementById('chartA'), {
+  type: 'bar',
+  data: {
+    labels: ["1회", "2회", "3~5회", "6~10회", "11회 이상"],
+    datasets: [{
+      data: [434, 87, 36, 12, 4],
+      backgroundColor: [COLOR.claude, COLOR.border, COLOR.border, COLOR.border, COLOR.border],
+      borderRadius: 6, maxBarThickness: 56
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.parsed.y}명` } } },
+    scales: { y: { grid: { color: COLOR.grid }, ticks: { callback: v => v + '명' } }, x: { grid: { display: false } } }
+  }
+});
+
+/* ---- 차트 B: 사업별 심화 격차 (수평 막대, 교차율%) ---- */
+const chartBData = [
+  { name: "경북지속가능캠프", n: 32, rate: 68.8 },
+  { name: "창업가 양성", n: 24, rate: 50.0 },
+  { name: "로컬임팩트랩 운영", n: 87, rate: 44.8 },
+  { name: "모두의 마을", n: 100, rate: 17.0 },
+  { name: "생활실험팀 공모", n: 410, rate: 12.0 }
+];
+new Chart(document.getElementById('chartB'), {
+  type: 'bar',
+  data: {
+    labels: chartBData.map(d => `${d.name} (n=${d.n})`),
+    datasets: [{
+      data: chartBData.map(d => d.rate),
+      backgroundColor: chartBData.map(d => d.rate >= 40 ? COLOR.teal : COLOR.amber),
+      borderRadius: 6, barThickness: 28
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `교차참여율 ${c.parsed.x}%` } } },
+    scales: { x: { grid: { color: COLOR.grid }, ticks: { callback: v => v + '%' }, max: 80 }, y: { grid: { display: false } } }
+  }
+});
+
+/* ---- 차트 C: 전환 경로 (수평 막대, 건수) ---- */
+const chartCData = [
+  { path: "생활실험팀 ↔ 임팩트랩", w: 30 },
+  { path: "지속가능캠프 ↔ 임팩트랩", w: 21 },
+  { path: "생활실험팀 ↔ 모두의마을", w: 17 },
+  { path: "지속가능캠프 ↔ 생활실험팀", w: 12 },
+  { path: "창업가양성 ↔ 생활실험팀", w: 9 },
+  { path: "창업가양성 ↔ 임팩트랩", w: 9 },
+  { path: "지속가능캠프 ↔ 창업가양성", w: 9 }
+];
+new Chart(document.getElementById('chartC'), {
+  type: 'bar',
+  data: {
+    labels: chartCData.map(d => d.path),
+    datasets: [{
+      data: chartCData.map(d => d.w),
+      backgroundColor: chartCData.map(d => d.path.includes('임팩트랩') ? COLOR.indigo : COLOR.border),
+      borderRadius: 6, barThickness: 20
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.parsed.x}건` } } },
+    scales: { x: { grid: { color: COLOR.grid }, ticks: { callback: v => v + '건' } }, y: { grid: { display: false } } }
+  }
+});
+
+/* ---- 차트 D: 임팩트랩 활성도 추이 (라인, 실측치 — 캘린더 CSV 756건 전수 월별 집계) ---- */
+const chartDLabels = ["24-01","24-02","24-03","24-04","24-05","24-06","24-07","24-08","24-09","24-10","24-11","24-12",
+  "25-01","25-02","25-03","25-04","25-05","25-06","25-07","25-08","25-09","25-10","25-11","25-12",
+  "26-01","26-02","26-03","26-04","26-05","26-06","26-07"];
+const chartDValues = [21,8,9,21,18,48,35,55,32,54,35,22, 6,4,19,35,33,53,56,61,43,13,11,10, 8,8,9,9,8,9,3];
+const peakIdx = chartDValues.indexOf(61);
+new Chart(document.getElementById('chartD'), {
+  type: 'line',
+  data: {
+    labels: chartDLabels,
+    datasets: [{
+      label: '월별 예약 건수',
+      data: chartDValues,
+      borderColor: COLOR.claude, backgroundColor: 'rgba(217,119,87,0.10)',
+      fill: true, tension: 0.25, borderWidth: 2,
+      pointRadius: chartDValues.map((_, i) => i === peakIdx ? 6 : 2),
+      pointBackgroundColor: chartDValues.map((_, i) => i === peakIdx ? COLOR.red : COLOR.claude),
+      pointBorderColor: chartDValues.map((_, i) => i === peakIdx ? COLOR.red : COLOR.claude)
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => `${c.parsed.y}건${c.dataIndex === peakIdx ? ' (정점)' : ''}` } }
+    },
+    scales: {
+      y: { grid: { color: COLOR.grid }, ticks: { callback: v => v + '건' }, beginAtZero: true },
+      x: { grid: { display: false }, ticks: { maxRotation: 60, minRotation: 60, font: { size: 9 } } }
+    }
+  }
+});
+
+/* ============================================================
+   5장 데이터 — 해외사례 벤치마크
+============================================================ */
+const VALUE_CASES = [
+  { name: "West Berkshire 도서관 (영국)", metric: "자원봉사 연간 웰빙가치", value: "£12,221 이상" },
+  { name: "웨일스 자연기반 프로그램 (영국)", metric: "투자 £1당 사회가치", value: "£2.57~4.67" },
+  { name: "스페인 정신건강 소셜클럽 SROI", metric: "투자 1유로당 사회가치", value: "€12.12" },
+  { name: "Sport England Social Value Calculator", metric: "시설단위 사회가치 자동추정", value: "예측형 계산기 개발중" },
+  { name: "일본 국토교통성/총무성", metric: "여행비용법·소득접근법 B/C", value: "비용편익분석 표준" }
+];
+function renderValueTable() {
+  document.querySelector('#valueTable tbody').innerHTML = VALUE_CASES.map(c =>
+    `<tr><td>${c.name}</td><td>${c.metric}</td><td style="font-family:var(--font-mono);color:var(--claude-dk);font-weight:600;">${c.value}</td></tr>`
+  ).join('');
+}
+renderValueTable();
+
+/* ============================================================
+   6장 데이터 — 실행 제언 5개 (risk: true = 4장에서 발견된 리스크)
+============================================================ */
+const RECOMMENDATIONS = [
+  { badge: "긴급", risk: false, title: "공통 참여자 ID 체계 도입",
+    body: "모든 프로그램·대관에 공통 참여자 ID 부여, 명부·공간·캘린더를 하나의 키로 연결. 없으면 코호트 잔존·LTV 계산 자체가 불가능하다(현재 캘린더-명부 조인 불가).",
+    impact: "잔존기간 실측 가능 → LTV 산정의 전제 확보" },
+  { badge: "긴급 · 신규 리스크", risk: true, title: "대관 참여자 추적 정상화",
+    body: "임팩트랩 대관 756건 중 연락처 추출 가능은 30건(4%)뿐. 대관은 공간 이용의 큰 비중(반석이앤씨 107회 등)인데 참여자 데이터가 통째로 유실된다. 대관 신청 양식에 최소 식별정보(대표자명·연락처·인원·목적) 필수화, 캘린더 description 표준 포맷을 강제해야 한다.",
+    impact: "공간 유입 인구를 프로그램 심화로 연결하는 통로 확보" },
+  { badge: "긴급 · 신규 리스크", risk: true, title: "2025 참여자 종합 시트 작성 정상화",
+    body: "2025년 참여자 종합 시트가 미작성 상태로 방치되어 있다. 분석에 쓴 명부(924건)는 24년 중심(757건)이고 25년분(167건)은 일부만 반영됐다. 종합 시트 없이는 연도별 비교·코호트 추적·KPI 달성현황 산출이 불가능하다. 작성 책임자·마감일을 지정하고, 개별 사업 담당자가 프로그램 종료 시 즉시 입력하는 프로세스가 필요하다.",
+    impact: "성과보고서의 '달성현황 확인 필요' 공백 해소, 연간 성과 추세 확보" },
+  { badge: "중요", risk: false, title: "유입→심화 핸드오프 설계",
+    body: "생활실험팀(410명, 심화 12%)의 참여자를 캠프·창업양성(심화 50~69%)으로 넘기는 통로가 없다. 대규모 유입사업 종료 시 심화사업 안내·초대를 자동화하고, 공간(임팩트랩) 중심 재방문을 유도해야 한다.",
+    impact: "전체 교차참여율 상승 → 1인당 LTV 증대" },
+  { badge: "중요", risk: false, title: "KPI를 head count에서 관여의 질로 전환",
+    body: "재방문율·단계상승 전환율·추천 건수를 새 KPI로 도입한다.",
+    impact: "자원 배분 최적화 (신규확보는 기존심화 대비 7~10배 비용)" }
+];
+function renderRecommendations() {
+  document.getElementById('recGrid').innerHTML = RECOMMENDATIONS.map(r => `
+    <div class="rec-card ${r.risk ? 'risk' : ''}">
+      <div class="rec-head">
+        <span class="rec-badge ${r.badge.includes('긴급') ? 'urgent' : 'important'}">${r.badge}</span>
+        ${r.risk ? '<span class="rec-badge risk-tag">4장 실데이터에서 발견된 리스크</span>' : ''}
+      </div>
+      <div class="rec-title">${r.title}</div>
+      <p class="rec-body">${r.body}</p>
+      <div class="rec-impact">${r.impact}</div>
+    </div>
+  `).join('');
+}
+renderRecommendations();
+
+/* ============================================================
+   7장 데이터 — 데이터 품질 메모
+============================================================ */
+const DATA_QUALITY = [
+  "유효 연락처 결측 38건 (4.1%) — 개인식별 누락분",
+  "캘린더 연락처 추출률 4% (30/756) — description 형식 비표준, 명부-캘린더 조인 현재 불가",
+  "이름 기반 매칭 시 동명이인 위험 존재",
+  "명부 참여일 형식(YY.MM.DD)은 통일되어 있으나 캘린더와 공통 키 부재로 시계열 병합 불가",
+  "본 보고서의 핵심 수치(고유참여자 573명·교차참여율 10.3%·사업별 심화격차·전환경로·월별 활성도)는 원본 파일(청도혁신센터_사업_참여자 xlsx, 임팩트랩_구글_캘린더 csv) 전수 재계산으로 교차검증 완료 (2026-07-27)"
+];
+document.getElementById('dqList').innerHTML = DATA_QUALITY.map(d => `<li>${d}</li>`).join('');
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+  });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+}, { passive: true });
+</script>
+</body>
+</html>
