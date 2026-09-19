@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<title>청도혁신센터 추천 프로그램</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-top:#FFF3E8;
+    --bg-bottom:#FDEFF6;
+    --paper:#FFFFFF;
+    --paper-tint:#FFFBF5;
+    --ink:#4A3F38;
+    --ink-soft:#8B7E71;
+    --ink-faint:#B3A899;
+    --line:#F0E3D6;
+
+    --peach:#FFC1A6;
+    --peach-deep:#FF9A73;
+    --peach-soft:#FFEADF;
+    --mint:#AEE3D4;
+    --mint-deep:#6FC2AC;
+    --mint-soft:#E4F6F0;
+    --lavender:#D3C3EE;
+    --lavender-deep:#A98FDB;
+    --lavender-soft:#F1EBFB;
+    --butter:#FFE29E;
+    --butter-deep:#F5C84B;
+    --butter-soft:#FFF6DE;
+    --sky:#AEDDF5;
+    --sky-deep:#6FB6E0;
+    --sky-soft:#E5F5FD;
+
+    --radius-btn:22px;
+    --radius-card:20px;
+
+    --font-display:'Gowun Batang', serif;
+    --font-body:'Noto Sans KR', -apple-system, 'Apple SD Gothic Neo', sans-serif;
+
+    color-scheme: light only;
+  }
+
+  /* 다크모드 신호와 무관하게 항상 라이트(파스텔) 고정 — 의도적으로 오버라이드 없음 */
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+    color:var(--ink);
+    font-family:var(--font-body);
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:26px 18px;
+    -webkit-tap-highlight-color:transparent;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{
+    width:100%;
+    max-width:720px;
+    display:flex;
+    flex-direction:column;
+    min-height:min(780px, 92dvh);
+  }
+
+  /* ===== 진행바 ===== */
+  .progress{ display:flex; gap:8px; margin-bottom:20px; align-items:center; }
+  .progress-dot{ flex:1; height:8px; border-radius:8px; background:var(--line); transition:background .25s ease; }
+  .progress-dot.done{ background:var(--peach-deep); }
+  .progress-label{ font-size:12.5px; color:var(--ink-faint); white-space:nowrap; font-weight:600; }
+
+  .screen{ display:none; flex-direction:column; flex:1; animation:fadeSlide .32s ease; }
+  .screen.active{ display:flex; }
+  @keyframes fadeSlide{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
+
+  /* ===== 인트로 ===== */
+  .intro{ justify-content:center; text-align:center; gap:8px; }
+  .hero-illust{ width:min(280px, 62%); margin:0 auto 6px; }
+  .intro-kicker{
+    font-size:14px; font-weight:700; color:var(--peach-deep);
+    background:var(--peach-soft);
+    display:inline-block; padding:6px 16px; border-radius:20px;
+    margin:0 auto 14px;
+  }
+  .intro-title{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(26px, 6vw, 36px);
+    line-height:1.35;
+  }
+  .intro-sub{ color:var(--ink-soft); font-size:16px; line-height:1.65; max-width:44ch; margin:10px auto 4px; }
+
+  .btn-primary{
+    min-height:60px; padding:14px 30px;
+    background:var(--peach-deep);
+    color:#fff;
+    border:none; border-radius:30px;
+    font-family:var(--font-body); font-weight:700; font-size:17px;
+    cursor:pointer;
+    box-shadow:0 8px 20px -8px rgba(255,154,115,0.6);
+    margin:18px auto 0;
+    display:inline-block;
+  }
+  .btn-primary:active{ transform:scale(0.97); }
+
+  /* ===== 질문 화면 ===== */
+  .q-head{ margin-bottom:20px; text-align:center; }
+  .q-num{
+    font-size:13px; font-weight:700; color:var(--lavender-deep);
+    background:var(--lavender-soft); display:inline-block; padding:4px 14px; border-radius:16px;
+    margin-bottom:12px;
+  }
+  .q-text{ font-family:var(--font-display); font-weight:700; font-size:clamp(21px, 4.5vw, 27px); line-height:1.4; }
+  .q-hint{ font-size:14px; color:var(--ink-faint); margin-top:6px; }
+
+  .options{ display:flex; flex-direction:column; gap:12px; flex:1; }
+  .opt-btn{
+    display:flex; align-items:center; gap:16px;
+    width:100%; min-height:68px; padding:14px 22px;
+    background:var(--paper);
+    border:2px solid var(--line);
+    border-radius:var(--radius-btn);
+    font-family:var(--font-body); font-weight:700; font-size:17px; color:var(--ink);
+    text-align:left; cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, transform .1s ease, box-shadow .15s ease;
+    -webkit-user-select:none; user-select:none;
+    box-shadow:0 2px 8px -4px rgba(74,63,56,0.08);
+  }
+  .opt-btn:active{ transform:scale(0.98); }
+  .opt-btn .opt-icon{ flex-shrink:0; width:38px; height:38px; }
+  .opt-btn.selected{ border-color:var(--peach-deep); background:var(--peach-soft); }
+
+  .nav-row{ display:flex; justify-content:center; margin-top:18px; min-height:36px; }
+  .nav-back{
+    background:none; border:none; font-family:var(--font-body); font-size:14px; font-weight:600;
+    color:var(--ink-faint); cursor:pointer; padding:8px 4px;
+  }
+  .nav-back:hover{ color:var(--ink-soft); }
+
+  /* ===== 로딩 ===== */
+  .loading{ justify-content:center; align-items:center; text-align:center; gap:20px; }
+  .bounce-row{ display:flex; gap:10px; }
+  .bounce-dot{
+    width:16px; height:16px; border-radius:50%;
+    animation:bounce 1s ease-in-out infinite;
+  }
+  .bounce-dot:nth-child(1){ background:var(--peach-deep); animation-delay:0s; }
+  .bounce-dot:nth-child(2){ background:var(--mint-deep); animation-delay:.15s; }
+  .bounce-dot:nth-child(3){ background:var(--lavender-deep); animation-delay:.3s; }
+  .bounce-dot:nth-child(4){ background:var(--butter-deep); animation-delay:.45s; }
+  @keyframes bounce{ 0%,80%,100%{ transform:translateY(0); opacity:.6;} 40%{ transform:translateY(-14px); opacity:1;} }
+  .loading-text{ color:var(--ink-soft); font-size:16px; font-weight:600; }
+
+  /* ===== 결과 ===== */
+  .result-head{ text-align:center; margin-bottom:2px; }
+  .result-kicker{
+    font-size:13.5px; font-weight:700; color:var(--mint-deep);
+    background:var(--mint-soft); display:inline-block; padding:5px 16px; border-radius:18px;
+    margin-bottom:12px;
+  }
+  .result-comment{
+    font-family:var(--font-display); font-weight:700;
+    font-size:clamp(20px, 4.5vw, 25px); line-height:1.45; margin-bottom:20px; text-align:center;
+  }
+
+  .result-cards{ display:flex; flex-direction:column; gap:14px; margin-bottom:18px; }
+  .rcard{
+    background:var(--paper);
+    border:2px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:18px 20px;
+    display:flex; gap:14px;
+    box-shadow:0 6px 18px -10px rgba(74,63,56,0.15);
+  }
+  .rcard-icon{ flex-shrink:0; width:52px; height:52px; }
+  .rcard-body{ flex:1; display:flex; flex-direction:column; gap:6px; }
+  .rcard-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+  .rcard-rank{ font-size:12.5px; font-weight:700; color:var(--ink-faint); }
+  .rcard-badge{
+    font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:14px;
+    white-space:nowrap;
+  }
+  .rcard.tone-영화영상 .rcard-badge{ background:var(--lavender-soft); color:var(--lavender-deep); }
+  .rcard.tone-책이야기 .rcard-badge{ background:var(--butter-soft); color:var(--butter-deep); }
+  .rcard.tone-창업비즈니스 .rcard-badge{ background:var(--mint-soft); color:var(--mint-deep); }
+  .rcard.tone-먹거리마켓 .rcard-badge{ background:var(--peach-soft); color:var(--peach-deep); }
+  .rcard.tone-취미가벼운모임 .rcard-badge{ background:var(--sky-soft); color:var(--sky-deep); }
+
+  .rcard-unit{ font-size:12px; color:var(--ink-faint); font-weight:600; }
+  .rcard-name{ font-family:var(--font-display); font-weight:700; font-size:18.5px; }
+  .rcard-desc{ font-size:14.5px; color:var(--ink-soft); line-height:1.5; }
+  .rcard-meta{ font-size:12.5px; color:var(--ink-faint); display:flex; flex-wrap:wrap; gap:4px 14px; margin-top:2px; font-weight:500; }
+  .rcard-elig{
+    font-size:12.5px; color:var(--mint-deep); font-weight:600;
+    background:var(--mint-soft); border-radius:8px; padding:6px 10px; margin-top:2px;
+  }
+
+  .benefit-box{
+    background:var(--sky-soft);
+    border-radius:var(--radius-card);
+    padding:16px 18px;
+    margin-bottom:18px;
+    font-size:14px; color:var(--ink); line-height:1.6;
+  }
+  .benefit-box b{ font-family:var(--font-display); }
+
+  .follow-box{
+    background:var(--paper);
+    border:2px dashed var(--line);
+    border-radius:var(--radius-card);
+    padding:18px 20px;
+    margin-bottom:16px;
+    text-align:center;
+  }
+  .follow-box p{
+    font-size:13.5px; color:var(--ink-soft); line-height:1.6; margin:0 0 14px;
+  }
+  .ig-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    min-height:52px; padding:12px 24px;
+    background:linear-gradient(135deg, var(--peach) 0%, var(--lavender) 100%);
+    color:#4A3F38;
+    border-radius:26px;
+    font-family:var(--font-body); font-weight:700; font-size:15px;
+    text-decoration:none;
+  }
+  .ig-btn:active{ transform:scale(0.97); }
+
+  .restart-btn{
+    width:100%; min-height:58px;
+    background:var(--paper);
+    color:var(--ink);
+    border:2px solid var(--line);
+    border-radius:30px;
+    font-family:var(--font-body); font-weight:700; font-size:16px;
+    cursor:pointer;
+  }
+  .restart-btn:active{ background:var(--paper-tint); }
+
+  .colophon{ text-align:center; font-size:11.5px; color:var(--ink-faint); margin-top:20px; font-weight:600; }
+
+  @media (max-width:480px){
+    .opt-btn{ font-size:15.5px; padding:12px 16px; }
+    .q-text{ font-size:21px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <div class="progress" id="progressBar" style="display:none;">
+    <div class="progress-dot" data-i="0"></div>
+    <div class="progress-dot" data-i="1"></div>
+    <div class="progress-dot" data-i="2"></div>
+    <div class="progress-dot" data-i="3"></div>
+    <div class="progress-dot" data-i="4"></div>
+    <span class="progress-label" id="progressLabel"></span>
+  </div>
+
+  <!-- 인트로 -->
+  <section class="screen active intro" id="screen-intro">
+    <div class="hero-illust">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="140" cy="185" rx="120" ry="10" fill="#F0E3D6" opacity="0.6"/>
+        <circle cx="228" cy="46" r="26" fill="#FFE29E"/>
+        <circle cx="228" cy="46" r="26" fill="#FFC1A6" opacity="0.35"/>
+        <ellipse cx="56" cy="52" rx="30" ry="14" fill="#FFFFFF"/>
+        <ellipse cx="78" cy="46" rx="22" ry="12" fill="#FFFFFF"/>
+        <ellipse cx="150" cy="34" rx="24" ry="11" fill="#FFFFFF" opacity="0.85"/>
+        <!-- 건물 (상상마루) -->
+        <rect x="55" y="86" width="170" height="90" rx="10" fill="#FFFFFF"/>
+        <rect x="55" y="86" width="170" height="90" rx="10" fill="#AEE3D4" opacity="0.25"/>
+        <rect x="70" y="102" width="34" height="34" rx="6" fill="#D3C3EE"/>
+        <rect x="123" y="102" width="34" height="34" rx="6" fill="#FFC1A6"/>
+        <rect x="176" y="102" width="34" height="34" rx="6" fill="#AEDDF5"/>
+        <rect x="70" y="146" width="140" height="30" rx="6" fill="#FFE29E" opacity="0.7"/>
+        <rect x="120" y="150" width="40" height="26" rx="4" fill="#FFFFFF"/>
+        <!-- 작은 버스 -->
+        <rect x="20" y="150" width="52" height="30" rx="9" fill="#FF9A73"/>
+        <rect x="27" y="157" width="14" height="12" rx="3" fill="#FFF6DE"/>
+        <rect x="45" y="157" width="14" height="12" rx="3" fill="#FFF6DE"/>
+        <circle cx="32" cy="182" r="7" fill="#4A3F38"/>
+        <circle cx="62" cy="182" r="7" fill="#4A3F38"/>
+        <!-- 나무 -->
+        <circle cx="245" cy="150" r="16" fill="#AEE3D4"/>
+        <rect x="242" y="160" width="6" height="18" fill="#D9C7A8"/>
+      </svg>
+    </div>
+    <div class="intro-kicker">청도혁신센터</div>
+    <h1 class="intro-title">나에게 맞는<br>추천 프로그램은?</h1>
+    <p class="intro-sub">질문 5개면 지금 당신한테 딱 맞는 청도혁신센터 프로그램 세 가지를 찾아드려요. 30초면 충분해요.</p>
+    <button class="btn-primary" id="startBtn">시작하기 →</button>
+  </section>
+
+  <!-- Q1 -->
+  <section class="screen" id="screen-q1">
+    <div class="q-head">
+      <div class="q-num">질문 1 · 5</div>
+      <div class="q-text">청도와는 어떤 사이세요?</div>
+    </div>
+    <div class="options" id="opts-q1"></div>
+  </section>
+
+  <!-- 외국인 전용 짧은 흐름 -->
+  <section class="screen" id="screen-foreign">
+    <div class="q-head">
+      <div class="q-num">필요한 도움</div>
+      <div class="q-text">어떤 도움이 필요하세요?</div>
+      <div class="q-hint">하나만 골라주세요</div>
+    </div>
+    <div class="options" id="opts-foreign"></div>
+    <div class="nav-row"><button class="nav-back" id="backForeign">← 처음으로</button></div>
+  </section>
+
+  <!-- Q2 -->
+  <section class="screen" id="screen-q2">
+    <div class="q-head">
+      <div class="q-num">질문 2 · 5</div>
+      <div class="q-text">창업이나 사업, 지금 마음은?</div>
+    </div>
+    <div class="options" id="opts-q2"></div>
+    <div class="nav-row"><button class="nav-back" id="back-q2">← 이전</button></div>
+  </section>
+
+  <!-- Q3 -->
+  <section class="screen" id="screen-q3">
+    <div class="q-head">
+      <div class="q-num">질문 3 · 5</div>
+      <div class="q-text">시간 낼 수 있는 때는?</div>
+    </div>
+    <div class="options" id="opts-q3"></div>
+    <div class="nav-row"><button class="nav-back" id="back-q3">← 이전</button></div>
+  </section>
+
+  <!-- Q4 -->
+  <section class="screen" id="screen-q4">
+    <div class="q-head">
+      <div class="q-num">질문 4 · 5</div>
+      <div class="q-text">오늘 기분에 가까운 건?</div>
+    </div>
+    <div class="options" id="opts-q4"></div>
+    <div class="nav-row"><button class="nav-back" id="back-q4">← 이전</button></div>
+  </section>
+
+  <!-- Q5 -->
+  <section class="screen" id="screen-q5">
+    <div class="q-head">
+      <div class="q-num">질문 5 · 5</div>
+      <div class="q-text">끌리는 걸 하나만 골라줘</div>
+    </div>
+    <div class="options" id="opts-q5"></div>
+    <div class="nav-row"><button class="nav-back" id="back-q5">← 이전</button></div>
+  </section>
+
+  <!-- 로딩 -->
+  <section class="screen loading" id="screen-loading">
+    <div class="bounce-row">
+      <div class="bounce-dot"></div><div class="bounce-dot"></div><div class="bounce-dot"></div><div class="bounce-dot"></div>
+    </div>
+    <div class="loading-text">딱 맞는 프로그램을 고르는 중이에요</div>
+  </section>
+
+  <!-- 결과 -->
+  <section class="screen" id="screen-result">
+    <div class="result-head"><div class="result-kicker">청도혁신센터 추천</div></div>
+    <div class="result-comment" id="resultComment"></div>
+    <div class="result-cards" id="resultCards"></div>
+    <div class="benefit-box" id="benefitBox" style="display:none;"></div>
+    <div class="follow-box">
+      <p>이 결과는 가볍게 참고하는 용도예요. 정확한 일정·비용·신청 방법은 청도혁신센터 채널에서 꼭 다시 확인해주세요.</p>
+      <a class="ig-btn" href="https://www.instagram.com/explore/search/keyword/?q=%EC%B2%AD%EB%8F%84%ED%98%81%EC%8B%A0%EC%84%BC%ED%84%B0" target="_blank" rel="noopener">📷 청도혁신센터 인스타그램 팔로우하기</a>
+    </div>
+    <button class="restart-btn" id="restartBtn">처음부터 다시 해보기</button>
+    <div class="colophon">청도혁신센터 · 청도상상마루 · 경북시민재단</div>
+  </section>
+
+</div>
+
+<script>
+/* ================= 아이콘 (파스텔 인라인 SVG) ================= */
+const ICONS = {
+  영화영상: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="14" width="40" height="26" rx="5" fill="#D3C3EE"/>
+    <rect x="4" y="14" width="40" height="8" fill="#A98FDB"/>
+    <rect x="9" y="8" width="6" height="8" rx="2" fill="#A98FDB" transform="rotate(-18 12 12)"/>
+    <rect x="19" y="8" width="6" height="8" rx="2" fill="#A98FDB" transform="rotate(-18 22 12)"/>
+    <rect x="29" y="8" width="6" height="8" rx="2" fill="#A98FDB" transform="rotate(-18 32 12)"/>
+    <circle cx="24" cy="30" r="7" fill="#FFFFFF"/>
+    <path d="M22 27l6 3-6 3v-6z" fill="#A98FDB"/>
+  </svg>`,
+  책이야기: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M24 14c-4-3-10-3-15-1v22c5-2 11-2 15 1 4-3 10-3 15-1V13c-5-2-11-2-15 1z" fill="#FFE29E"/>
+    <path d="M24 14v22" stroke="#F5C84B" stroke-width="2"/>
+    <path d="M12 18c3-1 6-1 8 0M12 24c3-1 6-1 8 0M28 18c2-1 6-1 8 0M28 24c2-1 6-1 8 0" stroke="#F5C84B" stroke-width="1.6" stroke-linecap="round"/>
+  </svg>`,
+  창업비즈니스: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="30" width="28" height="10" rx="4" fill="#AEE3D4"/>
+    <path d="M24 30V16" stroke="#6FC2AC" stroke-width="3" stroke-linecap="round"/>
+    <path d="M24 16c-6 0-9-5-9-9 5 0 9 4 9 9z" fill="#6FC2AC"/>
+    <path d="M24 20c6 0 9-5 9-9-5 0-9 4-9 9z" fill="#AEE3D4"/>
+    <circle cx="24" cy="35" r="2.4" fill="#FFFFFF"/>
+  </svg>`,
+  먹거리마켓: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 22c0 8 6 15 14 15s14-7 14-15H10z" fill="#FFC1A6"/>
+    <rect x="8" y="20" width="32" height="4" rx="2" fill="#FF9A73"/>
+    <path d="M18 14c0-2 1-3 2-4M24 12c0-2 1-3 2-4M30 14c0-2 1-3 2-4" stroke="#FFC1A6" stroke-width="2" stroke-linecap="round"/>
+  </svg>`,
+  취미가벼운모임: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="18" cy="22" r="9" fill="#AEDDF5"/>
+    <circle cx="30" cy="22" r="9" fill="#6FB6E0" opacity="0.75"/>
+    <path d="M12 36c1-5 5-8 12-8s11 3 12 8" stroke="#6FB6E0" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </svg>`,
+  외국인: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="24" r="16" fill="#AEDDF5"/>
+    <path d="M8 24h32M24 8c4 4 6 10 6 16s-2 12-6 16c-4-4-6-10-6-16s2-12 6-16z" stroke="#FFFFFF" stroke-width="1.6" fill="none"/>
+  </svg>`,
+  집: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 22L24 9l16 13v17a3 3 0 01-3 3H11a3 3 0 01-3-3V22z" fill="#FFC1A6"/>
+    <rect x="19" y="27" width="10" height="13" rx="2" fill="#FFFFFF"/>
+  </svg>`,
+  왕복: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 18h22l-5-5M38 30H16l5 5" stroke="#A98FDB" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </svg>`,
+  이사: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="18" width="22" height="18" rx="3" fill="#AEE3D4"/>
+    <path d="M32 24h6l4 6v6h-10z" fill="#6FC2AC"/>
+    <circle cx="18" cy="38" r="3.5" fill="#4A3F38"/>
+    <circle cx="34" cy="38" r="3.5" fill="#4A3F38"/>
+  </svg>`,
+  배움: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 18l18-8 18 8-18 8-18-8z" fill="#FFE29E"/>
+    <path d="M14 22v8c0 3 5 5 10 5s10-2 10-5v-8" stroke="#F5C84B" stroke-width="2.2" fill="none"/>
+  </svg>`,
+  사람들: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="17" cy="18" r="6" fill="#FFC1A6"/>
+    <circle cx="31" cy="18" r="6" fill="#FF9A73"/>
+    <path d="M6 38c1-6 6-9 11-9s10 3 11 9M20 38c1-6 6-9 11-9s10 3 11 9" stroke="#FF9A73" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+  </svg>`,
+  운동: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="21" width="6" height="6" rx="2" fill="#6FB6E0"/>
+    <rect x="36" y="21" width="6" height="6" rx="2" fill="#6FB6E0"/>
+    <rect x="12" y="23" width="24" height="2.4" fill="#AEDDF5"/>
+  </svg>`,
+  휴식: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 26c8 8 24 8 32 0-2 8-9 14-16 14S10 34 8 26z" fill="#D3C3EE"/>
+    <circle cx="24" cy="14" r="7" fill="#FFE29E"/>
+  </svg>`,
+  의견: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 12h32v18a4 4 0 01-4 4H20l-8 7v-7h-0a4 4 0 01-4-4V12z" fill="#AEDDF5"/>
+    <circle cx="18" cy="21" r="2.2" fill="#FFFFFF"/>
+    <circle cx="24" cy="21" r="2.2" fill="#FFFFFF"/>
+    <circle cx="30" cy="21" r="2.2" fill="#FFFFFF"/>
+  </svg>`,
+  시간저녁: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="24" r="15" fill="#D3C3EE"/>
+    <path d="M24 14v10l7 4" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+  </svg>`,
+  시간오전: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="28" r="10" fill="#FFE29E"/>
+    <path d="M24 12v4M11 28h-4M41 28h-4M15 19l-3-3M33 19l3-3" stroke="#F5C84B" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M10 40h28" stroke="#F0E3D6" stroke-width="3" stroke-linecap="round"/>
+  </svg>`,
+  시간주말: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="20" r="10" fill="#FFE29E"/>
+    <path d="M8 40c2-7 8-11 16-11s14 4 16 11" stroke="#F5C84B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+  </svg>`,
+  시간자유: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M24 8a16 16 0 1 0 16 16" stroke="#AEE3D4" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M24 4l4 6-7 1z" fill="#6FC2AC"/>
+  </svg>`
+};
+function icon(name){ return ICONS[name] || ''; }
+
+/* ================= 프로그램 데이터 ================= */
+const programs = [
+  {id:'C01-1', name:'코미디영화제 본행사', unit:'코미디영화제', domain:['영화영상'], kaiwa:'미미크리', time:['주말'], startup:false, moveIn:false, status:'예정', badge:'10/31 개최', desc:'코미디 영화 상영, 공연, 체험부스까지 한자리에서 즐기는 하루 축제', period:'10/31(토) 14:00~21:30', place:'상상마루 전 층', cost:'무료'},
+  {id:'C01-2', name:'상시상영', unit:'코미디영화제', domain:['영화영상'], kaiwa:'미미크리', time:['평일저녁','아무때나'], startup:false, status:'진행중', badge:'매달 마지막 금요일', desc:'매달 마지막 금요일, 상상마루에서 여는 작은 상영회', period:'매달 마지막 금요일', place:'상상마루', cost:'무료'},
+  {id:'C01-4', name:'스케치코미디 영상 공모전', unit:'코미디영화제', domain:['영화영상'], kaiwa:'아곤', time:['아무때나'], startup:false, status:'진행중', badge:'지금 접수중', desc:'3분짜리 코미디 영상으로 상금에 도전', period:'~10월', place:'온라인 접수', cost:'무료'},
+  {id:'C02-1', name:'심야책바', unit:'심야책바', domain:['책이야기'], kaiwa:'미미크리', time:['평일저녁'], startup:false, status:'진행중', badge:'지금 진행중', desc:'차 한 잔과 함께 책을 소리 내 읽고 생각을 나누는 밤', period:'수·금 20:00~22:00', place:'상상마루 2층', cost:'무료'},
+  {id:'C02-2', name:'코미디 동아리', unit:'심야책바', domain:['책이야기','영화영상'], kaiwa:'미미크리', time:['평일저녁'], startup:false, status:'진행중', badge:'지금 진행중', desc:'심야책바에서 시작해 영화제 무대까지 이어지는 동아리', period:'9~10월 4회', place:'상상마루 2층', cost:'무료'},
+  {id:'C03-1', name:'미라클헬씨모닝 운동트랙', unit:'미라클헬씨모닝', domain:['취미가벼운모임'], kaiwa:'일링크스', time:['평일오전'], startup:false, status:'진행중', badge:'지금 진행중', desc:'아침마다 몸을 깨우는 운동 시간', period:'주 5일 오전', place:'상상마루 4층 GX룸', cost:'문의'},
+  {id:'C03-2', name:'청년정책참여단 워크숍', unit:'미라클헬씨모닝', domain:['취미가벼운모임'], kaiwa:'아곤', civic:true, elig:'청년 정책에 관심 있다면, 참여단 모집 시 지원해볼 수 있어요', time:['평일저녁'], startup:false, status:'진행중', badge:'지금 진행중', desc:'청년 정책 아이디어를 함께 만드는 워크숍', period:'9~11월 목요일', place:'상상마루', cost:'무료'},
+  {id:'C04-1', name:'소통협력공간 주간', unit:'주간행사', domain:['취미가벼운모임'], kaiwa:'알레아', time:['주말'], startup:false, status:'예정', badge:'12월 예정', desc:'상상마루 전체가 축제가 되는 며칠', period:'12월', place:'상상마루', cost:'무료'},
+  {id:'G01-1', name:'청도 테크업로컬', unit:'창업교육', domain:['창업비즈니스'], kaiwa:'아곤', elig:'소상공인이거나 곧 준비 중인 분께 잘 맞아요', time:['평일저녁'], startup:true, status:'진행중', badge:'지금 진행중', desc:'스마트폰 하나로 제품 사진부터 AI 광고 소재까지', period:'9~10월 4회', place:'청도 상상마루', cost:'무료'},
+  {id:'G02-1', name:'기업 마케팅 지원', unit:'마케팅지원', domain:['창업비즈니스'], kaiwa:'아곤', elig:'농식품·문화관광 관련 일을 하고 계신 분께 잘 맞아요', time:['아무때나'], startup:true, status:'상시', badge:'상시 접수', desc:'전시·홍보물 제작비를 지원받는 마케팅 지원', period:'연중', place:'기업 현장', cost:'일부 자부담'},
+  {id:'F01-3', name:'찾아가는 다목적 이동상점', unit:'민관협력', domain:['먹거리마켓','취미가벼운모임'], kaiwa:'알레아', time:['아무때나'], startup:false, status:'예정', badge:'10월 순회', desc:'우리 마을회관 앞으로 찾아오는 작은 장터', period:'10월 20일 순회', place:'청도 외곽 마을회관·경로당', cost:'구매 비용'},
+  {id:'F02-1', name:'웰컴ON청도', unit:'고향올래', domain:['취미가벼운모임'], kaiwa:'알레아', time:['아무때나'], startup:false, moveIn:true, status:'상시', badge:'지금 바로', desc:'청도의 모든 정보를 모아둔 온라인 맞이방', period:'상시', place:'온라인', cost:'무료'},
+  {id:'F02-2', name:'온보딩청도', unit:'고향올래', domain:['취미가벼운모임'], kaiwa:'파이디아', time:['평일저녁','주말'], startup:false, moveIn:true, status:'진행중', badge:'지금 참여 가능', desc:'퇴근하고 가볍게 참여하는 취향 기반 모임', period:'상시 모집', place:'청도', cost:'무료'},
+  {id:'F02-2a', name:'AI 야학', unit:'고향올래', domain:['창업비즈니스','취미가벼운모임'], kaiwa:'아곤', time:['아무때나'], startup:true, moveIn:true, status:'진행중', badge:'11월 추가모집', desc:'AI로 웹사이트도 만들고 업무도 자동화해보는 4주', period:'4주 과정', place:'청도', cost:'무료'},
+  {id:'F02-3', name:'054브랜딩스쿨', unit:'고향올래', domain:['창업비즈니스'], kaiwa:'아곤', elig:'청도살이를 고민 중이거나 살아보고 싶은 분께 잘 맞아요', time:['아무때나'], startup:true, moveIn:true, status:'진행중', badge:'지금 진행중', desc:'실제로 살아보며 작은 사업을 실험해보는 3단계 스쿨', period:'연중', place:'청도·상상마루', cost:'문의'},
+  {id:'F02-3a', name:'힐링 리트릿 요가', unit:'고향올래', domain:['취미가벼운모임'], kaiwa:'일링크스', time:['주말'], startup:false, status:'진행중', badge:'비정기 운영', desc:'상상마루에서 즐기는 야외 요가', period:'비정기', place:'상상마루 4층', cost:'무료'},
+  {id:'F02-4', name:'054로컬작업장', unit:'고향올래', domain:['먹거리마켓','취미가벼운모임'], kaiwa:'알레아', time:['아무때나'], startup:false, status:'예정', badge:'9월 오픈 예정', desc:'청도 로컬 브랜드를 직접 만나는 무인 상점', period:'9월 오픈 예정', place:'상상마루 1층', cost:'무인 판매'},
+  {id:'F02-5', name:'포트리스페스티벌', unit:'고향올래', domain:['먹거리마켓'], kaiwa:'일링크스', time:['주말'], startup:false, status:'예정', badge:'10/24 개최', desc:'청도시장에서 밤에 열리는 반짝 장터', period:'10/24(토)', place:'청도시장', cost:'무료'},
+  {id:'F03-2', name:'청도필름페스티벌', unit:'드림스테이', domain:['영화영상'], kaiwa:'미미크리', time:['평일저녁'], startup:false, status:'진행중', badge:'11월 말 3회차', desc:'영상으로 만나는 드림스테이 참여자들의 이야기', period:'11월 말', place:'청도', cost:'무료'},
+  {id:'F03-3', name:'김장 프로그램', unit:'드림스테이', domain:['먹거리마켓'], kaiwa:'파이디아', time:['아무때나'], startup:false, status:'예정', badge:'11월 말 · 선착순', desc:'2박 3일, 배추 100포기와 함께하는 김장', period:'11월 말', place:'청도', cost:'무료'},
+  {id:'F03-6', name:'청년의 밤 전시', unit:'드림스테이', domain:['영화영상'], kaiwa:'미미크리', time:['평일저녁'], startup:false, status:'예정', badge:'10/19', desc:'구형 TV로 만나는 드림스테이 참여자 영상 전시', period:'10/19', place:'상상마루', cost:'무료'},
+  {id:'F04-1', name:'로컬레벨업 네트워킹', unit:'로컬레벨업', domain:['창업비즈니스'], kaiwa:'알레아', time:['아무때나'], startup:true, status:'상시', badge:'상시 참여', desc:'창업가들끼리 가볍게 만나는 네트워킹 자리', period:'상시', place:'상상마루', cost:'무료'},
+  {id:'F04-2', name:'로컬레벨업 공통교육', unit:'로컬레벨업', domain:['창업비즈니스'], kaiwa:'아곤', time:['아무때나'], startup:true, status:'상시', badge:'상시 모집', desc:'농촌 창업의 기초부터 실전 팝업까지', period:'상시', place:'상상마루', cost:'무료'},
+  {id:'F04-3', name:'로컬레벨업 초기컨설팅', unit:'로컬레벨업', domain:['창업비즈니스'], kaiwa:'아곤', elig:'예비 창업가나 이제 막 시작한 분께 잘 맞아요', time:['아무때나'], startup:true, status:'상시', badge:'상시 신청', desc:'사업 아이디어를 구체적인 모델로 다듬는 컨설팅', period:'상시', place:'청도', cost:'무료'},
+  {id:'F04-4', name:'로컬레벨업 심화컨설팅', unit:'로컬레벨업', domain:['창업비즈니스'], kaiwa:'아곤', elig:'어느 정도 운영해보신 분께 더 도움이 돼요', time:['아무때나'], startup:true, status:'상시', badge:'상시 신청', desc:'1년차 이상 로컬기업을 위한 1:1 심화 자문', period:'상시', place:'청도', cost:'무료'},
+  {id:'F04-6', name:'로컬레벨업 코치양성', unit:'로컬레벨업', domain:['창업비즈니스'], kaiwa:'아곤', elig:'먼저 자리 잡은 선배 창업가분들과 잘 맞아요', time:['아무때나'], startup:true, status:'상시', badge:'상시 모집', desc:'선배 창업가가 되어 후배를 이끄는 코치 과정', period:'상시', place:'청도', cost:'무료'},
+  {id:'F04-5', name:'로컬레벨업 전문가포럼', unit:'로컬레벨업', domain:['창업비즈니스'], kaiwa:'아곤', civic:true, time:['아무때나'], startup:true, status:'상시', badge:'분기별 개최', desc:'창업생태계·지역순환경제를 주제로 의견을 나누는 포럼', period:'분기별', place:'청도', cost:'무료'},
+  {id:'F04-9', name:'로컬레벨업 성과공유', unit:'로컬레벨업', domain:['창업비즈니스'], kaiwa:'미미크리', civic:true, time:['아무때나'], startup:false, status:'상시', badge:'연 2회', desc:'정책·지원사업과 연결해 성과를 나누는 자리', period:'연 2회', place:'청도', cost:'무료'},
+];
+
+const foreignPrograms = {
+  '비자': {name:'비자발급 컨설팅', unit:'외국인지원', desc:'비자 관련 궁금한 점을 상담받을 수 있어요.', place:'청도 상상마루 상담', cost:'무료'},
+  '통번역': {name:'지침·안내서 통번역', unit:'외국인지원', desc:'생활에 필요한 안내서를 3개국어로 받아볼 수 있어요.', place:'배포처 50곳', cost:'무료'},
+  '정착': {name:'외국인 정착지원 (웰컴키트)', unit:'외국인지원', desc:'청도에서 처음 지낼 때 필요한 웰컴키트를 드려요.', place:'지역기업 채용자 대상', cost:'무료'},
+  '숙소': {name:'드림스테이 숙박지원', unit:'드림스테이', desc:'방문·체류 시 머무를 수 있는 공간을 지원받을 수 있어요.', place:'머물러온 (8인실)', cost:'지원'}
+};
+
+/* ================= 상태 & 문항 ================= */
+const answers = { q1:null, q2:null, q3:null, q4:null, q5:null, foreign:null };
+
+const optionSets = {
+  q1: [
+    {v:'거주중', label:'원래 여기 살아요', icon:'집'},
+    {v:'관계인구', label:'종종 왔다 갔다 해요', icon:'왕복'},
+    {v:'이사고민', label:'이사 올까 고민 중이에요', icon:'이사'},
+    {v:'외국인', label:'청도에서 일하는 외국인이에요', icon:'외국인'}
+  ],
+  foreign: [
+    {v:'비자', label:'비자 관련 도움'},
+    {v:'통번역', label:'통번역 자료'},
+    {v:'정착', label:'생활 정착 도움'},
+    {v:'숙소', label:'숙소 관련'}
+  ],
+  q2: [
+    {v:'없음', label:'생각 안 해봤어요'},
+    {v:'궁금함', label:'막연히 궁금해요'},
+    {v:'하는중', label:'이미 하고 있어요'}
+  ],
+  q3: [
+    {v:'평일오전', label:'평일 오전', icon:'시간오전'},
+    {v:'평일저녁', label:'평일 저녁', icon:'시간저녁'},
+    {v:'주말', label:'주말', icon:'시간주말'},
+    {v:'아무때나', label:'아무 때나 · 며칠도 괜찮아요', icon:'시간자유'}
+  ],
+  q4: [
+    {v:'아곤', label:'뭔가 배우고 만들고 싶다', icon:'배움'},
+    {v:'알레아파이디아', label:'사람들이랑 어울리고 싶다', icon:'사람들'},
+    {v:'일링크스', label:'몸을 움직이는 활동을 하고 싶다', icon:'운동'},
+    {v:'civic', label:'지역 일에 의견을 내고 싶다', icon:'의견'},
+    {v:'미미크리', label:'그냥 쉬면서 구경하고 싶다', icon:'휴식'}
+  ],
+  q5: [
+    {v:'영화영상', label:'영화 · 영상', icon:'영화영상'},
+    {v:'책이야기', label:'책 · 이야기', icon:'책이야기'},
+    {v:'창업비즈니스', label:'창업 · 비즈니스', icon:'창업비즈니스'},
+    {v:'먹거리마켓', label:'먹거리 · 마켓', icon:'먹거리마켓'}
+  ]
+};
+
+function renderOptions(containerId, key){
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  optionSets[key].forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    const iconHTML = opt.icon ? `<span class="opt-icon">${icon(opt.icon)}</span>` : '';
+    btn.innerHTML = `${iconHTML}<span>${opt.label}</span>`;
+    btn.onclick = ()=> handleAnswer(key, opt.v);
+    el.appendChild(btn);
+  });
+}
+['q1','foreign','q2','q3','q4','q5'].forEach(k=>{
+  renderOptions(k==='foreign' ? 'opts-foreign' : 'opts-'+k, k);
+});
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  updateProgress(id);
+}
+
+const stepOrder = {'screen-q1':1,'screen-q2':2,'screen-q3':3,'screen-q4':4,'screen-q5':5};
+function updateProgress(id){
+  const bar = document.getElementById('progressBar');
+  if(!stepOrder[id]){ bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  const step = stepOrder[id];
+  document.querySelectorAll('.progress-dot').forEach((d,i)=> d.classList.toggle('done', i < step));
+  document.getElementById('progressLabel').textContent = step+' / 5';
+}
+
+document.getElementById('startBtn').onclick = ()=> showScreen('screen-q1');
+
+function handleAnswer(key, value){
+  if(key==='q1'){
+    answers.q1 = value;
+    if(value === '외국인'){ showScreen('screen-foreign'); return; }
+    showScreen('screen-q2');
+  } else if(key==='foreign'){
+    answers.foreign = value;
+    showForeignResult();
+  } else if(key==='q2'){
+    answers.q2 = value; showScreen('screen-q3');
+  } else if(key==='q3'){
+    answers.q3 = value; showScreen('screen-q4');
+  } else if(key==='q4'){
+    answers.q4 = value; showScreen('screen-q5');
+  } else if(key==='q5'){
+    answers.q5 = value; runLoadingThenResult();
+  }
+}
+
+document.getElementById('backForeign').onclick = ()=> { answers.q1=null; showScreen('screen-q1'); };
+document.getElementById('back-q2').onclick = ()=> showScreen('screen-q1');
+document.getElementById('back-q3').onclick = ()=> showScreen('screen-q2');
+document.getElementById('back-q4').onclick = ()=> showScreen('screen-q3');
+document.getElementById('back-q5').onclick = ()=> showScreen('screen-q4');
+
+document.getElementById('restartBtn').onclick = ()=>{
+  answers.q1=answers.q2=answers.q3=answers.q4=answers.q5=answers.foreign=null;
+  showScreen('screen-intro');
+};
+
+function runLoadingThenResult(){
+  showScreen('screen-loading');
+  setTimeout(computeAndShowResult, 900);
+}
+
+/* ================= 매칭 로직 ================= */
+function computeAndShowResult(){
+  let pool = programs.slice();
+  if(answers.q2 === '없음'){ pool = pool.filter(p=>!p.startup); }
+
+  let domainPool = pool.filter(p=>p.domain.includes(answers.q5));
+  if(domainPool.length < 3){
+    const extra = pool.filter(p=> p.domain.includes('취미가벼운모임') && !domainPool.includes(p));
+    domainPool = domainPool.concat(extra);
+  }
+  if(domainPool.length < 3){ domainPool = pool.slice(); }
+
+  let timePool = domainPool;
+  if(answers.q3 !== '아무때나'){
+    const filtered = domainPool.filter(p=> p.time.includes(answers.q3) || p.time.includes('아무때나'));
+    if(filtered.length >= 3) timePool = filtered;
+  }
+
+  const moodKaiwaMap = { '아곤':['아곤'], '알레아파이디아':['알레아','파이디아'], '일링크스':['일링크스'], '미미크리':['미미크리'] };
+  const moodMatch = moodKaiwaMap[answers.q4] || [];
+
+  const scored = timePool.map(p=>{
+    let score = 0;
+    if(answers.q4 === 'civic'){
+      if(p.civic) score += 5;
+    } else if(moodMatch.includes(p.kaiwa)){
+      score += 3;
+    }
+    if(answers.q1 === '이사고민' && p.moveIn) score += 4;
+    if(p.status === '진행중' || p.status === '상시') score += 1;
+    if(p.domain[0] === answers.q5) score += 1;
+    return {p, score};
+  });
+  scored.sort((a,b)=> b.score - a.score);
+
+  let top3 = scored.slice(0,3).map(s=>s.p);
+  const hasAvailable = top3.some(p=> p.status==='진행중' || p.status==='상시');
+  if(!hasAvailable){
+    const candidate = scored.find(s=> (s.p.status==='진행중'||s.p.status==='상시') && !top3.includes(s.p));
+    if(candidate) top3[top3.length-1] = candidate.p;
+  }
+  renderResult(top3);
+}
+
+const domainComment = {
+  '영화영상':'화면 속 이야기에 끌리는 당신, 이런 곳은 어때요',
+  '책이야기':'조용히 이야기에 스며드는 당신에게',
+  '창업비즈니스':'뭔가 만들어가고 싶은 당신을 위해',
+  '먹거리마켓':'먹고 나누는 즐거움을 아는 당신에게'
+};
+
+function renderResult(top3){
+  document.getElementById('resultComment').textContent = domainComment[answers.q5] || '당신에게 어울리는 청도의 모습';
+  const cardsEl = document.getElementById('resultCards');
+  cardsEl.innerHTML = top3.map((p,i)=>{
+    const tone = p.domain[0] || '취미가벼운모임';
+    return `
+      <div class="rcard tone-${tone}">
+        <div class="rcard-icon">${icon(tone)}</div>
+        <div class="rcard-body">
+          <div class="rcard-top">
+            <span class="rcard-rank">${i+1}순위</span>
+            <span class="rcard-badge">${p.badge}</span>
+          </div>
+          <div class="rcard-unit">${p.unit}</div>
+          <div class="rcard-name">${p.name}</div>
+          <div class="rcard-desc">${p.desc}</div>
+          ${p.elig ? `<div class="rcard-elig">💡 ${p.elig}</div>` : ''}
+          <div class="rcard-meta"><span>${p.period}</span><span>${p.place}</span><span>${p.cost}</span></div>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('benefitBox').style.display = 'none';
+  showScreen('screen-result');
+}
+
+function showForeignResult(){
+  const p = foreignPrograms[answers.foreign];
+  document.getElementById('resultComment').textContent = '이런 도움을 받을 수 있어요';
+  document.getElementById('resultCards').innerHTML = `
+    <div class="rcard tone-취미가벼운모임">
+      <div class="rcard-icon">${icon('외국인')}</div>
+      <div class="rcard-body">
+        <div class="rcard-top"><span class="rcard-rank">추천</span><span class="rcard-badge">문의 가능</span></div>
+        <div class="rcard-unit">${p.unit}</div>
+        <div class="rcard-name">${p.name}</div>
+        <div class="rcard-desc">${p.desc}</div>
+        <div class="rcard-meta"><span>${p.place}</span><span>${p.cost}</span></div>
+      </div>
+    </div>`;
+  document.getElementById('benefitBox').style.display = 'block';
+  document.getElementById('benefitBox').innerHTML = '<b>더 필요한 게 있다면</b><br>청도상상마루 1층 안내부스에서 다른 지원도 함께 안내받을 수 있어요.';
+  showScreen('screen-result');
+}
+</script>
+</body>
+</html>
