@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="light only">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>청도혁신센터 추천 프로그램</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,6 +112,17 @@
     display:inline-block;
   }
   .btn-primary:active{ transform:scale(0.97); }
+
+  .fs-btn{
+    display:block;
+    margin:14px auto 0;
+    background:none; border:none;
+    font-family:var(--font-body); font-weight:600; font-size:13.5px;
+    color:var(--ink-faint);
+    text-decoration:underline;
+    cursor:pointer;
+    padding:6px 10px;
+  }
 
   /* ===== 질문 화면 ===== */
   .q-head{ margin-bottom:20px; text-align:center; }
@@ -298,6 +312,7 @@
     <h1 class="intro-title">나에게 맞는<br>추천 프로그램은?</h1>
     <p class="intro-sub">질문 5개면 지금 당신한테 딱 맞는 청도혁신센터 프로그램 세 가지를 찾아드려요. 30초면 충분해요.</p>
     <button class="btn-primary" id="startBtn">시작하기 →</button>
+    <button class="fs-btn" id="fsBtn">⛶ 전체화면으로 보기</button>
   </section>
 
   <!-- Q1 -->
@@ -593,6 +608,18 @@ function updateProgress(id){
 }
 
 document.getElementById('startBtn').onclick = ()=> showScreen('screen-q1');
+
+document.getElementById('fsBtn').onclick = ()=>{
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+  if(req){
+    req.call(el).catch(()=>{
+      alert('전체화면 전환이 막혀 있어요. 크롬 메뉴(⋮) → "홈 화면에 추가"로 저장한 뒤 그 아이콘으로 열면 주소창 없이 전체화면처럼 쓸 수 있어요.');
+    });
+  } else {
+    alert('이 브라우저에서는 자동 전체화면이 지원되지 않아요. 크롬 메뉴(⋮) → "홈 화면에 추가"로 저장한 뒤 그 아이콘으로 열면 주소창 없이 전체화면처럼 쓸 수 있어요.');
+  }
+};
 
 function handleAnswer(key, value){
   if(key==='q1'){
