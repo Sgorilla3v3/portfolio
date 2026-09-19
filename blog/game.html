@@ -189,13 +189,15 @@
     background:var(--paper);
     border:2px solid var(--line);
     border-radius:var(--radius-card);
-    padding:18px 20px;
-    display:flex; gap:14px;
+    padding:22px 20px;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center;
+    gap:8px;
     box-shadow:0 6px 18px -10px rgba(74,63,56,0.15);
   }
-  .rcard-icon{ flex-shrink:0; width:52px; height:52px; }
-  .rcard-body{ flex:1; display:flex; flex-direction:column; gap:6px; }
-  .rcard-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+  .rcard-icon{ flex-shrink:0; width:56px; height:56px; margin-bottom:4px; }
+  .rcard-body{ display:flex; flex-direction:column; align-items:center; gap:7px; width:100%; }
+  .rcard-top{ display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; }
   .rcard-rank{ font-size:12.5px; font-weight:700; color:var(--ink-faint); }
   .rcard-badge{
     font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:14px;
@@ -209,11 +211,12 @@
 
   .rcard-unit{ font-size:12px; color:var(--ink-faint); font-weight:600; }
   .rcard-name{ font-family:var(--font-display); font-weight:700; font-size:18.5px; }
-  .rcard-desc{ font-size:14.5px; color:var(--ink-soft); line-height:1.5; }
-  .rcard-meta{ font-size:12.5px; color:var(--ink-faint); display:flex; flex-wrap:wrap; gap:4px 14px; margin-top:2px; font-weight:500; }
+  .rcard-desc{ font-size:14.5px; color:var(--ink-soft); line-height:1.5; max-width:38ch; }
+  .rcard-meta{ font-size:12.5px; color:var(--ink-faint); display:flex; flex-wrap:wrap; justify-content:center; gap:4px 14px; margin-top:2px; font-weight:500; }
   .rcard-elig{
     font-size:12.5px; color:var(--mint-deep); font-weight:600;
-    background:var(--mint-soft); border-radius:8px; padding:6px 10px; margin-top:2px;
+    background:var(--mint-soft); border-radius:8px; padding:6px 12px; margin-top:2px;
+    max-width:34ch;
   }
 
   .benefit-box{
@@ -222,6 +225,7 @@
     padding:16px 18px;
     margin-bottom:18px;
     font-size:14px; color:var(--ink); line-height:1.6;
+    text-align:center;
   }
   .benefit-box b{ font-family:var(--font-display); }
 
@@ -229,23 +233,19 @@
     background:var(--paper);
     border:2px dashed var(--line);
     border-radius:var(--radius-card);
-    padding:18px 20px;
+    padding:22px 20px;
     margin-bottom:16px;
     text-align:center;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
   }
+  .follow-icon{ width:40px; height:40px; }
   .follow-box p{
-    font-size:13.5px; color:var(--ink-soft); line-height:1.6; margin:0 0 14px;
+    font-size:14px; color:var(--ink-soft); line-height:1.6; margin:0;
+    font-weight:600;
   }
-  .ig-btn{
-    display:inline-flex; align-items:center; gap:8px;
-    min-height:52px; padding:12px 24px;
-    background:linear-gradient(135deg, var(--peach) 0%, var(--lavender) 100%);
-    color:#4A3F38;
-    border-radius:26px;
-    font-family:var(--font-body); font-weight:700; font-size:15px;
-    text-decoration:none;
+  .follow-box span{
+    font-size:12.5px; color:var(--ink-faint); font-weight:500;
   }
-  .ig-btn:active{ transform:scale(0.97); }
 
   .restart-btn{
     width:100%; min-height:58px;
@@ -390,8 +390,20 @@
     <div class="result-cards" id="resultCards"></div>
     <div class="benefit-box" id="benefitBox" style="display:none;"></div>
     <div class="follow-box">
-      <p>이 결과는 가볍게 참고하는 용도예요. 정확한 일정·비용·신청 방법은 청도혁신센터 채널에서 꼭 다시 확인해주세요.</p>
-      <a class="ig-btn" href="https://www.instagram.com/explore/search/keyword/?q=%EC%B2%AD%EB%8F%84%ED%98%81%EC%8B%A0%EC%84%BC%ED%84%B0" target="_blank" rel="noopener">📷 청도혁신센터 인스타그램 팔로우하기</a>
+      <svg class="follow-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="7" width="34" height="34" rx="10" fill="url(#igGrad)"/>
+        <rect x="16" y="16" width="16" height="16" rx="8" fill="none" stroke="#FFFFFF" stroke-width="2.4"/>
+        <circle cx="33" cy="15" r="2" fill="#FFFFFF"/>
+        <defs>
+          <linearGradient id="igGrad" x1="7" y1="41" x2="41" y2="7" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FFC1A6"/>
+            <stop offset="0.5" stop-color="#FF9A73"/>
+            <stop offset="1" stop-color="#D3C3EE"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <p>자세한 내용은 청도혁신센터 인스타그램에서 확인해보세요</p>
+      <span>정확한 일정·비용·신청 방법은 공식 채널 기준이 맞아요</span>
     </div>
     <button class="restart-btn" id="restartBtn">처음부터 다시 해보기</button>
     <div class="colophon">청도혁신센터 · 청도상상마루 · 경북시민재단</div>
@@ -628,7 +640,8 @@ function handleAnswer(key, value){
     showScreen('screen-q2');
   } else if(key==='foreign'){
     answers.foreign = value;
-    showForeignResult();
+    showScreen('screen-loading');
+    setTimeout(showForeignResult, 3000);
   } else if(key==='q2'){
     answers.q2 = value; showScreen('screen-q3');
   } else if(key==='q3'){
@@ -653,7 +666,7 @@ document.getElementById('restartBtn').onclick = ()=>{
 
 function runLoadingThenResult(){
   showScreen('screen-loading');
-  setTimeout(computeAndShowResult, 900);
+  setTimeout(computeAndShowResult, 3000);
 }
 
 /* ================= 매칭 로직 ================= */
